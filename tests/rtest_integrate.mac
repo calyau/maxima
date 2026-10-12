@@ -7173,6 +7173,23 @@ block([g, G, a, c],
       [[a=13/10, c=3/5, x=2/5], [a=4/5, c=2/5, x=3/5]]));
 [true, true]$
 
+/* TRIGIN1 took long to show that a part of this antiderivative is
+   constant */
+
+integrate(x/(a*sin(x)+a)^2, x);
+((sin(3*x)^2+(6*cos(2*x)-6*sin(x)-2)*sin(3*x)+cos(3*x)^2+(-6*sin(2*x)
+  -6*cos(x))*cos(3*x)+9*sin(2*x)^2+18*cos(x)*sin(2*x)+9*cos(2*x)^2
+  +(-18*sin(x)-6)*cos(2*x)+9*sin(x)^2+6*sin(x)+9*cos(x)^2+1)*log(sin(x)^2
+  +2*sin(x)+cos(x)^2+1)+(-2*cos(2*x)+2*sin(x)-6*x*cos(x))*sin(3*x)
+  +(2*sin(2*x)+6*x*sin(x)+2*cos(x)+2*x)*cos(3*x)-6*sin(2*x)^2
+  +(-18*x*sin(x)-12*cos(x)-6*x)*sin(2*x)-6*cos(2*x)^2+(12*sin(x)
+  -18*x*cos(x)+2)*cos(2*x)-6*sin(x)^2-2*sin(x)
+  -6*cos(x)^2)/(3*a^2*sin(3*x)^2+(18*a^2*cos(2*x)-18*a^2*sin(x)
+  -6*a^2)*sin(3*x)+3*a^2*cos(3*x)^2+(-18*a^2*sin(2*x)
+  -18*a^2*cos(x))*cos(3*x)+27*a^2*sin(2*x)^2+54*a^2*cos(x)*sin(2*x)
+  +27*a^2*cos(2*x)^2+(-54*a^2*sin(x)-18*a^2)*cos(2*x)+27*a^2*sin(x)^2
+  +18*a^2*sin(x)+27*a^2*cos(x)^2+3*a^2)$
+
 /* integrate() failed with "CQUOTIENT: quotient is not exact" */
 
 block([g, G, a, c, d, A, B],
@@ -7185,6 +7202,12 @@ block([g, G, a, c, d, A, B],
                                                  diff(G, x) - g)))) < 1e-10)),
        [1/2, 2, 7/2, 5])]);
 [true, [true, true, true, true]]$
+
+/* integrate() left an integral here, as it took the factors of the
+   product in the wrong order */
+
+integrate(%e^x*x*log(x), x);
+%e^x*(x-1)*log(x)-gamma_incomplete(0,-x)-%e^x$
 
 /* Integrands with a product of two square roots of rational functions,
    as left by integration by parts with the antiderivatives and derivatives
@@ -7344,6 +7367,11 @@ map(lambda([g], length(errcatch(integrate(g, x)))),
     [sqrt((2*c*x^2)/(b-sqrt(b^2-4*a*c))+1)/sqrt(1-(2*c*x^2)/(sqrt(b^2-4*a*c)+b)),
      1/(sqrt((sqrt(3)-3)*x^2+3)*sqrt(2*sqrt(3)*x^2-3^(3/2)+3))]);
 [1, 1]$
+
+/* The substitution t = tan(x/2) gave a wrong antiderivative here */
+
+integrate(sqrt(%i*tan(x)+1)/sec(x)^(3/2), x);
+(sin((3*x)/2)-%i*cos((3*x)/2)+3*sin(x/2)+3*%i*cos(x/2))/3$
 
 /* For hyperbolic integrands, the Risch integrator solves the equations it
    can when the top one of its linear system fails */

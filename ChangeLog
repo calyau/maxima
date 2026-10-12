@@ -196,6 +196,7 @@ Bug fixes for numbered bugs:
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 * \#5664 two minor tolerance test failures in tests/rtest16.mac
+* \#5668 limit(sqrt(%e^x-1), x, 2) causes stack overflow
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -213,12 +214,15 @@ Bug fixes for unnumbered bugs:
   and return a wrong sign or hang
 * factor() could hang when a unit such as %i divided two factors, as
   could integrate(%e^(3*%i*atan(a*x))/(a^2*c*x^2+c)^(3/2),x)
-* sign() could overflow the stack when comparing powers, as for
-  sign(%e^x-%e^2) with assume(x>0) or limit(sqrt(%e^x-1),x,2)
 * integrate() dropped the real part of some antiderivatives, as for
   sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
+* integrate() took very long for some trigonometric integrands, such
+  as x/(a*sin(x)+a)^2
+* integrate() returned a noun form for %e^x*x*log(x)
 * integrate() gave wrong antiderivatives for some products of square
   roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
+* integrate() gave wrong antiderivatives for some powers of sums of
+  trigonometric functions, such as sqrt(%i*tan(x)+1)/sec(x)^(3/2)
 
 Changes in the Windows installer:
 ---------------------------------

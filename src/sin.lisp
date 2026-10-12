@@ -531,7 +531,8 @@
                        (e2 (sratsimp (maxima-substitute -1 y expr))))
                    (cond ((alike1 e2 (sratsimp (neg e1))) t)
                          ((alike1 e2 e1) (setq one t)))))
-             (setq res (let ((*integrate-sqrt-pair* t) (*in-risch-p* early)
+             (setq res (let ((*integrate-sqrt-pair* t)
+                             (*in-risch-p* (or early *in-risch-p*))
                              ($errormsg nil) (e (maxima-substitute 1 y expr)))
                          (car (errcatch (integrator e var2)))))
              (not (isinop res '%integrate))
@@ -570,7 +571,7 @@
 	     (setq coef (cond ((null (cdr coef))
                                (car coef))
 			      (t
-                               (setq coef (cons (car ex) coef)))))))
+                               (setq coef (cons (car ex) (nreverse coef))))))))
       (values arcpart coef))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1663,7 +1664,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *yz*)
+  (prog (y repl y1 y2 *yy* z m n *yz* norisch)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1805,6 +1806,10 @@
                    '((mtimes) 2 ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
      (setq repl (subvar '((mquotient) ((%sin) x) ((mplus) 1 ((%cos) x)))
                         var2))
+     ;; RISCHINT can take a power of a complex rational function of x apart
+     ;; into powers with branches that do not fit EXPR. Leave such Y to
+     ;; RISCHINT on EXPR.
+     (setq norisch (and (not (freeof '$%i y)) (not (rat8 y 'x))))
      (go get2)
   get3
      (setq y (list '(mtimes) -1 *yy* *yz*))
@@ -1830,7 +1835,8 @@
        ;; Do not integrate for the global variable VAR, but substitute it.
        ;; This way possible assumptions on VAR are no longer present. The
        ;; algorithm of DEFINT depends on this behavior. See Bug 3085498.
-       (let (($triginverses '$all) (newvar (make-new-var "trigint" repl)))
+       (let (($triginverses '$all) (newvar (make-new-var "trigint" repl))
+             (*in-risch-p* (or norisch *in-risch-p*)))
          (substint repl
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)

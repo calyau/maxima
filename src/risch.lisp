@@ -223,6 +223,7 @@
 		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)
 	  (rp-polylogp t)
+	  (*risplit-assumed* nil)
 	  $logarc $exponentialize result)
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
@@ -235,6 +236,9 @@
           (unless (zerop1 (radcan1 (if (eq e yyy-re) (car p) (cdr p))
                                    risch-var))
             (return-from locally-const-p nil)))
+        ;; Unless RISPLIT took anything to be positive or real in splitting
+        ;; the integrand and the antiderivative, E is then constant.
+        (unless *risplit-assumed* (return-from locally-const-p t))
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)

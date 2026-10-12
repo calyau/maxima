@@ -323,7 +323,9 @@
 ;; and that POWER is a rational number.
 (defun risplit-expt-real^rat (base power)
   (case (cond ((mnegp base) '$neg)
-              (implicit-real '$pos)
+              (implicit-real
+               (unless (eq (csign base) '$pos) (setq *risplit-assumed* t))
+               '$pos)
               ;; BASE is real, but can contain %i, as %i*erf(%i) does.
               ;; Use $sign not asksign.
               (t (let ((sign-imag-errp nil))
@@ -397,7 +399,8 @@
 		(not (eq (csign arg1) t)))
 	   (setq arg arg1)
 	   (if implicit-real
-	       (cons arg 0)
+	       (progn (unless (eq (csign arg) '$pos) (setq *risplit-assumed* t))
+		      (cons arg 0))
 	       (let ((fact (assume `(($notequal) ,arg 0))))
 	       (unwind-protect
 			(absarg arg)
@@ -531,7 +534,9 @@
 ;;;  Perhaps the best compromise is to return 'realpart/'imagpart
 ;;;   under the control of a switch set by the integrators.  First
 ;;;   all such dependencies must be found in the integ
-	  ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li)) (cons l 0))
+	  ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li))
+	   (setq *risplit-assumed* t)
+	   (cons l 0))
 	  ((prog2 (setq op (if (eq (caar l) 'mqapply) (caaadr l) (caar l)))
 	       (decl-complexp op))
 	   (risplit-noun l))

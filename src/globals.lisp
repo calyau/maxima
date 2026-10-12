@@ -1277,6 +1277,9 @@
 
 (defvar rischp nil)
 (defvar rp-polylogp nil)
+;; Set by RISPLIT when IMPLICIT-REAL lets it take a radicand or the argument of
+;; a logarithm to be positive, or RP-POLYLOGP a polylogarithm to be real.
+(defvar *risplit-assumed* nil)
 (defvar wflag nil)
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)
