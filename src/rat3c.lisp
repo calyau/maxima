@@ -348,18 +348,34 @@
   (setq x (coefl x))
   (cond ((member 1 x) '(1))
 	((null (cdr x)) x)
-	(t (sort x #'contodr))))
+	(t (stable-sort x #'contodr))))
 
 (defun coefl (x)
   (do ((x x (cddr x))
        (ans nil (cons (cadr x) ans)))
       ((null x) ans)))
 
+;; CONTODR orders the coefficients for OLDCONTENT2: numbers first, then lower
+;; main variables, lower degrees and fewer terms, so that cheap gcds come
+;; first. The cost of a content computation can depend dramatically on this
+;; order. CONTODR is therefore a strict order, and CONTSORT uses STABLE-SORT,
+;; so that every Lisp sorts alike.
 (defun contodr (a b)
-  (cond ((pcoefp a) t)
+  (cond ((pcoefp a) (not (pcoefp b)))
 	((pcoefp b) nil)
-	((eq (car a) (car b)) (not (> (cadr a) (cadr b))))
+	((eq (car a) (car b))
+	 (if (= (cadr a) (cadr b))
+	     (< (pnterms a) (pnterms b))
+	     (< (cadr a) (cadr b))))
 	(t (pointergp (car b)(car a)))))
+
+;; Number of monomials in the polynomial P.
+(defun pnterms (p)
+  (if (pcoefp p)
+      1
+      (do ((l (p-terms p) (pt-red l))
+           (n 0 (+ n (pnterms (pt-lc l)))))
+          ((null l) n))))
 
 ;;;*** PCONTENT COMPUTES INTEGER CONTENT
 ;;;*** PCONTENT OF 3*A*X IS 3 IF MODULUS = NIL  1 OTHERWISE

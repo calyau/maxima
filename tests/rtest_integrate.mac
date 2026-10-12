@@ -7085,6 +7085,23 @@ block([g, G],
 [true, true, true, true, true]$
 
 
+/* Bug #5665: "integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap" */
+
+[integrate(exp(-x^3-x), x, 0, inf),
+ integrate(exp(-x^3-x^2), x, 0, inf),
+ integrate(exp(-x^4-x), x, 0, inf)];
+['integrate(%e^(-x^3-x), x, 0, inf),
+ 'integrate(%e^(-x^3-x^2), x, 0, inf),
+ 'integrate(%e^(-x^4-x), x, 0, inf)]$
+
+/* The change of variable y = p(x) for log(p(x)) still works when the
+   inverse of p has nested radicals */
+[integrate(log(x^4-2*x^2+1)*(4*x^3-4*x)/sqrt((x^4-2*x^2+1)*(1-(x^4-2*x^2+1))), x, 0, 1),
+ integrate(log(x^6+2*x^3)*(6*x^5+6*x^2)/(1+x^6+2*x^3), x, 0, 1),
+ integrate(log(x^3+x)*(3*x^2+1)/(1+(x^3+x)^2), x, 0, inf)];
+[2*%pi*log(2), log(3)*log(4)+li[2](-3), 0]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -846,10 +846,18 @@
 	  (limitp (eps-sign a))
 	  (t '$zero))))
 
+;; Return T if %i occurs in X outside of abs(...), whose value is always real.
+;; TODO: Generalize this to any REAL-VALUED or declared $REAL function.
+(defun %i-outside-abs-p (x)
+  (cond ((atom x) (eq x '$%i))
+        ((specrepp x) (not (free x '$%i)))
+        ((eq (caar x) 'mabs) nil)
+        (t (some #'%i-outside-abs-p (cdr x)))))
+
 ;; csign returns t if x appears to be complex.
 ;; Else, it returns the sign.
 (defun csign (x)
-  (or (not (free x '$%i))
+  (or (%i-outside-abs-p x)
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
 ;;; $csign works like $sign but switches the sign-functions into a complex
@@ -1168,8 +1176,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           (or (and (mnump (third e)) (mnegp (third e)))
           (eq t (mnqp (second e) 0)))))))
 
-(defun meqp (a b)
+(defun meqp (a b &optional (csign t))
   ;; Check for some particular types before falling into the general case.
+  ;; With CSIGN = NIL, the final $CSIGN test is made only if SRATSIMP and
+  ;; EQUAL-FACTS-SIMP rewrite A - B. This can be used in cases where other
+  ;; code has already tried to determine the sign, but couldn't decide equality.
   (cond ((stringp a)
 	 (and (stringp b) (equal a b)))
 	((stringp b) nil)
@@ -1219,7 +1230,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		 ((memq sign '($pos $neg $pn)) nil)
 
 		 ;; if database lookup failed, apply all equality facts
-		 (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
+		 (t (let* ((d (sub a b))
+			   (z (equal-facts-simp (sratsimp d))))
+		      (if (or csign (not (alike1 z d)))
+			  (meqp-by-csign z a b)
+			  `(($equal) ,a ,b)))))))))
 
 ;; Two arrays are equal (according to MEQP)
 ;; if (1) they have the same dimensions,
@@ -1327,8 +1342,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (merror (intl:gettext "greater than or equal: arguments are incomparable; found: ~:M, ~:M") a b))))
      (t (mgqp-general a b))))
 
-(defun mnqp (x y)
-  (let ((b (meqp x y)))
+(defun mnqp (x y &optional (csign t))
+  (let ((b (meqp x y csign)))
     (cond ((eq b '$unknown) b)
 	  ((or (eq b t) (eq b nil)) (not b))
 	  (t `(($notequal) ,x ,y)))))
@@ -1723,12 +1738,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			(eq (sign* (sub (cadr xlhs) 1)) '$pos))
 		       (and (not (eq $domain '$complex))
 			;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos).
+			(eq (sign* (cadr xlhs)) '$pos)
+			(eq (sign* xrhs) '$pos)
 			;; Do NOT apply when Spos is itself a power of Qpos (e.g. S = Q):
 			;; The reduction would just toggle the exponent R <-> 1/R and recurse forever.
 			;; That same-base case is handled by the exponent-comparison rule further below.
 			(not (expt-of-base xrhs (cadr xlhs)))
-			(eq (sign* (cadr xlhs)) '$pos)
-			(eq (sign* xrhs) '$pos)
 			(eq (sign* (sub (cadr xlhs)
 					(power xrhs (div 1 (caddr xlhs)))))
 			    '$pos))))
@@ -1814,17 +1829,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (let ((q (cond ((mexptp xlhs) (cadr xlhs))
                      ((mexptp xrhs) (cadr xrhs)))))
         (when q
-          (let ((m (expt-of-base xlhs q))
-                (n (expt-of-base xrhs q)))
-            (when (and m n
-                       (zerop1 ($imagpart m))
-                       (zerop1 ($imagpart n)))
-              (let* ((qcmp (and (eq (sign* q) '$pos) (sign* (sub q 1))))
-                     (diff-sign (cond ((eq qcmp '$pos) (sign* (sub m n)))
-                                      ((eq qcmp '$neg) (sign* (sub n m)))
-                                      (t '$pnz))))
-                (unless (eq diff-sign '$pnz)
-                  (setq sgn diff-sign))))))))
+          ;; Compare Q with 1 first, as each EXPT-OF-BASE costs am expensive MEQP.
+          (let ((qcmp (and (eq (sign* q) '$pos) (sign* (sub q 1)))))
+            (when (member qcmp '($pos $neg))
+              (let ((m (expt-of-base xlhs q))
+                    (n (expt-of-base xrhs q)))
+                (when (and m n
+                           (zerop1 ($imagpart m))
+                           (zerop1 ($imagpart n)))
+                  (let ((diff-sign (if (eq qcmp '$pos)
+                                       (sign* (sub m n))
+                                       (sign* (sub n m)))))
+                    (unless (eq diff-sign '$pnz)
+                      (setq sgn diff-sign))))))))))
 
     (when (and (null sgn) $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))
@@ -1944,7 +1961,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun signfactor (x)
   (let (y (factored t))
-    (setq y (factor-if-small x))
+    (setq y (or (factor-linear-sum x) (factor-if-small x)))
     (cond ((or (mplusp y) (> (conssize y) 50.))
 	   (setq sign '$pnz)
 	   nil)
@@ -1957,6 +1974,28 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (let ($ratprint $factor_max_degree_print_warning)
 	(declare (special $ratprint)) ; Really necessary? $RATPRINT is in globals.lisp!
 	(factor x)) x))
+
+;; For a sum with rational coefficients that is linear in its kernels, as most
+;; sums that reach SIGNFACTOR are, FACTOR can only pull out the numeric content
+;; and make the coefficient of the last term positive. This does the same much
+;; faster. It returns X when that changes nothing, and NIL for any other sum.
+;; The product stays unsimplified, as MUL would distribute a content of -1.
+(defun factor-linear-sum (x)
+  (flet ((linear-kernel-p (e)
+           (or (atom e) (not (member (caar e) '(mplus mtimes mexpt))))))
+    (let ((g 0) (l 1) c)
+      (dolist (term (cdr x))
+        (setq c (cond ((mnump term) term)
+                      ((linear-kernel-p term) 1)
+                      ((and (mtimesp term) (null (cdddr term))
+                            (linear-kernel-p (caddr term)))
+                       (cadr term))))
+        (unless (or (integerp c) (ratnump c))
+          (return-from factor-linear-sum nil))
+        (setq g (gcd g (num1 c)) l (lcm l (denom1 c))))
+      (setq g (div (if (minusp (num1 c)) (- g) g) l))
+      (if (eql g 1) x
+        `((mtimes) ,g ,(addn (mapcar #'(lambda (e) (div e g)) (cdr x)) t))))))
 
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
@@ -2163,13 +2202,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (setq sign
 	(cond ((eq sign '$zero) (log0-err x)) ; log(0) is undefined.
           ((member sign '($pos $pz)) ; accept $PZ - we already handled definitely 0
-	       (cond ((eq t (mgrp 1 arg)) '$neg)
-		     ((eq t (meqp arg 1)) '$zero);; log(1) = 0.
-		     ((eq t (mgqp 1 arg)) '$nz)
-		     ((eq t (mgrp arg 1)) '$pos)
-		     ((eq t (mgqp arg 1)) '$pz)
-		     ((eq t (mnqp arg 1)) '$pn)
-		     (t '$pnz)))
+	       ;; log(ARG) has the sign of ARG - 1. Where that sign leaves open
+	       ;; whether ARG = 1, ask MEQP, which can decide more cases.
+	       (let ((s (csign (sub arg 1))))
+		 (if (member s '($pos $neg $zero $pn))
+		   s
+		   ;; For a weak sign of ARG - 1, the second try in MEQP can possibly be
+		   ;; skipped, so pass NIL as the third argument to MEQP in that case.
+		   (let ((one (meqp arg 1 (not (member s '($pz $nz $pnz))))))
+		     (cond ((eq one t) '$zero) ; log(1) = 0.
+			   ((member s '($pz $nz)) s)
+			   ((not one) '$pn)
+			   (t '$pnz))))))
 	      ((and  *complexsign* (eql 1 (cabs arg))) '$imaginary)
 	      (*complexsign* '$complex)
 	      ((member sign '($pnz $pn)) '$pnz)
@@ -2190,7 +2234,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign (cadr x))
     (cond ((member sign '($pos $zero) :test #'eq))
 	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
-	  ((eq t (mnqp 0 (cadr x))) (setq sign '$pos)) ; abs(nonzero) > 0
+	  ;; abs(nonzero) > 0. If SIGN found nothing ('$PNZ), pass NIL as the third
+	  ;; argument to MNQP, allowing it to skip a redundant second $CSIGN call.
+	  ((eq t (mnqp 0 (cadr x) (not (eq sign '$pnz)))) (setq sign '$pos))
 	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
 
 (defun sign-asin/acos/atanh (x)

@@ -143,7 +143,7 @@ simplified to  a commutative product.")
 (defun simpnct-constantp (term)
   (and $dotconstrules
        (or (mnump term)
-	   (and ($constantp term) (not ($nonscalarp term))))))
+	   (consttermp term))))
 
 (defun simpnct-assumescalarp (term)
   (and $dotscrules (scalar-or-constant-p term (eq $assumescalar '$all))))

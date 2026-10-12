@@ -821,11 +821,9 @@
 	    (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
 	      (declare (ignore ,unused-arg)
 		       (ignorable ,z-arg))
-              (let ((pretty-name `((,',noun-name) ,@(rest (dollarify ',lambda-list)))))
-                ;;(format t "pretty-name = ~A~%" pretty-name)
-	        (arg-count-check ,(length lambda-list)
-			         ,form-arg
-                                 pretty-name))
+	      (unless (= ,(length lambda-list) (length (rest ,form-arg)))
+		(wna-err ,form-arg ,(length lambda-list)
+			 `((,',noun-name) ,@(rest (dollarify ',lambda-list)))))
 	      (let ,arg-forms
 	        ;; Allow args to give-up if the default args won't work.
 	        ;; Useful for the (rare?) case like genfact where we want

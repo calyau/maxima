@@ -362,8 +362,26 @@ in the interval of integration.")
             (evenfn exp ivar))
         root))))
 
+;; Return T if E contains a radical in VAR, a power of an expression in VAR to a
+;; non-integer rational exponent, whose base contains another such radical.
+(defun nested-radical-p (e var)
+  (labels ((radical-p (e)
+             (and (mexptp e) (ratnump (caddr e)) (among var (cadr e))))
+           (has-radical-p (e)
+             (and (consp e) (consp (car e))
+                  (or (radical-p e) (some #'has-radical-p (cdr e)))))
+           (nested-p (e)
+             (and (consp e) (consp (car e))
+                  (or (and (radical-p e) (has-radical-p (cadr e)))
+                      (some #'nested-p (cdr e))))))
+    (nested-p e)))
+
 ;; integration change of variable
-(defun intcv (nv flag ivar ll ul)
+;;
+;; With SKIP-NESTED, roots with nested radicals in 'YX, which the cubic and
+;; quartic formulas give, are not used.
+;;
+(defun intcv (nv flag ivar ll ul &optional skip-nested)
   (let ((d (bx**n+a nv ivar))
 	(*roots ())  (*failures ())  ($breakup ()))
     (cond ((and (eq ul '$inf)
@@ -393,7 +411,9 @@ in the interval of integration.")
 			       (do* ((roots *roots (cddr roots))
 				     (root (caddar roots) (caddar roots)))
 				    ((null root) nil)
-				    (if (and (or (real-infinityp ll)
+				    (if (and (not (and skip-nested
+						       (nested-radical-p root 'yx)))
+					     (or (real-infinityp ll)
 						 (test-inverse nv ivar root 'yx ll))
 					     (or (real-infinityp ul)
 						 (test-inverse nv ivar root 'yx ul)))
@@ -3259,7 +3279,10 @@ in the interval of integration.")
 		  ;; limits are minf to inf.
 		  (setq ans (cadr ans))))
 	   ;; Apply the substitution and integrate it.
-	   (intcv ans nil ivar ll ul)))))
+	   ;; Skip nested radicals (last argument T), since such integrals are
+	   ;; never solved, but instead take much time to return a noun form or
+	   ;; exhaust the heap (bug #5665).
+	   (intcv ans nil ivar ll ul t)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg ivar ll ul)

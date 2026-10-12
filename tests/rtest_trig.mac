@@ -941,3 +941,12 @@ map(lambda([f], errcatch(apply(f, [0.0]))), [log, csc, cot, csch, coth, acsc, as
 
 block(local(y), assume(y > 0), [acot(-y), acoth(-y)]);
 [-acot(y), -acoth(y)]$
+
+
+/* Bug #5560: "cos(%pi*(4*m+3)^3) simplifies to 1 for integer m; it is -1" */
+
+block([m],
+  local(m),
+  declare(m, integer),
+  [cos(%pi*(4*m+3)^3), cos(%pi*(6*m+5)^3), sin(%pi*(4*m+3)^3+%pi/2)]);
+[-1, -1, -1]$
