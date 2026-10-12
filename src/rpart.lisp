@@ -297,6 +297,9 @@
 ;; where pre  = exp(-theta*beta) * r^alpha
 ;; and   post = beta*log(r) + alpha*theta
 (defun risplit-expt-general-form (r theta alpha beta)
+  (when (and rischp (not (zerop1 theta))
+             (not (and (integerp alpha) (zerop1 beta))))
+    (push (list (power r 2) theta) *risplit-roots*))
   (let ((pre (mul (powers '$%e (mul -1 theta beta))
                   (powers r alpha)))
         (post (add (mul beta (take '(%log) r))
@@ -324,7 +327,12 @@
 (defun risplit-expt-real^rat (base power)
   (case (cond ((mnegp base) '$neg)
               (implicit-real
-               (unless (eq (csign base) '$pos) (setq *risplit-assumed* t))
+               (unless (eq (csign base) '$pos)
+                 (setq *risplit-assumed*
+                       (if (and rischp (listp *risplit-assumed*)
+                                (eql (caddr power) 2))
+                           (adjoin base *risplit-assumed* :test #'alike1)
+                           t)))
                '$pos)
               ;; BASE is real, but can contain %i, as %i*erf(%i) does.
               ;; Use $sign not asksign.
@@ -350,6 +358,7 @@
            ;; erfc(%i) does.
            (imag-sign (let ((sign-imag-errp nil))
                         (catch 'sign-imag-err ($sign imag)))))
+      (when rischp (push (list abs2 base) *risplit-roots*))
       (cond
         ((member imag-sign '($neg $pos))
          ;; Here, we use the half-angle formulas for cos and sin. Assuming we
@@ -761,7 +770,9 @@
                 ;; At this point l is representing a real value. Try to 
                 ;; determine the sign and return a general form when the sign is
                 ;; unknown.
-		(let ((gs (if (eq rischp l) '$pos ($sign l))))
+		(let ((gs (cond ((not (eq rischp l)) ($sign l))
+				((eq (csign l) '$pos) '$pos)
+				(t (setq *risplit-assumed* t) '$pos))))
 		  (cond ((member gs '($pos $pz)) (cons l 0))
 			((eq gs '$zero) (cons 0 0))
 			((eq gs '$neg)

@@ -1278,8 +1278,13 @@
 (defvar rischp nil)
 (defvar rp-polylogp nil)
 ;; Set by RISPLIT when IMPLICIT-REAL lets it take a radicand or the argument of
-;; a logarithm to be positive, or RP-POLYLOGP a polylogarithm to be real.
+;; a logarithm to be positive, or RP-POLYLOGP a polylogarithm to be real. While
+;; RISCHP is set, this is the list of the radicands if RISPLIT took only square
+;; roots of real radicands to be real, and T otherwise.
 (defvar *risplit-assumed* nil)
+;; While RISCHP is set, RISPLIT adds the squared modulus and the argument of
+;; each complex number that it takes a root of.
+(defvar *risplit-roots* nil)
 (defvar wflag nil)
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)

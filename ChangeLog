@@ -223,6 +223,8 @@ Bug fixes for unnumbered bugs:
   roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
 * integrate() gave wrong antiderivatives for some powers of sums of
   trigonometric functions, such as sqrt(%i*tan(x)+1)/sec(x)^(3/2)
+* integrate() took very long for some integrands with square roots of
+  trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
 
 Changes in the Windows installer:
 ---------------------------------

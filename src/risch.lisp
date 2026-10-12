@@ -216,6 +216,86 @@
           (meval (list '($ev) result '$nouns)))
         result)))
 
+;; The radicands of the square roots in the expressions EXPRS, other than
+;; numbers and expressions with %i.
+(defun sqrt-radicands (exprs)
+  (let ((rads nil))
+    (labels ((walk (e)
+               (unless (atom e)
+                 (when (and (mexptp e) (ratnump (caddr e))
+                            (eql (caddr (caddr e)) 2)
+                            (not (mnump (cadr e))) (freeof '$%i (cadr e)))
+                   (pushnew (cadr e) rads :test #'alike1))
+                 (mapc #'walk (cdr e)))))
+      (mapc #'walk exprs))
+    rads))
+
+;; True if E has no powers of %e with a logarithm in the exponent, which can
+;; be roots in disguise.
+(defun no-exp-log-p (e)
+  (cond ((atom e) t)
+        ((and (mexptp e) (eq (cadr e) '$%e) (not (freeof '%log (caddr e))))
+         nil)
+        (t (every #'no-exp-log-p (cdr e)))))
+
+;; True if E has no roots other than roots of positive numbers.
+(defun no-roots-p (e)
+  (cond ((atom e) t)
+        ((mexptp e)
+         (and (or (integerp (caddr e))
+                  (and (eq (cadr e) '$%e) (freeof '%log (caddr e)))
+                  (and (mnump (cadr e)) (eq (csign (cadr e)) '$pos)))
+              (no-roots-p (cadr e))
+              (no-roots-p (caddr e))))
+        (t (every #'no-roots-p (cdr e)))))
+
+;; True if P is positive for no real values of VAR and the parameters, or if
+;; -P is the square of an expression that is real for them. Doubling the
+;; variables first lets RADCAN1 find square roots such as that of 1-cos(x),
+;; which is sqrt(2)*sin(x/2).
+(defun minus-real-square-p (p var)
+  (or (member (csign p) '($neg $nz $zero))
+      (let* (($exponentialize t) ($logarc t) ($logsimp t) ($%e_to_numlog t)
+             (p2 (reduce #'(lambda (e v) (maxima-substitute (mul 2 v) v e))
+                         (cdr ($listofvars p)) :initial-value p))
+             (w (radcan1 (power (neg p2) 1//2) var)))
+        (and (no-roots-p w)
+             (zerop1 (radcan1 (sub w (maxima-substitute (neg '$%i) '$%i w))
+                              var))))))
+
+;; In splitting the expressions EXPRS into real and imaginary parts, RISPLIT
+;; took the square roots of the radicands *RISPLIT-ASSUMED* to be real. True if
+;; that agrees with the relations between the square roots in EXPRS, that is,
+;; if no product of some of their radicands is minus the square of a real
+;; expression, as sin(x)^2-1 = -cos(x)^2 is. Roots of complex numbers can be
+;; related to them too, so the roots that RISPLIT took of complex numbers must
+;; have constant arguments and positive numbers as moduli. EXPRS must also be
+;; free of functions such as ABS, which RISPLIT does not split by the roots.
+(defun risplit-roots-consistent-p (exprs var)
+  (let ((rads (and (listp *risplit-assumed*)
+                   (union *risplit-assumed* (sqrt-radicands exprs)
+                          :test #'alike1))))
+    (and rads
+         (<= (length rads) 6)
+         (every #'no-roots-p rads)
+         (every #'(lambda (r)
+                    (let ((m (let (($exponentialize t))
+                               (radcan1 (first r) var))))
+                      (and (mnump m) (eq (csign m) '$pos)
+                           (freeof var (second r)))))
+                *risplit-roots*)
+         (every #'(lambda (e)
+                    (and (every #'(lambda (op) (freeof op e))
+                                '(mabs %signum $conjugate %realpart %imagpart))
+                         (no-exp-log-p e)))
+                exprs)
+         (loop for mask from 1 below (ash 1 (length rads))
+               never (minus-real-square-p
+                      (muln (loop for r in rads for k from 0
+                                  when (logbitp k mask) collect r)
+                            t)
+                      var)))))
+
 (defun trigin1 (risch-*exp risch-var)
   (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
     (setq yyy (multiple-value-bind (num denom)
@@ -224,6 +304,7 @@
     (let ((rischp risch-var)
 	  (rp-polylogp t)
 	  (*risplit-assumed* nil)
+	  (*risplit-roots* nil)
 	  $logarc $exponentialize result)
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
@@ -239,6 +320,10 @@
         ;; Unless RISPLIT took anything to be positive or real in splitting
         ;; the integrand and the antiderivative, E is then constant.
         (unless *risplit-assumed* (return-from locally-const-p t))
+        ;; So it is if RISPLIT took only square roots to be real, in a way
+        ;; that agrees with the relations between them.
+        (when (risplit-roots-consistent-p (list yyy risch-*exp) risch-var)
+          (return-from locally-const-p t))
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)

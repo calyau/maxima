@@ -7415,6 +7415,24 @@ block([g, G],
        [[a=13/10, x=2/5], [a=4/5, x=3/2]])]);
 [true, [true, true]]$
 
+/* TRIGIN1 took long to show that a part of these antiderivatives is
+   constant */
+
+block([g, G],
+  g : sqrt(a*cos(x)+a)*sec(x)^2,
+  G : integrate(g, x),
+  [freeof(%i, G), block([exponentialize : true], radcan(diff(G, x) - g))]);
+[true, 0]$
+
+freeof(%i, integrate(sqrt(a*cos(x+c)+a)*sec(x+c)^2, x));
+true$
+
+/* The square root is not real for any x here, so TRIGIN1 must keep the
+   imaginary part of the antiderivative */
+
+risch(sqrt(cos(x)-1), x);
+-2^(3/2)*%i*cos(x/2)$
+
 
 /**************************************/
 /* Leave this at the end of the file! */
