@@ -68,6 +68,7 @@
 	 (v (/ u (1+ root-mu1))))
     (values v mu root-mu1)))
 
+#+nil
 (defun descending-transform (u m)
   ;; Note: Don't calculate mu first, as given in 16.12.1.  We
   ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
@@ -79,9 +80,40 @@
 	 (v (/ u (1+ root-mu))))
     (values v mu root-mu)))
 
+;; Landen descending transform (Gauss' transform).
+;;
+;; Given u and m, compute:
+;;
+;;   mu = ((1-sqrt(m1))/(1+sqrt(m1)))^2
+;;   v = u/sqrt(mu)
+;;
+;; where m1 = 1 - m.  However, compute sqrt(mu) =
+;; (1-sqrt(m1))/(1+sqrt(m1) and square this to get mu.  Doing it in
+;; the order above loses information when m is complex.
+;;
+;; Also (1-sqrt(m1))/(1+sqrt(m1)) loses accuracy when m is small.
+;; Instead compute the equivalent m/(1+sqrt(m1))^2.  (Multiply the
+;; former by (1+sqrt(m1))/(1+sqrt(m1))).
+;;
+;; Returns 3 values:
+;;
+;;   v
+;;   mu
+;;   sqrt(1-mu)
+;;
+;; However sqrt(1-mu) is computed as 2*sqrt(m1)/(1+sqrt(m1)) to get
+;; rid of the round-off in 1-mu when m is near 1.
+(defun descending-transform (u m root-m1)
+  (let* ((den (+ 1 root-m1))
+	 (root-mu (/ m (* den den)))
+	 (mu (* root-mu root-mu))
+	 (v (/ u (1+ root-mu))))
+    (values v mu root-mu (/ (* 2 (sqrt root-m1)) den))))
+
 ;;
 ;; This appears to work quite well for both real and complex values
 ;; of u.
+#+nil
 (defun elliptic-sn-descending (u m)
   (cond ((= m 1)
 	 ;; A&S 16.6.1
@@ -95,6 +127,55 @@
 	   (let* ((new-sn (elliptic-sn-descending v mu)))
 	     (/ (* (1+ root-mu) new-sn)
 		(1+ (* root-mu new-sn new-sn))))))))
+
+(defun elliptic-sn-descending (u m &optional cn-dn-p
+				      (root-m1 (sqrt (- 1 m)) root-m1-p))
+
+   (cond ((= m 1)
+	 ;; A&S 16.6.1 to 16.6.3
+	 (values (tanh u) (/ (cosh u)) (/ (cosh u))))
+	((and (not root-m1-p) (realp m) (> m 1))
+	 ;; A&S 16.11: sn(u|m) = sn(v|1/m)/sqrt(m), cn(u|m) = dn(v|1/m)
+	 ;; and dn(u|m) = cn(v|1/m), where v = sqrt(m)*u.  For m > 1, the
+	 ;; descending transformation goes through complex values even
+	 ;; for real u, and loses digits.  This can only happen at the
+	 ;; top, where ROOT-M1 is not passed.
+	 (let ((root-m (sqrt m)))
+	   (multiple-value-bind (s c d)
+	       (elliptic-sn-descending (* root-m u) (/ m) cn-dn-p
+				       (sqrt (/ (- m 1) m)))
+	     (values (/ s root-m) d c))))
+	((and (< (abs m) (epsilon u))
+	      ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
+	      ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
+	      (or (realp u)
+		  (zerop m)
+		  (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u))))))))
+	 ;; A&S 16.13.1 to 16.13.3
+	 (if cn-dn-p
+	     (let ((s (sin u)))
+	       (values s (cos u) (- 1 (* m s s 1/2))))
+	     (sin u)))
+	(t
+	 (multiple-value-bind (v mu root-mu root-mu1)
+	     (descending-transform u m root-m1)
+	   (multiple-value-bind (new-sn new-cn new-dn)
+	       (elliptic-sn-descending v mu cn-dn-p root-mu1)
+	     ;; A&S 16.12.2 to 16.12.4
+	     (let* ((p (* root-mu new-sn new-sn))
+		    (den (1+ p))
+		    (sn (/ (* (1+ root-mu) new-sn) den)))
+	       (if cn-dn-p
+		   (values sn
+			   (/ (* new-cn new-dn) den)
+			   ;; 1-p cancels when p is near 1.  Then use
+			   ;; 1-p = (1-root-mu) + root-mu*new-cn^2.
+			   (/ (if (< (abs p) 1/2)
+				  (- 1 p)
+				  (+ (/ (* 2 root-m1) (+ 1 root-m1))
+				     (* root-mu new-cn new-cn)))
+			      den))
+		   sn))))))) 
 
 (defun sn (u m)
   (cond ((zerop m)
@@ -128,6 +209,12 @@
 	 ;;
 	 ;; dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
+	((not (and (realp u) (realp m) (< m 8/9)))
+	 ;; The Gauss transformation below can lose digits through the
+	 ;; cancellation in 1-p unless u and m are real and m < 8/9, and
+	 ;; m > 1 needs A&S 16.11.  ELLIPTIC-SN-DESCENDING handles that,
+	 ;; but has to compute cn as well.
+	 (nth-value 2 (elliptic-sn-descending u m t)))
 	(t
 	 ;; Use the Gauss transformation from
 	 ;; http://functions.wolfram.com/09.29.16.0013.01:
@@ -152,9 +239,12 @@
 	 ;; Note that (1-sqrt(1-mu))/(1+sqrt(1-mu)) is the same as
 	 ;; -(mu+2*sqrt(1-mu)-2)/mu.  Also, the former is more
 	 ;; accurate for small mu.
-	 (let* ((root (let ((root-1-m (sqrt (- 1 m))))
+	 (let* (#+nil
+                (root (let ((root-1-m (sqrt (- 1 m))))
 			(/ (- 1 root-1-m)
 			   (+ 1 root-1-m))))
+                (root (let ((root-1-m (sqrt (- 1 m))))
+                        (/ m (expt (+ 1 root-1-m) 2))))
 		(z (/ u (+ 1 root)))
 		(s (elliptic-sn-descending z (* root root)))
 		(p (* root s s )))
@@ -174,14 +264,17 @@
 	 ;;
 	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
-	(t
+	#+nil
+        (t
 	 ;; Use the ascending Landen transformation, A&S 16.14.3.
 	 (multiple-value-bind (v mu root-mu1)
 	     (ascending-transform u m)
 	   (let ((d (dn v mu)))
 	     (* (/ (+ 1 root-mu1) mu)
 		(/ (- (* d d) root-mu1)
-		   d)))))))
+		   d)))))
+        (t
+	 (nth-value 1 (elliptic-sn-descending u m t)))))
 
 ;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
 ;; See https://dlmf.nist.gov/22.20.ii.
