@@ -7102,6 +7102,15 @@ block([g, G],
 [2*%pi*log(2), log(3)*log(4)+li[2](-3), 0]$
 
 
+/* Bug #5524: "integrate(sin(2.0*x)*tan(x),x) exhausts the control stack" */
+
+integrate(sin(2.0*x)*tan(x), x) - integrate(sin(2*x)*tan(x), x);
+0$
+
+integrate(cos(3.0*x)*sec(x), x) - integrate(cos(3*x)*sec(x), x);
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

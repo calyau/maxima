@@ -1471,11 +1471,13 @@
                  (cond ((eq (car (cdras 'b y)) '%cos)     ; expand cos(n*x)
                         (maxima-substitute var2
                                            'x
-                                           (supercosnx (cdras 'n y))))
+                                           (supercosnx
+                                             (integerp2 (cdras 'n y)))))
                        (t                                 ; expand sin(x*x)
                         (maxima-substitute var2
                                            'x
-                                           (supersinx (cdras 'n y)))))))
+                                           (supersinx
+                                             (integerp2 (cdras 'n y))))))))
          var2))
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument trigarg. Maxima substitutes trigarg with a new variable
