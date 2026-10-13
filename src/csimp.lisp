@@ -314,7 +314,7 @@
 		 (setq m (- m n))
 		 (setq eo (not eo))
 		 (go loop)))
-     (setq m (list '(rat)
+     (setq m (list '(rat simp)
 		   (cond (flag (- m)) (t m))
 		   n))
      (return (cond (eo (addk m (cond (flag 1) (t -1))))
