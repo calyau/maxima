@@ -1252,7 +1252,7 @@ true;
 has_key (bb, [3456]);
 false;
 
-(kill (cc), use_fast_arrays: true, cc["abc", 123]: 555, 0);
+(kill (cc), block([use_fast_arrays: true], cc["abc", 123]: 555), 0);
 0;
 
 has_key (cc, ["abc", 123]);
