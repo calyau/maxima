@@ -235,6 +235,28 @@ Bug fixes for unnumbered bugs:
   hold erf() of complex arguments, such as exp(-x)*cos(sqrt(x))
 * integrate() took very long for some integrands with square roots of
   trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
+* integrate() returned only part of some antiderivatives with square
+  roots of trigonometric functions, as for sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
+* risch() returned wrong polylogarithms for some integrands with two
+  logarithms, such as (log(1-%i*x/sqrt(q-e^2))-log(1+%i*x/sqrt(q-e^2)))/(x+a)
+* risch() took very long for some products of polynomials and
+  trigonometric functions, such as (d*x+c)^2/(sin(x)+1)^2
+* integrate() took very long for some trigonometric integrands with
+  parameters, such as sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2)
+* sign() could recurse until the stack overflowed under an equal()
+  fact about a square root, as in ratsimp() with algebraic: true
+* integrate() gave wrong antiderivatives for some roots of products,
+  such as %e^acoth(a*x)*sqrt(c-a^2*c*x^2) for c < 0
+* integrate() gave wrong antiderivatives for some integrands after a
+  substitution, such as sqrt(csch(2*log(c*x)))/x^4 for c*x < 0
+* integrate() took very long for some products of polynomials and
+  sin(b*x^2), such as (f*x+e)^2*sin(b*(d*x+c)^2+a)
+* integrate() gave wrong antiderivatives for some roots with a negative
+  factor, such as sqrt(a*sec(x)+a) for a < 0
+* integrate() gave wrong antiderivatives for some symbolic powers of
+  asin() and its kin, such as asin(b*x+a)^n/sqrt(-b^2*x^2-2*a*b*x-a^2+1)
+* integrate() could end in an error from sign() after sign questions
+  for some trigonometric integrands, such as tan(x)/sqrt(b*tan(x)^2+a)
 
 Changes in the Windows installer:
 ---------------------------------

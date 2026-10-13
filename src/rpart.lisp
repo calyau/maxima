@@ -304,8 +304,16 @@
                   (powers r alpha)))
         (post (add (mul beta (take '(%log) r))
                    (mul alpha theta))))
-    (cons (mul pre (take '(%cos) post))
-          (mul pre (take '(%sin) post)))))
+    (if (and (zerop1 beta) (not (atom theta)) (eq (caar theta) '%atan2)
+             (zerop1 (caddr theta)))
+        ;; THETA = atan2(y,0) is signum(y)*%pi/2. Use the values of the
+        ;; cosine and sine, as RATSIMP can take very long for expressions
+        ;; with the cosine and sine of ALPHA*THETA.
+        (let ((post (mul alpha '$%pi 1//2)))
+          (cons (mul pre (take '(%cos) post))
+                (mul pre (take '(%signum) (cadr theta)) (take '(%sin) post))))
+        (cons (mul pre (take '(%cos) post))
+              (mul pre (take '(%sin) post))))))
 
 ;; Split BASE^POW into real and imaginary parts. SP is (RISPLIT BASE) and is
 ;; assumed to be a complex number, POW is assumed to be a float or a bigfloat.

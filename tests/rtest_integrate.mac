@@ -7410,7 +7410,7 @@ block([gs, Gs],
 
 /* These must neither hang nor ask about the sign of 1/d or c */
 
-block([gs],
+block([gs, f],
   gs : [(b*asin(c*x)+a)^2/((c*d*x+d)^(3/2)*(e-c*e*x)^(3/2)),
         x*(b*asin(c*x)+a)^2/((c*d*x+d)^(3/2)*(e-c*e*x)^(3/2)),
         (b*asinh(c*x)+a)^2/((%i*c*d*x+d)^(3/2)*(f-%i*c*f*x)^(3/2)),
@@ -7585,6 +7585,146 @@ true$
 risch(sqrt(cos(x)-1), x);
 -2^(3/2)*%i*cos(x/2)$
 
+
+/* integrate() dropped the integral of sec(x)*sqrt(a*sec(x)+a), which
+   PNS-INTIR3 took to be 0 when it could not do it */
+
+block([g, G],
+  g : sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a),
+  G : integrate(g, x),
+  map(lambda([p], rectform(radcan(trigexpand(subst(p, diff(G, x) - g))))),
+      [[a = 1, x = 0], [a = 2, x = 2*atan(1/3)], [a = -1, x = 2*atan(2)]]));
+[0, 0, 0]$
+
+/* risch() returned li[2](-((x-e)/(e+a))), with e in place of
+   %i*sqrt(q-e^2) */
+
+block([g, G, a, e, q],
+  g : (log(1-%i*x/sqrt(q-e^2))-log(1+%i*x/sqrt(q-e^2)))/(x+a),
+  G : risch(g, x),
+  map(lambda([p], radcan(rectform(subst(p, diff(G, x) - g)))),
+      [[a = 2, e = 1, q = 5, x = 1/3], [a = -1, e = 2, q = 13, x = 3]]));
+[0, 0]$
+
+/* risch() took minutes to test whether a part of this antiderivative
+   with polylogarithms and parameters is constant */
+
+block([g, G],
+  g : (d*x+c)^2/(sin(x)+1)^2,
+  G : risch(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], radcan(rectform(subst(p, diff(G, x) - g)))),
+       [[c = 1, d = 2, x = %pi/2], [c = -1, d = 3, x = 0],
+        [c = 1, d = 1, x = %pi/6]])]);
+[true, [0, 0, 0]]$
+
+/* integrate() took a minute to simplify this antiderivative, which
+   keeps an imaginary part */
+
+block([g, G, f],
+  g : sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2),
+  G : integrate(g, x),
+  map(lambda([p], rectform(radcan(subst(p, diff(G, x) - g)))),
+      [[a = 2, b = 3, e = 0, f = 1, x = %pi/6],
+       [a = 1, b = 2, e = 1/2, f = 2, x = %pi/12 - 1/4]]));
+[0, 0]$
+
+/* RADCAN1 in the Risch integrator took sqrt(c-a^2*c*x^2) apart into
+   sqrt(c)*sqrt(1-a*x)*sqrt(a*x+1), and (12-3*e^2*x^2)^(1/4) likewise,
+   which holds only for some signs. The antiderivatives were wrong for
+   c < 0, and wherever the second integrand is real. */
+
+block([g, G],
+  g : %e^acoth(a*x)*sqrt(c-a^2*c*x^2),
+  G : integrate(g, x),
+  map(lambda([p], rectform(radcan(logarc(subst(p, diff(G, x) - g))))),
+      [[a = 1, c = -1, x = 2], [a = 1, c = -1, x = -3],
+       [a = 1, c = 1, x = 2]]));
+[0, 0, 0]$
+
+block([g, G],
+  g : (12-3*e^2*x^2)^(1/4)/(e*x+2)^(5/2),
+  G : integrate(g, x),
+  map(lambda([p], rectform(radcan(subst(p, diff(G, x) - g)))),
+      [[e = 1, x = 1], [e = -1, x = 1/2]]));
+[0, 0]$
+
+block([g, G],
+  g : 1/((e*x+2)^(3/2)*(12-3*e^2*x^2)^(1/4)),
+  G : integrate(g, x),
+  map(lambda([p], rectform(radcan(subst(p, diff(G, x) - g)))),
+      [[e = 1, x = 1], [e = -1, x = 1/2], [e = 1, x = -3/2]]));
+[0, 0, 0]$
+
+/* Testing the factor must not overflow the stack under the equal() facts
+   of a substitution */
+
+block([A, B, e],
+  (integrate((B*x+A)/(sqrt(e*x+(A^2*e-B^2*e)/(2*A*B))*(x^2+1)), x), 0));
+0$
+
+/* integrate() took sqrt(1/t^2) to be 1/t for the variable t = 1/(c*x)
+   that it substitutes, so these antiderivatives were wrong for c*x < 0 */
+
+block([f1, f2, G1, G2],
+  f1 : sqrt(csch(2*log(c*x)))/x^4,
+  f2 : csch(2*log(c*x))^(3/2)/x^2,
+  G1 : integrate(f1, x),
+  G2 : integrate(f2, x),
+  map(lambda([p],
+        rectform(radcan(exponentialize(
+          subst(p, [diff(G1, x) - f1, diff(G2, x) - f2]))))),
+      [[c = 1, x = 2], [c = 1, x = -2], [c = -1, x = 3]]));
+[[0, 0], [0, 0], [0, 0]]$
+
+/* integrate() took minutes here, as RATSIMP is slow for the cosine and
+   sine of atan2(b/sqrt(b^2),0)/2 */
+
+block([g, G, f],
+  g : (f*x+e)^2*sin(b*(d*x+c)^2+a),
+  G : integrate(g, x),
+  map(lambda([p],
+        rectform(radcan(trigreduce(rectform(subst(p, diff(G, x) - g)))))),
+      [[a = 1, b = 2, c = 1/2, d = 3, e = 1, f = 2, x = 1/3],
+       [a = -1/2, b = -2, c = 1/2, d = 3, e = 1, f = 2, x = 1/3]]));
+[0, 0]$
+
+/* For a < 0, the Risch integrator took sqrt(a) out of sqrt(a*sec(x)+a) as
+   if a were positive, and the antiderivative was wrong where the integrand
+   is real. For a > 0 it is right. */
+
+block([r],
+  assume(a < 0),
+  r : integrate(sqrt(a*sec(x)+a), x),
+  forget(a < 0),
+  r);
+'integrate(sqrt(a*sec(x)+a), x)$
+
+block([g, G, r],
+  assume(a > 0),
+  g : sqrt(a*sec(x)+a),
+  G : integrate(g, x),
+  r : block([halfangles : true],
+        map(lambda([p], rectform(radcan(rectform(trigexpand(trigexpand(
+                          subst(p, diff(G, x) - g))))))),
+            [[a = 1, x = 2*atan(1/2)], [a = 2, x = 2*atan(1/3)]])),
+  forget(a > 0),
+  r);
+[0, 0]$
+
+/* The Risch integrator wrote asin() as a logarithm of a complex expression
+   and split symbolic powers of it wrongly */
+
+[integrate(asin(b*x+a)^n/sqrt(-b^2*x^2-2*a*b*x-a^2+1), x),
+ risch(asin(x)^n/sqrt(1-x^2), x)];
+['integrate(asin(b*x+a)^n/sqrt(-b^2*x^2-2*a*b*x-a^2+1), x),
+ 'integrate(asin(x)^n/sqrt(1-x^2), x)]$
+
+/* After the sign questions, RISPLIT signaled an error from sign() for the
+   result of the Risch integrator, which holds sqrt(a-b) with a < b */
+
+integrate(tan(f*x+e)/sqrt(b*tan(f*x+e)^2+a), x), ask_hide_prompt; pos; neg; pos; pos;
+'integrate(tan(f*x+e)/sqrt(b*tan(f*x+e)^2+a), x)$
 
 /**************************************/
 /* Leave this at the end of the file! */

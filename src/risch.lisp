@@ -102,14 +102,89 @@
   (and (mqapplyp exp) (eq (subfunname exp) '$li)
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
-(defun rischint (exp risch-intvar &aux ($logarc nil) ($exponentialize nil)
+;; The powers in E other than of %e with base and exponent free of VAR and
+;; an exponent that is not an integer, such as sqrt(c) or (-1)^(1/4), and %i.
+;; If ALL, the base need not be free of VAR, and %e^(log(u)/2), as RADCAN1
+;; writes sqrt(u) for an expression U in VAR, counts as sqrt(u).
+(defun const-roots (e var &optional all)
+  (let ((roots nil)
+        (e (if all (let (($%e_to_numlog t) ($logsimp t)) (resimplify e)) e)))
+    (labels ((walk (e)
+               (cond ((eq e '$%i) (pushnew e roots))
+                     ((atom e))
+                     (t
+                      (when (and (mexptp e)
+                                 (freeof var (if all (caddr e) e))
+                                 (not (integerp (caddr e)))
+                                 (not (eq (cadr e) '$%e)))
+                        (pushnew e roots :test #'alike1))
+                      (mapc #'walk (cdr e))))))
+      (walk e))
+    roots))
+
+;; True if NEW, which RADCAN1 made of EXP, has a constant root or %i that
+;; EXP does not have, with a base that is not positive and not the base of
+;; a power in EXP, as when sqrt(c-c*x^2) becomes sqrt(c)*sqrt(1-x)*sqrt(x+1).
+;; Taking a positive factor out of a root is exact, and so is taking a sum
+;; apart in an exponent, as d^(x+c) into d^x*d^c. For a variable declared
+;; complex, such as one that the integrator substitutes, roots of
+;; expressions in VAR count too, as when sqrt(1/t^2) becomes 1/t.
+(defun new-const-roots-p (exp new var)
+  (let ((old (const-roots exp var (decl-complexp var)))
+        (bases (let ((l nil))
+                 (labels ((walk (e)
+                            (unless (atom e)
+                              (when (mexptp e) (pushnew (cadr e) l :test #'alike1))
+                              (mapc #'walk (cdr e)))))
+                   (walk exp))
+                 l)))
+    (and (some #'(lambda (r)
+                   (not (or (member r old :test #'alike1)
+                            (and (mexptp r)
+                                 (or (member (cadr r) bases :test #'alike1)
+                                     (eq (let ((sign-imag-errp nil))
+                                           (catch 'sign-imag-err
+                                             ($sign (cadr r))))
+                                         '$pos))))))
+               (const-roots new var (decl-complexp var)))
+         t)))
+
+;; RADCAN1 in INTSETUP can take a power of a product apart, as
+;; sqrt(c-c*x^2) into sqrt(c)*sqrt(1-x)*sqrt(x+1), which holds only up to a
+;; factor such as -1 that is constant where the powers are continuous.
+;; Return NIL if EXP and NEW are equal up to such exact rewriting, else
+;; that factor EXP/NEW, or T if it may not be constant. It is constant if
+;; its logarithmic derivative EXP'/EXP-NEW'/NEW is zero, which RATSIMP finds
+;; without taking powers apart. RISCHINT multiplies a result free of
+;; integrals by a constant factor.
+(defun branch-factor (exp new var)
+  (if (or (zerop1 exp) (zerop1 new) (not (new-const-roots-p exp new var)))
+      nil
+      (let* (($%e_to_numlog t) ($logsimp t) ($algebraic t)
+             ;; Write the %e^(log(u)/4) that RADCAN1 makes of roots of U as
+             ;; roots again, which the zero test below needs.
+             (new (resimplify new))
+             (k (sratsimp (resimplify (div exp new)))))
+        (cond ((equal k 1) nil)
+              ((car (errcatch
+                     (zerop1 (sratsimp (sub (div (sdiff exp var) exp)
+                                            (div (sdiff new var) new))))))
+               k)
+              (t t)))))
+
+;; Bound to T by TRIGIN1 for the exponential form of a trigonometric
+;; integrand, for which RISCHINT applies no factor.
+(defvar *risch-trig* nil)
+
+(defun rischint (exp risch-intvar &aux (trig *risch-trig*) (*risch-trig* nil)
+                     ($logarc nil) ($exponentialize nil)
                      ($gcd '$algebraic) ($algebraic t) (implicit-real t)
                      ($float nil) ($numer nil)
                      ;; The risch integrator expects $logexpand T. Otherwise,
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp risch-y z risch-var risch-ratform risch-liflag
+  (prog ($%e_to_numlog $logsimp risch-y z risch-var risch-ratform risch-liflag branch
 	 risch-mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (declare (ignorable rischform-value))
@@ -137,8 +212,10 @@
 	      (return (if (and p (not (isinop p '%integrate))) p r))))
 	   (risch-operator
 	    (go noun)))
-     (multiple-value-setq (risch-y risch-operator)
+     (multiple-value-setq (risch-y risch-operator branch)
        (intsetup exp risch-intvar))
+     (setq branch (and branch (not trig)
+                       (branch-factor exp branch risch-intvar)))
      (if risch-operator
 	 (go noun))
      (setq risch-ratform (car risch-y))
@@ -152,7 +229,7 @@
      (setq z (tryrisch (cdr risch-y) risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree risch-var))
      (setf (caddr risch-ratform) varlist)
      (setf (cadddr risch-ratform) genvar)
-     (return (cond ((atom (cdr z))
+     (setq z (cond ((atom (cdr z))
 		    (disrep (car z) risch-ratform))
 		   (t
 		    (let (($logsimp t)
@@ -160,6 +237,10 @@
 		      (simplify (list* '(mplus)
 				       (disrep (car z) risch-ratform)
 				       (cdr z)))))))
+     (return (if (and branch (not (eq branch t)) (freeof '%integrate z))
+                 (let (($%e_to_numlog t) ($logsimp t) ($algebraic nil))
+                   (sratsimp (mul branch z)))
+                 z))
    noun
      (return (list '(%integrate) exp risch-intvar))))
 
@@ -305,8 +386,47 @@
                 d)))
     (and (freeof '$%i d) d)))
 
+;; True if F is a power (c*y)^r with r not an integer, c a factor free of VAR
+;; and y one depending on it, where c is negative and y can be negative. The
+;; Risch integrator writes F as c^r*y^r, which differs from F by a constant
+;; factor such as -1 where F is real, and RISPLIT takes c^r to be real.
+(defun trigin1-negative-root-p (f var)
+  (when (and (mexptp f) (ratnump (caddr f)) (not (freeof var (cadr f)))
+             (freeof '$%i f)
+             (some #'(lambda (v) (not (eq v var))) (cdr ($listofvars f))))
+    (let* ((b ($factor (cadr f)))
+           (fs (if (mtimesp b) (cdr b) (list b)))
+           (c (muln (remove-if-not #'(lambda (u) (freeof var u)) fs) t))
+           (y (muln (remove-if #'(lambda (u) (freeof var u)) fs) t)))
+      (flet ((sgn (e)
+               (let ((sign-imag-errp nil))
+                 (catch 'sign-imag-err ($sign e)))))
+        (and (not (mnump c))
+             (eq (sgn c) '$neg)
+             (not (member (sgn y) '($pos $pz $zero))))))))
+
+;; True if E has a power of an expression with an inverse trigonometric
+;; function of VAR, with an exponent that is not a number, such as
+;; asin(x)^n. The Risch integrator writes asin() and its kin as logarithms
+;; of complex expressions, and RISPLIT does not split symbolic powers of
+;; these correctly.
+(defun trigin1-symbolic-power-p (e var)
+  (and (not (atom e))
+       (or (and (mexptp e) (not (mnump (caddr e))) (freeof var (caddr e))
+                (not (freeof var (cadr e)))
+                (some #'(lambda (op) (not (freeof op (cadr e))))
+                      '(%asin %acos %atan %acot %asec %acsc)))
+           (some #'(lambda (u) (trigin1-symbolic-power-p u var)) (cdr e)))))
+
 (defun trigin1 (risch-*exp risch-var)
-  (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
+  ;; Leave the integral if a root has a negative factor or there is a
+  ;; symbolic power of asin() or its kin, see above.
+  (when (or (trigin1-symbolic-power-p risch-*exp risch-var)
+            (some #'(lambda (f) (trigin1-negative-root-p f risch-var))
+                  (if (mtimesp risch-*exp) (cdr risch-*exp) (list risch-*exp))))
+    (return-from trigin1 (list '(%integrate) risch-*exp risch-var)))
+  (let ((yyy (let ((*risch-trig* t))
+               (hypertrigint1 risch-*exp risch-var nil))))
     (setq yyy (multiple-value-bind (num denom)
 		  (with-default-quotient-dispflags (num-denom-split yyy))
 		(div ($expand num) ($expand denom))))
@@ -323,7 +443,14 @@
       (setq result (or (trigin1-demoivre yyy risch-var) (sratsimp yyy)))
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
-     (destructuring-let (((yyy-re . yyy-im) (risplit yyy)))
+     ;; RISPLIT can signal an error, as from sign() for the root of an
+     ;; expression that the answers to sign questions make negative. Leave
+     ;; the integral then.
+     (destructuring-let (((yyy-re . yyy-im)
+                          (or (car (let (($errormsg nil))
+                                     (errcatch (risplit yyy))))
+                              (return-from trigin1
+                                (list '(%integrate) risch-*exp risch-var)))))
       (flet ((locally-const-p (e)
         "E is locally constant iff its derivative vanishes."
         ;; The derivative of E is the matching part of the integrand. Keep E
@@ -339,6 +466,13 @@
         ;; that agrees with the relations between them.
         (when (risplit-roots-consistent-p (list yyy risch-*exp) risch-var)
           (return-from locally-const-p t))
+        ;; RISPLIT took the polylogarithms in E to be real. Keep such a part
+        ;; if it has parameters, which is always right, as RADCAN1 can take
+        ;; minutes for it.
+        (unless (or (freeof '$li e)
+                    (every #'(lambda (v) (eq v risch-var))
+                           (cdr ($listofvars e))))
+          (return-from locally-const-p nil))
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
@@ -355,9 +489,15 @@
                          0 yyy-re))
              (yyy-im (if (and split (car (errcatch (locally-const-p yyy-im))))
                          0 yyy-im)))
-      (setq result (sratsimp (if split
-                               (add yyy-re (mul '$%i yyy-im))
-                               yyy)))))))
+      ;; With parameters, simplify the parts apart, as SRATSIMP can take
+      ;; minutes for their sum.
+      (setq result (if (and split
+                            (notevery #'(lambda (v) (eq v risch-var))
+                                      (cdr ($listofvars yyy))))
+                       (add (sratsimp yyy-re) (mul '$%i (sratsimp yyy-im)))
+                       (sratsimp (if split
+                                     (add yyy-re (mul '$%i yyy-im))
+                                     yyy))))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.
@@ -763,7 +903,11 @@
     (desetq (rc . rd) (ratdivide rn ro))
     (let
 	((result
-	  (cond ((and (freeof risch-intvar (rdis rc)) ;; can't use risch-constp because varlist
+	  ;; RN must be a polynomial in RISCH-VAR as RO is, as RATDIVIDE divides by
+	  ;; their main variables.
+	  (cond ((and (not (pcoefp (car rn)))
+		      (eq (p-var (car rn)) risch-var)
+		      (freeof risch-intvar (rdis rc)) ;; can't use risch-constp because varlist
 		      (freeof risch-intvar (rdis rd))) ;; is not set up with vars in correct order.
 		 (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
 		 (mul* coef (power -1 (1+ risch-degree))
@@ -1483,7 +1627,8 @@
 	   (cons risch-*var dlist))
      (cond ((alike old varlist)
 	    (return (values (ratrep* exp)
-			    nil)))
+			    nil
+			    exp)))
 	   (t (go a)))))
 
 (defun leadop (exp)

@@ -3115,6 +3115,16 @@ sqrt(1-2*x^2)/x$
 [block(local(x), assume(x > 0), sign(%e^x-%e^2)), limit(sqrt(%e^x-1), x, 2)];
 [pnz, sqrt(%e^2-1)]$
 
+/* sign() must not recurse endlessly when MNQP, testing whether abs(b) is
+   positive, simplifies the radical of an equal() fact */
+
+block([r],
+  assume(equal(y, sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  r : block([algebraic : true], ratsimp(sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  forget(equal(y, sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  r);
+sqrt((2*a*b*e*x+(a^2-b^2)*e)/(a*b))/sqrt(2)$
+
 
 /**************************************/
 /* Leave this at the end of the file! */
