@@ -189,6 +189,7 @@ Bug fixes for numbered bugs:
 * \#5637 specint returns a noun form for integrals like exp(-x^2)/(x^2+a^2)
 * \#5638 reset() undoes declare(x, feature) only the first time
 * \#5641 exp(%i*%pi*r) is displayed with the minus sign in the numerator
+* \#5642 product returns its noun form for an infinite product without the simp flag
 * \#5643 at() returns an unsimplified noun form when it drops equations
 * \#5646 rtest2 and rtest_draw change settings for the tests after them
 * \#5647 reset() sets browser and url_base to values that don't fit the system
