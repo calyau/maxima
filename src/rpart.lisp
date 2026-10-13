@@ -471,9 +471,14 @@
 		(=0 (cdr (risplit (cadr l)))))
 	   (cons l 0))
           ((and (eq (caar l) '%atan2)
-                (not (zerop1 (caddr l)))
-                (=0 (cdr (risplit (div (cadr l) (caddr l))))))
-           ;; Case atan2(y,x) and y/x a real expression.
+                ;; SRATSIMP, since the real parts that the conjugate formulas
+                ;; below give can leave an imaginary part like
+                ;; %i*(a-b)/2+%i*(b-a)/2, which is 0, but not literally 0.
+                ;; TODO: Maybe use a cheaper function than SRATSIMP here?
+                (zerop1 (sratsimp (cdr (risplit (if (zerop1 (caddr l))
+                                                  (cadr l)
+                                                  (div (cadr l) (caddr l))))))))
+           ;; Case atan2(y,x) and y/x a real expression, or x = 0 and y real.
            (cons l 0))
 	  ;; acoth(0) = -%i*%pi/2, but the simplifier doesn't do this
 	  ;; It does handle acoth(0.0) and acoth(0b0), so just handle 0 here.
