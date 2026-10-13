@@ -189,6 +189,7 @@ Bug fixes for numbered bugs:
 * \#5638 reset() undoes declare(x, feature) only the first time
 * \#5641 exp(%i*%pi*r) is displayed with the minus sign in the numerator
 * \#5646 rtest2 and rtest_draw change settings for the tests after them
+* \#5647 reset() sets browser and url_base to values that don't fit the system
 * \#5648 defsystem cannot load what it compiles with ECL for Windows built with MSVC
 * \#5650 integrate(sqrt(cos(x))*(1+cos(x))*sin(x),x) causes error
 * \#5651 Some integrals take too much time

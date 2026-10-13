@@ -4473,6 +4473,14 @@ block([fpprec : 64, v, w],
 [true, true]$
 
 
+/* Bug #5647: "reset() sets browser and url_base to values that don't fit the system" */
+
+block([browser : browser, url_base : url_base, b : browser, u : url_base],
+  reset(browser, url_base),
+  [is(browser = b), is(url_base = u)]);
+[true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

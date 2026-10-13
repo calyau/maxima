@@ -735,6 +735,8 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	       ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
 	        ;; "xdg-open"  will open the default browser in Linux.
 		(setf $browser "xdg-open")))))
+  ;; Make reset() restore this value rather than the DEFMVAR default.
+  (setf (gethash '$browser *variable-initial-values*) $browser)
 
   (setf %e-val (mget '$%e '$numer))
 
