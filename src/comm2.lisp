@@ -187,7 +187,7 @@
         (let*
           ((e1 (mapcar #'(lambda (x) (list '(mequal) x ($assoc x eqn))) e1))
            (eqn1 (if (= (length e1) 1) (first e1) (cons '(mlist) e1))))
-          (list '(%at) arg eqn1))
+          (ftake* '%at arg eqn1))
         arg))))
 
 ;; Test dependence via derivative to account for declared dependencies.
