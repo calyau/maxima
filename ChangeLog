@@ -214,6 +214,11 @@ Bug fixes for unnumbered bugs:
   and return a wrong sign or hang
 * factor() could hang when a unit such as %i divided two factors, as
   could integrate(%e^(3*%i*atan(a*x))/(a^2*c*x^2+c)^(3/2),x)
+* integrate() returned exponential forms for some integrands with roots
+  or logarithms, such as cos(sqrt(x)), and took very long for some of
+  them, such as cos(b*x^(1/3)+a)/x^(7/2)
+* integrate() gave wrong antiderivatives for some integrands with
+  parameters of unknown sign, such as sin(b*x^2) for b < 0
 * integrate() dropped the real part of some antiderivatives, as for
   sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
 * integrate() took very long for some trigonometric integrands, such
@@ -223,6 +228,11 @@ Bug fixes for unnumbered bugs:
   roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
 * integrate() gave wrong antiderivatives for some powers of sums of
   trigonometric functions, such as sqrt(%i*tan(x)+1)/sec(x)^(3/2)
+* integrate() gave wrong antiderivatives for 1/(z*sqrt(z^2+z+1)) and
+  similar integrands when z is declared complex, and for
+  1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)
+* integrate() took very long for some integrands whose antiderivatives
+  hold erf() of complex arguments, such as exp(-x)*cos(sqrt(x))
 * integrate() took very long for some integrands with square roots of
   trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
 

@@ -296,6 +296,15 @@
                             t)
                       var)))))
 
+;; YYY rewritten with exp(a+%i*b) = exp(a)*(cos(b)+%i*sin(b)), without the
+;; terms free of VAR, if that is free of %i. Otherwise NIL.
+(defun trigin1-demoivre (yyy var)
+  (let* ((d (sratsimp ($demoivre yyy)))
+         (d (if (mplusp d)
+                (addn (remove-if #'(lambda (term) (freeof var term)) (cdr d)) t)
+                d)))
+    (and (freeof '$%i d) d)))
+
 (defun trigin1 (risch-*exp risch-var)
   (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
     (setq yyy (multiple-value-bind (num denom)
@@ -306,6 +315,12 @@
 	  (*risplit-assumed* nil)
 	  (*risplit-roots* nil)
 	  $logarc $exponentialize result)
+     (if (decl-complexp risch-var)
+      ;; RISPLIT's parts are the real and imaginary parts of YYY only for a
+      ;; real variable. For a variable declared complex or imaginary, rewrite
+      ;; the exponentials with demoivre instead, which holds for all complex
+      ;; values, and use that if it is free of %i up to a constant.
+      (setq result (or (trigin1-demoivre yyy risch-var) (sratsimp yyy)))
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
      (destructuring-let (((yyy-re . yyy-im) (risplit yyy)))
@@ -328,17 +343,21 @@
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
               (zerop1 (radcan1 (sdiff e risch-var) risch-var))))))
-      ;; Strip locally constant parts (unsolved integrals survive this).
-      ;; ERRCATCH: In case of an error (occurs during test suite, treat the part
-      ;; as non-constant - keeping is always safe, dropping is not.
-      (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re))) 0 yyy-re))
-            (yyy-im (if (car (errcatch (locally-const-p yyy-im))) 0 yyy-im)))
-      ;; If YYY-RE contains a noun-form %REALPART or YYY-IM contains a noun-form
-      ;; %IMAGPART, then just work with YYY instead of YYY-RE + %i * YYY-IM.
-      (setq result (sratsimp (if (and (freeof '%realpart yyy-re)
-                                      (freeof '%imagpart yyy-im))
+      ;; Drop the parts that are constant (unsolved integrals survive this).
+      ;; RISPLIT takes the variable, radicands and the arguments of logarithms
+      ;; to be positive and polylogarithms to be real, so a part found
+      ;; constant is constant only where that holds. If RISPLIT left a
+      ;; noun-form %REALPART or %IMAGPART, the result is YYY, so do not test
+      ;; the parts. ERRCATCH: on an error, which occurs in the test suite, keep
+      ;; the part.
+      (let* ((split (and (freeof '%realpart yyy-re) (freeof '%imagpart yyy-im)))
+             (yyy-re (if (and split (car (errcatch (locally-const-p yyy-re))))
+                         0 yyy-re))
+             (yyy-im (if (and split (car (errcatch (locally-const-p yyy-im))))
+                         0 yyy-im)))
+      (setq result (sratsimp (if split
                                (add yyy-re (mul '$%i yyy-im))
-                               yyy))))))
+                               yyy)))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.

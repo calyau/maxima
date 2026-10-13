@@ -7149,6 +7149,92 @@ block([g, G],
    map(lambda([p], is(abs(float(subst(x=p, diff(G, x) - g))) < 1e-12)), [11/10, 2, 7/2, 10])]);
 [true, [true, true, true, true]]$
 
+/* integrate() returned exponential forms for integrands such as
+   cos(sqrt(x)), whose substitution variable is declared complex */
+
+[integrate(cos(sqrt(x)), x),
+ integrate(x*cos(sqrt(x)), x),
+ integrate(log(x)*sin(log(x))/x, x)];
+[2*(sin(sqrt(x))*sqrt(x)+cos(sqrt(x))),
+ 2*(sin(sqrt(x))*(x^(3/2)-6*sqrt(x))+cos(sqrt(x))*(3*x-6)),
+ sin(log(x))-log(x)*cos(log(x))]$
+
+/* ... which are right where the variable is not real as well */
+
+block([g : x^2*cos(b*sqrt(d*x+c)+a)],
+  local(tq),
+  assume(tq > 0),
+  ratsimp(exponentialize(subst(x = (-tq^2-c)/d, diff(integrate(g, x), x) - g))));
+0$
+
+block([g : 1/(tan(sqrt(x))+2), G],
+  local(tq),
+  assume(tq > 0),
+  G : integrate(g, x),
+  [freeof(atan2, G), ratsimp(exponentialize(subst(x = -tq^2, diff(G, x) - g)))]);
+[true, 0]$
+
+block([g : sqrt(d*x+c)*sin(b*x+a)],
+  ratsimp(exponentialize(diff(integrate(g, x), x) - g)));
+0$
+
+/* For a variable of integration declared imaginary, parts of the
+   antiderivative must not be dropped */
+
+[ratsimp(exponentialize(integrate(cos(sqrt(x))+1, x, -1, 0) - (3-2*%e^-1))),
+ ratsimp(exponentialize(integrate(x+sin(sqrt(x)), x, -1, 0) - (2*%i*%e^-1-1/2)))];
+[0, 0]$
+
+block([],
+  local(x),
+  assume(x < 0),
+  integrate(cos(sqrt(x))+1, x));
+x+2*(sin(sqrt(x))*sqrt(x)+cos(sqrt(x)))$
+
+block([],
+  local(zz),
+  declare(zz, imaginary),
+  integrate(zz*sin(zz)+1, zz));
+sin(zz)-zz*cos(zz)+zz$
+
+/* No realpart or imagpart nouns for a complex substitution variable */
+
+integrate(sin(sqrt(x))/x, x);
+%i*gamma_incomplete(0,-%i*sqrt(x))-%i*gamma_incomplete(0,%i*sqrt(x))$
+
+/* RISPLIT took the other branch of sqrt(%i*b) for b < 0 */
+
+block([f : sin(b*x^2), G],
+  G : integrate(f, x),
+  map(lambda([bv], ratsimp(rectform(subst(b = bv, diff(G, x) - f)))), [-2, 2]));
+[0, 0]$
+
+block([f : cos(b*x^2)-%i*sin(b*x^2), G],
+  G : risch(f, x),
+  map(lambda([bv], ratsimp(rectform(subst(b = bv, diff(G, x) - f)))), [-2, 2]));
+[0, 0]$
+
+block([f : acot(a*x^5)/x, G],
+  G : integrate(f, x),
+  map(lambda([av], ratsimp(trigrat(rectform(subst([a = av, x = 1/2], diff(G, x) - f))))),
+    [-2, 2]));
+[0, 0]$
+
+block([f : x^2*sin(b*x^2+a)^3, G],
+  G : integrate(f, x),
+  map(lambda([bv],
+      ratsimp(trigrat(rectform(subst([a = %pi/6, b = bv, x = 1/2], diff(G, x) - f))))),
+    [-2, 2]));
+[0, 0]$
+
+/* ... also when the integrator binds triginverses to all */
+
+block([triginverses : all, f : sin(b*e*x^2), G],
+  G : integrate(f, x),
+  map(lambda([p], ratsimp(rectform(subst(p, diff(G, x) - f)))),
+    [[b = 2, e = 3], [b = -2, e = 3], [b = 2, e = -3], [b = -2, e = -3]]));
+[0, 0, 0, 0]$
+
 /* TRIGIN1 took minutes for this integrand */
 
 block([g, G, a, c, d],
@@ -7368,10 +7454,71 @@ map(lambda([g], length(errcatch(integrate(g, x)))),
      1/(sqrt((sqrt(3)-3)*x^2+3)*sqrt(2*sqrt(3)*x^2-3^(3/2)+3))]);
 [1, 1]$
 
-/* The substitution t = tan(x/2) gave a wrong antiderivative here */
+/* The substitution t = tan(x/2) gave a wrong antiderivative here. This one
+   is right for -3*%pi/2 < x < %pi/2 modulo 4*%pi. */
 
 integrate(sqrt(%i*tan(x)+1)/sec(x)^(3/2), x);
 (sin((3*x)/2)-%i*cos((3*x)/2)+3*sin(x/2)+3*%i*cos(x/2))/3$
+
+/* integrate() divided by abs(z) for complex z in some cases of
+   1/(z*sqrt(c*z^2+b*z+a)) that the fix for bug #5662 did not cover */
+
+block([],
+  local(z),
+  declare(z, complex),
+  map(lambda([g],
+      block([G : integrate(g, z)],
+        [freeof(abs, G), block([algebraic : true], ratsimp(diff(G, z) - g))])),
+    [1/(z*sqrt(z^2+z+1)), 1/(z*sqrt(z^2+2*z+1)), 1/(z*sqrt(z^2-1))]));
+[[true, 0], [true, 0], [true, 0]]$
+
+/* If c*z^2+b*z+a < 0 for all real z, the result takes its square root to
+   be %i*sqrt(-c*z^2-b*z-a), as for real z */
+
+block([],
+  local(z),
+  declare(z, complex),
+  block([g : 1/(z*sqrt(-z^2+z-1)), G],
+    G : integrate(g, z),
+    [freeof(abs, G), ratsimp(subst(z = 2, diff(G, z) - g))]));
+[true, 0]$
+
+/* Here the integrator substitutes a complex variable for %e^(%i*x) */
+
+block([g : 1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)],
+  block([algebraic : true], ratsimp(diff(integrate(g, x), x) - g)));
+0$
+
+/* ... and here also a linear function of such a variable. Both results
+   are right where the integrands are real. */
+
+block([f : sqrt(cot(2*x)/cot(x)), G],
+  G : integrate(f, x),
+  map(lambda([p], radcan(ratsimp(rectform(subst(x = p, diff(G, x) - f))))),
+    [%pi/6, 5*%pi/6]));
+[0, 0]$
+
+block([f : sqrt(tan(x)*tan(2*x)), G],
+  G : integrate(f, x),
+  radcan(ratsimp(rectform(subst(x = %pi/6, diff(G, x) - f)))));
+0$
+
+/* The integrator substitutes a complex variable for log(x), which is
+   real for x > 0 */
+
+block([f : 1/(x*log(x)*sqrt(log(x)^2-a^2)), G],
+  local(a),
+  assume(a > 0),
+  G : integrate(f, x),
+  ratsimp(rectform(subst([a = 1, x = %e^-2], diff(G, x) - f))));
+0$
+
+/* integrate() took more than 15 minutes here */
+
+block([f : exp(-x)*cos(sqrt(x)), G],
+  G : integrate(f, x),
+  map(lambda([p], ratsimp(rectform(subst(x = p, diff(G, x) - f)))), [1, 4]));
+[0, 0]$
 
 /* For hyperbolic integrands, the Risch integrator solves the equations it
    can when the top one of its linear system fails */
@@ -7416,13 +7563,18 @@ block([g, G],
 [true, [true, true]]$
 
 /* TRIGIN1 took long to show that a part of these antiderivatives is
-   constant */
+   constant. With x = 2*atan(s), the check covers -%pi < x < %pi, where
+   cos(x/2) > 0 and the result is right. */
 
 block([g, G],
   g : sqrt(a*cos(x)+a)*sec(x)^2,
   G : integrate(g, x),
-  [freeof(%i, G), block([exponentialize : true], radcan(diff(G, x) - g))]);
-[true, 0]$
+  [freeof(%i, G),
+   map(lambda([av],
+       ratsimp(radcan(trigsimp(trigexpand(
+         subst(x = 2*atan(s), subst(a = av, diff(G, x) - g))))))),
+     [1, 2])]);
+[true, [0, 0]]$
 
 freeof(%i, integrate(sqrt(a*cos(x+c)+a)*sec(x+c)^2, x));
 true$

@@ -737,6 +737,21 @@
 
 
 ;; absarg
+;; The argument ARG of a product, which is the sum of the arguments of the
+;; factors, can lie outside (-%pi, %pi], as %pi/2+atan2(0,b) does for %i*b with
+;; b < 0, and RISPLIT then takes the other branch of a root such as sqrt(%i*b).
+;; Inside TRIGIN1 (RISCHP), reduce it to the principal argument if it is free of
+;; the variable and has an ATAN2 (the sign of a parameter) or a CARG term.
+;; Elsewhere the sum keeps roots continuous in the variable, as definite
+;; integration needs. The atan2 simplifier reduces the angle only if
+;; $TRIGINVERSES is not $ALL, which the integrator can bind.
+(defun absarg-principal (arg absflag)
+  (if (or absflag (not rischp) (not (mplusp arg)) (not (freeof rischp arg))
+          (and (freeof '%atan2 arg) (freeof '%carg arg)))
+      arg
+      (let (($triginverses t))
+        (genatan (take '(%sin) arg) (take '(%cos) arg)))))
+
 ;; returns pair (abs . arg)
 ;; if absflag is true, arg result is not guaranteed to be correct
 
@@ -794,7 +809,9 @@
 	      (absl () (rplacd abars absl)))
 	     (())
 	   (unless n
-	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
+	     (return (cons (muln absl t)
+			   (absarg-principal (2pistrip (addn argl t))
+					     absflag))))
 	   (setq abars (absarg (car n) absflag))))
         ((eq (caar l) 'mexpt)
          ;; An expression z^a
