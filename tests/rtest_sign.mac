@@ -3093,30 +3093,40 @@ block([a, b, c, d, e, f, g],
    sign(log(f)), sign(log(g))]);
 [pos, neg, pz, nz, pn, pnz, zero]$
 
-/* sign() must not recurse endlessly when MEQP, comparing bases for
-   SIGNDIFF-SPECIAL, simplifies the radical of an equal() fact */
 
-block([r],
+/* Bug #5666: "is(abs(z) >= 0) returns false when z contains %i" */
+
+[is(abs(b - %i*a) >= 0), is(abs(b - %i*a) > -1),
+ is(abs(b - %i*a) > 0), is(abs(f(x) - %i*g(x)) > 1/1000)];
+[true, true, unknown, unknown]$
+
+
+/* Bug #5517: "sign(inf^2-inf) returns neg and is(inf^2-inf>0) returns false" */
+
+[errcatch(sign(inf^2 - inf)), errcatch(sign(exp(inf) - inf)), errcatch(is(inf^2 - inf > 0))];
+[[], [], []]$
+
+
+/* Bug #5668: "limit(sqrt(%e^x-1), x, 2) causes stack overflow"
+   (not actually a limit() bug) */
+
+block([r, x, y],
+  local(x, y),
   assume(x > 0, equal(y, sqrt(1/x^2-2))),
-  r : [radcan(sqrt(1/x^2-2)), sign(x^2-1/2)],
-  forget(x > 0, equal(y, sqrt(1/x^2-2))),
-  r);
+  [radcan(sqrt(1/x^2-2)), sign(x^2-1/2)]);
 [sqrt(1-2*x^2)/x, pnz]$
 
-block([r],
+block([r, x, y],
+  local(x, y),
   assume(x > 0, x < 1, equal(y, sqrt(1/x^2-2))),
-  r : radcan(sqrt(1/x^2-2)),
-  forget(x > 0, x < 1, equal(y, sqrt(1/x^2-2))),
-  r);
+  radcan(sqrt(1/x^2-2)));
 sqrt(1-2*x^2)/x$
-
-/* SIGNDIFF-SPECIAL recursed endlessly for these as well */
 
 [block(local(x), assume(x > 0), sign(%e^x-%e^2)), limit(sqrt(%e^x-1), x, 2)];
 [pnz, sqrt(%e^2-1)]$
 
-/* sign() must not recurse endlessly when MNQP, testing whether abs(b) is
-   positive, simplifies the radical of an equal() fact */
+
+/* Bug #5678: "ratsimp() overflows the stack under some equal() facts" */
 
 block([r],
   assume(equal(y, sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),

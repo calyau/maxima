@@ -1551,11 +1551,13 @@
                  (cond ((eq (car (cdras 'b y)) '%cos)     ; expand cos(n*x)
                         (maxima-substitute var2
                                            'x
-                                           (supercosnx (cdras 'n y))))
+                                           (supercosnx
+                                             (integerp2 (cdras 'n y)))))
                        (t                                 ; expand sin(x*x)
                         (maxima-substitute var2
                                            'x
-                                           (supersinx (cdras 'n y)))))))
+                                           (supersinx
+                                             (integerp2 (cdras 'n y))))))))
          var2))
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument trigarg. Maxima substitutes trigarg with a new variable
@@ -2831,7 +2833,7 @@
 
      (mul
       const
-      (power 2 (mul -1 (add n 1)))
+      (power 2 (mul -1 (add (mul 2 n) 1)))
       (power d (sub c (div (mul a a) (mul 4 b))))
       (power (mul b ($log d)) (mul -2 (add n 1)))
       (let ((index1 (gensumindex))
@@ -2892,13 +2894,13 @@
           (power 2 (mul -1 (add (mul 2 n) 1)))
           (power '$%e
                  (add (div (mul -1 u a a) (mul 4 b))
-                      (mul u (add (mul a (power var2 (div 1 2)))
-                                  (mul b var2)
-                                  c))))
+                      (mul -1 u (add (mul a (power var2 (div 1 2)))
+                                     (mul b var2)))))
           (power b (mul -2 (add n 1)))
           (power (power '$%e
                         (add (mul a (power var2 (div 1 2)))
-                             (mul b var2)))
+                             (mul b var2)
+                             c))
                  u)
           (let ((index1 (gensumindex))
                 (index2 (gensumindex))
@@ -3386,7 +3388,7 @@
                                                             (power var2 (div 1 2))
                                                             dq+fu))
                                                   2)
-                                           (mul 1 dq+fu))
+                                           (mul -1 dq+fu))
                                       (div 1 2))
                                dq+fu
                                (take '(%gamma_incomplete)

@@ -1165,3 +1165,12 @@ false;
 m2 (zorg[3/2, y]);
 [bb = y, cc = 3/2];
 
+
+/* Bug #5667: "constantp(log(2)) returns false once log has tellsimp rules" */
+
+block([r],
+  tellsimp(log(x*y), log(x) + log(y)),
+  r : constantp(log(2)),
+  remrule(log, all),
+  [r, constantp(log(2))]);
+[true, true]$

@@ -277,6 +277,13 @@ z^a;
 hgfred([-a,b],[b],1-z);
 z^a;
 
+
+/* Bug #5641: "exp(%i*%pi*r) is displayed with the minus sign in the numerator" */
+
+[string(%e^(-7*%i*%pi/12)), string(%e^(-5*%i*%pi/7)), string(%e^(-7*x/12))];
+["%e^-((7*%i*%pi)/12)", "%e^-((5*%i*%pi)/7)", "%e^-((7*x)/12)"]$
+
+
 /* Resetting the option variables to the default values */
 (reset(domain), reset(radexpand), done);
 done;

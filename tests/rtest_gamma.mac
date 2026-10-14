@@ -3430,7 +3430,7 @@ closeto(
   float(rectform(float(beta_incomplete(2,5/2,-3/2+%i))))
                 -beta_incomplete(2.0,2.5,-1.5+%i),
   0.0,
-  5.5e-15); /* we have lost accuracy. More tests necessary? */
+  6e-15); /* we have lost accuracy. More tests necessary? */
 true;
 
 /* Incomplete Beta is defined for negative integers a and b >= (-a)

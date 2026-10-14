@@ -864,7 +864,9 @@
   (prog (dummy)
      (cond ((and (integerp (caddr form)) (not (minusp (caddr form)))
 		 (not (null (setq dummy (linearize (cadr form))))))
-	    (return (cons (car dummy) (mmod (cdr dummy) (caddr form))))))))
+	    (return (cons (car dummy)
+			  (mmod (power (cdr dummy) (caddr form))
+				(car dummy))))))))
 
 (defun rgcd (x y)
   (cond ((integerp x)

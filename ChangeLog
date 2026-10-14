@@ -103,6 +103,11 @@ Bug fixes for numbered bugs:
 * \#5264 sign(a+b) -> pnz or error, depending on whether a or b is declared imaginary
 * \#5267 solve(x^4-5*x^2+4) vs. solve(sin(x)^4-5*sin(x)^2+4)
 * \#5268 risch gives up on nested exponential
+* \#5269 risch loses the constant of integration in an exponential tower
+* \#5270 risch stops when the coefficient system is short of an equation
+* \#5271 risch stops when the inner monomial's coefficients are not constants
+* \#5272 RISCHEXPVAR answers with the pair its walk reached, not the one before it
+* \#5273 risch(%e^(x/log(x))*(x-(x+2)*log(x)), x) returns a wrong antiderivative
 * \#5274 solve(tan(x) = sqrt(2)+1) -> []
 * \#5277 newcontext(foo)$ newcontext(bar)$ is(y>0)$ killcontext(foo); -> Lisp error
 * \#5278 killcontext doesn't always refuse to kill an active context
@@ -121,6 +126,7 @@ Bug fixes for numbered bugs:
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
 * \#5312 lambert_w is not treated as complex: csign(lambert_w(x)) gives pnz
+* \#5317 quad_qags(x^2, x, 0, 1, "epsrel" = 1d-8) signals a Lisp error
 * \#5358 inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined 
 * \#5359 inverse_erfc of any complex number signals a Lisp error
 * \#5360 log_gamma of a complex bigfloat with negative real part leaves log(sin(...)) unevaluated
@@ -158,10 +164,17 @@ Bug fixes for numbered bugs:
 * \#5490 poisexpt(sin(x), -1) never returns
 * \#5491 poissubst(w, v, cos(u-v), e, 3) gives the cos(w-u) term the wrong sign
 * \#5492 intopois(x^2.5) gives a Lisp error instead of a Poisson coefficient
+* \#5502 gcd:mod signals a Lisp error when one polynomial is univariate in the main variable
 * \#5507 resultant(x^3+1, x, x) gives 1 instead of -1: wrong sign when the second polynomial has a factor c*x^k
 * \#5508 risch() and integrate() return wrong antiderivatives for some exp(rational) integrands
+* \#5517 sign(inf^2-inf) returns neg and is(inf^2-inf>0) returns false
 * \#5520 integrate(x^3.0*(1+x^2)^2,x) signals a Lisp error; integrate(sqrt(x)*(1+x)^2.0,x) is wrong
+* \#5521 integrate(x^n*(%e^(-x))^q*(%e^(sqrt(x)))^u,x) (type 10-1) is complex for a real integrand
+* \#5522 integrate(x^n*%e^(sqrt(x)-x),x) with n a positive integer (type 6) is 2^n times too large
+* \#5523 integrate(x^n*(%e^(sqrt(x)-x))^u,x) (type 6-1) has an extra factor %e^(2*u*(sqrt(x)-x))
+* \#5524 integrate(sin(2.0*x)*tan(x),x) exhausts the control stack
 * \#5525 integrate takes an even float power such as cos(x)^2.0 for an odd one
+* \#5560 cos(%pi*(4*m+3)^3) simplifies to 1 for integer m; it is -1
 * \#5561 acot(-0.0) signals 'argument -0.0 isn't in the domain of acot'
 * \#5566 exp(%i*x/2+%i*%pi) is not simplified
 * \#5569 acsch( 1.0e-6*%i );
@@ -174,6 +187,7 @@ Bug fixes for numbered bugs:
 * \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
+* \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
@@ -187,6 +201,11 @@ Bug fixes for numbered bugs:
 * \#5636 specint returns noun forms for log(a*t+b), atan(a*t), atanh(a*t) and unit_step(exp(b*t)-c)
 * \#5637 specint returns a noun form for integrals like exp(-x^2)/(x^2+a^2)
 * \#5638 reset() undoes declare(x, feature) only the first time
+* \#5641 exp(%i*%pi*r) is displayed with the minus sign in the numerator
+* \#5642 product returns its noun form for an infinite product without the simp flag
+* \#5643 at() returns an unsimplified noun form when it drops equations
+* \#5646 rtest2 and rtest_draw change settings for the tests after them
+* \#5647 reset() sets browser and url_base to values that don't fit the system
 * \#5648 defsystem cannot load what it compiles with ECL for Windows built with MSVC
 * \#5650 integrate(sqrt(cos(x))*(1+cos(x))*sin(x),x) causes error
 * \#5651 Some integrals take too much time
@@ -196,7 +215,16 @@ Bug fixes for numbered bugs:
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 * \#5664 two minor tolerance test failures in tests/rtest16.mac
+* \#5665 integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap
+* \#5666 is(abs(z) >= 0) returns false when z contains %i
+* \#5667 constantp(log(2)) returns false once log has tellsimp rules
 * \#5668 limit(sqrt(%e^x-1), x, 2) causes stack overflow
+* \#5669 bfloat(%e^-1)^0.5b0 hangs for some values of fpprec
+* \#5674 factor() returns a wrong sign or hangs for some quotients with %i and square roots
+* \#5675 factor() and integrate() hang when %i is a common factor
+* \#5676 factor() returns a multiple of some polynomials with %i
+* \#5677 risch() returns wrong polylogarithms for some log integrands
+* \#5678 ratsimp() overflows the stack under some equal() facts
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -210,10 +238,7 @@ Bug fixes for unnumbered bugs:
   plus sign and an upper case marker, as in 9.87E+52 where every other
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
-* factor() could drop the coefficient of a common factor such as -%i,
-  and return a wrong sign or hang
-* factor() could hang when a unit such as %i divided two factors, as
-  could integrate(%e^(3*%i*atan(a*x))/(a^2*c*x^2+c)^(3/2),x)
+* zn_factor_generators could return different generators from identical calls
 * integrate() returned exponential forms for some integrands with roots
   or logarithms, such as cos(sqrt(x)), and took very long for some of
   them, such as cos(b*x^(1/3)+a)/x^(7/2)
@@ -223,10 +248,6 @@ Bug fixes for unnumbered bugs:
   sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
 * integrate() took very long for some trigonometric integrands, such
   as x/(a*sin(x)+a)^2
-* factor() could return a multiple of a polynomial with %i, such as
-  (4*%i+3)*(25*x-4*%i+3)*(2*y+x) for the expanded form of
-  ((3+4*%i)*x+1)*(2*y+x), and ratsimp() could fail with "CQUOTIENT:
-  quotient is not exact" for some quotients with %i
 * integrate() returned a noun form for %e^x*x*log(x)
 * integrate() gave wrong antiderivatives for some products of square
   roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
@@ -241,14 +262,10 @@ Bug fixes for unnumbered bugs:
   trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
 * integrate() returned only part of some antiderivatives with square
   roots of trigonometric functions, as for sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
-* risch() returned wrong polylogarithms for some integrands with two
-  logarithms, such as (log(1-%i*x/sqrt(q-e^2))-log(1+%i*x/sqrt(q-e^2)))/(x+a)
 * risch() took very long for some products of polynomials and
   trigonometric functions, such as (d*x+c)^2/(sin(x)+1)^2
 * integrate() took very long for some trigonometric integrands with
   parameters, such as sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2)
-* sign() could recurse until the stack overflowed under an equal()
-  fact about a square root, as in ratsimp() with algebraic: true
 * integrate() gave wrong antiderivatives for some roots of products,
   such as %e^acoth(a*x)*sqrt(c-a^2*c*x^2) for c < 0
 * integrate() gave wrong antiderivatives for some integrands after a

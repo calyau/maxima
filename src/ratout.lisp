@@ -46,7 +46,7 @@
 	   (pgcdm ratout-x ratout-y)))))
 
 (defun pgathercoef (p ratout-*chk ratout-*res)
-  (if (not (eq (car p) ratout-*chk))
+  (if (or (pcoefp p) (not (eq (car p) ratout-*chk)))
       1
       (labels
 	  ((pgath2 (p vmax)

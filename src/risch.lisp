@@ -1000,7 +1000,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (flag l risch-ratform risch-intvar risch-y risch-var risch-mainvar)
-  (prog (lcm risch-m p risch-alphar risch-gamma delta r s
+  (prog (lcm risch-m p risch-alphar risch-gamma delta r s fromlsa
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
      (desetq (f a expg n) l)
@@ -1066,12 +1066,15 @@
      ;; RISCHEXPLOG, which calls this via EXPPOLYCONTROL, checks the remainder.
      (when (and (null flag) *risch-partial* (eq risch-y 'inconsistent))
        (multiple-value-setq (risch-y risch-m) (lsa (butlast wl))))
+     ;; LSA calls the system singular when it has more than one solution.
+     ;; Here the antiderivatives those solutions give differ only by a
+     ;; constant, so any one of them will do, and the DOWN2 walk finds one.
+     ;; The walk answers only when it solves the equation exactly, so it is
+     ;; also safe to let it try when LSA calls the system inconsistent.
      (if (or (eq risch-y 'singular)
 	     (eq risch-y 'inconsistent))
-	 (cond ((null flag)
-		(return nil))
-	       (t
-		(return (cxerfarg (rzero) expg n a risch-ratform risch-intvar risch-mainvar)))))
+	 (progn (setq fromlsa t)
+		(go down2)))
      (setq k 0)
      (setq lcm 0)
      (setq risch-y (cdr risch-y))
@@ -1104,7 +1107,7 @@
 		  #'(lambda ()
 		      (ratpl (ratti risch-alphar (polcoef r risch-beta risch-var) t)
 			     (polcoef s risch-gamma risch-var))))))
-     (setq risch-y 0)
+     (setq risch-y (rzero))
    loop
      (setq yn (polcoef (ratnumerator tt) (if (zerop risch-alphar) risch-gamma k) risch-var)
       yd (r* (ratdenominator tt) ;DENOM MAY BE 0
@@ -1142,6 +1145,12 @@
 				0)))))
 	      ((null flag)
 	       (return nil))
+	      ;; The LSA branch returns either a complete answer or none. A walk
+	      ;; entered from there does the same and leaves the integral
+	      ;; unevaluated when it does not finish.
+	      (fromlsa
+	       (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+				 risch-mainvar)))
 	      ((and (risch-constp (setq ttemp (ratqu ttemp lcm)) risch-mainvar)
 		    $erfflag
 		    (equal (pdegree (car (get expg 'rischarg)) risch-mainvar) 2)
@@ -1149,13 +1158,24 @@
 	       (return (list (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n)) p)
 			     (erfarg2 (r* n (get expg 'rischarg))
 				      ttemp risch-ratform risch-intvar risch-mainvar))))
+	      ;; With nothing accumulated in RISCH-Y, the last step alone is a
+	      ;; single integration by parts, which usually leaves an integral no
+	      ;; easier than the one it started from. Hand that one back unevaluated
+	      ;; instead of splitting it.
+	      ((rzerop risch-y)
+	       (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+				 risch-mainvar)))
 	      (t
+	       ;; YTEMP and TTEMP are the pair the last step reached, one
+	       ;; term further along than RISCH-Y and TT and just as
+	       ;; consistent. TTEMP is already divided by LCM: the
+	       ;; ERFARG2 clause above divides it in its own test.
 	       (return
 		 (cxerfarg
-		  (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+		  (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n)) p)
 		  expg
 		  n
-		  (ratqu tt lcm)
+		  ttemp
 		  risch-ratform
 		  risch-intvar
 		  risch-mainvar))))))
@@ -1241,7 +1261,8 @@
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta
-	 risch-lians)
+	 risch-lians
+	 constmu secondpass firsty firsttt startmu starttt fromlsa)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
 		(pzerop (car a)))
@@ -1364,11 +1385,23 @@
    recurse
      (setq rbeta (polcoef r risch-beta risch-var))
      (setq risch-y '(0 . 1))
+     (setq startmu mu)
+     (setq starttt tt)
    recurseloop
-     (setq f (r+ (ratqu (polcoef s risch-gamma risch-var) rbeta)
+     ;; The equation for the coefficient of the MU-th power only involves
+     ;; the term of S of the same degree as the leading term of R. That is
+     ;; the leading term of S when both degrees agree, and zero when S has
+     ;; the lower degree, as it can when LSACALL falls back on this walk.
+     (setq f (r+ (ratqu (polcoef s risch-beta risch-var) rbeta)
 		 (if expexpflag
 		     (r* mu (spderivative eta risch-mainvar))
 		     0)))
+     ;; F is affine in MU with slope ETA', so for an exponential over an
+     ;; exponential it vanishes at no more than one MU. There the coefficient
+     ;; equation is the quadrature Y' = A, and EXPPOLYCONTROL answers with one
+     ;; of its solutions. The others differ from that one by a constant.
+     (when (and expexpflag (null constmu) (rzerop f))
+       (setq constmu mu))
      (setq ymu (exppolycontrol nil
 			       f
 			       (ratqu (polcoef (ratnumerator tt)
@@ -1383,12 +1416,9 @@
 			       risch-degree
 			       risch-mainvar))
      (when (null ymu)
-       (return (cond ((null flag)
-		      nil)
-		     (t
-		      (return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-					expg n (ratqu tt lcm)
-					risch-ratform risch-intvar risch-mainvar))))))
+       (go recursefail))
+     (when (and secondpass (eql mu constmu))
+       (setq ymu (r+ ymu (cons 1 1))))
      (setq risch-y (r+ risch-y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
@@ -1397,21 +1427,55 @@
      (cond
        ((not (< mu 0))
 	(go recurseloop))
-       ((not flag)
-	(return (cond ((rzerop tt)
-		       (ratqu risch-y p))
-		      (t nil))))
        ((rzerop tt)
-	(return (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-		      '(0))))
-       (t
-	(return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-			  expg
-			  n
-			  (ratqu tt lcm)
-			  risch-ratform
-			  risch-intvar
-			  risch-mainvar))))
+	(go recursedone))
+       ((and constmu (null secondpass))
+	;; The constant left open at CONSTMU is fixed by one of the coefficient
+	;; equations below it, which this walk has already passed. Walk again
+	;; with that constant one higher.
+	(setq firsty risch-y)
+	(setq firsttt tt)
+	(setq secondpass t)
+	(setq risch-y '(0 . 1))
+	(setq mu startmu)
+	(setq tt starttt)
+	(go recurseloop))
+       (secondpass
+	;; Both walks keep R*Y' + S*Y + TT equal to STARTTT, so the combination
+	;; with a constant CC leaves FIRSTTT - CC*SPREAD = 0 and solves the
+	;; equation.
+	(let* ((spread (r- firsttt tt))
+	       (cc (and (not (rzerop spread))
+			(ratqu firsttt spread))))
+	  (when (and cc (risch-constp cc risch-mainvar))
+	    (setq risch-y (r+ firsty (r* cc (r- risch-y firsty))))
+	    (go recursedone)))))
+   recursefail
+     ;; A second walk that came to nothing leaves the first walk's answer.
+     (when secondpass
+       (setq risch-y firsty)
+       (setq tt firsttt))
+     (return (cond ((null flag)
+		    nil)
+		   ;; LSACALL returns either a complete answer or none.
+		   ;; A walk entered from there does the same and leaves the integral
+		   ;; unevaluated when it does not finish.
+		   (fromlsa
+		    (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+			      risch-mainvar))
+		   (t
+		    (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+			      expg
+			      n
+			      (ratqu tt lcm)
+			      risch-ratform
+			      risch-intvar
+			      risch-mainvar))))
+   recursedone
+     (return (if (null flag)
+		 (ratqu risch-y p)
+		 (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+		       '(0))))
    lsacall
      (setq rrmu mu)
    muloop
@@ -1460,11 +1524,14 @@
      (setq rarray (reverse aarray))
      (setq temp
        (lsa rarray))
+     ;; LSACALL only looks for coefficients that are constants. When LSA finds
+     ;; no single such solution, let the RECURSE walk try. It also finds
+     ;; coefficients that depend on the variable of integration.
      (when (or (eq temp 'singular)
 	       (eq temp 'inconsistent))
-       (return (if (null flag)
-		   nil
-		   (cxerfarg (rzero) expg n a risch-ratform risch-intvar risch-mainvar))))
+       (setq mu rrmu)
+       (setq fromlsa t)
+       (go recurse))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq risch-y 0)
@@ -1474,6 +1541,16 @@
      (incf rmu)
      (unless (> rmu rrmu)
        (go l3))
+     ;; LSA solves these equations over a field that contains the variable of
+     ;; integration, but they hold only for coefficients that are constants.
+     ;; A solution that depends on that variable does not solve the
+     ;; differential equation, so walk for coefficients that are functions.
+     (unless (rzerop (r- tt
+			 (r* s risch-y)
+			 (r* r (spderivative risch-y risch-mainvar))))
+       (setq mu rrmu)
+       (setq fromlsa t)
+       (go recurse))
      (return (if (null flag)
 		 (ratqu risch-y p)
 		 (cons (r* (ratexpt (cons (list expg 1 1) 1) n) (ratqu risch-y p)) '(0))))))

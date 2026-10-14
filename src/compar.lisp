@@ -846,10 +846,18 @@
 	  (limitp (eps-sign a))
 	  (t '$zero))))
 
+;; Return T if %i occurs in X outside of abs(...), whose value is always real.
+;; TODO: Generalize this to any REAL-VALUED or declared $REAL function.
+(defun %i-outside-abs-p (x)
+  (cond ((atom x) (eq x '$%i))
+        ((specrepp x) (not (free x '$%i)))
+        ((eq (caar x) 'mabs) nil)
+        (t (some #'%i-outside-abs-p (cdr x)))))
+
 ;; csign returns t if x appears to be complex.
 ;; Else, it returns the sign.
 (defun csign (x)
-  (or (not (free x '$%i))
+  (or (%i-outside-abs-p x)
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
 ;;; $csign works like $sign but switches the sign-functions into a complex
@@ -1705,7 +1713,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     retval))
 
 (defvar *in-expt-of-base* nil
-  "True inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
+  "T inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
 
 (defun expt-of-base (expr q)
   "If EXPR is a power of base Q (or EXPR = Q, then the exponent is implicitly 1),
@@ -1738,7 +1746,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; Do NOT apply when Spos is itself a power of Qpos (e.g. S = Q):
 			;; The reduction would just toggle the exponent R <-> 1/R and recurse forever.
 			;; That same-base case is handled by the exponent-comparison rule further below.
-			(not *in-expt-of-base*)
+			(not *in-expt-of-base*) ; prevent endless recursion
 			(not (expt-of-base xrhs (cadr xlhs)))
 			(eq (sign* (sub (cadr xlhs)
 					(power xrhs (div 1 (caddr xlhs)))))
@@ -1821,7 +1829,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;;     Q > 1 => sign(m - n),
     ;; 0 < Q < 1 => sign(n - m).
     ;; Resolves e.g. sign(x^a - x) = pos for x > 1, a > 1, and always terminates.
-    (when (and (null sgn) (not *in-expt-of-base*))
+    (when (and (null sgn)
+               (not *in-expt-of-base*)) ; prevent endless recursion
       (let ((q (cond ((mexptp xlhs) (cadr xlhs))
                      ((mexptp xrhs) (cadr xrhs)))))
         (when q

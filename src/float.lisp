@@ -2120,7 +2120,7 @@
 ;;; Note that FPLOG is given 1+X, not X.
 ;;;
 ;;; However, to aid convergence of the series, we scale 1+x until 1/e
-;;; < 1+x <= e.
+;;; <= 1+x <= e.
 ;;;
 (defun fplog (x)
   (prog (over two ans oldans term e sum)
@@ -2129,12 +2129,14 @@
      (setq e (fpe)
 	   over (fpquotient (fpone) e)
 	   ans 0)
-     ;; Scale X until 1/e < X <= E.  ANS keeps track of how
+     ;; Scale X until 1/e <= X <= E.  ANS keeps track of how
      ;; many factors of E were used.  Set X to NIL if X is E.
+     ;; 1/e itself has to count as in range: divided by E and
+     ;; multiplied back, it can come out unchanged.
      (do ()
 	 (nil)
        (cond ((equal x e) (setq x nil) (return nil))
-	     ((and (fplessp x e) (fplessp over x))
+	     ((and (fplessp x e) (not (fplessp x over)))
 	      (return nil))
 	     ((fplessp x over)
 	      (setq x (fptimes* x e))

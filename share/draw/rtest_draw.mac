@@ -1,4 +1,5 @@
 (
+    old_maxima_tempdir: maxima_tempdir,
     maxima_tempdir: sconcat (maxima_tempdir, "/", "draw-test-", ?getpid ()),
     print ("rtest_draw: output image and Gnuplot files to", maxima_tempdir),
     load ("operatingsystem"),
@@ -812,3 +813,9 @@ true;
 
 execute_test(draw(terminal = 'png, columns = 2, gr2d(geomap(Africa)), gr2d(geomap([Oceania, China, Japan])), gr2d(geomap([France, Portugal, Spain, Morocco, Western_Sahara]))), 0);
 0;
+
+
+/* Restore maxima_tempdir and the draw defaults, which the tests above changed */
+
+(set_draw_defaults(), maxima_tempdir: old_maxima_tempdir, kill(old_maxima_tempdir), 0);
+0$

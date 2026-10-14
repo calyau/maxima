@@ -638,7 +638,7 @@
                      ((and (eq realp t) (eq t (mevalp `((mgreaterp) ,ex 1)))) '$inf)
                      ((eq t (mevalp `((mgreaterp) ,ex-mag 1))) '$infinity)
                      ((eq t (mevalp `((mequal) 1 ,ex-mag))) '$und)
-                     (t `((%product) ,e ,k ,lo ,hi))))
+                     (t `((%product simp) ,e ,k ,lo ,hi))))
 
               ((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz))
                1)

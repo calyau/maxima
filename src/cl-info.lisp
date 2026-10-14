@@ -87,6 +87,9 @@
 				 (maxima::combine-path maxima::*maxima-htmldir*
 						       maxima::*maxima-lang-subdir*)
 				 maxima::*maxima-htmldir*)))
+    ;; Make reset() restore this value rather than the DEFMVAR default.
+    (setf (gethash 'maxima::$url_base maxima::*variable-initial-values*)
+	  maxima::$url_base)
 			     
     (handler-case
       (with-standard-io-syntax (load path-to-index))

@@ -200,4 +200,16 @@ atan2(y,x);
 signum(carg(x+%i*y));
 signum(atan2(y,x));
 
+
+/* Bug #5606: "cabs(erf(%i)^2) crashes Maxima with control stack exhausted" */
+
+block([nv : lambda([e], float(expand(rectform(float(e)))))],
+  [is(abs(nv(cabs(erf(%i)^2)) - erfi(1.0)^2) < 1e-12),
+   is(abs(nv(cabs(gamma(%i)^3)) - cabs(float(gamma(%i)))^3) < 1e-12),
+   is(abs(nv(carg(gamma(%i)^3)) - nv(carg(rectform(float(gamma(%i))^3)))) < 1e-12),
+   is(abs(nv(polarform(gamma(%i)^2)) - nv(float(gamma(%i))^2)) < 1e-12),
+   rectform(atan2(-%i*erf(%i), 0))]);
+[true, true, true, true, atan2(-%i*erf(%i), 0)]$
+
+
 /* ---------- End of file rtest_carg.mac ------------------------------------ */
