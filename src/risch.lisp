@@ -1267,6 +1267,16 @@
      (incf rmu)
      (unless (> rmu rrmu)
        (go l3))
+     ;; LSA solves these equations over a field that contains the variable of
+     ;; integration, but they hold only for coefficients that are constants.
+     ;; A solution that depends on that variable does not solve the
+     ;; differential equation, so walk for coefficients that are functions.
+     (unless (rzerop (r- tt
+			 (r* s risch-y)
+			 (r* r (spderivative risch-y risch-mainvar))))
+       (setq mu rrmu)
+       (setq fromlsa t)
+       (go recurse))
      (return (if (null flag)
 		 (ratqu risch-y p)
 		 (cons (r* (ratexpt (cons (list expg 1 1) 1) n) (ratqu risch-y p)) '(0))))))

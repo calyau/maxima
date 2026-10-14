@@ -7204,6 +7204,14 @@ block([L],
 [0, 0, 0, 0]$
 
 
+/* Bug #5273: "risch(%e^(x/log(x))*(x-(x+2)*log(x)), x) returns a wrong antiderivative" */
+
+block([f, F],
+  f : %e^(x/log(x))*(x-(x+2)*log(x)),
+  ratsimp(diff(risch(f, x), x) - f));
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
