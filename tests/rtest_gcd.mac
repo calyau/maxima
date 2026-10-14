@@ -174,3 +174,9 @@ true;
 
 ratsimp(expand((y^2+1)*(x+2))/expand((y^2+x)*(x+2)));
 (y^2+1)/(y^2+x)$
+
+
+/* Bug #5502: "gcd:mod signals a Lisp error when one polynomial is univariate in the main variable" */
+
+block([gcd : 'mod, x, y], gcd(expand((y + 1) * (y*x + 2)), y^2 - 1));
+y+1$

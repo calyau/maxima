@@ -158,6 +158,7 @@ Bug fixes for numbered bugs:
 * \#5490 poisexpt(sin(x), -1) never returns
 * \#5491 poissubst(w, v, cos(u-v), e, 3) gives the cos(w-u) term the wrong sign
 * \#5492 intopois(x^2.5) gives a Lisp error instead of a Poisson coefficient
+* \#5502 gcd:mod signals a Lisp error when one polynomial is univariate in the main variable
 * \#5507 resultant(x^3+1, x, x) gives 1 instead of -1: wrong sign when the second polynomial has a factor c*x^k
 * \#5508 risch() and integrate() return wrong antiderivatives for some exp(rational) integrands
 * \#5517 sign(inf^2-inf) returns neg and is(inf^2-inf>0) returns false
