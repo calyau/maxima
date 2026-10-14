@@ -195,3 +195,11 @@ block([N : x^2*sqrt(1-x)*sqrt(x+1)+%i*x^3-%i*x,
        D : %i*x*(x^2-1)*sqrt(1-x)*sqrt(x+1)-(x^2-1)^2],
   ratsimp(block([gcd : subres], factor(1/N+1/D))*N*D/(N+D)));
 1$
+
+
+/* Bug #5675: "factor() and integrate() hang when %i is a common factor" */
+
+block([e : (%i*a*x+1)^(3/2)/(a^2*c^(3/2)*x^2*(1-%i*a*x)^(3/2)*sqrt(a^2*x^2+1)
+           +c^(3/2)*(1-%i*a*x)^(3/2)*sqrt(a^2*x^2+1))],
+  ratsimp(block([algebraic : true, gcd : subres], factor(e)) - e));
+0$

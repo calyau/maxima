@@ -7212,6 +7212,15 @@ block([f, F],
 0$
 
 
+/* Bug #5675: "factor() and integrate() hang when %i is a common factor" */
+
+block([f, F],
+  f : %e^(3*%i*atan(a*x))/(a^2*c*x^2+c)^(3/2),
+  F : integrate(f, x),
+  if freeof('integrate, F) then radcan(logarc(exponentialize(diff(F, x) - f))) else 'fail);
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

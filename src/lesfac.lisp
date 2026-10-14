@@ -139,13 +139,16 @@
 	 (cond ((equal c 1) (go nextb))
 	       ((equal ai 1) (go bloop)))
 	aloop
-	 (when (setq t1 (testdivide ai c))
+	 ;; Do not count how often an algebraic C divides AI and BJ: a unit
+	 ;; such as %i divides them any number of times.
+	 (when (and (not (alg c)) (setq t1 (testdivide ai c)))
            (setq ai t1)
            (incf d1)
            (go aloop))
 	bloop
 	 (and (= d1 1)
 	      (not (equal bj 1))
+	      (not (alg c))
 	      (do ((t1
 		    (testdivide bj c)
 		    (testdivide bj c)))
