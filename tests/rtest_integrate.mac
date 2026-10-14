@@ -7179,6 +7179,15 @@ risch(diff(%e^(x*%e^(-1/x))/(x^2+1), x), x);
 %e^(%e^-(1/x)*x)/(x^2+1)$
 
 
+/* Bug #5271: "risch stops when the inner monomial's coefficients are not constants" */
+
+risch(diff(x*%e^(1/x)*%e^(x*%e^(-1/x)), x), x);
+%e^(%e^-(1/x)*x+1/x)*x$
+
+risch(diff((x+1)*%e^(1/x)*%e^(x*%e^(-1/x))/x, x), x);
+(%e^(%e^-(1/x)*x+1/x)*(x+1))/x$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

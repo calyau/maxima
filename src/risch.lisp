@@ -977,7 +977,7 @@
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta
 	 risch-lians
-	 constmu secondpass firsty firsttt startmu starttt)
+	 constmu secondpass firsty firsttt startmu starttt fromlsa)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
 		(pzerop (car a)))
@@ -1103,7 +1103,11 @@
      (setq startmu mu)
      (setq starttt tt)
    recurseloop
-     (setq f (r+ (ratqu (polcoef s risch-gamma risch-var) rbeta)
+     ;; The equation for the coefficient of the MU-th power only involves
+     ;; the term of S of the same degree as the leading term of R. That is
+     ;; the leading term of S when both degrees agree, and zero when S has
+     ;; the lower degree, as it can when LSACALL falls back on this walk.
+     (setq f (r+ (ratqu (polcoef s risch-beta risch-var) rbeta)
 		 (if expexpflag
 		     (r* mu (spderivative eta risch-mainvar))
 		     0)))
@@ -1168,6 +1172,12 @@
        (setq tt firsttt))
      (return (cond ((null flag)
 		    nil)
+		   ;; LSACALL returns either a complete answer or none.
+		   ;; A walk entered from there does the same and leaves the integral
+		   ;; unevaluated when it does not finish.
+		   (fromlsa
+		    (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+			      risch-mainvar))
 		   (t
 		    (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 			      expg
@@ -1229,11 +1239,14 @@
      (setq rarray (reverse aarray))
      (setq temp
        (lsa rarray))
+     ;; LSACALL only looks for coefficients that are constants. When LSA finds
+     ;; no single such solution, let the RECURSE walk try. It also finds
+     ;; coefficients that depend on the variable of integration.
      (when (or (eq temp 'singular)
 	       (eq temp 'inconsistent))
-       (return (if (null flag)
-		   nil
-		   (cxerfarg (rzero) expg n a risch-ratform risch-intvar risch-mainvar))))
+       (setq mu rrmu)
+       (setq fromlsa t)
+       (go recurse))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq risch-y 0)

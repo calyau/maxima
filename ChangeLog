@@ -104,6 +104,7 @@ Bug fixes for numbered bugs:
 * \#5268 risch gives up on nested exponential
 * \#5269 risch loses the constant of integration in an exponential tower
 * \#5270 risch stops when the coefficient system is short of an equation
+* \#5271 risch stops when the inner monomial's coefficients are not constants
 * \#5274 solve(tan(x) = sqrt(2)+1) -> []
 * \#5277 newcontext(foo)$ newcontext(bar)$ is(y>0)$ killcontext(foo); -> Lisp error
 * \#5278 killcontext doesn't always refuse to kill an active context
