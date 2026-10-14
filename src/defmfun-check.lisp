@@ -237,7 +237,7 @@
 			  (member ($verbify opt) valid-keywords))
 		      (flet ((keywordify (x)
 			       (intern (subseq (symbol-name x) 1) :keyword)))
-			(list (keywordify opt) val))
+			(list (keywordify ($verbify opt)) val))
 		      (merror (intl:gettext "~M: Unrecognized keyword: ~M")
 			      fname opt))))
 	    options)))

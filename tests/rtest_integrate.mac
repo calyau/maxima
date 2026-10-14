@@ -7147,6 +7147,13 @@ block([F, G, n, q, u, domain : complex],
 true$
 
 
+/* Bug #5317: "quad_qags(x^2, x, 0, 1, "epsrel" = 1d-8) signals a Lisp error" */
+
+block([x],
+  is(quad_qags(x, x, 0, 1, "epsrel" = 1d-10) = quad_qags(x, x, 0, 1, 'epsrel = 1d-10)));
+true$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
