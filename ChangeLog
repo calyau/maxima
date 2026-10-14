@@ -223,6 +223,10 @@ Bug fixes for unnumbered bugs:
   sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
 * integrate() took very long for some trigonometric integrands, such
   as x/(a*sin(x)+a)^2
+* factor() could return a multiple of a polynomial with %i, such as
+  (4*%i+3)*(25*x-4*%i+3)*(2*y+x) for the expanded form of
+  ((3+4*%i)*x+1)*(2*y+x), and ratsimp() could fail with "CQUOTIENT:
+  quotient is not exact" for some quotients with %i
 * integrate() returned a noun form for %e^x*x*log(x)
 * integrate() gave wrong antiderivatives for some products of square
   roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0

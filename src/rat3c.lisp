@@ -65,9 +65,7 @@
   (let ((a (pgcda x y t)))
     (cond ((cdr a) a)
 	  ((equal (setq a (car a)) 1) (list 1 x y))
-	  ;; OLDGCD can return a number that does not divide X or Y.
-	  ((and $algebraic (not (and (pcoefp a) (pquotientchk-safe x a)
-				     (pquotientchk-safe y a))))
+	  ((and $algebraic (not (pcoefp a)))
 	   (cons a (prog2 (setq x (rquotient x a)
 				y (rquotient y a)
 				a (pgcdcofacts (cdr x) (cdr y)))
@@ -329,10 +327,17 @@
   (cond ((pcoefp x) (list x 1))
 	((null (p-red x))
 	 (list (p-lc x) (make-poly (p-var x) (p-le x) 1)))
-	(t (let ((u (contsort (cdr x))) v)
+	(t (let ((u (contsort (cdr x))) v w)
 	     (setq u (oldcontent2 (cdr u) (car u))
-		   v (cond ($algebraic (car (rquotient x u)))
-			   (t (pcquotient x u))))
+		   v (cond ($algebraic (rquotient x u))
+			   (t (cons (pcquotient x u) 1))))
+	     ;; With algebraic numbers, U can be a multiple of the content
+	     ;; and X/U a fraction. Then U is divided by the denominator if
+	     ;; that is exact, else X is kept whole.
+	     (cond ((equal (cdr v) 1) (setq v (car v)))
+		   ((setq w (pquotientchk-safe u (cdr v)))
+		    (setq u w v (car v)))
+		   (t (setq u 1 v x)))
 	     (cond ((pminusp v) (list (pminus u) (pminus v)))
 		   (t (list u v)))))))
 
