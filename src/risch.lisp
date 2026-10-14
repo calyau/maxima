@@ -637,7 +637,11 @@
     (desetq (rc . rd) (ratdivide rn ro))
     (let
 	((result
-	  (cond ((and (freeof risch-intvar (rdis rc)) ;; can't use risch-constp because varlist
+	  ;; RN must be a polynomial in RISCH-VAR as RO is, as RATDIVIDE divides by
+	  ;; their main variables.
+	  (cond ((and (not (pcoefp (car rn)))
+		      (eq (p-var (car rn)) risch-var)
+		      (freeof risch-intvar (rdis rc)) ;; can't use risch-constp because varlist
 		      (freeof risch-intvar (rdis rd))) ;; is not set up with vars in correct order.
 		 (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
 		 (mul* coef (power -1 (1+ risch-degree))

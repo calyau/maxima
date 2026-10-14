@@ -222,6 +222,7 @@ Bug fixes for numbered bugs:
 * \#5674 factor() returns a wrong sign or hangs for some quotients with %i and square roots
 * \#5675 factor() and integrate() hang when %i is a common factor
 * \#5676 factor() returns a multiple of some polynomials with %i
+* \#5677 risch() returns wrong polylogarithms for some log integrands
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -7237,6 +7237,16 @@ block([x],
 (2*%e^x^(3/2)*(x^(3/2)-1))/3$
 
 
+/* Bug #5677: "risch() returns wrong polylogarithms for some log integrands" */
+
+block([g, G, a, e, q],
+  g : (log(1-%i*x/sqrt(q-e^2))-log(1+%i*x/sqrt(q-e^2)))/(x+a),
+  G : risch(g, x),
+  map(lambda([p], radcan(rectform(subst(p, diff(G, x) - g)))),
+      [[a = 2, e = 1, q = 5, x = 1/3], [a = -1, e = 2, q = 13, x = 3]]));
+[0, 0]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
