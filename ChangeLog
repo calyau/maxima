@@ -223,6 +223,7 @@ Bug fixes for numbered bugs:
 * \#5675 factor() and integrate() hang when %i is a common factor
 * \#5676 factor() returns a multiple of some polynomials with %i
 * \#5677 risch() returns wrong polylogarithms for some log integrands
+* \#5678 ratsimp() overflows the stack under some equal() facts
 
 Bug fixes for unnumbered bugs:
 ------------------------------

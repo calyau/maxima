@@ -2234,6 +2234,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         odds (unless (member sign '($pos $neg $zero))
                (ncons (if (member arg-sign '($pos $pz)) (sub arg 1) x))))))
 
+(defvar *sign-mabs-args* nil
+  "The arguments of abs() that SIGN-MABS is testing with MNQP.")
+
 (defun sign-mabs (x)
   (let ((*complexsign* t))
     (sign (cadr x))
@@ -2241,7 +2244,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
 	  ;; abs(nonzero) > 0. If SIGN found nothing ('$PNZ), pass NIL as the third
 	  ;; argument to MNQP, allowing it to skip a redundant second $CSIGN call.
-	  ((eq t (mnqp 0 (cadr x) (not (eq sign '$pnz)))) (setq sign '$pos))
+	  ;; MNQP can need the sign of abs() of the same argument again, as when
+	  ;; it applies an equal() fact, so do not test it again then.
+	  ((and (not (member (cadr x) *sign-mabs-args* :test #'alike1))
+		(eq t (let ((*sign-mabs-args* (cons (cadr x) *sign-mabs-args*)))
+			(mnqp 0 (cadr x) (not (eq sign '$pnz))))))
+	   (setq sign '$pos))
 	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
 
 (defun sign-asin/acos/atanh (x)

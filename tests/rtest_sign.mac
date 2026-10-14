@@ -3126,6 +3126,16 @@ sqrt(1-2*x^2)/x$
 [pnz, sqrt(%e^2-1)]$
 
 
+/* Bug #5678: "ratsimp() overflows the stack under some equal() facts" */
+
+block([r],
+  assume(equal(y, sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  r : block([algebraic : true], ratsimp(sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  forget(equal(y, sqrt(e*x-(b*e)/(2*a)+(a*e)/(2*b)))),
+  r);
+sqrt((2*a*b*e*x+(a^2-b^2)*e)/(a*b))/sqrt(2)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
