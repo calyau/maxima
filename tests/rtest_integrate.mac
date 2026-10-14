@@ -3211,7 +3211,7 @@ niceindices(integrate(z^n*(%e^(b*z+a*sqrt(z)))^u,z));
                                         *sqrt(-u*(2*b*sqrt(z)+a)^2/b)
                                        /u)
                            /(-u*(2*b*sqrt(z)+a)^2/b)^((j+i+1)/2),i,0,j),j,0,
-                 n))*(%e^(b*z+a*sqrt(z)))^u*%e^(u*(b*z+a*sqrt(z))-a^2*u/(4*b))
+                 n))*(%e^(b*z+a*sqrt(z)))^u*%e^(-u*(b*z+a*sqrt(z))-a^2*u/(4*b))
  /b^(2*(n+1));
 
 /* ----- Involving z^(v-1) and arguments a*z^r+b*z+c ------------------------ */
@@ -3242,8 +3242,8 @@ niceindices(integrate(z^n*(%e^(c+b*z+a*sqrt(z)))^u,z));
                                         *sqrt(-u*(2*b*sqrt(z)+a)^2/b)
                                        /u)
                            /(-u*(2*b*sqrt(z)+a)^2/b)^((j+i+1)/2),i,0,j),j,0,
-                 n))*(%e^(b*z+a*sqrt(z)))^u
-          *%e^(u*(b*z+a*sqrt(z)+c)-a^2*u/(4*b))
+                 n))*(%e^(b*z+a*sqrt(z)+c))^u
+          *%e^(-u*(b*z+a*sqrt(z))-a^2*u/(4*b))
  /b^(2*(n+1));
 
 /* ----- Involving z^(v-1)*a^(d*z)*h^(c*z) ---------------------------------- */
@@ -7109,6 +7109,18 @@ integrate(sin(2.0*x)*tan(x), x) - integrate(sin(2*x)*tan(x), x);
 
 integrate(cos(3.0*x)*sec(x), x) - integrate(cos(3*x)*sec(x), x);
 0$
+
+
+/* Bug #5523: "integrate(x^n*(%e^(sqrt(x)-x))^u,x) (type 6-1) has an extra factor %e^(2*u*(sqrt(x)-x))" */
+
+block([F, G, n, u, domain : complex],
+  local(n),
+  declare(n, integer),
+  assume(n > 0),
+  F : ev(subst([n = 1, u = 1/2], integrate(x^n*(%e^(sqrt(x)-x))^u, x)), nouns, simpsum),
+  G : first(quad_qags(x*exp((sqrt(x)-x)/2), x, 2, 3)),
+  is(abs(float(rectform(subst(x = 3, F) - subst(x = 2, F))) - G) < 1e-10));
+true$
 
 
 /**************************************/

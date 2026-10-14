@@ -2809,13 +2809,13 @@
           (power 2 (mul -1 (add (mul 2 n) 1)))
           (power '$%e
                  (add (div (mul -1 u a a) (mul 4 b))
-                      (mul u (add (mul a (power var2 (div 1 2)))
-                                  (mul b var2)
-                                  c))))
+                      (mul -1 u (add (mul a (power var2 (div 1 2)))
+                                     (mul b var2)))))
           (power b (mul -2 (add n 1)))
           (power (power '$%e
                         (add (mul a (power var2 (div 1 2)))
-                             (mul b var2)))
+                             (mul b var2)
+                             c))
                  u)
           (let ((index1 (gensumindex))
                 (index2 (gensumindex))
