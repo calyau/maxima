@@ -7167,7 +7167,16 @@ block([f, F, dF],
   F : risch(f, x),
   dF : diff(F, x),
   if freeof('integrate, F) then ratsimp(dF - f) else 'fail);
-0;
+0$
+
+
+/* Bug #5270: "risch stops when the coefficient system is short of an equation" */
+
+risch(diff(%e^(x*%e^(-1/x))/(x+1), x), x);
+%e^(%e^-(1/x)*x)/(x+1)$
+
+risch(diff(%e^(x*%e^(-1/x))/(x^2+1), x), x);
+%e^(%e^-(1/x)*x)/(x^2+1)$
 
 
 /**************************************/

@@ -730,7 +730,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (flag l risch-ratform risch-intvar risch-y risch-var risch-mainvar)
-  (prog (lcm risch-m p risch-alphar risch-gamma delta r s
+  (prog (lcm risch-m p risch-alphar risch-gamma delta r s fromlsa
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
      (desetq (f a expg n) l)
@@ -792,12 +792,15 @@
 	    (go l2)))
      (multiple-value-setq (risch-y risch-m)
        (lsa wl))
+     ;; LSA calls the system singular when it has more than one solution.
+     ;; Here the antiderivatives those solutions give differ only by a
+     ;; constant, so any one of them will do, and the DOWN2 walk finds one.
+     ;; The walk answers only when it solves the equation exactly, so it is
+     ;; also safe to let it try when LSA calls the system inconsistent.
      (if (or (eq risch-y 'singular)
 	     (eq risch-y 'inconsistent))
-	 (cond ((null flag)
-		(return nil))
-	       (t
-		(return (cxerfarg (rzero) expg n a risch-ratform risch-intvar risch-mainvar)))))
+	 (progn (setq fromlsa t)
+		(go down2)))
      (setq k 0)
      (setq lcm 0)
      (setq risch-y (cdr risch-y))
@@ -868,6 +871,12 @@
 				0)))))
 	      ((null flag)
 	       (return nil))
+	      ;; The LSA branch returns either a complete answer or none. A walk
+	      ;; entered from there does the same and leaves the integral
+	      ;; unevaluated when it does not finish.
+	      (fromlsa
+	       (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+				 risch-mainvar)))
 	      ((and (risch-constp (setq ttemp (ratqu ttemp lcm)) risch-mainvar)
 		    $erfflag
 		    (equal (pdegree (car (get expg 'rischarg)) risch-mainvar) 2)
