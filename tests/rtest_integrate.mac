@@ -559,32 +559,34 @@ z*%e^(c*z)/(a*c*z+b*c)-b*'integrate(%e^(c*z)/(a^2*c*z^2+2*a*b*c*z+b^2*c),z);
 
 /* Problem 120: NOUN */
 integrate(z^2*%e^(c*z)/(b+a*z),z);
-(c*z^2-z)*%e^(c*z)/(a*c^2*z+b*c^2)-'integrate(
-                                   (b*c*z-b)*%e^(c*z)
-                                    /(a^2*c^2*z^2+2*a*b*c^2*z+b^2*c^2),z);
+b^2*'integrate(%e^(c*z)/(a^3*c*z^2+2*a^2*b*c*z+a*b^2*c),z)
+ +(a*c*z^2-a*z-b)*%e^(c*z)/(a^2*c^2*z+a*b*c^2);
 
 /* Problem 121: NOUN */
 integrate(z*%e^(c*z)/(b+a*z)^2,z);
-'integrate((a*z-b)*%e^(c*z)/(a^3*c*z^3+3*a^2*b*c*z^2+3*a*b^2*c*z+b^3*c),z)
- +z*%e^(c*z)/(a^2*c*z^2+2*a*b*c*z+b^2*c);
+(2*a-2*b*c)*'integrate(%e^(c*z)/(a^3*c^2*z^3+3*a^2*b*c^2*z^2+3*a*b^2*c^2*z
+                                 +b^3*c^2),z)
+ +(c*z+1)*%e^(c*z)/(a^2*c^2*z^2+2*a*b*c^2*z+b^2*c^2);
 
 /* Problem 122: NOUN */
 integrate(z^2*%e^(c*z)/(b+a*z)^2,z);
-z^2*%e^(c*z)/(a^2*c*z^2+2*a*b*c*z+b^2*c)
- -2*b*'integrate(z*%e^(c*z)/(a^3*c*z^3+3*a^2*b*c*z^2+3*a*b^2*c*z+b^3*c),z);
+(a*c*z^2-2*b)*%e^(c*z)/(a^3*c^2*z^2+2*a^2*b*c^2*z+a*b^2*c^2)
+ -(4*a*b-2*b^2*c)*'integrate(%e^(c*z)/(a^4*c^2*z^3+3*a^3*b*c^2*z^2
+                                       +3*a^2*b^2*c^2*z+a*b^3*c^2),z);
 
 /* Problem 123: NOUN */
 integrate(z^3*%e^(c*z)/(b+a*z)^2,z);
-'integrate((2*b^2*c*z+2*b^2)*%e^(c*z)/(a^4*c^2*z^3+3*a^3*b*c^2*z^2
-                                       +3*a^2*b^2*c^2*z+a*b^3*c^2),z) 
-  +(a*c*z^3-a*z^2-2*b*z)*%e^(c*z)/(a^3*c^2*z^2+2*a^2*b*c^2*z+a*b^2*c^2);
+(6*a*b^2-2*b^3*c)*'integrate(%e^(c*z)/(a^5*c^2*z^3+3*a^4*b*c^2*z^2
+                                       +3*a^3*b^2*c^2*z+a^2*b^3*c^2),z)
+ +(a^2*c*z^3-a^2*z^2-2*a*b*z+2*b^2)*%e^(c*z)
+  /(a^4*c^2*z^2+2*a^3*b*c^2*z+a^2*b^2*c^2);
 
 /* Problem 124: NOUN */
 integrate(z^4*%e^(c*z)/(b+a*z)^2,z);
-'integrate(((2*a*b^2*c-2*b^3*c^2)*z-2*b^3*c-4*a*b^2)*%e^(c*z)
-            /(a^5*c^3*z^3+3*a^4*b*c^3*z^2+3*a^3*b^2*c^3*z+a^2*b^3*c^3),z)
- +(a^2*c^2*z^4-2*a^2*c*z^3+(2*a^2-2*a*b*c)*z^2+(2*b^2*c+4*a*b)*z)*%e^(c*z)
-  /(a^4*c^3*z^2+2*a^3*b*c^3*z+a^2*b^2*c^3);
+(a^3*c^2*z^4-2*a^3*c*z^3+(2*a^3-2*a^2*b*c)*z^2+(2*a*b^2*c+4*a^2*b)*z-2*b^3*c
+  +2*a*b^2)*%e^(c*z)/(a^5*c^3*z^2+2*a^4*b*c^3*z+a^3*b^2*c^3)
+ -(8*a*b^3-2*b^4*c)*'integrate(%e^(c*z)/(a^6*c^2*z^3+3*a^5*b*c^2*z^2
+                                         +3*a^4*b^2*c^2*z+a^3*b^3*c^2),z);
 
 /* ----- Involving (a*z^2+b)^-n and base %e --------------------------------- */
 
@@ -594,8 +596,8 @@ integrate(%e^(c*z)/(b+a*z^2),z);
 
 /* Problem 126: NOUN */
 integrate(z*%e^(c*z)/(b+a*z^2),z);
-'integrate((a*z^2-b)*%e^(c*z)/(a^2*c*z^4+2*a*b*c*z^2+b^2*c),z)
- +z*%e^(c*z)/(a*c*z^2+b*c);
+'integrate((2*a*z-2*b*c)*%e^(c*z)/(a^2*c^2*z^4+2*a*b*c^2*z^2+b^2*c^2),z)
+ +(c*z+1)*%e^(c*z)/(a*c^2*z^2+b*c^2);
 
 /* Problem 127: NOUN */
 integrate(%e^(c*z)/(b+a*z^2)^2,z);
@@ -603,8 +605,9 @@ integrate(%e^(c*z)/(b+a*z^2)^2,z);
 
 /* Problem 128: NOUN */
 integrate(z*%e^(c*z)/(b+a*z^2)^2,z);
-'integrate((3*a*z^2-b)*%e^(c*z)/(a^3*c*z^6+3*a^2*b*c*z^4+3*a*b^2*c*z^2+b^3*c),z)
- +z*%e^(c*z)/(a^2*c*z^4+2*a*b*c*z^2+b^2*c);
+'integrate((12*a*z-4*b*c)*%e^(c*z)/(a^3*c^2*z^6+3*a^2*b*c^2*z^4
+                                    +3*a*b^2*c^2*z^2+b^3*c^2),z)
+ +(c*z+3)*%e^(c*z)/(a^2*c^2*z^4+2*a*b*c^2*z^2+b^2*c^2);
 
 /* ----- Involving (a*z^2+b*z+c)^-n ----------------------------------------- */
 
@@ -614,9 +617,10 @@ integrate(%e^(d*z)/(c+b*z+a*z^2),z);
 
 /* Problem 130: NOUN */
 integrate(z*%e^(d*z)/(c+b*z+a*z^2),z);
-'integrate((a*z^2-c)*%e^(d*z)/(a^2*d*z^4+2*a*b*d*z^3+(2*a*c*d+b^2*d)*z^2
-                                        +2*b*c*d*z+c^2*d),z)
- +z*%e^(d*z)/(a*d*z^2+b*d*z+c*d);
+'integrate(((2*a-b*d)*z-2*c*d+b)*%e^(d*z)/(a^2*d^2*z^4+2*a*b*d^2*z^3
+                                           +(2*a*c*d^2+b^2*d^2)*z^2
+                                           +2*b*c*d^2*z+c^2*d^2),z)
+ +(d*z+1)*%e^(d*z)/(a*d^2*z^2+b*d^2*z+c*d^2);
 
 /* Problem 131: NOUN */
 integrate(%e^(d*z)/(c+b*z+a*z^2)^2,z);
@@ -624,12 +628,13 @@ integrate(%e^(d*z)/(c+b*z+a*z^2)^2,z);
 
 /* Problem 132: NOUN */
 integrate(z*%e^(d*z)/(c+b*z+a*z^2)^2,z);
-'integrate((3*a*z^2+b*z-c)*%e^(d*z)/(a^3*d*z^6+3*a^2*b*d*z^5
-                                              +(3*a^2*c*d+3*a*b^2*d)*z^4
-                                              +(6*a*b*c*d+b^3*d)*z^3
-                                              +(3*a*c^2*d+3*b^2*c*d)*z^2
-                                              +3*b*c^2*d*z+c^3*d),z)
- +z*%e^(d*z)/(a^2*d*z^4+2*a*b*d*z^3+(2*a*c*d+b^2*d)*z^2+2*b*c*d*z+c^2*d);
+'integrate(((12*a-2*b*d)*z-4*c*d+6*b)*%e^(d*z)/(a^3*d^2*z^6+3*a^2*b*d^2*z^5
+                                                +(3*a^2*c*d^2+3*a*b^2*d^2)*z^4
+                                                +(6*a*b*c*d^2+b^3*d^2)*z^3
+                                                +(3*a*c^2*d^2+3*b^2*c*d^2)*z^2
+                                                +3*b*c^2*d^2*z+c^3*d^2),z)
+ +(d*z+3)*%e^(d*z)/(a^2*d^2*z^4+2*a*b*d^2*z^3+(2*a*c*d^2+b^2*d^2)*z^2
+                    +2*b*c*d^2*z+c^2*d^2);
 
 /* ----- Involving (a*z*b)^w and base %e ------------------------------------ */
 
@@ -7186,6 +7191,17 @@ risch(diff(x*%e^(1/x)*%e^(x*%e^(-1/x)), x), x);
 
 risch(diff((x+1)*%e^(1/x)*%e^(x*%e^(-1/x))/x, x), x);
 (%e^(%e^-(1/x)*x+1/x)*(x+1))/x$
+
+
+/* Bug #5272: "RISCHEXPVAR answers with the pair its walk reached, not the one before it" */
+
+block([L],
+  L : [%e^(1/(x^2+1))*(x+1)/(x^2+1)^2,
+       x^2*%e^(c*x)/(b+a*x),
+       x^4*%e^(c*x)/(b+a*x)^2,
+       x*%e^(d*x)/(c+b*x+a*x^2)^2],
+  map(lambda([f], ratsimp(diff(risch(f, x), x) - f)), L));
+[0, 0, 0, 0]$
 
 
 /**************************************/

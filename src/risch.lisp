@@ -833,7 +833,7 @@
 		  #'(lambda ()
 		      (ratpl (ratti risch-alphar (polcoef r risch-beta risch-var) t)
 			     (polcoef s risch-gamma risch-var))))))
-     (setq risch-y 0)
+     (setq risch-y (rzero))
    loop
      (setq yn (polcoef (ratnumerator tt) (if (zerop risch-alphar) risch-gamma k) risch-var)
       yd (r* (ratdenominator tt) ;DENOM MAY BE 0
@@ -884,13 +884,24 @@
 	       (return (list (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n)) p)
 			     (erfarg2 (r* n (get expg 'rischarg))
 				      ttemp risch-ratform risch-intvar risch-mainvar))))
+	      ;; With nothing accumulated in RISCH-Y, the last step alone is a
+	      ;; single integration by parts, which usually leaves an integral no
+	      ;; easier than the one it started from. Hand that one back unevaluated
+	      ;; instead of splitting it.
+	      ((rzerop risch-y)
+	       (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar
+				 risch-mainvar)))
 	      (t
+	       ;; YTEMP and TTEMP are the pair the last step reached, one
+	       ;; term further along than RISCH-Y and TT and just as
+	       ;; consistent. TTEMP is already divided by LCM: the
+	       ;; ERFARG2 clause above divides it in its own test.
 	       (return
 		 (cxerfarg
-		  (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+		  (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n)) p)
 		  expg
 		  n
-		  (ratqu tt lcm)
+		  ttemp
 		  risch-ratform
 		  risch-intvar
 		  risch-mainvar))))))
