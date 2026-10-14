@@ -203,3 +203,13 @@ block([e : (%i*a*x+1)^(3/2)/(a^2*c^(3/2)*x^2*(1-%i*a*x)^(3/2)*sqrt(a^2*x^2+1)
            +c^(3/2)*(1-%i*a*x)^(3/2)*sqrt(a^2*x^2+1))],
   ratsimp(block([algebraic : true, gcd : subres], factor(e)) - e));
 0$
+
+
+/* Bug #5676: "factor() returns a multiple of some polynomials with %i" */
+
+[factor(expand(((3+4*%i)*x+1)*(2*y+x))),
+ factor(expand((x-%i)*((2*x+%i)*y+2*x+a))),
+ block([algebraic : true, gcd : subres],
+   ratsimp((x-%i)*((2*x+%i)*y+2*x+a)/(2*y+2*%i)))];
+[(4*%i*x+3*x+1)*(2*y+x), (x-%i)*(2*x*y+%i*y+2*x+a),
+ ((2*x^2-%i*x+1)*y+2*x^2+(a-2*%i)*x-%i*a)/(2*y+2*%i)]$

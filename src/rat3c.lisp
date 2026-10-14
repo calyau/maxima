@@ -327,10 +327,17 @@
   (cond ((pcoefp x) (list x 1))
 	((null (p-red x))
 	 (list (p-lc x) (make-poly (p-var x) (p-le x) 1)))
-	(t (let ((u (contsort (cdr x))) v)
+	(t (let ((u (contsort (cdr x))) v w)
 	     (setq u (oldcontent2 (cdr u) (car u))
-		   v (cond ($algebraic (car (rquotient x u)))
-			   (t (pcquotient x u))))
+		   v (cond ($algebraic (rquotient x u))
+			   (t (cons (pcquotient x u) 1))))
+	     ;; With algebraic numbers, U can be a multiple of the content
+	     ;; and X/U a fraction. Then U is divided by the denominator if
+	     ;; that is exact, else X is kept whole.
+	     (cond ((equal (cdr v) 1) (setq v (car v)))
+		   ((setq w (pquotientchk-safe u (cdr v)))
+		    (setq u w v (car v)))
+		   (t (setq u 1 v x)))
 	     (cond ((pminusp v) (list (pminus u) (pminus v)))
 		   (t (list u v)))))))
 
