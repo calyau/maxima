@@ -170,9 +170,11 @@
      (return (list g a b))))
 
 (defun makprodg (p sw)
-  (if (pcoefp p)
-      p
-      (car (makprod p sw))))
+  (cond ((pcoefp p) p)
+        ;; A monomial such as -%i needs a kernel of its own, since its main
+        ;; variable alone, which MAKPROD would give, drops the coefficient.
+        ((and (pureprod p) (not (equal p (pget (car p))))) (maksym p))
+        (t (car (makprod p sw)))))
 
 (defun dopgcdcofacts (x y)
   (let (($gcd $gcd)

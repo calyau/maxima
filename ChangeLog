@@ -218,6 +218,7 @@ Bug fixes for numbered bugs:
 * \#5666 is(abs(z) >= 0) returns false when z contains %i
 * \#5667 constantp(log(2)) returns false once log has tellsimp rules
 * \#5669 bfloat(%e^-1)^0.5b0 hangs for some values of fpprec
+* \#5674 factor() returns a wrong sign or hangs for some quotients with %i and square roots
 
 Bug fixes for unnumbered bugs:
 ------------------------------

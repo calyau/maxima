@@ -180,3 +180,18 @@ ratsimp(expand((y^2+1)*(x+2))/expand((y^2+x)*(x+2)));
 
 block([gcd : 'mod, x, y], gcd(expand((y + 1) * (y*x + 2)), y^2 - 1));
 y+1$
+
+
+/* Bug #5674: "factor() returns a wrong sign or hangs for some quotients with %i and square roots" */
+
+block([P : %i*x*sqrt(1-x)*sqrt(x+1)-x^2+1, gcd : subres],
+  factor(expand(-%i*P)/P));
+-%i$
+
+factor((x^2*sqrt(1-x)*sqrt(x+1)+%i*x^3-%i*x)/(%i*x*(x^2-1)*sqrt(1-x)*sqrt(x+1)-(x^2-1)^2)), gcd : subres;
+-%i*x/((x-1)*(x+1))$
+
+block([N : x^2*sqrt(1-x)*sqrt(x+1)+%i*x^3-%i*x,
+       D : %i*x*(x^2-1)*sqrt(1-x)*sqrt(x+1)-(x^2-1)^2],
+  ratsimp(block([gcd : subres], factor(1/N+1/D))*N*D/(N+D)));
+1$
