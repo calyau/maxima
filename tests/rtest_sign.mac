@@ -3107,6 +3107,25 @@ block([a, b, c, d, e, f, g],
 [[], [], []]$
 
 
+/* Bug #5668: "limit(sqrt(%e^x-1), x, 2) causes stack overflow"
+   (not actually a limit() bug) */
+
+block([r, x, y],
+  local(x, y),
+  assume(x > 0, equal(y, sqrt(1/x^2-2))),
+  [radcan(sqrt(1/x^2-2)), sign(x^2-1/2)]);
+[sqrt(1-2*x^2)/x, pnz]$
+
+block([r, x, y],
+  local(x, y),
+  assume(x > 0, x < 1, equal(y, sqrt(1/x^2-2))),
+  radcan(sqrt(1/x^2-2)));
+sqrt(1-2*x^2)/x$
+
+[block(local(x), assume(x > 0), sign(%e^x-%e^2)), limit(sqrt(%e^x-1), x, 2)];
+[pnz, sqrt(%e^2-1)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

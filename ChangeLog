@@ -217,6 +217,7 @@ Bug fixes for numbered bugs:
 * \#5665 integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap
 * \#5666 is(abs(z) >= 0) returns false when z contains %i
 * \#5667 constantp(log(2)) returns false once log has tellsimp rules
+* \#5668 limit(sqrt(%e^x-1), x, 2) causes stack overflow
 * \#5669 bfloat(%e^-1)^0.5b0 hangs for some values of fpprec
 * \#5674 factor() returns a wrong sign or hangs for some quotients with %i and square roots
 * \#5675 factor() and integrate() hang when %i is a common factor

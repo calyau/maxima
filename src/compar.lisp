@@ -1712,11 +1712,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (setq odds (ncons x) evens nil minus nil))
     retval))
 
+(defvar *in-expt-of-base* nil
+  "T inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
+
 (defun expt-of-base (expr q)
   "If EXPR is a power of base Q (or EXPR = Q, then the exponent is implicitly 1),
   returns the exponent (1 or k). Otherwise returns NIL.
   Equality of EXPR's base and Q or EXPR and Q is checked via MEQP."
-  (let ($ratprint)
+  (let ($ratprint (*in-expt-of-base* t))
     (if (mexptp expr)
       (if (eq t (meqp (cadr expr) q))
         (caddr expr))
@@ -1743,6 +1746,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; Do NOT apply when Spos is itself a power of Qpos (e.g. S = Q):
 			;; The reduction would just toggle the exponent R <-> 1/R and recurse forever.
 			;; That same-base case is handled by the exponent-comparison rule further below.
+			(not *in-expt-of-base*) ; prevent endless recursion
 			(not (expt-of-base xrhs (cadr xlhs)))
 			(eq (sign* (sub (cadr xlhs)
 					(power xrhs (div 1 (caddr xlhs)))))
@@ -1825,7 +1829,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;;     Q > 1 => sign(m - n),
     ;; 0 < Q < 1 => sign(n - m).
     ;; Resolves e.g. sign(x^a - x) = pos for x > 1, a > 1, and always terminates.
-    (when (null sgn)
+    (when (and (null sgn)
+               (not *in-expt-of-base*)) ; prevent endless recursion
       (let ((q (cond ((mexptp xlhs) (cadr xlhs))
                      ((mexptp xrhs) (cadr xrhs)))))
         (when q
