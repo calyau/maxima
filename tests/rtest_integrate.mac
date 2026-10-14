@@ -7154,6 +7154,22 @@ block([x],
 true$
 
 
+/* Bug #5269: "risch loses the constant of integration in an exponential tower" */
+
+risch(diff((3*x-2)*%e^(x*%e^(-1/x)), x), x);
+%e^(%e^-(1/x)*x)*(3*x-2);
+
+risch(diff((x^2+x+7)*%e^(x*%e^(-1/x)), x), x);
+%e^(%e^-(1/x)*x)*(x^2+x+7);
+
+block([f, F, dF],
+  f : diff(%e^(%e^-(1/x)*x-1/x)*(x-%e^(1/x)), x),
+  F : risch(f, x),
+  dF : diff(F, x),
+  if freeof('integrate, F) then ratsimp(dF - f) else 'fail);
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

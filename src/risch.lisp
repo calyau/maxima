@@ -967,7 +967,8 @@
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta
-	 risch-lians)
+	 risch-lians
+	 constmu secondpass firsty firsttt startmu starttt)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
 		(pzerop (car a)))
@@ -1090,11 +1091,19 @@
    recurse
      (setq rbeta (polcoef r risch-beta risch-var))
      (setq risch-y '(0 . 1))
+     (setq startmu mu)
+     (setq starttt tt)
    recurseloop
      (setq f (r+ (ratqu (polcoef s risch-gamma risch-var) rbeta)
 		 (if expexpflag
 		     (r* mu (spderivative eta risch-mainvar))
 		     0)))
+     ;; F is affine in MU with slope ETA', so for an exponential over an
+     ;; exponential it vanishes at no more than one MU. There the coefficient
+     ;; equation is the quadrature Y' = A, and EXPPOLYCONTROL answers with one
+     ;; of its solutions. The others differ from that one by a constant.
+     (when (and expexpflag (null constmu) (rzerop f))
+       (setq constmu mu))
      (setq ymu (exppolycontrol nil
 			       f
 			       (ratqu (polcoef (ratnumerator tt)
@@ -1109,12 +1118,9 @@
 			       risch-degree
 			       risch-mainvar))
      (when (null ymu)
-       (return (cond ((null flag)
-		      nil)
-		     (t
-		      (return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-					expg n (ratqu tt lcm)
-					risch-ratform risch-intvar risch-mainvar))))))
+       (go recursefail))
+     (when (and secondpass (eql mu constmu))
+       (setq ymu (r+ ymu (cons 1 1))))
      (setq risch-y (r+ risch-y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
@@ -1123,21 +1129,49 @@
      (cond
        ((not (< mu 0))
 	(go recurseloop))
-       ((not flag)
-	(return (cond ((rzerop tt)
-		       (ratqu risch-y p))
-		      (t nil))))
        ((rzerop tt)
-	(return (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-		      '(0))))
-       (t
-	(return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
-			  expg
-			  n
-			  (ratqu tt lcm)
-			  risch-ratform
-			  risch-intvar
-			  risch-mainvar))))
+	(go recursedone))
+       ((and constmu (null secondpass))
+	;; The constant left open at CONSTMU is fixed by one of the coefficient
+	;; equations below it, which this walk has already passed. Walk again
+	;; with that constant one higher.
+	(setq firsty risch-y)
+	(setq firsttt tt)
+	(setq secondpass t)
+	(setq risch-y '(0 . 1))
+	(setq mu startmu)
+	(setq tt starttt)
+	(go recurseloop))
+       (secondpass
+	;; Both walks keep R*Y' + S*Y + TT equal to STARTTT, so the combination
+	;; with a constant CC leaves FIRSTTT - CC*SPREAD = 0 and solves the
+	;; equation.
+	(let* ((spread (r- firsttt tt))
+	       (cc (and (not (rzerop spread))
+			(ratqu firsttt spread))))
+	  (when (and cc (risch-constp cc risch-mainvar))
+	    (setq risch-y (r+ firsty (r* cc (r- risch-y firsty))))
+	    (go recursedone)))))
+   recursefail
+     ;; A second walk that came to nothing leaves the first walk's answer.
+     (when secondpass
+       (setq risch-y firsty)
+       (setq tt firsttt))
+     (return (cond ((null flag)
+		    nil)
+		   (t
+		    (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+			      expg
+			      n
+			      (ratqu tt lcm)
+			      risch-ratform
+			      risch-intvar
+			      risch-mainvar))))
+   recursedone
+     (return (if (null flag)
+		 (ratqu risch-y p)
+		 (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
+		       '(0))))
    lsacall
      (setq rrmu mu)
    muloop

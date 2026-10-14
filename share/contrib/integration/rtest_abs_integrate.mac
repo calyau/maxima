@@ -841,10 +841,12 @@ integrate(abs(cos(x)),x,0,%pi);
 (ii : integrate(diff((tan(x)+x)*exp(tan(x)),x),x),0);
 0$
 
-/* of course a non-nounform is better, but a nounform is better
-than an infinite loop.*/
-is(inpart(ii,0)= nounify('integrate));
-true$
+block([f, F, dF],
+  f : diff((tan(x)+x)*exp(tan(x)), x),
+  F : ii,
+  dF : diff(F, x),
+  if freeof('integrate, F) then ratsimp(exponentialize(dF - f)) else 'fail);
+0$
 
 (remvalue(ii),0);
 0$ 
