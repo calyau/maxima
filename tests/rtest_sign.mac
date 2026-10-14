@@ -3101,6 +3101,12 @@ block([a, b, c, d, e, f, g],
 [true, true, unknown, unknown]$
 
 
+/* Bug #5517: "sign(inf^2-inf) returns neg and is(inf^2-inf>0) returns false" */
+
+[errcatch(sign(inf^2 - inf)), errcatch(sign(exp(inf) - inf)), errcatch(is(inf^2 - inf > 0))];
+[[], [], []]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
