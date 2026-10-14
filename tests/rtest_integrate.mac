@@ -4252,7 +4252,7 @@ expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(c*z))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*c*u*sqrt(z)+b)^2
                                                            /(4*c*u))*u
-                                        *sqrt((2*c*u*sqrt(z)+b)^2/(c*u)))
+                                        *sqrt(-(2*c*u*sqrt(z)+b)^2/(c*u)))
                            /(-(2*c*u*sqrt(z)+b)^2/(c*u))^((j+i+1)/2),i,0,j),j,
                  0,n))*(%e^(c*z))^u*%e^(-c*u*z-b^2/(4*c*u))
  /(c^(2*(n+1))*u^(2*(n+1)))));
@@ -4284,7 +4284,7 @@ expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(c*z))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*c*u*sqrt(z)+b)^2
                                                            /(4*c*u))*u
-                                        *sqrt((2*c*u*sqrt(z)+b)^2/(c*u)))
+                                        *sqrt(-(2*c*u*sqrt(z)+b)^2/(c*u)))
                            /(-(2*c*u*sqrt(z)+b)^2/(c*u))^((j+i+1)/2),i,0,j),j,
                  0,n))*(%e^(c*z))^u*%e^(-c*u*z-b^2/(4*c*u)+e)
  /(c^(2*(n+1))*u^(2*(n+1)))));
@@ -4319,7 +4319,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(c*z))^u,z))-
                                                           ^2
                                                           /(4*(c*u+d)))
                                        *(c*u+d)
-                                       *sqrt((2*(c*u+d)*sqrt(z)+b)^2/(c*u+d)))
+                                       *sqrt((2*(c*u+d)*sqrt(z)+b)^2/(-c*u-d)))
                            /((2*(c*u+d)*sqrt(z)+b)^2/(-c*u-d))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(c*z))^u
           *%e^(-c*u*z-b^2/(4*(c*u+d)))
@@ -4355,7 +4355,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(c*z))^u,z))-
                                                           ^2
                                                           /(4*(c*u+d)))
                                        *(c*u+d)
-                                       *sqrt((2*(c*u+d)*sqrt(z)+b)^2/(c*u+d)))
+                                       *sqrt((2*(c*u+d)*sqrt(z)+b)^2/(-c*u-d)))
                            /((2*(c*u+d)*sqrt(z)+b)^2/(-c*u-d))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(c*z))^u
           *%e^(-c*u*z-b^2/(4*(c*u+d))+e)
@@ -4388,7 +4388,7 @@ expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(g+f*z))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*f*u*sqrt(z)+b)^2
                                                            /(4*f*u))*u
-                                        *sqrt((2*f*u*sqrt(z)+b)^2/(f*u)))
+                                        *sqrt(-(2*f*u*sqrt(z)+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+b)^2/(f*u))^((j+i+1)/2),i,0,j),j,
                  0,n))*(%e^(f*z+g))^u*%e^(-f*u*z-b^2/(4*f*u))
  /(f^(2*(n+1))*u^(2*(n+1)))));
@@ -4420,7 +4420,7 @@ expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(g+f*z))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*f*u*sqrt(z)+b)^2
                                                            /(4*f*u))*u
-                                        *sqrt((2*f*u*sqrt(z)+b)^2/(f*u)))
+                                        *sqrt(-(2*f*u*sqrt(z)+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+b)^2/(f*u))^((j+i+1)/2),i,0,j),j,
                  0,n))*(%e^(f*z+g))^u*%e^(-f*u*z-b^2/(4*f*u)+e)
  /(f^(2*(n+1))*u^(2*(n+1)))));
@@ -4455,7 +4455,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+f*z))^u,z))-
                                                           ^2
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
-                                       *sqrt((2*(f*u+d)*sqrt(z)+b)^2/(f*u+d)))
+                                       *sqrt((2*(f*u+d)*sqrt(z)+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+b)^2/(-f*u-d))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(f*z+g))^u
           *%e^(-f*u*z-b^2/(4*(f*u+d)))
@@ -4491,7 +4491,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z))^u,z))-
                                                           ^2
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
-                                       *sqrt((2*(f*u+d)*sqrt(z)+b)^2/(f*u+d)))
+                                       *sqrt((2*(f*u+d)*sqrt(z)+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+b)^2/(-f*u-d))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(f*z+g))^u
           *%e^(-f*u*z-b^2/(4*(f*u+d))+e)
@@ -4523,7 +4523,7 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(c*sqrt(z)))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*d*sqrt(z)+c*u)^2
                                                            /(4*d))
-                                        *sqrt((2*d*sqrt(z)+c*u)^2/d))
+                                        *sqrt(-(2*d*sqrt(z)+c*u)^2/d))
                            /(-(2*d*sqrt(z)+c*u)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)))^u*%e^(-c*u*sqrt(z)-c^2*u^2/(4*d))
  /d^(2*(n+1))));
@@ -4554,7 +4554,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(c*sqrt(z)))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*d*sqrt(z)+c*u)^2
                                                            /(4*d))
-                                        *sqrt((2*d*sqrt(z)+c*u)^2/d))
+                                        *sqrt(-(2*d*sqrt(z)+c*u)^2/d))
                            /(-(2*d*sqrt(z)+c*u)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)))^u*%e^(-c*u*sqrt(z)-c^2*u^2/(4*d)+e)
  /d^(2*(n+1))));
@@ -4631,7 +4631,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^u,z))-
                                                          -(2*d*sqrt(z)+c*u+b)
                                                           ^2
                                                           /(4*d))
-                                       *sqrt((2*d*sqrt(z)+c*u+b)^2/d))
+                                       *sqrt(-(2*d*sqrt(z)+c*u+b)^2/d))
                            /(-(2*d*sqrt(z)+c*u+b)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)))^u*%e^(-c*u*sqrt(z)-(c*u+b)^2/(4*d))
  /d^(2*(n+1))));
@@ -4665,7 +4665,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^u,z))-
                                                          -(2*d*sqrt(z)+c*u+b)
                                                           ^2
                                                           /(4*d))
-                                       *sqrt((2*d*sqrt(z)+c*u+b)^2/d))
+                                       *sqrt(-(2*d*sqrt(z)+c*u+b)^2/d))
                            /(-(2*d*sqrt(z)+c*u+b)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)))^u*%e^(-c*u*sqrt(z)-(c*u+b)^2/(4*d)+e)
  /d^(2*(n+1))));
@@ -4696,7 +4696,7 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+c*sqrt(z)))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*d*sqrt(z)+c*u)^2
                                                            /(4*d))
-                                        *sqrt((2*d*sqrt(z)+c*u)^2/d))
+                                        *sqrt(-(2*d*sqrt(z)+c*u)^2/d))
                            /(-(2*d*sqrt(z)+c*u)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)+g))^u*%e^(-c*u*sqrt(z)-c^2*u^2/(4*d))
  /d^(2*(n+1))));
@@ -4727,7 +4727,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+c*sqrt(z)))^u,z))-
                                         *gamma_incomplete((j+i+2)/2,
                                                           -(2*d*sqrt(z)+c*u)^2
                                                            /(4*d))
-                                        *sqrt((2*d*sqrt(z)+c*u)^2/d))
+                                        *sqrt(-(2*d*sqrt(z)+c*u)^2/d))
                            /(-(2*d*sqrt(z)+c*u)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)+g))^u*%e^(-c*u*sqrt(z)-c^2*u^2/(4*d)+e)
  /d^(2*(n+1))));
@@ -4805,7 +4805,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z))-
                                                          -(2*d*sqrt(z)+c*u+b)
                                                           ^2
                                                           /(4*d))
-                                       *sqrt((2*d*sqrt(z)+c*u+b)^2/d))
+                                       *sqrt(-(2*d*sqrt(z)+c*u+b)^2/d))
                            /(-(2*d*sqrt(z)+c*u+b)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)+g))^u*%e^(-c*u*sqrt(z)-(c*u+b)^2/(4*d))
  /d^(2*(n+1))));
@@ -4839,7 +4839,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z))-
                                                          -(2*d*sqrt(z)+c*u+b)
                                                           ^2
                                                           /(4*d))
-                                       *sqrt((2*d*sqrt(z)+c*u+b)^2/d))
+                                       *sqrt(-(2*d*sqrt(z)+c*u+b)^2/d))
                            /(-(2*d*sqrt(z)+c*u+b)^2/d)^((j+i+1)/2),i,0,j),j,0,
                  n))*(%e^(c*sqrt(z)+g))^u*%e^(-c*u*sqrt(z)-(c*u+b)^2/(4*d)+e)
  /d^(2*(n+1))));
@@ -4877,7 +4877,7 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d))^((j+i+1)/2),
                           i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-c^2*u^2/(4*(f*u+d)))
@@ -4916,7 +4916,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d))^((j+i+1)/2),
                           i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-c^2*u^2/(4*(f*u+d))+e)
@@ -4954,7 +4954,7 @@ expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           +c*u+b)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u))^((j+i+1)/2),i,0,
                           j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*f*u))
@@ -4992,7 +4992,7 @@ expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           +c*u+b)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u))^((j+i+1)/2),i,0,
                           j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*f*u)+e)
@@ -5031,7 +5031,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*(f*u+d)))
@@ -5070,7 +5070,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*(f*u+d))+e)
@@ -5109,7 +5109,7 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d))^((j+i+1)/2),
                           i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)+g))^u
           *%e^(-f*u*z-c*u*sqrt(z)-c^2*u^2/(4*(f*u+d)))
@@ -5148,7 +5148,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u)^2/(-f*u-d))^((j+i+1)/2),
                           i,0,j),j,0,n))*(%e^(f*z+c*sqrt(z)+g))^u
           *%e^(-f*u*z-c*u*sqrt(z)-c^2*u^2/(4*(f*u+d))+e)
@@ -5186,7 +5186,7 @@ expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                                           +c*u+b)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u))^((j+i+1)/2),i,0,
                           j),j,0,n))*(%e^(f*z+c*sqrt(z)+g))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*f*u))
@@ -5224,7 +5224,7 @@ expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                                           +c*u+b)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b)^2/(f*u))^((j+i+1)/2),i,0,
                           j),j,0,n))*(%e^(f*z+c*sqrt(z)+g))^u
           *%e^(-f*u*z-c*u*sqrt(z)-(c*u+b)^2/(4*f*u)+e)
@@ -5263,7 +5263,7 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d))
                             ^((j+i+1)/2),i,0,j),j,0,n))
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5303,7 +5303,7 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z
                                                           /(4*(f*u+d)))
                                        *(f*u+d)
                                        *sqrt(
-                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(f*u+d)))
+                                        (2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d)))
                            /((2*(f*u+d)*sqrt(z)+c*u+b)^2/(-f*u-d))
                             ^((j+i+1)/2),i,0,j),j,0,n))
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5381,7 +5381,7 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(c*sqrt(z)))^u,z))-
                                                           -(2*d*q*sqrt(z)+c*u)
                                                            ^2
                                                            /(4*d*q))*q
-                                        *sqrt((2*d*q*sqrt(z)+c*u)^2/(d*q)))
+                                        *sqrt(-(2*d*q*sqrt(z)+c*u)^2/(d*q)))
                            /(-(2*d*q*sqrt(z)+c*u)^2/(d*q))^((j+i+1)/2),i,0,j),
                  j,0,n))*(%e^(c*sqrt(z)))^u*(%e^(d*z))^q
           *%e^(-d*q*z-c*u*sqrt(z)-c^2*u^2/(4*d*q))
@@ -5416,7 +5416,7 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(c*sqrt(z)))^u,z))-
                                                           -(2*d*q*sqrt(z)+c*u)
                                                            ^2
                                                            /(4*d*q))*q
-                                        *sqrt((2*d*q*sqrt(z)+c*u)^2/(d*q)))
+                                        *sqrt(-(2*d*q*sqrt(z)+c*u)^2/(d*q)))
                            /(-(2*d*q*sqrt(z)+c*u)^2/(d*q))^((j+i+1)/2),i,0,j),
                  j,0,n))*(%e^(c*sqrt(z)))^u*(%e^(d*z+e))^q
           *%e^(-d*q*z-c*u*sqrt(z)-c^2*u^2/(4*d*q))
@@ -5473,7 +5473,7 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+c*sqrt(z)))^u,z))-
                                                           -(2*d*q*sqrt(z)+c*u)
                                                            ^2
                                                            /(4*d*q))*q
-                                        *sqrt((2*d*q*sqrt(z)+c*u)^2/(d*q)))
+                                        *sqrt(-(2*d*q*sqrt(z)+c*u)^2/(d*q)))
                            /(-(2*d*q*sqrt(z)+c*u)^2/(d*q))^((j+i+1)/2),i,0,j),
                  j,0,n))*(%e^(c*sqrt(z)+g))^u*(%e^(d*z))^q
           *%e^(-d*q*z-c*u*sqrt(z)-c^2*u^2/(4*d*q))
@@ -5508,7 +5508,7 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+c*sqrt(z)))^u,z))-
                                                           -(2*d*q*sqrt(z)+c*u)
                                                            ^2
                                                            /(4*d*q))*q
-                                        *sqrt((2*d*q*sqrt(z)+c*u)^2/(d*q)))
+                                        *sqrt(-(2*d*q*sqrt(z)+c*u)^2/(d*q)))
                            /(-(2*d*q*sqrt(z)+c*u)^2/(d*q))^((j+i+1)/2),i,0,j),
                  j,0,n))*(%e^(c*sqrt(z)+g))^u*(%e^(d*z+e))^q
           *%e^(-d*q*z-c*u*sqrt(z)-c^2*u^2/(4*d*q))
@@ -5593,7 +5593,7 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z))^q
           *(%e^(f*z+c*sqrt(z)))^u
@@ -5635,7 +5635,7 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z+e))^q
           *(%e^(f*z+c*sqrt(z)))^u
@@ -5676,7 +5676,7 @@ expand(niceindices(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
                                                           +c*u+b*q)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(b*sqrt(z)))^q
           *(%e^(f*z+c*sqrt(z)))^u
@@ -5717,7 +5717,7 @@ expand(niceindices(integrate(z^n*(%e^(e+b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z))
                                                           +c*u+b*q)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(b*sqrt(z)+e))^q
           *(%e^(f*z+c*sqrt(z)))^u
@@ -5760,7 +5760,7 @@ expand(niceindices(integrate(z^n*(%e^(d*z+b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z+b*sqrt(z)))^q
           *(%e^(f*z+c*sqrt(z)))^u
@@ -5802,7 +5802,7 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z))^q
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5844,7 +5844,7 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z+e))^q
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5885,7 +5885,7 @@ expand(niceindices(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))
                                                           +c*u+b*q)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(b*sqrt(z)))^q
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5926,7 +5926,7 @@ expand(niceindices(integrate(z^n*(%e^(e+b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z
                                                           +c*u+b*q)
                                                           ^2
                                                           /(4*f*u))*u
-                                       *sqrt((2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
+                                       *sqrt(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u)))
                            /(-(2*f*u*sqrt(z)+c*u+b*q)^2/(f*u))^((j+i+1)/2),i,
                           0,j),j,0,n))*(%e^(b*sqrt(z)+e))^q
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -5970,7 +5970,7 @@ expand(
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))*(%e^(d*z+b*sqrt(z)))^q
           *(%e^(f*z+c*sqrt(z)+g))^u
@@ -6016,7 +6016,7 @@ expand(
                                        *(f*u+d*q)
                                        *sqrt(
                                         (2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2
-                                         /(f*u+d*q)))
+                                         /(-f*u-d*q)))
                            /((2*(f*u+d*q)*sqrt(z)+c*u+b*q)^2/(-f*u-d*q))
                             ^((j+i+1)/2),i,0,j),j,0,n))
           *(%e^(d*z+b*sqrt(z)+e))^q*(%e^(f*z+c*sqrt(z)+g))^u
@@ -7132,6 +7132,18 @@ block([F, G, n],
   F : ev(subst(n = 1, integrate(x^n*%e^(sqrt(x)-x), x)), nouns, simpsum),
   G : integrate(x*%e^(sqrt(x)-x), x),
   is(abs(float(subst(x = 3, F - G) - subst(x = 2, F - G))) < 1e-10));
+true$
+
+
+/* Bug #5521: "integrate(x^n*(%e^(-x))^q*(%e^(sqrt(x)))^u,x) (type 10-1) is complex for a real integrand" */
+
+block([F, G, n, q, u, domain : complex],
+  local(n),
+  declare(n, integer),
+  assume(n > 0),
+  F : ev(subst([n = 1, q = 1/2, u = 1/3], integrate(x^n*(%e^(-x))^q*(%e^(sqrt(x)))^u, x)), nouns, simpsum),
+  G : first(quad_qags(x*exp(sqrt(x)/3-x/2), x, 2, 3)),
+  is(abs(float(rectform(subst(x = 3, F) - subst(x = 2, F))) - G) < 1e-10));
 true$
 
 

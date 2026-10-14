@@ -160,6 +160,7 @@ Bug fixes for numbered bugs:
 * \#5507 resultant(x^3+1, x, x) gives 1 instead of -1: wrong sign when the second polynomial has a factor c*x^k
 * \#5508 risch() and integrate() return wrong antiderivatives for some exp(rational) integrands
 * \#5520 integrate(x^3.0*(1+x^2)^2,x) signals a Lisp error; integrate(sqrt(x)*(1+x)^2.0,x) is wrong
+* \#5521 integrate(x^n*(%e^(-x))^q*(%e^(sqrt(x)))^u,x) (type 10-1) is complex for a real integrand
 * \#5522 integrate(x^n*%e^(sqrt(x)-x),x) with n a positive integer (type 6) is 2^n times too large
 * \#5523 integrate(x^n*(%e^(sqrt(x)-x))^u,x) (type 6-1) has an extra factor %e^(2*u*(sqrt(x)-x))
 * \#5524 integrate(sin(2.0*x)*tan(x),x) exhausts the control stack

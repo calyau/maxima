@@ -3303,7 +3303,7 @@
                                                             (power var2 (div 1 2))
                                                             dq+fu))
                                                   2)
-                                           (mul 1 dq+fu))
+                                           (mul -1 dq+fu))
                                       (div 1 2))
                                dq+fu
                                (take '(%gamma_incomplete)
