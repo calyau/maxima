@@ -954,7 +954,7 @@ z^3*%e^(a*z^2+b*z)$
 
 /* Problem 204: NEW 6 */
 niceindices(niceindices(integrate(z^n*d^(b*z+a*sqrt(z)),z)));
-log(d)^(-2*(n+1)+2*n+1)*2^(-n-1)
+log(d)^(-2*(n+1)+2*n+1)*2^(-2*n-1)
                        *('sum(4^j*binomial(n,j)
                                  *'sum(a^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                                   *(2*b*sqrt(z)+a)^(j+i)
@@ -991,7 +991,7 @@ z^3*d^(b*z+a*sqrt(z));
 
 /* Problem 208: NEW 6 */
 niceindices(niceindices(integrate(z^n*%e^(b*z+a*sqrt(z)),z)));
-%e^-(a^2/(4*b))*2^(-n-1)
+%e^-(a^2/(4*b))*2^(-2*n-1)
                *('sum(4^j*binomial(n,j)
                          *'sum(a^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                           *(2*b*sqrt(z)+a)^(j+i)
@@ -1040,7 +1040,7 @@ niceindices(integrate(z^n*%e^(c+b*z+a*z^2),z));
 
 /* Problem 214: NEW 6 */
 niceindices(niceindices(integrate(z^n*d^(c+b*z+a*sqrt(z)),z)));
-d^(c-a^2/(4*b))*log(d)^(-2*(n+1)+2*n+1)*2^(-n-1)
+d^(c-a^2/(4*b))*log(d)^(-2*(n+1)+2*n+1)*2^(-2*n-1)
                *('sum(4^j*binomial(n,j)
                          *'sum(a^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                           *(2*b*sqrt(z)+a)^(j+i)
@@ -1061,7 +1061,7 @@ d^(c-a^2/(4*b))*log(d)^(-2*(n+1)+2*n+1)*2^(-n-1)
 
 /* Problem 215: NEW 6 */
 niceindices(niceindices(integrate(z^n*%e^(c+b*z+a*sqrt(z)),z)));
-%e^(c-a^2/(4*b))*2^(-n-1)
+%e^(c-a^2/(4*b))*2^(-2*n-1)
                 *('sum(4^j*binomial(n,j)
                           *'sum(a^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                            *(2*b*sqrt(z)+a)^(j+i)
@@ -7120,6 +7120,18 @@ block([F, G, n, u, domain : complex],
   F : ev(subst([n = 1, u = 1/2], integrate(x^n*(%e^(sqrt(x)-x))^u, x)), nouns, simpsum),
   G : first(quad_qags(x*exp((sqrt(x)-x)/2), x, 2, 3)),
   is(abs(float(rectform(subst(x = 3, F) - subst(x = 2, F))) - G) < 1e-10));
+true$
+
+
+/* Bug #5522: "integrate(x^n*%e^(sqrt(x)-x),x) with n a positive integer (type 6) is 2^n times too large" */
+
+block([F, G, n],
+  local(n),
+  declare(n, integer),
+  assume(n > 0),
+  F : ev(subst(n = 1, integrate(x^n*%e^(sqrt(x)-x), x)), nouns, simpsum),
+  G : integrate(x*%e^(sqrt(x)-x), x),
+  is(abs(float(subst(x = 3, F - G) - subst(x = 2, F - G))) < 1e-10));
 true$
 
 

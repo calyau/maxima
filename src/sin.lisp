@@ -2748,7 +2748,7 @@
 
      (mul
       const
-      (power 2 (mul -1 (add n 1)))
+      (power 2 (mul -1 (add (mul 2 n) 1)))
       (power d (sub c (div (mul a a) (mul 4 b))))
       (power (mul b ($log d)) (mul -2 (add n 1)))
       (let ((index1 (gensumindex))
