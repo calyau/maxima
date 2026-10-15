@@ -914,8 +914,14 @@
 
 ;;; Do substitutions for special symbols.
 (defun nmr (a)
-  (unless (free a '$zeroa) (setq a ($limit a '$zeroa 0 '$plus)))
-  (unless (free a '$zerob) (setq a ($limit a '$zerob 0 '$minus)))
+  ;; zeroa and zerob are constants, which limit() rejects as its variable,
+  ;; so take these limits in a fresh variable.
+  (unless (free a '$zeroa)
+    (let ((v (gensym)))
+      (setq a ($limit (maxima-substitute v '$zeroa a) v 0 '$plus))))
+  (unless (free a '$zerob)
+    (let ((v (gensym)))
+      (setq a ($limit (maxima-substitute v '$zerob a) v 0 '$minus))))
   (unless (free a 'z**) (setq a ($limit a 'z** 0 '$plus)))
   (unless (free a '*z*) (setq a ($limit a '*z* 0 '$plus)))
   (unless (free a 'epsilon) (setq a ($limit a 'epsilon 0 '$plus)))

@@ -1737,6 +1737,15 @@ inf;
 [y, y, y, y]$
 
 
+/* Bug #5681: "integrate(tan(x),x,0,%pi/4) and limit(log(cos(x)),x,%pi/4) signal an error" */
+
+[limit(log(cos(x)), x, %pi/4, minus),
+ limit(log(cos(x)), x, %pi/4),
+ limit(log(cos(x)), x, %pi/3, plus),
+ limit(log(sin(x)), x, %pi/4, plus)];
+[-log(2)/2, -log(2)/2, -log(2), -log(2)/2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
