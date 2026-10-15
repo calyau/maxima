@@ -950,3 +950,13 @@ block([m],
   declare(m, integer),
   [cos(%pi*(4*m+3)^3), cos(%pi*(6*m+5)^3), sin(%pi*(4*m+3)^3+%pi/2)]);
 [-1, -1, -1]$
+
+
+/* Bug #5679: "Bigfloat atan(x) is wrong if x has a precision other than fpprec" */
+
+block([fpprec : 32, x : [1/2, 3/4, 2, -2], lo, hi],
+  lo : block([fpprec : 16], bfloat(x)),
+  hi : block([fpprec : 64], bfloat(x)),
+  x : bfloat(x),
+  [is(map(atan, lo) = map(atan, x)), is(map(atan, hi) = map(atan, x))]);
+[true, true]$

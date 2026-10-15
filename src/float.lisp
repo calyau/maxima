@@ -983,7 +983,7 @@
            (sub v
                 (mul '$%i u))))
          (t
-         (bcons (fpatan (cdr x))))))
+         (bcons (fpatan (cdr (bigfloatp x)))))))
       
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
 ;; arg(x+%i*y).)
