@@ -912,16 +912,17 @@
 	(t (or (has-int-symbols (car e))
 	       (has-int-symbols (cdr e))))))
 
+;; The limit of A as EPS, which is '$ZEROA or '$ZEROB, goes to 0 from direction
+;; DIR. limit() rejects '$ZEROA and '$ZEROB as its variable, since they're
+;; constants, so use a fresh variable.
+(defun infinitesimal-limit (a eps dir)
+  (let ((v (gensym)))
+    (maxima-substitute eps v ($limit (maxima-substitute v eps a) v 0 dir))))
+
 ;;; Do substitutions for special symbols.
 (defun nmr (a)
-  ;; zeroa and zerob are constants, which limit() rejects as its variable,
-  ;; so take these limits in a fresh variable.
-  (unless (free a '$zeroa)
-    (let ((v (gensym)))
-      (setq a ($limit (maxima-substitute v '$zeroa a) v 0 '$plus))))
-  (unless (free a '$zerob)
-    (let ((v (gensym)))
-      (setq a ($limit (maxima-substitute v '$zerob a) v 0 '$minus))))
+  (unless (free a '$zeroa) (setq a (infinitesimal-limit a '$zeroa '$plus)))
+  (unless (free a '$zerob) (setq a (infinitesimal-limit a '$zerob '$minus)))
   (unless (free a 'z**) (setq a ($limit a 'z** 0 '$plus)))
   (unless (free a '*z*) (setq a ($limit a '*z* 0 '$plus)))
   (unless (free a 'epsilon) (setq a ($limit a 'epsilon 0 '$plus)))
