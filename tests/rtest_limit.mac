@@ -1728,6 +1728,15 @@ limit(1/x + a/2^x, x, 0, plus);
 inf;
 
 
+/* Bug #5680: "integrate(x*sec(x)^2,x,0,1) and some limits return results with gensyms" */
+
+[limit((sin(x)^2 + cos(x)^2)*y, x, 0),
+ limit((sin(x)^2 + cos(x)^2)*y, x, 0, plus),
+ limit((sin(x)^2 + cos(x)^2)*y, x, inf),
+ limit((sin(2*x)^2 + cos(2*x)^2)*y + x, x, 0, plus)];
+[y, y, y, y]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

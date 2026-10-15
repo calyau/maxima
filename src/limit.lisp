@@ -805,7 +805,9 @@ ignoring dummy variables and array indices."
                     (setq z (gensym))
                     (setq ee (maxima-substitute z (power (ftake '%cos g) 2) e))
                     (setq ee (maxima-substitute (sub 1 z) (power (ftake '%sin g) 2) ee))
-                    (when (freeof z (sratsimp ee))
+                    (unless (freeof z ee)
+                      (setq ee (sratsimp ee)))
+                    (when (freeof z ee)
                         (setq e ee)))
                 e)
             ;; maybe this isn't needed, but it's not wrong.

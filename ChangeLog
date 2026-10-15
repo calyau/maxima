@@ -225,6 +225,7 @@ Bug fixes for numbered bugs:
 * \#5677 risch() returns wrong polylogarithms for some log integrands
 * \#5678 ratsimp() overflows the stack under some equal() facts
 * \#5679 Bigfloat atan(x) is wrong if x has a precision other than fpprec
+* \#5680 integrate(x*sec(x)^2,x,0,1) and some limits return results with gensyms
 
 Bug fixes for unnumbered bugs:
 ------------------------------

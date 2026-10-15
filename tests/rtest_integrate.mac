@@ -7247,6 +7247,18 @@ block([g, G, a, e, q],
 [0, 0]$
 
 
+/* Bug #5680: "integrate(x*sec(x)^2,x,0,1) and some limits return results with gensyms" */
+
+block([r, v : tan(1) + log(cos(1))],
+  r : [integrate(x*sec(x)^2, x, 0, 1), integrate(x*tan(x)^2, x, 0, 1)],
+  [listofvars(r), is(lmax(abs(float(r - [v, v - 1/2]))) < 1e-12)]);
+[[], true]$
+
+block([r : integrate(x*sec(x)^2, x, 0, %pi/4)],
+  [listofvars(r), radcan(r - (%pi/4 - log(2)/2))]);
+[[], 0]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
