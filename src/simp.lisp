@@ -2501,7 +2501,12 @@
                                           (list x w))))
             (if (and (not *timesinp*) (not (eq x '$%i)))
                 (let ((*timesinp* t))
-                  (setq temp (simplifya temp t))))))
+                  (setq temp (simplifya temp t))))
+            (when (mtimesp temp)
+              ;; x^w simplified to a product, as %e^(log(u)+v) = u*%e^v does.
+              ;; Multiply in its factors, not the product as one.
+              (setq x temp)
+              (go times))))
      (setq x (if (mexptp temp)
                  (cdr temp)
                  (list temp 1)))

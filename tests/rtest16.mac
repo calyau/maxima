@@ -4481,6 +4481,14 @@ block([browser : browser, url_base : url_base, b : browser, u : url_base],
 [true, true]$
 
 
+/* Bug #5683: "Merging powers of %e in a product can leave a nested product" */
+
+[%e^(log(x)/2 + y)*%e^(log(x)/2)*x,
+ is(%e^(log(x)/2 + y)*%e^(log(x)/2)*x = x^2*%e^y),
+ %e^(%i*%pi/8 + y)*%e^(%i*%pi/8)*x];
+[%e^y*x^2, true, %e^y*(%i/sqrt(2) + 1/sqrt(2))*x]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
