@@ -102,32 +102,63 @@
 
 (defun descending-base-p (u m)
   ;; True if m is small enough to stop the descending transformation.
-  ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
-  ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
+  ;; By A&S 16.13.1, 16.13.2, and 16.13.3
+  ;;
+  ;;   sn(u|m) = sin(u) - m/4*(u-sin(u)*cos(u))*cos(u) + O(m^2)
+  ;;   cn(u|m) = cos(u) + m/4*(u-sin(u)*cos(u))*sin(u) + O(m^2)
+  ;;   dn(u|m) = 1 - 1/2*m*sin^2(u) + O(m^2)
+  ;;
+  ;; Relative to sin(u) and cos(u), the terms with sin(u)*cos(u) are
+  ;; m/4*cos(u)^2 and m/4*sin(u)^2, which grow like
+  ;; exp(2*abs(imagpart(u))) relative to sin(u) or cos(u).  The terms
+  ;; with u shift the phase by about m*u/4, less than the rounding
+  ;; error in u when abs(m) < eps.  The base case for dn, includes the
+  ;; first-order term, so its error is O(m^2*sin(u)^4) and this test
+  ;; is more than enough for it.
   (and (< (abs m) (epsilon u))
        (or (realp u)
 	   (zerop m)
-	   (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u)))))))))
+	   (< (abs m)
+              (* (epsilon u)
+                 (exp (* -2 (abs (imagpart u)))))))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 (defun elliptic-sn-descending (u m root-m1)
-  (if (descending-base-p u m)
-      ;; A&S 16.13.1
-      (sin u)
-      (multiple-value-bind (v mu root-mu root-mu1)
-	  (descending-transform u m root-m1)
-	(let ((s (elliptic-sn-descending v mu root-mu1)))
-	  ;; A&S 16.12.2
-	  (/ (* (1+ root-mu) s)
-	     (1+ (* root-mu s s)))))))
+  (cond
+    ((descending-base-p u m)
+     ;; A&S 16.13.1
+     (sin u))
+    (t
+     ;; A&S 16.12.2:
+     ;;
+     ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
+     (multiple-value-bind (v mu root-mu root-mu1)
+	 (descending-transform u m root-m1)
+       (let ((s (elliptic-sn-descending v mu root-mu1)))
+	 ;; A&S 16.12.2
+	 (/ (* (1+ root-mu) s)
+	    (1+ (* root-mu s s)))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 (defun elliptic-sn-cn-dn-descending (u m root-m1)
-  (if (descending-base-p u m)
-      ;; A&S 16.13.1 to 16.13.3
-      (let ((s (sin u)))
-	(values s (cos u) (- 1 (* m s s 1/2))))
-      (multiple-value-bind (v mu root-mu root-mu1)
+  (cond
+    ((descending-base-p u m)
+     ;; A&S 16.13.1 to 16.13.3, dropping the linear (and higher) terms
+     ;; in m.
+     (values (sin u) (cos u) 1))
+    (t
+     ;; A&S 16.12.2:
+     ;;
+     ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
+     ;;
+     ;; A&S 16.12.3 for cn:
+     ;;
+     ;;   cn(u|m) = cn(v|mu)*dn(v|mu)/(1+sqrt(mu)*sn^2(v|mu))
+     ;;
+     ;; A&S 16.12.4 for dn:
+     ;;
+     ;;   dn(u|m) = (dn^2(v|mu) - (1-sqrt(mu)))/((1+sqrt(mu))-dn^2(v|mu))
+     (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
 	    (elliptic-sn-cn-dn-descending v mu root-mu1)
@@ -136,14 +167,17 @@
 		 (den (1+ p)))
 	    (values (/ (* (1+ root-mu) s) den)
 		    (/ (* c d) den)
-		    ;; 1-p cancels when p is near 1.  Then use
-		    ;; 1-p = (1-sqrt(mu)) + sqrt(mu)*cn^2, where
-		    ;; 1-sqrt(mu) = 2*sqrt(m1)/(1+sqrt(m1)).
+		    ;; 1-p cancels when p is near 1, which happens
+		    ;; when m is near 1 and u is near an odd multiple
+		    ;; of K(m), where sn(v|mu) is near 1.  Then use
+		    ;; 1-p = 1-sqrt(mu)*sn^2 = 1-sqrt(mu)*(1-cn^2) =
+		    ;; (1-sqrt(mu)) + sqrt(mu)*cn^2, where 1-sqrt(mu)
+		    ;; = 2*sqrt(m1)/(1+sqrt(m1)).
 		    (/ (if (< (* 2 (abs p)) 1)
 			   (- 1 p)
 			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
 			      (* root-mu c c)))
-		       den)))))))
+		       den))))))))
 
 (defun sn (u m)
   (cond ((zerop m)
@@ -187,31 +221,7 @@
 	 ;; cancellation in 1-p unless u and m are real and m < 8/9.
 	 (nth-value 2 (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))))
 	(t
-	 ;; Use the Gauss transformation from
-	 ;; http://functions.wolfram.com/09.29.16.0013.01:
-	 ;;
-	 ;;
-	 ;; dn((1+sqrt(m))*z, 4*sqrt(m)/(1+sqrt(m))^2)
-	 ;;   =  (1-sqrt(m)*sn(z, m)^2)/(1+sqrt(m)*sn(z,m)^2)
-	 ;;
-	 ;; So
-	 ;;
-	 ;; dn(y, mu) = (1-sqrt(m)*sn(z, m)^2)/(1+sqrt(m)*sn(z,m)^2)
-	 ;;
-	 ;; where z = y/(1+sqrt(m)) and mu=4*sqrt(m)/(1+sqrt(m))^2.
-	 ;;
-	 ;; Solve for m, and we get
-	 ;;
-	 ;; sqrt(m) = -(mu+2*sqrt(1-mu)-2)/mu or (-mu+2*sqrt(1-mu)+2)/mu.
-	 ;;
-	 ;; I don't think it matters which sqrt we use, so I (rtoy)
-	 ;; arbitrarily choose the first one above.
-	 ;;
-	 ;; Note that (1-sqrt(1-mu))/(1+sqrt(1-mu)) is the same as
-	 ;; -(mu+2*sqrt(1-mu)-2)/mu and as mu/(1+sqrt(1-mu))^2.  The
-	 ;; last one is the most accurate for small mu.  The parameter
-	 ;; of sn is root^2, whose complement has the square root
-	 ;; 2*sqrt(sqrt(1-mu))/(1+sqrt(1-mu)).
+         ;; 
 	 (multiple-value-bind (z root-sq root root-1-root-sq)
 	     (descending-transform u m (sqrt (- 1 m)))
 	   (let* ((s (elliptic-sn-descending z root-sq root-1-root-sq))
