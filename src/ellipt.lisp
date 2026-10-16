@@ -51,34 +51,7 @@
 ;;; functions and integrals.
 (in-package #:bigfloat)
 
-(declaim (inline descending-transform ascending-transform))
-
-(defun ascending-transform (u m)
-  ;; A&S 16.14.1
-  ;;
-  ;; Take care in computing this transform.  For the case where
-  ;; m is complex, we should compute sqrt(mu1) first as
-  ;; (1-sqrt(m))/(1+sqrt(m)), and then square this to get mu1.
-  ;; If not, we may choose the wrong branch when computing
-  ;; sqrt(mu1).
-  (let* ((root-m (sqrt m))
-	 (mu (/ (* 4 root-m)
-		(expt (1+ root-m) 2)))
-	 (root-mu1 (/ (- 1 root-m) (+ 1 root-m)))
-	 (v (/ u (1+ root-mu1))))
-    (values v mu root-mu1)))
-
-#+nil
-(defun descending-transform (u m)
-  ;; Note: Don't calculate mu first, as given in 16.12.1.  We
-  ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
-  ;; then compute mu = sqrt(mu)^2.  If we calculate mu first,
-  ;; sqrt(mu) loses information when m or m1 is complex.
-  (let* ((root-m1 (sqrt (- 1 m)))
-	 (root-mu (/ (- 1 root-m1) (+ 1 root-m1)))
-	 (mu (* root-mu root-mu))
-	 (v (/ u (1+ root-mu))))
-    (values v mu root-mu)))
+(declaim (inline descending-transform))
 
 ;; Landen descending transform (Gauss' transform).
 ;;
@@ -104,216 +77,73 @@
 ;; However sqrt(1-mu) is computed as 2*sqrt(m1)/(1+sqrt(m1)) to get
 ;; rid of the round-off in 1-mu when m is near 1.
 (defun descending-transform (u m root-m1)
+  ;; A&S 16.12.1.  ROOT-M1 is sqrt(1-m).  Return v = u/(1+sqrt(mu)),
+  ;; mu, sqrt(mu), and sqrt(1-mu).
+  ;;
+  ;; Don't calculate mu first, as given in 16.12.1.  We should
+  ;; calculate sqrt(mu) = (1-sqrt(m1))/(1+sqrt(m1)), and then compute
+  ;; mu = sqrt(mu)^2.  If we calculate mu first, sqrt(mu) loses
+  ;; information when m or m1 is complex.
+  ;;
+  ;; When |sqrt(m1)| > 1/2, sqrt(mu) is computed as m/(1+sqrt(m1))^2
+  ;; instead, which avoids the cancellation in 1-sqrt(m1) for small m.
+  ;; Otherwise m is near 1 and has an absolute error that is large
+  ;; relative to m1, so sqrt(mu) is computed from ROOT-M1 alone.
+  ;; sqrt(1-mu) is computed as 2*sqrt(sqrt(m1))/(1+sqrt(m1)), without
+  ;; the cancellation in 1-mu when m is near 1.
   (let* ((den (+ 1 root-m1))
-	 (root-mu (/ m (* den den)))
+	 (root-mu (if (<= (* 2 (abs root-m1)) 1)
+		      (/ (- 1 root-m1) den)
+		      (/ m (* den den))))
 	 (mu (* root-mu root-mu))
 	 (v (/ u (1+ root-mu))))
     (values v mu root-mu (/ (* 2 (sqrt root-m1)) den))))
 
-;;
-;; This appears to work quite well for both real and complex values
-;; of u.
-#+nil
-(defun elliptic-sn-descending (u m)
-  (cond ((= m 1)
-	 ;; A&S 16.6.1
-	 (tanh u))
-	((< (abs m) (epsilon u))
-	 ;; A&S 16.6.1
-	 (sin u))
-	(t
-	 (multiple-value-bind (v mu root-mu)
-	     (descending-transform u m)
-	   (let* ((new-sn (elliptic-sn-descending v mu)))
-	     (/ (* (1+ root-mu) new-sn)
-		(1+ (* root-mu new-sn new-sn))))))))
 
-#+nil
-(defun elliptic-sn-descending (u m &optional cn-dn-p
-				      (root-m1 (sqrt (- 1 m)) root-m1-p))
+(defun descending-base-p (u m)
+  ;; True if m is small enough to stop the descending transformation.
+  ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
+  ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
+  (and (< (abs m) (epsilon u))
+       (or (realp u)
+	   (zerop m)
+	   (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u)))))))))
 
-   (cond ((= m 1)
-	 ;; A&S 16.6.1 to 16.6.3
-	 (values (tanh u) (/ (cosh u)) (/ (cosh u))))
-	((and (not root-m1-p) (realp m) (> m 1))
-	 ;; A&S 16.11: sn(u|m) = sn(v|1/m)/sqrt(m), cn(u|m) = dn(v|1/m)
-	 ;; and dn(u|m) = cn(v|1/m), where v = sqrt(m)*u.  For m > 1, the
-	 ;; descending transformation goes through complex values even
-	 ;; for real u, and loses digits.  This can only happen at the
-	 ;; top, where ROOT-M1 is not passed.
-	 (let ((root-m (sqrt m)))
-	   (multiple-value-bind (s c d)
-	       (elliptic-sn-descending (* root-m u) (/ m) cn-dn-p
-				       (sqrt (/ (- m 1) m)))
-	     (values (/ s root-m) d c))))
-	((and (< (abs m) (epsilon u))
-	      ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
-	      ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
-	      (or (realp u)
-		  (zerop m)
-		  (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u))))))))
-	 ;; A&S 16.13.1 to 16.13.3
-	 (if cn-dn-p
-	     (let ((s (sin u)))
-	       (values s (cos u) (- 1 (* m s s 1/2))))
-	     (sin u)))
-	(t
-	 (multiple-value-bind (v mu root-mu root-mu1)
-	     (descending-transform u m root-m1)
-	   (multiple-value-bind (new-sn new-cn new-dn)
-	       (elliptic-sn-descending v mu cn-dn-p root-mu1)
-	     ;; A&S 16.12.2 to 16.12.4
-	     (let* ((p (* root-mu new-sn new-sn))
-		    (den (1+ p))
-		    (sn (/ (* (1+ root-mu) new-sn) den)))
-	       (if cn-dn-p
-		   (values sn
-			   (/ (* new-cn new-dn) den)
-			   ;; 1-p cancels when p is near 1.  Then use
-			   ;; 1-p = (1-root-mu) + root-mu*new-cn^2.
-			   (/ (if (< (abs p) 1/2)
-				  (- 1 p)
-				  (+ (/ (* 2 root-m1) (+ 1 root-m1))
-				     (* root-mu new-cn new-cn)))
-			      den))
-		   sn)))))))
+;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
+(defun elliptic-sn-descending (u m root-m1)
+  (if (descending-base-p u m)
+      ;; A&S 16.13.1
+      (sin u)
+      (multiple-value-bind (v mu root-mu root-mu1)
+	  (descending-transform u m root-m1)
+	(let ((s (elliptic-sn-descending v mu root-mu1)))
+	  ;; A&S 16.12.2
+	  (/ (* (1+ root-mu) s)
+	     (1+ (* root-mu s s)))))))
 
-(defun impl-elliptic-sn-descending (u m root-m1)
-   (cond ((= m 1)
-	 ;; A&S 16.6.1 to 16.6.3
-	 (values (tanh u)))
-	((and (< (abs m) (epsilon u))
-	      ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
-	      ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
-	      (or (realp u)
-		  (zerop m)
-		  (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u))))))))
-	 ;; A&S 16.13.1 to 16.13.3
-	 (sin u))
-	(t
-	 (multiple-value-bind (v mu root-mu root-mu1)
-	     (descending-transform u m root-m1)
-	   (multiple-value-bind (new-sn)
-	       (impl-elliptic-sn-descending v mu root-mu1)
-	     ;; A&S 16.12.2 to 16.12.4
-	     (let* ((p (* root-mu new-sn new-sn))
-		    (den (1+ p))
-		    (sn (/ (* (1+ root-mu) new-sn) den)))
-	       sn))))))
-
-(defun elliptic-sn-descending (u m)
-  (cond ((= m 1)
-         (tanh u))
-        ((and (realp m) (> m 1))
-	 ;; A&S 16.11: sn(u|m) = sn(v|1/m)/sqrt(m), cn(u|m) = dn(v|1/m)
-	 ;; and dn(u|m) = cn(v|1/m), where v = sqrt(m)*u.  For m > 1, the
-	 ;; descending transformation goes through complex values even
-	 ;; for real u, and loses digits.  This can only happen at the
-	 ;; top, where ROOT-M1 is not passed.
-	 (let ((root-m (sqrt m)))
-	   (multiple-value-bind (s)
-	       (impl-elliptic-sn-descending (* root-m u) (/ m) (sqrt (/ (- m 1) m)))
-	     (/ s root-m))))
-	(t
-         (impl-elliptic-sn-descending u m (sqrt (- 1 m))))))
-        
-
-(defun elliptic-cn-descending (u m &optional cn-dn-p
-				      (root-m1 (sqrt (- 1 m)) root-m1-p))
-   (cond ((= m 1)
-	 ;; A&S 16.6.1 to 16.6.3
-	 (values (tanh u) (/ (cosh u)) (/ (cosh u))))
-	((and (not root-m1-p) (realp m) (> m 1))
-	 ;; A&S 16.11: sn(u|m) = sn(v|1/m)/sqrt(m), cn(u|m) = dn(v|1/m)
-	 ;; and dn(u|m) = cn(v|1/m), where v = sqrt(m)*u.  For m > 1, the
-	 ;; descending transformation goes through complex values even
-	 ;; for real u, and loses digits.  This can only happen at the
-	 ;; top, where ROOT-M1 is not passed.
-	 (let ((root-m (sqrt m)))
-	   (multiple-value-bind (s c d)
-	       (elliptic-cn-descending (* root-m u) (/ m) cn-dn-p
-				       (sqrt (/ (- m 1) m)))
-	     (values (/ s root-m) d c))))
-	((and (< (abs m) (epsilon u))
-	      ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
-	      ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
-	      (or (realp u)
-		  (zerop m)
-		  (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u))))))))
-	 ;; A&S 16.13.1 to 16.13.3
-	 (if cn-dn-p
-	     (let ((s (sin u)))
-	       (values s (cos u) (- 1 (* m s s 1/2))))
-	     (sin u)))
-	(t
-	 (multiple-value-bind (v mu root-mu root-mu1)
-	     (descending-transform u m root-m1)
-	   (multiple-value-bind (new-sn new-cn new-dn)
-	       (elliptic-cn-descending v mu cn-dn-p root-mu1)
-	     ;; A&S 16.12.2 to 16.12.4
-	     (let* ((p (* root-mu new-sn new-sn))
-		    (den (1+ p))
-		    (sn (/ (* (1+ root-mu) new-sn) den)))
-	       (if cn-dn-p
-		   (values sn
-			   (/ (* new-cn new-dn) den)
-			   ;; 1-p cancels when p is near 1.  Then use
-			   ;; 1-p = (1-root-mu) + root-mu*new-cn^2.
-			   (/ (if (< (abs p) 1/2)
-				  (- 1 p)
-				  (+ (/ (* 2 root-m1) (+ 1 root-m1))
-				     (* root-mu new-cn new-cn)))
-			      den))
-		   sn)))))))
-
-(defun elliptic-dn-descending (u m &optional cn-dn-p
-				      (root-m1 (sqrt (- 1 m)) root-m1-p))
-
-   (cond ((= m 1)
-	 ;; A&S 16.6.1 to 16.6.3
-	 (values (tanh u) (/ (cosh u)) (/ (cosh u))))
-	((and (not root-m1-p) (realp m) (> m 1))
-	 ;; A&S 16.11: sn(u|m) = sn(v|1/m)/sqrt(m), cn(u|m) = dn(v|1/m)
-	 ;; and dn(u|m) = cn(v|1/m), where v = sqrt(m)*u.  For m > 1, the
-	 ;; descending transformation goes through complex values even
-	 ;; for real u, and loses digits.  This can only happen at the
-	 ;; top, where ROOT-M1 is not passed.
-	 (let ((root-m (sqrt m)))
-	   (multiple-value-bind (s c d)
-	       (elliptic-dn-descending (* root-m u) (/ m) cn-dn-p
-				       (sqrt (/ (- m 1) m)))
-	     (values (/ s root-m) d c))))
-	((and (< (abs m) (epsilon u))
-	      ;; sn(u|m) = sin(u) + O(m*sin(u)*cos(u)^2), A&S 16.13.1, and
-	      ;; cos(u)^2 grows like exp(2*abs(imagpart(u))).
-	      (or (realp u)
-		  (zerop m)
-		  (< (abs m) (* (epsilon u) (exp (* -2 (abs (imagpart u))))))))
-	 ;; A&S 16.13.1 to 16.13.3
-	 (if cn-dn-p
-	     (let ((s (sin u)))
-	       (values s (cos u) (- 1 (* m s s 1/2))))
-	     (sin u)))
-	(t
-	 (multiple-value-bind (v mu root-mu root-mu1)
-	     (descending-transform u m root-m1)
-	   (multiple-value-bind (new-sn new-cn new-dn)
-	       (elliptic-dn-descending v mu cn-dn-p root-mu1)
-	     ;; A&S 16.12.2 to 16.12.4
-	     (let* ((p (* root-mu new-sn new-sn))
-		    (den (1+ p))
-		    (sn (/ (* (1+ root-mu) new-sn) den)))
-	       (if cn-dn-p
-		   (values sn
-			   (/ (* new-cn new-dn) den)
-			   ;; 1-p cancels when p is near 1.  Then use
-			   ;; 1-p = (1-root-mu) + root-mu*new-cn^2.
-			   (/ (if (< (abs p) 1/2)
-				  (- 1 p)
-				  (+ (/ (* 2 root-m1) (+ 1 root-m1))
-				     (* root-mu new-cn new-cn)))
-			      den))
-		   sn)))))))
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
+(defun elliptic-sn-cn-dn-descending (u m root-m1)
+  (if (descending-base-p u m)
+      ;; A&S 16.13.1 to 16.13.3
+      (let ((s (sin u)))
+	(values s (cos u) (- 1 (* m s s 1/2))))
+      (multiple-value-bind (v mu root-mu root-mu1)
+	  (descending-transform u m root-m1)
+	(multiple-value-bind (s c d)
+	    (elliptic-sn-cn-dn-descending v mu root-mu1)
+	  ;; A&S 16.12.2 to 16.12.4
+	  (let* ((p (* root-mu s s))
+		 (den (1+ p)))
+	    (values (/ (* (1+ root-mu) s) den)
+		    (/ (* c d) den)
+		    ;; 1-p cancels when p is near 1.  Then use
+		    ;; 1-p = (1-sqrt(mu)) + sqrt(mu)*cn^2, where
+		    ;; 1-sqrt(mu) = 2*sqrt(m1)/(1+sqrt(m1)).
+		    (/ (if (< (* 2 (abs p)) 1)
+			   (- 1 p)
+			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
+			      (* root-mu c c)))
+		       den)))))))
 
 (defun sn (u m)
   (cond ((zerop m)
@@ -328,12 +158,13 @@
 	 ;;
 	 ;; sn(u,m) = tanh(u) + 1/4*(1-m)*(sinh(u)*cosh(u)-u)*sech(u)^2
 	 (tanh u))
+	((and (realp m) (> m 1))
+	 ;; A&S 16.11.1: sn(u|m) = sn(sqrt(m)*u|1/m)/sqrt(m)
+	 (let ((root-m (sqrt m)))
+	   (/ (elliptic-sn-descending (* root-m u) (/ m) (sqrt (/ (- m 1) m)))
+	      root-m)))
 	(t
-	 ;; Use the ascending Landen transformation to compute sn.
-	 (let ((s (elliptic-sn-descending u m)))
-	   (if (and (realp u) (realp m))
-	       (realpart s)
-	       s)))))
+	 (elliptic-sn-descending u m (sqrt (- 1 m))))))
 
 (defun dn (u m)
   (cond ((zerop m)
@@ -347,12 +178,14 @@
 	 ;;
 	 ;; dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
+	((and (realp m) (> m 1))
+	 ;; A&S 16.11.3: dn(u|m) = cn(sqrt(m)*u|1/m)
+	 (nth-value 1 (elliptic-sn-cn-dn-descending (* (sqrt m) u) (/ m)
+						    (sqrt (/ (- m 1) m)))))
 	((not (and (realp u) (realp m) (< m 8/9)))
 	 ;; The Gauss transformation below can lose digits through the
-	 ;; cancellation in 1-p unless u and m are real and m < 8/9, and
-	 ;; m > 1 needs A&S 16.11.  ELLIPTIC-SN-DESCENDING handles that,
-	 ;; but has to compute cn as well.
-	 (nth-value 2 (elliptic-dn-descending u m t)))
+	 ;; cancellation in 1-p unless u and m are real and m < 8/9.
+	 (nth-value 2 (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))))
 	(t
 	 ;; Use the Gauss transformation from
 	 ;; http://functions.wolfram.com/09.29.16.0013.01:
@@ -375,19 +208,16 @@
 	 ;; arbitrarily choose the first one above.
 	 ;;
 	 ;; Note that (1-sqrt(1-mu))/(1+sqrt(1-mu)) is the same as
-	 ;; -(mu+2*sqrt(1-mu)-2)/mu.  Also, the former is more
-	 ;; accurate for small mu.
-	 (let* (#+nil
-                (root (let ((root-1-m (sqrt (- 1 m))))
-			(/ (- 1 root-1-m)
-			   (+ 1 root-1-m))))
-                (root (let ((root-1-m (sqrt (- 1 m))))
-                        (/ m (expt (+ 1 root-1-m) 2))))
-		(z (/ u (+ 1 root)))
-		(s (elliptic-dn-descending z (* root root)))
-		(p (* root s s )))
-	   (/ (- 1 p)
-	      (+ 1 p))))))
+	 ;; -(mu+2*sqrt(1-mu)-2)/mu and as mu/(1+sqrt(1-mu))^2.  The
+	 ;; last one is the most accurate for small mu.  The parameter
+	 ;; of sn is root^2, whose complement has the square root
+	 ;; 2*sqrt(sqrt(1-mu))/(1+sqrt(1-mu)).
+	 (multiple-value-bind (z root-sq root root-1-root-sq)
+	     (descending-transform u m (sqrt (- 1 m)))
+	   (let* ((s (elliptic-sn-descending z root-sq root-1-root-sq))
+		  (p (* root s s)))
+	     (/ (- 1 p)
+		(+ 1 p)))))))
 
 (defun cn (u m)
   (cond ((zerop m)
@@ -402,17 +232,13 @@
 	 ;;
 	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
-	#+nil
-        (t
-	 ;; Use the ascending Landen transformation, A&S 16.14.3.
-	 (multiple-value-bind (v mu root-mu1)
-	     (ascending-transform u m)
-	   (let ((d (dn v mu)))
-	     (* (/ (+ 1 root-mu1) mu)
-		(/ (- (* d d) root-mu1)
-		   d)))))
-        (t
-	 (nth-value 1 (elliptic-cn-descending u m t)))))
+	((and (realp m) (> m 1))
+	 ;; A&S 16.11.2: cn(u|m) = dn(sqrt(m)*u|1/m)
+	 (nth-value 2 (elliptic-sn-cn-dn-descending (* (sqrt m) u) (/ m)
+						    (sqrt (/ (- m 1) m)))))
+	(t
+	 (nth-value 1 (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))))))
+
 
 ;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
 ;; See https://dlmf.nist.gov/22.20.ii.
