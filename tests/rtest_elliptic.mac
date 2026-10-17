@@ -1225,6 +1225,60 @@ true;
 closeto(jacobi_dn(20.0*%i, 0.75) - 1.020081934968419, 6.6614e-16);
 true;
 
+block([z : 20.0*%i],
+  [closeto(jacobi_dn(z, 0.75) - 1.020081934968419, 6.6614e-16),
+   closeto(jacobi_cn(z, 0.75) - 1.026688627935405, 1.33323e-15),
+   closeto(jacobi_dn(z, 1.75+%i) - (1.0765867842487509 + 1.2123267066947074*%i), 1.0663e-14),
+   closeto(jacobi_cn(z, 1.75+%i) - (-1.2004970668366945 - 0.6027051283045847*%i), 7.1504e-15)]);
+[true, true, true, true]$
+
+block([u : 20.0, m : 2.5],
+  [closeto(jacobi_sn(u, m) - 0.2282498061811287, 4.7740e-15),
+   closeto(jacobi_cn(u, m) - 0.973602601669838, 1.1103e-15),
+   closeto(jacobi_dn(u, m) + 0.9326065970953095, 3.2197e-15),
+   imagpart(jacobi_dn(u, m))]);
+[true, true, true, 0]$
+
+block([u : 20.0, m : 0.99999999],
+  [closeto(jacobi_sn(u, m) - 0.8315901214124292, 5.5512e-16),
+   closeto(jacobi_cn(u, m) + 0.5553898360334489, 7.7716e-16),
+   closeto(jacobi_dn(u, m) - 0.5553898422591851, 1.1103e-15)]);
+[true, true, true]$
+
+block([fpprec : 32, m],
+  m : 1 - 2b0^-60,
+  [closeto(jacobi_cn(20b0, m) - 4069705528989350766860108776551655/10^42, 4.8214e-40),
+   closeto(jacobi_dn(20b0, m) - 4174908960764880545715816189280978/10^42, 4.5918e-40)]);
+[true, true]$
+
+/* m = 1-2^-53, the largest float below 1.  sqrt(mu) must be computed
+ * from sqrt(1-m) alone, or cn and dn lose about 4 more digits.
+ */
+block([u : 20.0, m : 1 - 2.0^-53],
+  [closeto(jacobi_cn(u, m) + 2.6107123887567846e-9, 4.7977e-23),
+   closeto(jacobi_dn(u, m) - 1.0855326878511021e-8, 1.3235e-23)]);
+[true, true]$
+
+/* Large negative m.  Without A&S 16.10, 1+sqrt(mu) cancels and about
+ * log10(sqrt(-m)) digits are lost.  The condition number with respect
+ * to u is about 2e5 here, so the tolerances are relatively large.
+ */
+block([u : 3.0, m : -1e10],
+  [closeto(jacobi_sn(u, m) - 0.11593314977968198, 2.5943e-12),
+   closeto(jacobi_cn(u, m) + 0.99325701849126736, 3.0254e-13),
+   closeto(jacobi_dn(u, m) - 11593.315021096501, 2.5943e-7)]);
+[true, true, true]$
+
+/* Bug #4300: "jacobi_sn(99.0, 1.5) incorrect" */
+
+block([u : 99.0, m : 1.5],
+  [closeto(jacobi_sn(u, m) + 0.37384023685931953, 2.1650e-15),
+   closeto(jacobi_cn(u, m) - 0.9274931144245589, 9.9921e-16),
+   closeto(jacobi_dn(u, m) - 0.8890248680197038, 1.3323e-15),
+   imagpart(jacobi_dn(u, m))]);
+[true, true, true, 0]$
+
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
