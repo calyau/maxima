@@ -77,8 +77,9 @@
 ;; However sqrt(1-mu) is computed as 2*sqrt(m1)/(1+sqrt(m1)) to get
 ;; rid of the round-off in 1-mu when m is near 1.
 (defun descending-transform (u m root-m1)
-  ;; A&S 16.12.1.  ROOT-M1 is sqrt(1-m).  Return v = u/(1+sqrt(mu)),
-  ;; mu, sqrt(mu), and sqrt(1-mu).
+  ;; A&S 16.12.1 (https://dlmf.nist.gov/22.7.E1).  ROOT-M1 is
+  ;; sqrt(1-m).  Return v = u/(1+sqrt(mu)), mu, sqrt(mu), and
+  ;; sqrt(1-mu).
   ;;
   ;; Don't calculate mu first, as given in 16.12.1.  We should
   ;; calculate sqrt(mu) = (1-sqrt(m1))/(1+sqrt(m1)), and then compute
@@ -102,7 +103,9 @@
 
 (defun descending-base-p (u m)
   ;; True if m is small enough to stop the descending transformation.
-  ;; By A&S 16.13.1, 16.13.2, and 16.13.3
+  ;; By A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4), 16.13.2
+  ;; (https://dlmf.nist.gov/22.10.E5), and 16.13.3
+  ;; (https://dlmf.nist.gov/22.10.E6):
   ;;
   ;;   sn(u|m) = sin(u) - m/4*(u-sin(u)*cos(u))*cos(u) + O(m^2)
   ;;   cn(u|m) = cos(u) + m/4*(u-sin(u)*cos(u))*sin(u) + O(m^2)
@@ -126,36 +129,36 @@
 (defun elliptic-sn-descending (u m root-m1)
   (cond
     ((descending-base-p u m)
-     ;; A&S 16.13.1
+     ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4)
      (sin u))
     (t
-     ;; A&S 16.12.2:
+     ;; A&S 16.12.2 (https://dlmf.nist.gov/22.7.E2):
      ;;
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      (multiple-value-bind (v mu root-mu root-mu1)
 	 (descending-transform u m root-m1)
        (let ((s (elliptic-sn-descending v mu root-mu1)))
-	 ;; A&S 16.12.2
 	 (/ (* (1+ root-mu) s)
-	    (1+ (* root-mu s s)))))))
+	    (1+ (* root-mu s s))))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 (defun elliptic-sn-cn-dn-descending (u m root-m1)
   (cond
     ((descending-base-p u m)
-     ;; A&S 16.13.1 to 16.13.3, dropping the linear (and higher) terms
-     ;; in m.
+     ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4) to 16.13.3
+     ;; (https://dlmf.nist.gov/22.10.E6), dropping the linear (and
+     ;; higher) terms in m.
      (values (sin u) (cos u) 1))
     (t
-     ;; A&S 16.12.2:
+     ;; A&S 16.12.2 (https://dlmf.nist.gov/22.7.E2):
      ;;
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      ;;
-     ;; A&S 16.12.3 for cn:
+     ;; A&S 16.12.3 (https://dlmf.nist.gov/22.7.E3) for cn:
      ;;
      ;;   cn(u|m) = cn(v|mu)*dn(v|mu)/(1+sqrt(mu)*sn^2(v|mu))
      ;;
-     ;; A&S 16.12.4 for dn:
+     ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4) for dn:
      ;;
      ;;   dn(u|m) = (dn^2(v|mu) - (1-sqrt(mu)))/((1+sqrt(mu))-dn^2(v|mu))
      (multiple-value-bind (v mu root-mu root-mu1)
@@ -202,26 +205,48 @@
 
 (defun dn (u m)
   (cond ((zerop m)
-	 ;; jacobi_dn(u,0) = 1.  Should we use A&S 16.13.3 for small m?
+	 ;; jacobi_dn(u,0) = 1.  Should we use A&S 16.13.3
+	 ;; (https://dlmf.nist.gov/22.10.E6) for small m?
 	 ;;
-	 ;; dn(u,m) = 1 - 1/2*m*sin(u)^2
+	 ;;   dn(u,m) = 1 - 1/2*m*sin(u)^2
 	 1)
 	((= m 1)
-	 ;; jacobi_dn(u,1) = sech(u).  Should we use A&S 16.15.3 if m
-	 ;; is close enough to 1?
+	 ;; jacobi_dn(u,1) = sech(u).  Should we use A&S 16.15.3
+	 ;; (https://dlmf.nist.gov/22.10.E9) if m is close enough to
+	 ;; 1?
 	 ;;
-	 ;; dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
+	 ;;   dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
 	((and (realp m) (> m 1))
-	 ;; A&S 16.11.3: dn(u|m) = cn(sqrt(m)*u|1/m)
-	 (nth-value 1 (elliptic-sn-cn-dn-descending (* (sqrt m) u) (/ m)
-						    (sqrt (/ (- m 1) m)))))
+	 ;; A&S 16.11.3 (https://dlmf.nist.gov/22.17.E3):
+         ;;
+         ;;   dn(u|m) = cn(sqrt(m)*u|1/m)
+         (multiple-value-bind (s c d)
+             (elliptic-sn-cn-dn-descending (* (sqrt m) u)
+                                           (/ m)
+					   (sqrt (/ (- m 1) m)))
+           (declare (ignore s d))
+           c))
 	((not (and (realp u) (realp m) (< m 8/9)))
-	 ;; The Gauss transformation below can lose digits through the
-	 ;; cancellation in 1-p unless u and m are real and m < 8/9.
-	 (nth-value 2 (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))))
+	 ;; dn is computed from one step of the descending transformation,
+	 ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4),
+ 	 ;;
+	 ;;   dn(u|m) = (1-p)/(1+p),  p = sqrt(mu)*sn(v|mu)^2,
+         ;;
+	 ;; with v = u/(1+sqrt(mu)) and sqrt(mu) =
+	 ;; (1-sqrt(1-m))/(1+sqrt(1-m)).  For real u and 0 <= m < 8/9,
+	 ;; sqrt(mu) < 1/2, so 0 <= p < 1/2 and 1-p cannot cancel; the
+	 ;; branch below then needs only sn.  Otherwise 1-p can cancel,
+	 ;; for example when m is near 1 and u is near an odd multiple of
+	 ;; K(m)
+         (multiple-value-bind (s c d)
+	     (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
+           (declare (ignore s c))
+           d))
 	(t
-         ;; 
+	 ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4), as above.
+	 ;; This is also the Gauss transformation of
+	 ;; http://functions.wolfram.com/09.29.16.0013.01.
 	 (multiple-value-bind (z root-sq root root-1-root-sq)
 	     (descending-transform u m (sqrt (- 1 m)))
 	   (let* ((s (elliptic-sn-descending z root-sq root-1-root-sq))
@@ -231,23 +256,33 @@
 
 (defun cn (u m)
   (cond ((zerop m)
-	 ;; jacobi_cn(u,0) = cos(u).  Should we use A&S 16.13.2 for
-	 ;; small m?
+	 ;; jacobi_cn(u,0) = cos(u).  Should we use A&S 16.13.2
+	 ;; (https://dlmf.nist.gov/22.10.E5) for small m?
 	 ;;
 	 ;; cn(u,m) = cos(u) + 1/4*m*(u-sin(u)*cos(u))*sin(u)
 	 (cos u))
 	((= m 1)
-	 ;; jacobi_cn(u,1) = sech(u).  Should we use A&S 16.15.3 if m
-	 ;; is close enough to 1?
+	 ;; jacobi_cn(u,1) = sech(u).  Should we use A&S 16.15.3
+	 ;; (https://dlmf.nist.gov/22.10.E9) if m is close enough to
+	 ;; 1?
 	 ;;
 	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
 	((and (realp m) (> m 1))
-	 ;; A&S 16.11.2: cn(u|m) = dn(sqrt(m)*u|1/m)
-	 (nth-value 2 (elliptic-sn-cn-dn-descending (* (sqrt m) u) (/ m)
-						    (sqrt (/ (- m 1) m)))))
+	 ;; A&S 16.11.3 (https://dlmf.nist.gov/22.17.E3):
+         ;;
+         ;;   cn(u|m) = dn(sqrt(m)*u|1/m)
+         (multiple-value-bind (s c d)
+             (elliptic-sn-cn-dn-descending (* (sqrt m) u)
+                                           (/ m)
+					   (sqrt (/ (- m 1) m)))
+           (declare (ignore s c))
+           d))
 	(t
-	 (nth-value 1 (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))))))
+         (multiple-value-bind (s c d)
+             (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
+           (declare (ignore s d))
+           c))))
 
 
 ;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
