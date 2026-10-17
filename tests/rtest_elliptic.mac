@@ -1212,6 +1212,18 @@ true;
 closeto('elliptic_e(1.0, 0.5) - 0.9273298836244401, 1e-15);
 true;
 
+/* Bug 5663 */
+closeto(jacobi_sn(20.0, 2.5) - 0.2282498061811287, 4.7740e-15);
+true;
+
+closeto(jacobi_sn(20.0*%i, 0.75) - (-0.2325715776527406*%i), 3.8858e-15);
+true;
+
+closeto(jacobi_sn(20.0*%i, 1.75 + %i) - (0.8280244930780284-0.8738216619745627*%i), 8.0428e-15);
+true;
+
+closeto(jacobi_dn(20.0*%i, 0.75) - 1.020081934968419, 6.6614e-16);
+true;
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
