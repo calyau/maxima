@@ -200,6 +200,18 @@
 	 (let ((root-m (sqrt m)))
 	   (/ (elliptic-sn-descending (* root-m u) (/ m) (sqrt (/ (- m 1) m)))
 	      root-m)))
+	((and (realp m) (minusp m))
+	 ;; A&S 16.10.2 (https://dlmf.nist.gov/22.17.E6):
+         ;;
+         ;;   sn(u|m) = sn(v|mu)/(sqrt(1-m)*dn(v|mu)),
+         ;;
+         ;; where v = sqrt(1-m)*u and mu = -m/(1-m).  sqrt(1-mu) =
+         ;; 1/sqrt(1-m).
+	 (let ((root (sqrt (- 1 m))))
+	   (multiple-value-bind (s c d)
+	       (elliptic-sn-cn-dn-descending (* root u) (/ (- m) (- 1 m)) (/ root))
+	     (declare (ignore c))
+	     (/ s (* root d)))))        
 	(t
 	 (elliptic-sn-descending u m (sqrt (- 1 m))))))
 
@@ -227,6 +239,17 @@
 					   (sqrt (/ (- m 1) m)))
            (declare (ignore s d))
            c))
+	((and (realp m) (minusp m))
+	 ;; A&S 16.10.4 (https://dlmf.nist.gov/22.17.E8):
+         ;;
+         ;;   dn(u|m) = 1/dn(v|mu),
+         ;;
+         ;; where v = sqrt(1-m)*u and mu = -m/(1-m).  sqrt(1-mu) =
+         ;; 1/sqrt(1-m).
+	 (let ((root (sqrt (- 1 m))))
+	   (/ (nth-value 2 (elliptic-sn-cn-dn-descending (* root u)
+							 (/ (- m) (- 1 m))
+							 (/ root))))))
 	((not (and (realp u) (realp m) (< m 8/9)))
 	 ;; dn is computed from one step of the descending transformation,
 	 ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4),
@@ -278,6 +301,18 @@
 					   (sqrt (/ (- m 1) m)))
            (declare (ignore s c))
            d))
+	((and (realp m) (minusp m))
+	 ;; A&S 16.10.3 (https://dlmf.nist.gov/22.17.E7):
+         ;;
+         ;;   cn(u|m) = cn(v|mu)/dn(v|mu),
+         ;;
+         ;; where v = sqrt(1-m)*u and mu = -m/(1-m).  sqrt(1-mu) =
+         ;; 1/sqrt(1-m).
+	 (let ((root (sqrt (- 1 m))))
+	   (multiple-value-bind (s c d)
+	       (elliptic-sn-cn-dn-descending (* root u) (/ (- m) (- 1 m)) (/ root))
+	     (declare (ignore s))
+	     (/ c d))))
 	(t
          (multiple-value-bind (s c d)
              (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
