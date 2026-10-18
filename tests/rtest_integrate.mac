@@ -7274,6 +7274,14 @@ integrate(%e^x*x*log(x), x);
 %e^x*(x-1)*log(x)-gamma_incomplete(0,-x)-%e^x$
 
 
+/* Bug #5690: "integrate(1/sqrt(b*tan(f*x+e)^2+a),x) ends in a sign() error" */
+
+block([a, b, e, f, x],
+  local(a, b, e, f, x),
+  emptyp(errcatch(integrate(1/sqrt(b*tan(f*x+e)^2+a), x)))), ask_hide_prompt; nonzero; pos; pos; pos; pos;
+false$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

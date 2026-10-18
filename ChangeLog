@@ -229,6 +229,7 @@ Bug fixes for numbered bugs:
 * \#5681 integrate(tan(x),x,0,%pi/4) and limit(log(cos(x)),x,%pi/4) signal an error
 * \#5683 Merging powers of %e in a product can leave a nested product
 * \#5689 integrate(%e^x*x*log(x),x) returns a noun form
+* \#5690 integrate(1/sqrt(b*tan(f*x+e)^2+a),x) ends in a sign() error
 
 Bug fixes for unnumbered bugs:
 ------------------------------

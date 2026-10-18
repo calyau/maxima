@@ -215,7 +215,15 @@
 	  $logarc $exponentialize result)
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
-     (destructuring-let (((yyy-re . yyy-im) (risplit yyy)))
+     ;; RISPLIT can ask sign() about an expression that is not real, which
+     ;; throws to SIGN-IMAG-ERR here. The integral is then left unevaluated.
+     (destructuring-let (((yyy-re . yyy-im)
+                          (let ((s (let (sign-imag-errp)
+                                     (catch 'sign-imag-err (risplit yyy)))))
+                            (if (consp s)
+                              s
+                              (return-from trigin1
+                                (list '(%integrate) risch-*exp risch-var))))))
       (flet ((locally-const-p (e)
         "E is locally constant iff its derivative vanishes."
         (let ((e (let (($exponentialize t) ($logarc t))
