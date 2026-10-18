@@ -54,28 +54,6 @@
 (declaim (inline descending-transform))
 
 ;; Landen descending transform (Gauss' transform).
-;;
-;; Given u and m, compute:
-;;
-;;   mu = ((1-sqrt(m1))/(1+sqrt(m1)))^2
-;;   v = u/sqrt(mu)
-;;
-;; where m1 = 1 - m.  However, compute sqrt(mu) =
-;; (1-sqrt(m1))/(1+sqrt(m1) and square this to get mu.  Doing it in
-;; the order above loses information when m is complex.
-;;
-;; Also (1-sqrt(m1))/(1+sqrt(m1)) loses accuracy when m is small.
-;; Instead compute the equivalent m/(1+sqrt(m1))^2.  (Multiply the
-;; former by (1+sqrt(m1))/(1+sqrt(m1))).
-;;
-;; Returns 3 values:
-;;
-;;   v
-;;   mu
-;;   sqrt(1-mu)
-;;
-;; However sqrt(1-mu) is computed as 2*sqrt(m1)/(1+sqrt(m1)) to get
-;; rid of the round-off in 1-mu when m is near 1.
 (defun descending-transform (u m root-m1)
   ;; A&S 16.12.1 (https://dlmf.nist.gov/22.7.E1).  ROOT-M1 is
   ;; sqrt(1-m).  Return v = u/(1+sqrt(mu)), mu, sqrt(mu), and
@@ -115,9 +93,9 @@
   ;; m/4*cos(u)^2 and m/4*sin(u)^2, which grow like
   ;; exp(2*abs(imagpart(u))) relative to sin(u) or cos(u).  The terms
   ;; with u shift the phase by about m*u/4, less than the rounding
-  ;; error in u when abs(m) < eps.  The base case for dn, includes the
-  ;; first-order term, so its error is O(m^2*sin(u)^4) and this test
-  ;; is more than enough for it.
+  ;; error in u when abs(m) < eps.  For dn, the error is m/2*sin(u)^2
+  ;; which grows like m*exp(2*|y|)/8, which is still covered by the
+  ;; test.
   (and (< (abs m) (epsilon u))
        (or (realp u)
 	   (zerop m)
@@ -161,6 +139,12 @@
      ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4) for dn:
      ;;
      ;;   dn(u|m) = (dn^2(v|mu) - (1-sqrt(mu)))/((1+sqrt(mu))-dn^2(v|mu))
+     ;;
+     ;; Using dn^2(v|mu) = 1-mu*sn^2(v|mu), we get
+     ;;
+     ;;   dn(u|m) = (1-p)/(1+p)
+     ;;
+     ;; where p = 1-sqrt(mu)*sn^2(v|mu).
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
@@ -211,7 +195,7 @@
 	   (multiple-value-bind (s c d)
 	       (elliptic-sn-cn-dn-descending (* root u) (/ (- m) (- 1 m)) (/ root))
 	     (declare (ignore c))
-	     (/ s (* root d)))))        
+	     (/ s (* root d)))))
 	(t
 	 (elliptic-sn-descending u m (sqrt (- 1 m))))))
 
@@ -230,7 +214,7 @@
 	 ;;   dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
 	((and (realp m) (> m 1))
-	 ;; A&S 16.11.3 (https://dlmf.nist.gov/22.17.E3):
+	 ;; A&S 16.11.4 (https://dlmf.nist.gov/22.17.E4):
          ;;
          ;;   dn(u|m) = cn(sqrt(m)*u|1/m)
          (multiple-value-bind (s c d)
@@ -253,15 +237,15 @@
 	((not (and (realp u) (realp m) (< m 8/9)))
 	 ;; dn is computed from one step of the descending transformation,
 	 ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4),
- 	 ;;
+	 ;;
 	 ;;   dn(u|m) = (1-p)/(1+p),  p = sqrt(mu)*sn(v|mu)^2,
-         ;;
+	 ;;
 	 ;; with v = u/(1+sqrt(mu)) and sqrt(mu) =
 	 ;; (1-sqrt(1-m))/(1+sqrt(1-m)).  For real u and 0 <= m < 8/9,
 	 ;; sqrt(mu) < 1/2, so 0 <= p < 1/2 and 1-p cannot cancel; the
 	 ;; branch below then needs only sn.  Otherwise 1-p can cancel,
 	 ;; for example when m is near 1 and u is near an odd multiple of
-	 ;; K(m)
+	 ;; K(m).
          (multiple-value-bind (s c d)
 	     (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
            (declare (ignore s c))
@@ -270,10 +254,10 @@
 	 ;; A&S 16.12.4 (https://dlmf.nist.gov/22.7.E4), as above.
 	 ;; This is also the Gauss transformation of
 	 ;; http://functions.wolfram.com/09.29.16.0013.01.
-	 (multiple-value-bind (z root-sq root root-1-root-sq)
+	 (multiple-value-bind (v mu root-mu root-mu1)
 	     (descending-transform u m (sqrt (- 1 m)))
-	   (let* ((s (elliptic-sn-descending z root-sq root-1-root-sq))
-		  (p (* root s s)))
+	   (let* ((s (elliptic-sn-descending v mu root-mu1))
+		  (p (* root-mu s s)))
 	     (/ (- 1 p)
 		(+ 1 p)))))))
 
@@ -285,8 +269,8 @@
 	 ;; cn(u,m) = cos(u) + 1/4*m*(u-sin(u)*cos(u))*sin(u)
 	 (cos u))
 	((= m 1)
-	 ;; jacobi_cn(u,1) = sech(u).  Should we use A&S 16.15.3
-	 ;; (https://dlmf.nist.gov/22.10.E9) if m is close enough to
+	 ;; jacobi_cn(u,1) = sech(u).  Should we use A&S 16.15.2
+	 ;; (https://dlmf.nist.gov/22.10.E8) if m is close enough to
 	 ;; 1?
 	 ;;
 	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
