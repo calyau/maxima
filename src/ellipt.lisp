@@ -93,7 +93,7 @@
   ;; m/4*cos(u)^2 and m/4*sin(u)^2, which grow like
   ;; exp(2*abs(imagpart(u))) relative to sin(u) or cos(u).  The terms
   ;; with u shift the phase by about m*u/4, less than the rounding
-  ;; error in u when abs(m) < eps.  For dn, the error is m/2*sin(u)^2
+  ;; error in u when abs(m) < eps.  For dn, the error is m/2*sin(u)^2,
   ;; which grows like m*exp(2*|y|)/8, which is still covered by the
   ;; test.
   (and (< (abs m) (epsilon u))
@@ -144,7 +144,7 @@
      ;;
      ;;   dn(u|m) = (1-p)/(1+p)
      ;;
-     ;; where p = 1-sqrt(mu)*sn^2(v|mu).
+     ;; where p = sqrt(mu)*sn^2(v|mu).
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
