@@ -960,3 +960,40 @@ block([fpprec : 32, x : [1/2, 3/4, 2, -2], lo, hi],
   x : bfloat(x),
   [is(map(atan, lo) = map(atan, x)), is(map(atan, hi) = map(atan, x))]);
 [true, true]$
+
+
+/* Bug #5567: "cos(x+n*%pi) is not simplified for an integer n" */
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+n*%pi), cos(x+n*%pi), sec(x+n*%pi), csc(x+n*%pi), tan(x+n*%pi), cot(x+n*%pi)]);
+[(-1)^n*sin(x), (-1)^n*cos(x), (-1)^n*sec(x), (-1)^n*csc(x), tan(x), cot(x)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+(n+1)*%pi), cos(x+n*%pi+%pi/2), sin(x+3*n*%pi), sec(x+n*%pi+%pi/2), csc(x-n*%pi)]);
+[(-1)^(n+1)*sin(x), (-1)^(n+1)*sin(x), (-1)^n*sin(x), (-1)^(n+1)*csc(x), (-1)^n*csc(x)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [csc(n*%pi+%pi/2), sec(n*%pi+%pi/3), tan(n*%pi+%pi/4), cot(n*%pi+%pi/3)]);
+[(-1)^n, 2*(-1)^n, 1, 1/sqrt(3)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+n*%pi+%pi/5), csc(n*%pi+%pi/5),
+   errcatch(csc(n*%pi)), errcatch(sec(n*%pi+%pi/2)),
+   errcatch(tan(n*%pi+%pi/2)), errcatch(cot(n*%pi))]);
+[sin(x+%pi*n+%pi/5), csc(%pi*n+%pi/5), [], [], [], []]$
+
+block([g : lambda([n], [sin(x+n*%pi), cos(x+n*%pi+%pi/2), sec(x+n*%pi+%pi/2), csc(x-n*%pi),
+                        csc(n*%pi+%pi/2), sec(n*%pi+%pi/3), tan(n*%pi+%pi/4), cot(n*%pi+%pi/3)]), m],
+  local(m),
+  declare(m, integer),
+  every(lambda([k], lmax(abs(float(subst([m = k, x = 3/10], g(m)) - subst(x = 3/10, g(k))))) < 1e-14),
+        makelist(k, k, -3, 3)));
+true$

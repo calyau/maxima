@@ -541,6 +541,11 @@
 	  coeff (linearize ratcoeff)
 	  zl-rem (get-not-const-or-int-terms x '$%pi))
     (cond ((zerop1 zl-rem) (%piargs coeff ratcoeff))
+	  ;; COEFF = (K . Y) with K odd: sin(x+(K*n+Y)*%pi) for an integer n
+	  ;; is (-1)^(K*n)*sin(x+Y*%pi).
+	  ((and (integerp (car coeff)) (oddp (car coeff)))
+	   (let ((s (%piargs-sin/cos (add zl-rem (mul (cdr coeff) '$%pi)))))
+	     (and s (mul (power -1 (sub ratcoeff (cdr coeff))) s))))
 	  ((not (mevenp (car coeff))) nil)
 	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%sin zl-rem))
 	  ((equal 1 x) (neg (ftake* '%sin zl-rem)))
@@ -664,10 +669,11 @@
      ;; return their quotient.
      ((and (zerop1 zl-rem)
 	   (setq sin-of-coeff-pi
-		 (%piargs coeff nil)))
+		 (%piargs coeff nice-terms)))
       (setq cos-of-coeff-pi
 	    (%piargs (cons (car coeff)
-			   (rplus 1//2 (cdr coeff))) nil))
+			   (rplus 1//2 (cdr coeff)))
+		     (add nice-terms 1//2)))
       (cond ((zerop1 sin-of-coeff-pi) 
 	     0)		;; tan(integer*%pi)
 	    ((zerop1 cos-of-coeff-pi)
@@ -745,7 +751,12 @@
      (setq ratcoeff (get-const-or-int-terms x '$%pi)
 	   coeff (linearize ratcoeff)
 	   zl-rem (get-not-const-or-int-terms x '$%pi))
-     (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff nil))) (div 1 zl-rem))
+     (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff ratcoeff))) (div 1 zl-rem))
+		   ;; As in %PIARGS-SIN/COS, unless the above set ZL-REM to NIL
+		   ((and zl-rem (integerp (car coeff)) (oddp (car coeff)))
+		    (let ((s (%piargs-csc/sec
+			      (add zl-rem (mul (cdr coeff) '$%pi)))))
+		      (and s (mul (power -1 (sub ratcoeff (cdr coeff))) s))))
 		   ((not (mevenp (car coeff))) nil)
 		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%csc zl-rem))
 		   ((equal 1 x) (neg (ftake* '%csc zl-rem)))

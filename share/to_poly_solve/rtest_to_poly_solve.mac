@@ -1202,7 +1202,7 @@ nicedummies(%solve(abs(x+7)*sin(x)*cos(x),x));
 %union([x=-7],[x=(2*%pi*%z0+%pi)/2],[x=%pi*%z1])$
 
 nicedummies(%solve(tan(x)=tan(zzz),x));
-%union(%if((cos(zzz)#0) %and (cos(zzz+%pi*%z0)#0),[x=zzz+%pi*%z0],%union()))$
+%union(%if(cos(zzz)#0,[x=zzz+%pi*%z0],%union()))$
 
 expand(nicedummies(%solve(tan(x)=tan(%pi/4),x)));
 %union([x=%pi*%z0+%pi/4])$
