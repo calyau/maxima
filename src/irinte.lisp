@@ -236,10 +236,11 @@
   (let* ((discr (power (sub (mul f f) (mul 4 e g)) 1//2)) ;; Compute discriminant of
 	 (p*r0^e0 (mul p (power r0 e0)))                  ;; quadratic:  sqrt(f^2-4*e*g)
 	 (2*e*x+f (add (mul 2 e x) f))
-	 (2*e*d*invdisc (mul 2 e d (inv discr))))
-    (mul 2*e*d*invdisc
-	 (sub (intir2 (mul (inv (sub 2*e*x+f discr)) p*r0^e0) x)
-	      (intir2 (mul (inv (add 2*e*x+f discr)) p*r0^e0) x)))))
+	 (2*e*d*invdisc (mul 2 e d (inv discr)))
+	 ;; INTIR2 returns NIL for an integral it cannot do.
+	 (i1 (intir2 (mul (inv (sub 2*e*x+f discr)) p*r0^e0) x))
+	 (i2 (and i1 (intir2 (mul (inv (add 2*e*x+f discr)) p*r0^e0) x))))
+    (and i2 (mul 2*e*d*invdisc (sub i1 i2)))))
 
 ;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
 ;; repeated roots.

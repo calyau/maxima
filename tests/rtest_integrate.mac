@@ -7282,6 +7282,16 @@ block([a, b, e, f, x],
 false$
 
 
+/* Bug #5691: "integrate() drops a part of sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)" */
+
+block([g, G],
+  g : sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a),
+  G : integrate(g, x),
+  map(lambda([p], radcan(rectform(trigexpand(subst(p, diff(G, x) - g))))),
+      [[a = 1, x = 0], [a = 2, x = 2*atan(1/3)], [a = -1, x = 2*atan(2)]]));
+[0, 0, 0]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

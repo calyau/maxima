@@ -230,6 +230,7 @@ Bug fixes for numbered bugs:
 * \#5683 Merging powers of %e in a product can leave a nested product
 * \#5689 integrate(%e^x*x*log(x),x) returns a noun form
 * \#5690 integrate(1/sqrt(b*tan(f*x+e)^2+a),x) ends in a sign() error
+* \#5691 integrate() drops a part of sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
 
 Bug fixes for unnumbered bugs:
 ------------------------------
