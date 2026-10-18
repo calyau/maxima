@@ -228,6 +228,7 @@ Bug fixes for numbered bugs:
 * \#5680 integrate(x*sec(x)^2,x,0,1) and some limits return results with gensyms
 * \#5681 integrate(tan(x),x,0,%pi/4) and limit(log(cos(x)),x,%pi/4) signal an error
 * \#5683 Merging powers of %e in a product can leave a nested product
+* \#5689 integrate(%e^x*x*log(x),x) returns a noun form
 
 Bug fixes for unnumbered bugs:
 ------------------------------

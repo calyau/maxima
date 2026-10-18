@@ -493,7 +493,7 @@
 	     (setq coef (cond ((null (cdr coef))
                                (car coef))
 			      (t
-                               (setq coef (cons (car ex) coef)))))))
+                               (setq coef (cons (car ex) (nreverse coef))))))))
       (values arcpart coef))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

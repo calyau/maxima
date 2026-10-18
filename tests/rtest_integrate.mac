@@ -7268,6 +7268,12 @@ block([r : integrate(x*sec(x)^2, x, 0, %pi/4)],
 [log(2)/2, log(2), log(2)/2, log(2)/2]$
 
 
+/* Bug #5689: "integrate(%e^x*x*log(x),x) returns a noun form" */
+
+integrate(%e^x*x*log(x), x);
+%e^x*(x-1)*log(x)-gamma_incomplete(0,-x)-%e^x$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
