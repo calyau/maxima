@@ -271,8 +271,10 @@
   (labels
       ((sech (z)
          (/ (cosh z)))
+       #+nil
        (csch (z)
          (/ (sinh z)))
+       #+nil
        (gd (z)
          ;; Gudermannian function.  See eqn 2.11 and surrounding text.
          (flet ((gd-real (x)
@@ -285,26 +287,47 @@
                                 (atan (* (cos y) (csch x))))))
                    (beta (atanh (* (sin y) (sech x)))))
                (complex alpha beta)))))
-       (gd-diff (ratio n z2k)
-         (- (gd (* ratio (+ n z2k)))
-            (gd (* ratio (- n z2k))))))
+       (gd (z)
+         ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
+         (let ((x (realpart z))
+               (y (imagpart z)))
+           (complex (atan (sinh x) (cos y))
+                    (atanh (* (sin y) (sech x)))))))
     (let* ((K (bf-elliptic-k m))
            (K-prime (bf-elliptic-k (- 1 m)))
            (pi-K-ratio (* (%pi m) (/ K K-prime)))
            (z/2K (/ z (* 2 K)))
-           (sum 0))
-      (format t "K, K' = ~A ~A~%" K K-prime)
-      (format t "pi-K-ratio = ~A~%" pi-K-ratio)
-      (format t"z/2K = ~A~%" z/2K)
-      (do* ((n 1 (1+ n))
-            (term (gd-diff pi-K-ratio n z/2K)
-                  (gd-diff pi-K-ratio n z/2K)))
-           ((< (abs term) tol)
-            (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
-            (+ sum (gd (/ (* z (%pi z))
-                          (* 2 K-prime)))))
-        (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
-        (incf sum term)))))
+           (w (* pi-K-ratio z/2K))
+           (sum (gd w))
+           (sinh-w (sinh w))
+           (sinh-abs-w (sinh (abs w))))
+      #+nil
+      (progn
+        (format t "K, K' = ~A ~A~%" K K-prime)
+        (format t "pi-K-ratio = ~A~%" pi-K-ratio)
+        (format t"z/2K = ~A~%" z/2K))
+      (flet ((gd-diff (ratio n z2k)
+               (let ((c-n (cosh (* n ratio))))
+                 (cond
+                   ((or (< (abs w) 0.5)
+                        (< sinh-abs-w (abs c-n)))
+                    (* 2 (atan (/ sinh-w c-n))))
+                   (t
+                    (- (gd (* ratio (+ n z2k)))
+                       (gd (* ratio (- n z2k)))))))))
+        (do* ((n 1 (1+ n))
+              (term (gd-diff pi-K-ratio n z/2K)
+                    (gd-diff pi-K-ratio n z/2K)))
+             ((<= (abs term) (* (abs sum) tol))
+              #+nil
+              (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
+              sum
+              #+nil
+              (+ sum (gd (/ (* z (%pi z))
+                            (* 2 K-prime)))))
+          #+nil
+          (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
+          (incf sum term))))))
 
 
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
