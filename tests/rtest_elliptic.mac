@@ -1278,6 +1278,25 @@ block([u : 99.0, m : 1.5],
    imagpart(jacobi_dn(u, m))]);
 [true, true, true, 0]$
 
+/* m = -6: K' = K(7) is complex, so c = %pi*K/K' is complex, and c - t*w
+ * crosses the cut of gd on the imaginary axis (Re(c - w) = -0.012).
+ * The atan form of the n = 1 term would give a value 2*%pi too small,
+ * -0.512517991630382 - 0.730409062546729*%i.  sin(am) and cos(am) are
+ * the same for both values, so compare am directly.
+ */
+closeto(jacobi_am(0.5772232141353463 - 0.8530005393245824*%i, -6.0)
+          - (5.770667315549204 - 0.7304090625467289*%i),
+        2.6669e-15);
+true;
+
+block([fpprec : 34],
+  closeto(jacobi_am(0.5772232141353462916862296464673008b0
+                      - 0.8530005393245824453542288836251924b0*%i,
+                    -6b0)
+            - (5.770667315549203976645055969662078b0
+               - 0.730409062546728844474551912372623685b0*%i),
+          5.7819b-33));
+true;
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
