@@ -231,6 +231,7 @@
         (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
         (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
 
+#+nil
 (defun jacobi-am-agm (u m tol)
   "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
   uses the AGM method until a tolerance of TOL is reached for the
@@ -252,6 +253,7 @@
 ;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
 ;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
 ;; used.
+#+nil
 (defun bf-jacobi-am (u m tol)
   (cond ((and (realp u) (realp m) (<= (abs m) 1))
          ;; The case of real u and m with |m| <= 1.  We can use AGM to
@@ -264,6 +266,46 @@
          ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
          ;; to be what functions.wolfram.com is using in this case.
          (asin (sn (to u) (to m))))))
+
+(defun bf-jacobi-am (z m tol)
+  (labels
+      ((sech (z)
+         (/ (cosh z)))
+       (csch (z)
+         (/ (sinh z)))
+       (gd (z)
+         ;; Gudermannian function.  See eqn 2.11 and surrounding text.
+         (flet ((gd-real (x)
+                  ;; Gudermannian function for real x.
+                  (* 2 (atan (tanh (/ x 2))))))
+           (let ((x (realpart z))
+                 (y (imagpart z)))
+             (let ((alpha (+ (gd-real x)
+                             (- (atan (csch x))
+                                (atan (* (cos y) (csch x))))))
+                   (beta (atanh (* (sin y) (sech x)))))
+               (complex alpha beta)))))
+       (gd-diff (ratio n z2k)
+         (- (gd (* ratio (+ n z2k)))
+            (gd (* ratio (- n z2k))))))
+    (let* ((K (bf-elliptic-k m))
+           (K-prime (bf-elliptic-k (- 1 m)))
+           (pi-K-ratio (* (%pi m) (/ K K-prime)))
+           (z/2K (/ z (* 2 K)))
+           (sum 0))
+      (format t "K, K' = ~A ~A~%" K K-prime)
+      (format t "pi-K-ratio = ~A~%" pi-K-ratio)
+      (format t"z/2K = ~A~%" z/2K)
+      (do* ((n 1 (1+ n))
+            (term (gd-diff pi-K-ratio n z/2K)
+                  (gd-diff pi-K-ratio n z/2K)))
+           ((< (abs term) tol)
+            (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
+            (+ sum (gd (/ (* z (%pi z))
+                          (* 2 K-prime)))))
+        (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
+        (incf sum term)))))
+
 
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
 ;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.
