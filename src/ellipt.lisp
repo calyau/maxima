@@ -418,7 +418,7 @@
 ;; csch(0)).  In this implementation, we use a different formulation.
 ;;
 ;; First 2*atan(tanh(x/2)) is identical to atan(sinh(x)).  This is
-;; true because the derivative of bot are equal and they have the same
+;; true because the derivative of both are equal and they have the same
 ;; value for x = 0.  Thus we have gd(x) + atan(csch(x)) =
 ;; atan(sinh(x)) + atan(csch(x)) = atan(sinh(x) + atan(1/sinh(x)) =
 ;; sign(sinh(x))*%pi/2 = sign(x)*%pi/2.
@@ -460,22 +460,6 @@
   (labels
       ((sech (z)
          (/ (cosh z)))
-       #+nil
-       (csch (z)
-         (/ (sinh z)))
-       #+nil
-       (gd (z)
-         ;; Gudermannian function.  See eqn 2.11 and surrounding text.
-         (flet ((gd-real (x)
-                  ;; Gudermannian function for real x.
-                  (* 2 (atan (tanh (/ x 2))))))
-           (let ((x (realpart z))
-                 (y (imagpart z)))
-             (let ((alpha (+ (gd-real x)
-                             (- (atan (csch x))
-                                (atan (* (cos y) (csch x))))))
-                   (beta (atanh (* (sin y) (sech x)))))
-               (complex alpha beta)))))
        (gd (z)
          ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
          (let ((x (realpart z))
@@ -510,10 +494,7 @@
              ((<= (abs term) (* (abs sum) tol))
               #+nil
               (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
-              sum
-              #+nil
-              (+ sum (gd (/ (* z (%pi z))
-                            (* 2 K-prime)))))
+              sum)
           #+nil
           (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
           (incf sum term))))))
