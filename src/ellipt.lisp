@@ -267,6 +267,74 @@
          ;; to be what functions.wolfram.com is using in this case.
          (asin (sn (to u) (to m))))))
 
+;; Reference:  https://kensala.com/publications/Sala_TransformationsOfTheJacobianAmplitudeFunctionAndItsCalculationViaTheArithmeticGeometricMean_SiamJMathsAnalysis_20_1989.pdf
+;;
+;; The main equation is 2.10:
+;;
+;;   am(z,m) = gd(%pi*z/(2*K')) +
+;;     sum(gd(%pi*K/K'*(n + z/(2*K))) - gd(%pi*K/K'*(n - z/(2*K))), n, 1, inf)
+;;
+;; where gd(z) is the Gudermannian function.  This sum converges
+;; throughout the complex plane except at the logarithmic branch
+;; points z = 2*s*K + (2*t+1)*%i*K' where s and t are arbitrary
+;; integers.
+;;
+;; The Gudermannian function is
+;;
+;;   gd(z) = a + %i*b
+;;
+;; where (2.11)
+;;
+;;   a = gd(x) + atan(csch(x)) - atan(cos(y)*csch(x))
+;;   b = atanh(sin(y)*sech(x)
+;;
+;; and
+;;
+;;   gd(x) = 2*atan(tanh(x/2))
+;;
+;;
+;; Note that this definition isn't defined for x = 0 (because of
+;; csch(0)).  In this implementation, we use a different formulation.
+;;
+;; First 2*atan(tanh(x/2)) is identical to atan(sinh(x)).  This is
+;; true because the derivative of bot are equal and they have the same
+;; value for x = 0.  Thus we have gd(x) + atan(csch(x)) =
+;; atan(sinh(x)) + atan(csch(x)) = atan(sinh(x) + atan(1/sinh(x)) =
+;; sign(sinh(x))*%pi/2 = sign(x)*%pi/2.
+;;
+;; Hence a = sign(x)*%pi/2 - atan(cos(y)*csch(x))
+;;
+;; But this is the same as atan2(sinh(x), cos(y)).
+;;
+;; This also makes the computation of a for small x more accurate.
+;;
+;; In Sala's formulation, we compute gd(A+w) - gd(A-w).  This loses
+;; precision when A is large and w is small.  To fix this, we use
+;;
+;;   D = gd(A+w) - gd(A-w) = 2·atan(sinh(w) / cosh(A))
+;;
+;; Note that tan(gd(u)/2) = tanh(u/2).  Let a = (A + w)/2, b = (A −
+;; w)/2, so that a − b = w and a + b = A.
+;;
+;; Let alpha = gd(A+w)/2 and beta = gd(A-w)/2.  Then
+;;
+;;   tan(alpha) = tanh(a), tan(beta) = tanh(b), D/2 = alpha-beta
+;;
+;; Then using the tan of sum formula:
+;;
+;;   tan(D/2) = (tanh(a) − tanh(b)) / (1 + tanh(a) · tanh(b)).
+;;
+;; Multiply top and bottom by cosh(a)*cosh(b):
+;;
+;;   tan(D/2) = (cosh(a)*sinh(b)-sinh(a)*cosh(b))/(sinh(a)*sinh(b)+cosh(a)*cosh(b))
+;;            = sinh(a-b)/cosh(a+b)
+;;            = sinh(w)/cosh(A)
+;;
+;; Thus D = 2*atan(sinh(w)/cosh(A)) for sinh(abs(w)) < cosh(abs(A)).
+;; This is the condition used below to choose this formula or the full
+;; difference formula.
+;;
+;; However, this proof is only for real m (real A).
 (defun bf-jacobi-am (z m tol)
   (labels
       ((sech (z)
@@ -309,8 +377,7 @@
       (flet ((gd-diff (ratio n z2k)
                (let ((c-n (cosh (* n ratio))))
                  (cond
-                   ((or (< (abs w) 0.5)
-                        (< sinh-abs-w (abs c-n)))
+                   ((< sinh-abs-w (abs c-n))
                     (* 2 (atan (/ sinh-w c-n))))
                    (t
                     (- (gd (* ratio (+ n z2k)))
