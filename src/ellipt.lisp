@@ -377,7 +377,8 @@
       (flet ((gd-diff (ratio n z2k)
                (let ((c-n (cosh (* n ratio))))
                  (cond
-                   ((< sinh-abs-w (abs c-n))
+                   ((and (< sinh-abs-w (abs c-n))
+                         (< (abs (realpart w)) (realpart (* n ratio))))
                     (* 2 (atan (/ sinh-w c-n))))
                    (t
                     (- (gd (* ratio (+ n z2k)))
