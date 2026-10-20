@@ -340,8 +340,7 @@ block([ans1,ans2,expr],
    remove(m,noninteger),
    remove(p,noninteger),
   [ans1,ans2,factor(ans2)]);
-
-[1,r*(r+1)^(-p-1)+2^(p+1)*(r+1)^(-p-1)-(r+1)^(-p-1),(r+1)^(-p-1)*(r+2^(p+1)-1)]$
+[1,(r+1)^(-p-1)*(r+2^(p+1)-1),(r+1)^(-p-1)*(r+2^(p+1)-1)]$
 
 limit(1/gamma(x), x, 0,plus);
 0$

@@ -2461,6 +2461,14 @@ ignoring dummy variables and array indices."
 	((not (freeof '$und exp))
       (if (eq exp '$und) '$und (throw 'limit nil)))
 
+    ;; SIMPINF maps zeroa and zerob to 0, so it would drop the side of a product
+    ;; like 2*zeroa. SIMPLIMTIMES keeps it.
+    ((and (mtimesp exp)
+          (freeof var exp)
+          (amongl '($zeroa $zerob) exp)
+          (not (amongl '($inf $minf $infinity $ind) exp)))
+     (simplimtimes (cdr exp)))
+
     ;; When exp is freeof var, optionally apply simplify followed by simpinf. Yes, the
 	;; call to simplify is needed: sometimes exp has the form XXX^1, for example.
 	((freeof var exp)
