@@ -423,7 +423,7 @@
 
 (defmfun ($radcan :properties ((evfun t))) (exp)
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
-	(t (let (($ratsimpexpons t))
+	(t (let (($ratsimpexpons t) modulus)
 	     (simplify (let (($expop 0) ($expon 0))
 			 (radcan1 (fr1 exp nil) *var)))))))
 
