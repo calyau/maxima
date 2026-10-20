@@ -1379,6 +1379,18 @@ true;
 closeto(jacobi_am(2.0 - 1.0*%i, 3.0 - 2.0*%i) - (3.1789721511707696 + 0.7585556617487619*%i), 1.2213e-15);
 true;
 
+/* Large real argument.  sinh and cosh of A + w overflow in double
+ * precision unless z is first reduced by a multiple of 2*K.
+ */
+closeto(jacobi_am(1000.0, 0.5) - 847.1374038213264, 1.1369e-13);
+true;
+
+block([fpprec : 34],
+  closeto(jacobi_am(1000b0, 0.5b0)
+          - 847.1374038213263652582547303663649586b0,
+          6.4095b-31));
+true;
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 

@@ -469,7 +469,14 @@
     (let* ((K (bf-elliptic-k m))
            (K-prime (bf-elliptic-k (- 1 m)))
            (pi-K-ratio (* (%pi m) (/ K K-prime)))
-           (z/2K (/ z (* 2 K)))
+           ;; Reduce z by multiples of 2K so we don't overflow.  This
+           ;; doesn't add additional round-off that doesn't already
+           ;; exist since we were computing c*(z/(2K)) and are now
+           ;; computing c*(z/(2K)-r).  Since r is the nearest integer
+           ;; to z/(2K), z/(2K) - r is exact by Sterbenz's lemma.
+           (r (round (realpart (/ (* pi-K-ratio z) (* 2 K)))
+                     (realpart pi-K-ratio)))
+           (z/2K (- (/ z (* 2 K)) r))
            (w (* pi-K-ratio z/2K))
            (sum (gd w))
            (sinh-w (sinh w))
@@ -494,7 +501,9 @@
              ((<= (abs term) (* (abs sum) tol))
               #+nil
               (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
-              sum)
+              ;; Since we reduced by multiples of 2K, we need to add
+              ;; back multiples of %pi.
+              (+ sum (* r (%pi m))))
           #+nil
           (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
           (incf sum term))))))
