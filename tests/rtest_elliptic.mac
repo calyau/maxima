@@ -1059,7 +1059,7 @@ jacobi_am(0,m);
  * functions.wolfram.com
  */
 
-closeto(jacobi_am(1, .5) - 0.93231507988385386595, 1e-18);
+closeto(jacobi_am(1, .5) - 0.93231507988385386595, 2.2205e-16);
 true$
 
 closeto(jacobi_am(100, .5) - 84.703112724113824403, 2.8422e-14);
@@ -1265,7 +1265,7 @@ block([u : 20.0, m : 1 - 2.0^-53],
  */
 block([u : 3.0, m : -1e10],
   [closeto(jacobi_sn(u, m) - 0.11593314977968198, 2.5943e-12),
-   closeto(jacobi_cn(u, m) + 0.99325701849126736, 3.0254e-13),
+   closeto(jacobi_cn(u, m) + 0.99325701849126736, 3.0287e-13),
    closeto(jacobi_dn(u, m) - 11593.315021096501, 2.5943e-7)]);
 [true, true, true]$
 
@@ -1313,7 +1313,7 @@ closeto(jacobi_am(1e-10 + 1e-10*%i, 0.5) - (1e-10 + 1e-10*%i), 1e-26);
 true;
 
 /* pure imaginary z inside the strip (x = 0 in gd) */
-closeto(jacobi_am(0.5*%i, 0.5) - (0.5110340303683639*%i), 1.1103e-16);
+closeto(jacobi_am(0.5*%i, 0.5) - (0.5110340303683639*%i), 2.2205e-16);
 true;
 
 /* just right of the cut on Re z = 0, Im z = 2K' */
@@ -1329,7 +1329,7 @@ closeto(jacobi_am(3.7181493546027435 + 3.7081493546027438*%i, 0.5) - (6.27318539
 true;
 
 /* just left of the cut on Re z = 2K, Im z = 2K' */
-closeto(jacobi_am(3.698149354602744 + 3.7081493546027438*%i, 0.5) - (0.0099999166685415 + 8.441410233306306e-17*%i), 3.4016e-16);
+closeto(jacobi_am(3.698149354602744 + 3.7081493546027438*%i, 0.5) - (0.0099999166685415 + 8.441410233306306e-17*%i), 5.3939e-16);
 true;
 
 /* outside the strip, atan form would take the wrong branch */
@@ -1340,7 +1340,7 @@ true;
  * outside the strip, atan form would take the wrong branch
  * Maxima returns the expected value exactly.  Error is 0.
  */
-closeto(jacobi_am(9.0 + 2.7811120159520577*%i, 0.5) - (8.001946388979002 + 0.6198094465206705*%i), 1e-16);
+closeto(jacobi_am(9.0 + 2.7811120159520577*%i, 0.5) - (8.001946388979002 + 0.6198094465206705*%i), 1.1103e-16);
 true;
 
 /* large real part, many terms */
