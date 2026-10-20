@@ -457,6 +457,9 @@
 ;;
 ;; However, this proof is only for real m (real A).
 (defun bf-jacobi-am (z m tol)
+  "Compute Jacobi am(z,m) for real or complex values of Z and M.  TOL is
+  the relative tolerance for convergence of the series.  It should be
+  about (bigfloat:epsilon z) or so."
   (labels
       ((sech (z)
          (/ (cosh z)))
@@ -468,8 +471,11 @@
                     (atanh (* (sin y) (sech x))))))
        (nome-series (tt q)
          ;; Fourier series in the nome q with tt = %pi*z/K.  Stop on
-         ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some n
-         ;; when later terms are not.
+         ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some
+         ;; n when later terms are not.  rho =
+         ;; |q|*exp(abs(imagpart(tt))).  (See the derivation below for
+         ;; the general case where we choose between the nome or Sala
+         ;; series.)
          ;;
          ;; This should only be used for small m so q is small.
          ;;
