@@ -199,6 +199,7 @@ Bug fixes for numbered bugs:
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
 * \#5626 limit() loses the side of -exp(-x) at inf
+* \#5627 limit(1/(x*(sin(x)-x)), x, 0, plus) gives inf instead of minf
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 * \#5631 Wrong definite integral of sqrt(1-cos(x)) for limits in [-%pi, 0]

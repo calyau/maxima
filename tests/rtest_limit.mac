@@ -1762,6 +1762,19 @@ inf;
 [inf, inf]$
 
 
+/* Bug #5627: "limit(1/(x*(sin(x)-x)), x, 0, plus) gives inf instead of minf" */
+
+[limit(1/(x*(sin(x)-x)), x, 0, plus),
+ limit(1/(x*(x-sin(x))), x, 0, plus),
+ limit(1/((sinh(x)-x)*x), x, 0, plus)];
+[minf, inf, inf]$
+
+[limit(1/((sin(x)-x)*sin(x)), x, 0, plus),
+ limit(1/((sin(x)-x)*(x+sin(x))), x, 0, plus),
+ limit(1/((tan(x)-x)*x), x, 0, plus)];
+[minf, minf, inf]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

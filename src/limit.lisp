@@ -2582,7 +2582,9 @@ ignoring dummy variables and array indices."
              ($zeroa
               (unless zf (setf zf 1)))
              ($zerob
-              (setf zf (* -1 (or zf 1))))))
+              (setf zf (* -1 (or zf 1))))
+             ;; A zero without a side leaves the product without one.
+             (t (setf zf 0))))
 
           ;; If the limit is not some form of infinity or
           ;; undefined/indeterminate.
