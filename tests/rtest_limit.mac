@@ -1746,6 +1746,22 @@ inf;
 [-log(2)/2, -log(2)/2, -log(2), -log(2)/2]$
 
 
+/* Bug #5616: "limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf"
+   Bug #5617: "limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf" */
+
+[limit(1/(sinh(x)-x), x, 0, plus), limit(1/(sinh(x)-x), x, 0, minus)];
+[inf, minf]$
+
+[limit(1/(exp(x)-1-x), x, 0, plus), limit(1/(exp(x)-1-x), x, 0, minus), limit(1/(exp(x)-1-x), x, 0)];
+[inf, inf, inf]$
+
+[limit(1/(sqrt(1+x)-1-x/2), x, 0, plus), limit(1/(sqrt(1+x)-1-x/2), x, 0, minus)];
+[minf, minf]$
+
+[limit(1/(cos(x)-1+x^2), x, 0, plus), limit(exp(1/(sinh(x)-x)), x, 0, plus)];
+[inf, inf]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

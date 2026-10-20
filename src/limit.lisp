@@ -2702,7 +2702,7 @@ ignoring dummy variables and array indices."
 	         (pop simplimplus-problems)))))
 
 (defun simplimplus1 (exp)
-  (prog (sum y infl infinityl minfl indl undl zerobl zeroal ans r)
+  (prog (sum y infl infinityl minfl indl undl zerobl zeroal ans r undir)
       (do ((exp (cdr exp) (cdr exp)) (f))
 	 ((null exp) nil)
        (setq f (limit (car exp) var val 'think))
@@ -2714,7 +2714,11 @@ ignoring dummy variables and array indices."
 	     ((eq f '$inf)  (push (car exp) infl))
 	     ((eq f '$minf)  (push (car exp) minfl))
 	     ((eq f '$infinity) (push (car exp) infinityl))
-		 (t  (push f sum))))
+		 (t  (push f sum)
+		     ;; This term tends to its limit from an unknown side.
+		     (when (and (not (freeof var (car exp)))
+				(free f '$zeroa) (free f '$zerob))
+		       (setq undir t)))))
 
     ;; When there are two or more infinity terms, we dispatch gruntz1 on
 	;; the rectangular form of their sum. When gruntz1 is able to find the
@@ -2745,7 +2749,7 @@ ignoring dummy variables and array indices."
 			         ((eq r '$und) (push infinityl-sum undl))
 			         ((eq r '$minf) (push infinityl-sum minfl))
 					 ((eq r '$inf) (push infinityl-sum infl))
-					 (t (push r sum)))))))
+					 (t (push r sum) (setq undir t)))))))
 					 
 	;; An infinity term next to inf or minf terms: the larger side decides,
 	;; and when neither does, the terms are re-summed below like inf and minf
@@ -2793,7 +2797,7 @@ ignoring dummy variables and array indices."
 			    (throw 'limit t))
 			  ;; A finite limit, 0 included, condenses the ind terms.
 			  (r (push r sum)
-			     (setq indl nil))))
+			     (setq indl nil undir t))))
 	 ;; Add the members of the list sum.
 	 (setq sum (fapply 'mplus sum))
 
@@ -2810,7 +2814,11 @@ ignoring dummy variables and array indices."
                              sum)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
-	    (return (cond ((atom sum)  sum)
+	    ;; The side of a vanishing sum is unknown when a term tends to its
+	    ;; limit from an unknown side: The limit of sinh(x) is 0 with no
+	    ;; side, and sinh(x)-x tends to zeroa although -x tends to zerob.
+	    (return (cond ((and undir (zerop1 (ridofab sum))) 0)
+			  ((atom sum)  sum)
 			  ((or (not (free sum '$zeroa))
 			       (not (free sum '$zerob)))
 			   (simpab sum))
