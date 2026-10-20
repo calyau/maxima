@@ -1391,6 +1391,38 @@ block([fpprec : 34],
           6.4095b-31));
 true;
 
+/* Small m: 1-m rounds to 1, so K(1-m) cannot be computed.  Uses the
+ * nome series with q = m/16.
+ */
+closeto(jacobi_am(0.5, 1e-20) - 0.5, 1e-30);
+true;
+
+/* Small m: nome series instead of the slowly converging Sala series. */
+closeto(jacobi_am(10.0, 1e-3) - 9.997613139826175, 1e-30);
+true;
+
+closeto(jacobi_am(3.0, 1e-10) - 2.9999999999215072, 1e-30);
+true;
+
+/* The true value 0.49999999999999998... rounds to 0.5; the result is
+ * 1 ulp high.
+ */
+closeto(jacobi_am(0.5, 1e-15) - 0.5, 1.1103e-16);
+true;
+
+/* Bigfloat versions with fpprec = 32 */
+closeto(jacobi_am(3b0, 1b-30) - 2.999999999999999999999999999999215073063b0,
+        1.2326b-32);
+true;
+
+closeto(jacobi_am(10b0, 1b-3) - 9.997613139826175470212430692094748670371b0,
+        1b-50);
+true;
+
+/* 1-1b-40 rounds to 1 at fpprec = 32 */
+closeto(jacobi_am(3b0, 1b-40) - 3b0, 2.4652b-32);
+true;
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
