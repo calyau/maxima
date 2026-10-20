@@ -4501,6 +4501,14 @@ sqrt(0.5*x^2 + 1.0*x + 0.5)$
 [2^(x/2)+1, x^(y/2)+1, (-1)^(x/2)+1]$
 
 
+/* Bug #5573: "radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent" */
+
+[radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)),
+ radcan(2^(z*(log(x*y)-log(x)-log(y)))),
+ radcan(w^((sqrt(x*y)-sqrt(x)*sqrt(y))/z))];
+[1, 1, 1]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
