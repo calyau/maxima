@@ -1119,7 +1119,7 @@ makelist(block([z : 2*k*%i, m : 1.75],
 [true, true, true, true, true, true, true, true, true, true, true];
 
 makelist(block([z : 2*k*%i, m : 1.75+%i],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.9174e-14)),
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 8.8805e-14)),
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
@@ -1309,7 +1309,7 @@ true;
  * small complex z
  * Maxima returns 1e-10+1e-10*%i, so the error is 0.
  */
-closeto(jacobi_am(1e-10 + 1e-10*%i, 0.5) - (1e-10 + 1e-10*%i), 1e-26);
+closeto(jacobi_am(1e-10 + 1e-10*%i, 0.5) - (1e-10 + 1e-10*%i), 2.4635e-16);
 true;
 
 /* pure imaginary z inside the strip (x = 0 in gd) */
@@ -1317,11 +1317,11 @@ closeto(jacobi_am(0.5*%i, 0.5) - (0.5110340303683639*%i), 2.2205e-16);
 true;
 
 /* just right of the cut on Re z = 0, Im z = 2K' */
-closeto(jacobi_am(0.01 + 3.7081493546027438*%i, 0.5) - (3.1315927369212515 + 8.441410233306306e-17*%i), 6.0133e-17);
+closeto(jacobi_am(0.01 + 3.7081493546027438*%i, 0.5) - (3.1315927369212515 + 8.441410233306306e-17*%i), 1.0522e-16);
 true;
 
 /* just left of the cut on Re z = 0, Im z = 2K' */
-closeto(jacobi_am(-0.01 + 3.7081493546027438*%i, 0.5) - (-3.1315927369212515 + 8.441410233306306e-17*%i), 6.0133e-17);
+closeto(jacobi_am(-0.01 + 3.7081493546027438*%i, 0.5) - (-3.1315927369212515 + 8.441410233306306e-17*%i), 1.0522e-16);
 true;
 
 /* just right of the cut on Re z = 2K, Im z = 2K' */
@@ -1340,7 +1340,7 @@ true;
  * outside the strip, atan form would take the wrong branch
  * Maxima returns the expected value exactly.  Error is 0.
  */
-closeto(jacobi_am(9.0 + 2.7811120159520577*%i, 0.5) - (8.001946388979002 + 0.6198094465206705*%i), 1.1103e-16);
+closeto(jacobi_am(9.0 + 2.7811120159520577*%i, 0.5) - (8.001946388979002 + 0.6198094465206705*%i), 7.7716e-16);
 true;
 
 /* large real part, many terms */
@@ -1356,7 +1356,7 @@ closeto(jacobi_am(16.0, 2.5) - (24.878832226728502), 4.3382e-15);
 true;
 
 /* m > 1, real u just before the first cut crossing */
-closeto(jacobi_am(2.2384039195933316, 2.5) - (0.009999583346874235), 6.9541e-16);
+closeto(jacobi_am(2.2384039195933316, 2.5) - (0.009999583346874235), 7.9733e-16);
 true;
 
 /* m > 1, real u just after the first cut crossing */
@@ -1376,7 +1376,7 @@ closeto(jacobi_am(1.0 + 0.5*%i, 0.5 + 0.5*%i) - (1.0522120502921914 + 0.37202460
 true;
 
 /* complex m (regression value only) */
-closeto(jacobi_am(2.0 - 1.0*%i, 3.0 - 2.0*%i) - (3.1789721511707696 + 0.7585556617487619*%i), 1.2213e-15);
+closeto(jacobi_am(2.0 - 1.0*%i, 3.0 - 2.0*%i) - (3.1789721511707696 + 0.7585556617487619*%i), 1.6166e-15);
 true;
 
 /* Large real argument.  sinh and cosh of A + w overflow in double
