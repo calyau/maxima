@@ -407,7 +407,7 @@
 ;; where (2.11)
 ;;
 ;;   a = gd(x) + atan(csch(x)) - atan(cos(y)*csch(x))
-;;   b = atanh(sin(y)*sech(x)
+;;   b = atanh(sin(y)*sech(x))
 ;;
 ;; and
 ;;
@@ -441,13 +441,13 @@
 ;;
 ;;   tan(alpha) = tanh(a), tan(beta) = tanh(b), D/2 = alpha-beta
 ;;
-;; Then using the tan of sum formula:
+;; Then using the tan of differences formula:
 ;;
 ;;   tan(D/2) = (tanh(a) − tanh(b)) / (1 + tanh(a) · tanh(b)).
 ;;
 ;; Multiply top and bottom by cosh(a)*cosh(b):
 ;;
-;;   tan(D/2) = (cosh(a)*sinh(b)-sinh(a)*cosh(b))/(sinh(a)*sinh(b)+cosh(a)*cosh(b))
+;;   tan(D/2) = (sinh(a)*cosh(b)-sinh(b)*cosh(a))/(sinh(a)*sinh(b)+cosh(a)*cosh(b))
 ;;            = sinh(a-b)/cosh(a+b)
 ;;            = sinh(w)/cosh(A)
 ;;
