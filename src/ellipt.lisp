@@ -456,59 +456,6 @@
 ;; difference formula.
 ;;
 ;; However, this proof is only for real m (real A).
-#+nil
-(defun bf-jacobi-am (z m tol)
-  (labels
-      ((sech (z)
-         (/ (cosh z)))
-       (gd (z)
-         ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
-         (let ((x (realpart z))
-               (y (imagpart z)))
-           (complex (atan (sinh x) (cos y))
-                    (atanh (* (sin y) (sech x)))))))
-    (let* ((K (bf-elliptic-k m))
-           (K-prime (bf-elliptic-k (- 1 m)))
-           (pi-K-ratio (* (%pi m) (/ K K-prime)))
-           ;; Reduce z by multiples of 2K so we don't overflow.  This
-           ;; doesn't add additional round-off that doesn't already
-           ;; exist since we were computing c*(z/(2K)) and are now
-           ;; computing c*(z/(2K)-r).  Since r is the nearest integer
-           ;; to z/(2K), z/(2K) - r is exact by Sterbenz's lemma.
-           (r (round (realpart (/ (* pi-K-ratio z) (* 2 K)))
-                     (realpart pi-K-ratio)))
-           (z/2K (- (/ z (* 2 K)) r))
-           (w (* pi-K-ratio z/2K))
-           (sum (gd w))
-           (sinh-w (sinh w))
-           (sinh-abs-w (sinh (abs w))))
-      #+nil
-      (progn
-        (format t "K, K' = ~A ~A~%" K K-prime)
-        (format t "pi-K-ratio = ~A~%" pi-K-ratio)
-        (format t"z/2K = ~A~%" z/2K))
-      (flet ((gd-diff (ratio n z2k)
-               (let ((c-n (cosh (* n ratio))))
-                 (cond
-                   ((and (< sinh-abs-w (abs c-n))
-                         (< (abs (realpart w)) (realpart (* n ratio))))
-                    (* 2 (atan (/ sinh-w c-n))))
-                   (t
-                    (- (gd (* ratio (+ n z2k)))
-                       (gd (* ratio (- n z2k)))))))))
-        (do* ((n 1 (1+ n))
-              (term (gd-diff pi-K-ratio n z/2K)
-                    (gd-diff pi-K-ratio n z/2K)))
-             ((<= (abs term) (* (abs sum) tol))
-              #+nil
-              (format t "~4D: Final term = ~A prev sum ~A~%" n term sum)
-              ;; Since we reduced by multiples of 2K, we need to add
-              ;; back multiples of %pi.
-              (+ sum (* r (%pi m))))
-          #+nil
-          (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
-          (incf sum term))))))
-
 (defun bf-jacobi-am (z m tol)
   (labels
       ((sech (z)
