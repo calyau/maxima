@@ -456,6 +456,7 @@
 ;; difference formula.
 ;;
 ;; However, this proof is only for real m (real A).
+#+nil
 (defun bf-jacobi-am (z m tol)
   (labels
       ((sech (z)
@@ -507,6 +508,73 @@
           #+nil
           (format t "~4D: term = ~A prev sum = ~A~%" n term sum)
           (incf sum term))))))
+
+(defun bf-jacobi-am (z m tol)
+  (labels
+      ((sech (z)
+         (/ (cosh z)))
+       (gd (z)
+         ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
+         (let ((x (realpart z))
+               (y (imagpart z)))
+           (complex (atan (sinh x) (cos y))
+                    (atanh (* (sin y) (sech x))))))
+       (nome-series (tt q)
+         ;; Fourier series in the nome q with tt = %pi*z/K.  Stop on
+         ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some n
+         ;; when later terms are not.
+         (if (zerop tt)
+             tt
+             (let ((rho (* (abs q) (exp (abs (imagpart tt))))))
+               (do ((n 1 (1+ n))
+                    (qn q (* qn q))
+                    (bound rho (* bound rho))
+                    (sum (/ tt 2)))
+                   ((<= (* 2 bound) (* n tol (abs sum)))
+                    sum)
+                 (incf sum (/ (* 2 qn (sin (* n tt)))
+                              (* n (+ 1 (* qn qn)))))))))
+       (sala-series (w c)
+         ;; Sala's series with w = c*z/(2*K).
+         (let ((sinh-w (sinh w))
+               (abs-w (abs w)))
+           (flet ((gd-diff (n)
+                    (let ((a (* n c)))
+                      (if (< abs-w (realpart a))
+                          (* 2 (atan (/ sinh-w (cosh a))))
+                          (- (gd (+ a w))
+                             (gd (- a w)))))))
+             (do* ((sum (gd w))
+                   (n 1 (1+ n))
+                   (term (gd-diff n) (gd-diff n)))
+                  ((<= (abs term) (* (abs sum) tol))
+                   sum)
+               (incf sum term))))))
+    (cond
+      ((= m 1)
+       ;; am(z,1) = gd(z).  See https://dlmf.nist.gov/22.16.E5.
+       (gd z))
+      ((= (- 1 m) 1)
+       (let* ((K (bf-elliptic-k m))
+              (r (truncate (realpart (/ z (* 2 K))))))
+         (+ (* r (%pi m))
+            (nome-series (* 2 (%pi m) (- (/ z (* 2 K)) r))
+                         (/ m 16)))))
+      (t
+       (let* ((K (bf-elliptic-k m))
+              (K-prime (bf-elliptic-k (- 1 m)))
+              (pi-K-ratio (* (%pi m) (/ K K-prime)))
+              (z/2K (/ z (* 2 K)))
+              (r (truncate (realpart (* pi-K-ratio z/2K))
+                           (realpart pi-K-ratio)))
+              (u (- z/2K r)))
+         (+ (* r (%pi m))
+            (if (< (+ (* 2 (abs (imagpart u)))
+                      (realpart (/ K K-prime)))
+                   (realpart (/ K-prime K)))
+                (nome-series (* 2 (%pi m) u)
+                             (exp (- (/ (* (%pi m) K-prime) K))))
+                (sala-series (* pi-K-ratio u) pi-K-ratio))))))))
 
 
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
