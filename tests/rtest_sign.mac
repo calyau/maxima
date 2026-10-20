@@ -3136,6 +3136,16 @@ block([r],
 sqrt((2*a*b*e*x+(a^2-b^2)*e)/(a*b))/sqrt(2)$
 
 
+/* Bug #5594: "sign(acot(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, c],
+  local(x, y, z, u, q, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0)),
+  declare(c, complex),
+  [sign(acot(x)), sign(acot(y)), sign(acot(z)), sign(acot(u)), sign(acot(q)), sign(acot(q^2)), csign(acot(c))]);
+[pos, pos, neg, pn, pn, pos, complex]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

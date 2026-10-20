@@ -1500,6 +1500,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '%acos 'sign-asin/acos/atanh)
 	 (list '%asin 'sign-asin/acos/atanh)
 	 (list '%atan 'sign-atan/asinh)
+	 (list '%acot 'sign-acot)
 	 (list '%asinh 'sign-atan/asinh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
@@ -2318,6 +2319,24 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
       (sign `((,f) ,(inv (cadr x)))))))
+
+;; acot(x) = atan(1/x) for x # 0, and acot(0) = %pi/2. So for real x, acot(x)
+;; is positive for x >= 0, negative for x < 0, and never zero.
+(defun sign-acot (x)
+  (let ((arg (cadr x)) arg-sign)
+    (sign arg)
+    (setq arg-sign sign)
+    (setq sign (case arg-sign
+                 (($pos $zero $pz) '$pos)
+                 ($neg '$neg)
+                 (($pn $nz $pnz) '$pn)
+                 (($complex $imaginary) '$complex)
+                 (t arg-sign))
+          minus nil
+          evens nil
+          ;; For $ASKSIGN: a nonzero ARG has the sign of acot(ARG).
+          odds (when (eq sign '$pn)
+                 (ncons (if (eq arg-sign '$pn) arg x))))))
 
 ;; atan(%i*y) = %i*atanh(y) and asinh(%i*y) = %i*asin(y) are imaginary only
 ;; for -1 <= y <= 1, so the rule of SIGN-ODDFUN that takes the sign of the
