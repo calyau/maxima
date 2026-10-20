@@ -443,6 +443,10 @@
 							 (radcan1 e *var))
 						     (cdr x))))))
 		    varlist))
+	     ;; A logarithm whose argument simplified to zero is log(0).
+	     (dolist (x varlist)
+	       (when (and (mlogp x) (zerop1 (cadr x)))
+		 (merror (intl:gettext "log: encountered log(0)."))))
 	     (spc0 *var)
 	     (fr1 (rdis *exp) nil)))))
 

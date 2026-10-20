@@ -179,6 +179,7 @@ Bug fixes for numbered bugs:
 * \#5567 cos(x+n*%pi) is not simplified for an integer n
 * \#5569 acsch( 1.0e-6*%i );
 * \#5573 radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent
+* \#5574 radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error
 * \#5575 radcan((2^x-1)/(2^(x/2)-1)) is not simplified to 2^(x/2)+1
 * \#5577 with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))
 * \#5580 sqrt(2*(1-y)^2*(y-1)^2) simplifies to sqrt(2)
