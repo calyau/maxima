@@ -523,6 +523,15 @@
          ;; Fourier series in the nome q with tt = %pi*z/K.  Stop on
          ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some n
          ;; when later terms are not.
+         ;;
+         ;; This should only be used for small m so q is small.
+         ;;
+         ;; See https://dlmf.nist.gov/22.16.E9:
+         ;;
+         ;;   am(x,k) = %pi/(2*K)*x + 2*sum(q^n*sin(2*n*zeta)/n/(1+q^(2*n)), n, 1, inf)
+         ;;
+         ;; where q = exp(-%pi*K'(m)/K(m)) and zeta = %pi*x/(2*K)
+         ;;
          (if (zerop tt)
              tt
              (let ((rho (* (abs q) (exp (abs (imagpart tt))))))
@@ -535,7 +544,7 @@
                  (incf sum (/ (* 2 qn (sin (* n tt)))
                               (* n (+ 1 (* qn qn)))))))))
        (sala-series (w c)
-         ;; Sala's series with w = c*z/(2*K).
+         ;; Sala's series with w = c*z/(2*K), c = %pi*m*(K/K')
          (let ((sinh-w (sinh w))
                (abs-w (abs w)))
            (flet ((gd-diff (n)
@@ -555,6 +564,16 @@
        ;; am(z,1) = gd(z).  See https://dlmf.nist.gov/22.16.E5.
        (gd z))
       ((= (- 1 m) 1)
+       ;; If m is so close to 0 that 1-m = 1 due to round-off, we
+       ;; can't use Sala's method because K' = K(1-m) = K(1) is
+       ;; undefined.  Instead, use the nome series.
+       ;;
+       ;; From A&S 17.3.21:
+       ;;
+       ;;   q = exp(-%pi*K/K') = m/16 + 8*(m/16)^2 + 84*(m/16)^3 + 992*(m/16)^4 + ...
+       ;;
+       ;; Since m is very small, we ignore the high-order terms of the
+       ;; series so q = m/16.
        (let* ((K (bf-elliptic-k m))
               (r (truncate (realpart (/ z (* 2 K))))))
          (+ (* r (%pi m))
@@ -569,6 +588,37 @@
                            (realpart pi-K-ratio)))
               (u (- z/2K r)))
          (+ (* r (%pi m))
+            ;; For m small enough, use the nome series since it
+            ;; converges faster than the Sala series.  The condition
+            ;; here compares the asymptotic rate of convergence of the
+            ;; nome series and the Sala series.  Use the nome series
+            ;; if it converges faster.
+            ;;
+            ;; The nome series term is
+            ;;
+            ;;   2*q^n/n/(1+q^(2*n))*sin(n*t), t = %pi*z/K.
+            ;;
+            ;; Since |sin(n*t)| <= cosh(n*Im(t)) <= exp(n*Im(t)), the
+            ;; terms are bounded roughly by
+            ;;
+            ;;   2*rho^n/n
+            ;;
+            ;; with rho = |q|*exp(abs(imagpart(t)))
+            ;;
+            ;; For the Sala series, the term is
+            ;;
+            ;;   2*atan(sinh(w)/cosh(c*n))
+            ;;
+            ;; where w = c*z/(2*K), c = %pi*m*(K/K').
+            ;;
+            ;; Thus, the term is bounded by 4*|sinh w|* e^{−n* Re(c)}.
+            ;;
+            ;; Comparing these bounds by taking the log and simplifying, we have
+            ;;
+            ;;   abs(Im(z/K)) + Re(K/K') < Re(K'/K)
+            ;;
+            ;; If this is true, use the nome series.  Otherwise use
+            ;; the Sala series.
             (if (< (+ (* 2 (abs (imagpart u)))
                       (realpart (/ K K-prime)))
                    (realpart (/ K-prime K)))
