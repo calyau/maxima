@@ -987,7 +987,7 @@ ignoring dummy variables and array indices."
 	(or (alike1 e f) (freeof var (sratsimp (div e f)))))
 
 (defun limit2 (n dn var val)
-  (prog (n1 d1 lim-sign gcp sheur-ans)
+  (prog (n1 d1 lim-sign gcp sheur-ans cinf)
      (setq n (hyperex n) dn (hyperex dn))
     (setq d1 (limit dn var val nil)
 	      n1 (limit n var val nil))
@@ -1043,7 +1043,9 @@ ignoring dummy variables and array indices."
 		  ((eq n1 d1) (setq lim-sign 1) (go cp))
 		  (t (setq lim-sign -1) (go cp))))
 	   ((and (infinityp d1) (infinityp n1))
-	    (setq lim-sign (if (or (eq d1 '$minf) (eq n1 '$minf)) -1 1))
+	    ;; One of the two is infinity, which has no sign.
+	    (setq lim-sign (if (or (eq d1 '$minf) (eq n1 '$minf)) -1 1)
+		  cinf t)
 	    (go cp))
 	   (t (return (simplimtimes `(,n1 ,(m^ d1 -1))))))
      cp   (setq n ($expand n) dn ($expand dn))
@@ -1060,7 +1062,10 @@ ignoring dummy variables and array indices."
 	      (setq d1 new-dn)))
 	   (t (setq d1 dn)))
      (setq sheur-ans (sheur0 n1 d1))
-     (cond ((or (member sheur-ans '($inf $zeroa) :test #'eq)
+     (cond ((and cinf (member sheur-ans '($inf $zeroa)))
+	    ;; Growth rates give only the modulus of a complex quotient.
+	    (return (if (eq sheur-ans '$inf) '$infinity 0)))
+	   ((or (member sheur-ans '($inf $zeroa) :test #'eq)
 		(free sheur-ans var))
 	    (return (simplimtimes `(,lim-sign ,sheur-ans))))
 	   ((and (alike1 sheur-ans dn)

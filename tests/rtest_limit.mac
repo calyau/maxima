@@ -1787,6 +1787,18 @@ infinity$
 [inf, infinity, inf]$
 
 
+/* Bug #5619: "limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity" */
+
+[limit(1/(sqrt(x)*log(x)), x, 0, minus), limit(%i*sqrt(x)/log(x), x, inf), limit(%i*x/log(x), x, inf)];
+[infinity, infinity, infinity]$
+
+[limit((1+%i)*exp(x)/x, x, inf), limit(x/(%i*log(x)), x, inf)];
+[infinity, infinity]$
+
+[limit(%i*x/(%i*log(x)+1), x, inf), limit(%i*log(x)/x, x, inf), limit(%i*x/(2*x+1), x, inf)];
+[inf, 0, %i/2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

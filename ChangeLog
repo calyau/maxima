@@ -195,6 +195,7 @@ Bug fixes for numbered bugs:
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
 * \#5617 limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf
+* \#5619 limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity
 * \#5620 Some limits involving acosh are wrong
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
