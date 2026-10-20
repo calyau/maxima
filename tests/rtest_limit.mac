@@ -1775,6 +1775,18 @@ inf;
 [minf, minf, inf]$
 
 
+/* Bug #5620: "Some limits involving acosh are wrong" */
+
+[limit(1/acosh(1+sin(x)-x), x, 0, plus), limit(1/acosh(1+x-sin(x)), x, 0, minus)];
+[infinity, infinity]$
+
+limit(log(acosh(1+sin(x)-x)), x, 0, plus);
+infinity$
+
+[limit(1/acosh(1+x^2), x, 0, plus), limit(1/acosh(1-x^2), x, 0, plus), limit(1/acosh(1+x-sin(x)), x, 0, plus)];
+[inf, infinity, inf]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

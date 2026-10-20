@@ -4091,8 +4091,10 @@ ignoring dummy variables and array indices."
 (defun simplim%acosh (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (value))
     (cond ((equal (ridofab lim) 1)
-           ;; From below 1, acosh vanishes along the imaginary axis.
-           (if (eql -1 (behavior (sub (cadr e) 1) x pt)) 0 '$zeroa))
+           ;; Only from above 1 does acosh tend to zeroa. From below 1 it
+           ;; vanishes along the imaginary axis, and when BEHAVIOR cannot
+           ;; tell the side, the zero has no side either.
+           (if (eql 1 (behavior (sub (cadr e) 1) x pt)) '$zeroa 0))
           ((eq lim '$inf) lim)
           ((eq lim '$minf) '$infinity)
           ((member lim '($und $ind $infinity) :test #'eq) '$und)
