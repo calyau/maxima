@@ -4489,6 +4489,12 @@ block([browser : browser, url_base : url_base, b : browser, u : url_base],
 [%e^y*x^2, true, %e^y*(%i/sqrt(2) + 1/sqrt(2))*x]$
 
 
+/* Bug #5577: "with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))" */
+
+radcan(sqrt(0.5*x^2 + x + 0.5)), keepfloat;
+sqrt(0.5*x^2 + 1.0*x + 0.5)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
