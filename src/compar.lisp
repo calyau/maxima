@@ -2668,7 +2668,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         ((eq ind '$real)
          (if (atom e)
              (or (numberp e) (kindp e '$real) (numberp (numer e)))
-             (free ($rectform e) '$%i)))
+             (zerop1 ($imagpart e))))
         ((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer

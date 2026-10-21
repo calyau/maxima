@@ -4523,6 +4523,17 @@ sqrt(0.5*x^2 + 1.0*x + 0.5)$
 [2^(8*x), %e^x+%e^(x/8), abs(x)*sqrt(y), log(x)+3*log(2)]$
 
 
+/* Bug #5610: "featurep(2*b, real) is true for an imaginary b" */
+
+block([j, f],
+  local(j, f),
+  declare(j, imaginary, f, imaginary),
+  [featurep(2*j, real), featurep(%i*j, real), featurep(f(x), real),
+   featurep(j*f(x), real), featurep(erf(%i)^2, real),
+   featurep(x + 1, real), featurep(log(-1), real)]);
+[false, true, false, true, true, true, false]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

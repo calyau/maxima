@@ -199,6 +199,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5610 featurep(2*b, real) is true for an imaginary b
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
 * \#5617 limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf
 * \#5619 limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity
