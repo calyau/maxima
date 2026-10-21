@@ -645,7 +645,7 @@
 		 (* -9/68 (+ (* ee2 ee5) (* ee3 ee4))))))
       (+ (* 6 sigma)
 	 (/ (* power4 s)
-            (* an (sqrt qn)))))))
+            (* an (sqrt an)))))))
 
 (defun bf-rj (x y z p)
   (let* ((xn x)
