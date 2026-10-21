@@ -70,6 +70,30 @@
 	  ((pointergp (caar l) v)
 	   (setq v (caar l))))))
 
+;; An algebraic variable that occurs in the polynomial P, or NIL.
+(defun palgvar (p)
+  (cond ((pcoefp p) nil)
+        ((alg p) (p-var p))
+        (t (loop for (nil c) on (p-terms p) by #'cddr thereis (palgvar c)))))
+
+;; X/Y if the quotient is a polynomial over the algebraic numbers, else
+;; NIL. PQUOTIENT can miss such a quotient when an algebraic variable of
+;; Y is not its main variable, because then dividing term by term does
+;; not see a relation like sqrt(c)^2 = c. So make that variable the main
+;; one, multiply X by the inverse of Y that RAINV computes, and divide by
+;; what remains, which is free of that variable.
+(defun palgquotient (x y)
+  (or (pquotientchk-safe x y)
+      (let ((v (palgvar y)))
+        (when v
+          (let* ((genvar genvar)
+                 (l (ordervar v (list x y)))
+                 (q (ignore-rat-err
+                      (rattimes (cons (cadr l) 1) (rainv (caddr l)) t))))
+            (when q
+              (palgquotient (pgsubst (make-poly v) (car l) (car q))
+                            (pgsubst (make-poly v) (car l) (cdr q)))))))))
+
 (defun presult (p1 p2 var) ;;change call in algsys?
   (let ((genvar genvar))
     (setq var (ordervar var (list p1 p2))

@@ -166,3 +166,12 @@ block([eqs, sol],
  sol : linsolve(eqs, [x, y, z]),
  ratsimp(subst(sol, map(lambda([e], lhs(e) - rhs(e)), eqs))));
 [0, 0, 0]$
+
+
+/* Bug #5657: "linsolve returns a wrong solution for a system with c and sqrt(c)" */
+
+block([eqs, sol],
+  eqs : [c*y + z = %i, sqrt(c)*y + c*z = c, sqrt(c)*x + y + c*z = c],
+  sol : linsolve(eqs, [x, y, z]),
+  ratsimp(subst(sol, map(lhs, eqs) - map(rhs, eqs))));
+[0, 0, 0]$

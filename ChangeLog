@@ -226,6 +226,8 @@ Bug fixes for numbered bugs:
 * \#5652 Some integrals with algebraic:true cause "CQUOTIENT: quotient is not exact"
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
 * \#5655 linsolve returns wrong solutions for some systems with %i or radicals
+* \#5656 integrate: quotient by zero for sqrt(a+%i*a*tan(x))/(1-%i*tan(x))^(3/2)
+* \#5657 linsolve returns a wrong solution for a system with c and sqrt(c)
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 * \#5663 jacobi_sn and jacobi_am lose many digits for larger arguments
