@@ -1006,3 +1006,12 @@ map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [
     [acsc, acsc, asec, asec, acot, acsch, acsch, acsch, acoth],
     [-1b-6, -1b-6*%i, 1b-6, 1b-6*%i, 1b6*%i, -1b-6, 1b-6*%i, 1b6, 1b6]);
 [true, true, true, true, true, true, true, true, true]$
+
+
+/* Bug #5572: "Bigfloat asech loses digits" */
+
+map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [z]))],
+                         is(block([fpprec : 40], cabs(u - v) / cabs(v)) < 1e-15))),
+    [acosh, asech, asech, asech, asech, asech],
+    [1.000001b0+1b-6*%i, 0.999999b0+1b-6*%i, 2b0-1b-6*%i, 1b0+1b-6*%i, 2b0+1b6*%i, 0.5b0-1b-6*%i]);
+[true, true, true, true, true, true]$
