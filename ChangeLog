@@ -318,3 +318,4 @@ Other changes:
   may be negative now gets the same treatment as an even root.
 * Bigfloat square roots are now much faster and more accurate.
 * General performance improvements
+* featurep now works with non-symbols for real, complex and imaginary

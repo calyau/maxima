@@ -2669,6 +2669,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (if (atom e)
              (or (numberp e) (kindp e '$real) (numberp (numer e)))
              (zerop1 ($imagpart e))))
+        ((eq ind '$complex)
+         ;; "complex" in the sense of "has an imaginary part that's not
+         ;; literally 0", not in the strict mathematical sense where every real
+         ;; number is also a complex number - that would not be very useful.
+         (if (symbolp e)
+           (kindp e '$complex)
+           (not (zerop1 ($imagpart e)))))
+        ((eq ind '$imaginary)
+         ;; "imaginary" in the sense of "real part literally 0 and imaginary
+         ;; part not literally 0", so zero itself is not considered imaginary.
+         (if (symbolp e)
+           (kindp e '$imaginary)
+           (destructuring-let (((re . im) (trisplit e)))
+             (and (zerop1 re) (not (zerop1 im))))))
         ((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer
