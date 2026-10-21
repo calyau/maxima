@@ -153,7 +153,7 @@ true$
 check(matrix([1,0,0],[a,%i,0],[b,c,%i]),3);
 true$
 
-/* spectral_rep checks its results--so this really does testing.*/
+/* bug 2596 spectral_rep checks its results--so this really does testing.*/
 
 (spectral_rep(matrix([x,1,0],[1,1,1],[0,1,1])),0);
 0$
@@ -286,15 +286,45 @@ true$
 (reset(ratmx),0);
 0$
 
-(mat : matrix([x,1,0],[1,1,1],[0,1,1]), mat.mat - matrixfun(lambda([x],x^2),mat));
+(mat : matrix([x,1,0],[1,1,1],[0,1,1]), matrixmap('factor, mat.mat - matrixfun(lambda([x],x^2),mat)));
 matrix([0,0,0],[0,0,0],[0,0,0])$
 
-matrixfun(lambda([x],x+1/x),mat);
-matrix([x,2,-1],[2,1-x,x+1],[-1,x+1,2-x])$
+block([algebraic : true],
+  is(matrixmap('factor, subst(x=107, mat + mat^^-1)) = matrixmap('factor, matrixfun(lambda([x],x+1/x),subst(x=107,mat)))));
+true$
 
-mat+mat^^-1;
-matrix([x,2,-1],[2,1-x,x+1],[-1,x+1,2-x])$
+block([fpprec : 28, m, e0, xxx, ratprint : false],
+  seriesexp(a, k) := block([s : ident(3), t : ident(3)],
+      for j : 1 thru k do (t : (t . a)/j, s : s + t), s),
+   m : %i*matrix([1,2,3],[3,2,0],[1,2,1]),
+   e0 : matrixexp(m),
+   xxx : bfloat(seriesexp(m, 80)),
+   map(lambda([q], is(mat_norm(q,inf) <1/10^25)),
+    [bfloat(rectform(e0)) - xxx,
+     bfloat(rectform(expand(e0))) - xxx,
+     bfloat(rectform(ratsimp(e0))) - xxx,
+     bfloat(rectform(ev(e0))) - xxx]));
+[true, true, false, false]$
 
+/* see Maxima bug 2596 (https://sourceforge.net/p/maxima/bugs/2596/) */
+block([mat : matrix([1,2,3],[3,2,0],[1,2,1])], resimplify(matrixfun(lambda ([q],1/q),mat)));
+ matrix([1/4,1/2,-3/4],[-3/8,-1/4,9/8],[1/2,0,-1/2])$
+
+block([mat : matrix([1,2,3],[3,2,0],[1,2,1])], resimplify(matrixfun(lambda ([q],1/(q+x)),mat)));
+ matrix([((x+1)*(x+2))/(x^3+4*x^2-4*x+8),(-2*(x-2))/(x^3+4*x^2-4*x+8),
+               (-3*(x+2))/(x^3+4*x^2-4*x+8)],
+              [(-3*(x+1))/(x^3+4*x^2-4*x+8),(x^2+2*x-2)/(x^3+4*x^2-4*x+8),
+               9/(x^3+4*x^2-4*x+8)],
+              [-((x-4)/(x^3+4*x^2-4*x+8)),(-2*x)/(x^3+4*x^2-4*x+8),
+               ((x-1)*(x+4))/(x^3+4*x^2-4*x+8)])$
+
+block([mat : matrix([x,1,0],[1,1,1],[0,1,1])],
+  [matrixfun(lambda([x], x+1/x), mat), matrixfun(lambda([x], x^2), mat)]);
+  [matrix([x,2,-1],[2,-(x-1),x+1],[-1,x+1,-(x-2)]), matrix([x^2+1,x+1,1],[x+1,3,2],[1,2,2])]$
+
+block([mat : matrix([1,2,3],[3,2,0],[1,2,1])],
+   matrixfun(lambda([q],q^3), mat) - mat^^3);
+matrix([0,0,0],[0,0,0],[0,0,0])$
 
 (kill(s,m,mat,xxx,zzz,rrr,xequal,check), 0);
 0$
