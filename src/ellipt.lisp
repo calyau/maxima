@@ -461,14 +461,18 @@
   the relative tolerance for convergence of the series.  It should be
   about (bigfloat:epsilon z) or so."
   (labels
-      ((sech (z)
-         (/ (cosh z)))
-       (gd (z)
+      ((gd (z)
          ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
+         ;;
+         ;; gd(z) = gd(x) + atan(csch(x)) - atan(cos(y)*csch(y))
+         ;;          %i*(atanh(sin(y)*sech(y))
+         ;;
+         ;; See the derivation above for how the real part can be
+         ;; rewritten as atan2(sinh(x), cos(y)).
          (let ((x (realpart z))
                (y (imagpart z)))
            (complex (atan (sinh x) (cos y))
-                    (atanh (* (sin y) (sech x))))))
+                    (atanh (/ (sin y) (cosh x))))))
        (nome-series (tt q)
          ;; Fourier series in the nome q with tt = %pi*z/K.  Stop on
          ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some
