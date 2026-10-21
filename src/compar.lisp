@@ -1504,10 +1504,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '%asinh 'sign-atan/asinh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
-	 (list '%asec 'sign-asec/acsc/asech/acoth)
-	 (list '%acsc 'sign-asec/acsc/asech/acoth)
-	 (list '%asech 'sign-asec/acsc/asech/acoth)
-	 (list '%acoth 'sign-asec/acsc/asech/acoth)
+	 (list '%asec 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsc 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsch 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%asech 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acoth 'sign-asec/acsc/asech/acsch/acoth)
 	 (list '%tan 'sign-tan/cot)
 	 (list '%cot 'sign-tan/cot)
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
@@ -2299,13 +2300,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	(t ; x >= 1
 	 (setq sign '$pz))))
 
-;; The functions asec, acsc, asech and acoth are reciprocal argument forms of
-;; functions that already have a sign function: asec(x) = acos(1/x),
-;; acsc(x) = asin(1/x), asech(x) = acosh(1/x) and acoth(x) = atanh(1/x).
+;; The functions asec, acsc, asech, acoth and acsch are reciprocal argument
+;; forms of functions whose sign SIGN already knows: asec(x) = acos(1/x),
+;; acsc(x) = asin(1/x), asech(x) = acosh(1/x), acoth(x) = atanh(1/x) and
+;; acsch(x) = asinh(1/x).
 ;;
-(defun sign-asec/acsc/asech/acoth (x)
+(defun sign-asec/acsc/asech/acsch/acoth (x)
   (if (eq '$zero (sign* (cadr x)))
-    ;; Of these four, acoth(0) = -%i*%pi/2 is the only one defined at zero.
+    ;; Of these five, acoth(0) = -%i*%pi/2 is the only one defined at zero.
     ;; The others should have been caught by the simplifier already before
     ;; reaching this code, but better safe than sorry. At zero, there's a
     ;; division by zero in their logarithmic form, so use DBZS-ERR.
