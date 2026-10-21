@@ -2579,6 +2579,9 @@
 	    (bcons (fptimes* beta nu)))))
 
 (defun big-float-atanh (x &optional y)
+  ;; The poles at +/-1.
+  (when (and (or (null y) (zerop1 y)) (onep1 (ftake 'mabs x)))
+    (domain-error x 'atanh))
   (if y
       (multiple-value-bind (u v) (complex-atanh x y)
 	(add u (mul '$%i v)))
