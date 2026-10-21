@@ -766,9 +766,7 @@
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
 		(* (/ nn 3) (expt sin-phi 3)
 		   (bf-rj (expt cos-phi 2) k2sin 1.0
@@ -781,6 +779,37 @@
 	(let ((complete (bf-elliptic-pi-complete n m)))
 	  (+ (* 2 cycles complete)
 	     (base n rem m))))))
+
+;; For real n > 1, the integrand of elliptic_pi has simple poles at
+;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
+;; p < 0 and x, y, z >= 0 it returns the Cauchy principal value, so
+;; bf-elliptic-pi does too.  Replacing n by n - i0 and applying the
+;; Sokhotski-Plemelj formula adds
+;;
+;;   -i*%pi/2*sqrt(n/((n-1)*(n-m)))
+;;
+;; for each such call: twice per cycle of %pi from the complete
+;; integral when m <= 1, and once (with the sign of the reduced phi)
+;; when the reduced phi satisfies n*sin(phi)^2 > 1 >= m*sin(phi)^2.
+;; The other cases go through bf-rj1, which already gives the n - i0
+;; value.  This matches the branch used by Mathematica and mpmath.
+(defun bf-elliptic-pi-residue (n phi m)
+  (if (and (realp n) (realp phi) (realp m) (> n 1))
+      (let* ((bf-pi (%pi phi))
+	     (cycles (round phi bf-pi))
+	     (rem (- phi (* cycles bf-pi)))
+	     (s2 (expt (sin rem) 2))
+	     (crossings (+ (if (<= m 1)
+			       (* 2 cycles)
+			       0)
+			   (if (and (> (* n s2) 1) (<= (* m s2) 1))
+			       (signum rem)
+			       0))))
+	(if (zerop crossings)
+	    0
+	    (* (complex 0 -1) crossings (/ bf-pi 2)
+	       (sqrt (/ n (* (- n 1) (- n m)))))))
+      0))
 
 ;; Compute inverse_jacobi_sn, for float or bigfloat args.
 (defun bf-inverse-jacobi-sn (u m)
@@ -2181,7 +2210,8 @@ first kind:
     (cond
       ((float-numerical-eval-p n phi m)
        ;; Numerically evaluate it
-       (elliptic-pi ($float n) ($float phi) ($float m)))
+       (add (elliptic-pi ($float n) ($float phi) ($float m))
+	    (to (bigfloat::bf-elliptic-pi-residue ($float n) ($float phi) ($float m)))))
       ((setf args (complex-float-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2189,9 +2219,12 @@ first kind:
 		      (bigfloat:to ($float phi))
 		      (bigfloat:to ($float m)))))
       ((bigfloat-numerical-eval-p n phi m)
-       (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
-				     (bigfloat:to phi)
-				     (bigfloat:to m))))
+       (to (bigfloat:+ (bigfloat::bf-elliptic-pi (bigfloat:to n)
+						 (bigfloat:to phi)
+						 (bigfloat:to m))
+		       (bigfloat::bf-elliptic-pi-residue (bigfloat:to n)
+							 (bigfloat:to phi)
+							 (bigfloat:to m)))))
       ((setq args (complex-bigfloat-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2277,7 +2310,7 @@ first kind:
   ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
   ;; is an odd function of phi.
   (when (minusp (realpart phi))
-    (return-from elliptic-pi (- (elliptic-pi n (- phi) m))))
+    (return-from elliptic-pi (neg (elliptic-pi n (- phi) m))))
 
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
@@ -2289,9 +2322,7 @@ first kind:
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
 		    (* (/ nn 3) (expt sin-phi 3)
 		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
