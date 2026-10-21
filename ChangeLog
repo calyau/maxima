@@ -191,6 +191,7 @@ Bug fixes for numbered bugs:
 * \#5594 sign(acot(x)) is pnz even if the sign of x is known
 * \#5595 sign(acsch(x)) is pnz even if the sign of x is known
 * \#5596 csign() of a posfun is pos even for complex arguments, so abs(erfc(%i)) = erfc(%i)
+* \#5599 sign(coth(x)) is pnz even if the sign of x is known
 * \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0

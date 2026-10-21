@@ -1495,8 +1495,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list 'mabs 'sign-mabs)
 	 (list '$min #'(lambda (x) (sign-minmax (caar x) (cdr x))))
 	 (list '$max #'(lambda (x) (sign-minmax (caar x) (cdr x))))
-	 (list '%csc #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
-	 (list '%csch #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
+	 (list '%csc 'sign-csc/sec/csch/coth)
+     (list '%sec 'sign-csc/sec/csch/coth)
+	 (list '%csch 'sign-csc/sec/csch/coth)
+	 (list '%coth 'sign-csc/sec/csch/coth)
 	 (list '%acos 'sign-asin/acos/atanh)
 	 (list '%asin 'sign-asin/acos/atanh)
 	 (list '%atan 'sign-atan/asinh)
@@ -2601,6 +2603,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (sign (cadr x))
          (unless (eq sign '$zero)
            (sign-any x))))))
+
+;; The sign function of csc, sec, csch and coth, each the reciprocal of the
+;; function its RECIP property names: sign(f(x)) = sign(1/g(x)). It does not
+;; suit cot, which is zero where tan has poles.
+(defun sign-csc/sec/csch/coth (x)
+  (sign (inv (ftake (get (caar x) 'recip) (cadr x)))))
 
 (defun imag-err (x)
   (if sign-imag-errp
