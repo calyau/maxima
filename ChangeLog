@@ -178,6 +178,7 @@ Bug fixes for numbered bugs:
 * \#5566 exp(%i*x/2+%i*%pi) is not simplified
 * \#5567 cos(x+n*%pi) is not simplified for an integer n
 * \#5569 acsch( 1.0e-6*%i );
+* \#5570 Bigfloat acsc, asec, acot, acsch and acoth lose digits near 0 and infinity
 * \#5571 Bigfloat atanh(1.0b0) signals "pquotient: attempted quotient by zero."
 * \#5573 radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent
 * \#5574 radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error

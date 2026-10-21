@@ -356,6 +356,20 @@
                   (intl:gettext "atan2: atan2(0,0) is undefined."))
                 (cl:atan y x)))))
 
+;; Return *BIG-FLOAT-OP* function for F that applies BOP to 1/z. Used for acsc,
+;; asec, acot, acsch and acoth, analogous to FLONUM-EVAL, to prevent losing
+;; digits like rectform() and logarc() would near 0 and inf. At 0 it declines,
+;; and where BOP fails, at a pole of F, it signals a domain error for F.
+(defun big-float-recip (bop f)
+  #'(lambda (x &optional y)
+      (unless (and (zerop1 x) (or (null y) (zerop1 y)))
+        (let ((ans (ignore-errors
+                     (if y
+                       (let ((d (add (mul x x) (mul y y))))
+                         (funcall bop (div x d) (div (neg y) d)))
+                       (funcall bop (div 1 x))))))
+          (if ans ans (domain-error (if y (add x (mul '$%i y)) x) f))))))
+
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x
   ;; arg and an optional y arg for the real and imaginary parts.  The
@@ -368,7 +382,12 @@
   (frob %acos 'big-float-acos)
   (frob %log 'big-float-log)
   (frob %sqrt 'big-float-sqrt)
-  (frob %atan 'big-float-atan))
+  (frob %atan 'big-float-atan)
+  (frob %acsc (big-float-recip 'big-float-asin 'acsc))
+  (frob %asec (big-float-recip 'big-float-acos 'asec))
+  (frob %acot (big-float-recip 'big-float-atan 'acot))
+  (frob %acsch (big-float-recip 'big-float-asinh 'acsch))
+  (frob %acoth (big-float-recip 'big-float-atanh 'acoth)))
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
 ;; reflection rule is something like f(-x) --> f(x), or  f(-x) --> %pi - f(x). 
