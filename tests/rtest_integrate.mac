@@ -7292,6 +7292,17 @@ block([g, G],
 [0, 0, 0]$
 
 
+/* Bug #5656: "integrate: quotient by zero for sqrt(a+%i*a*tan(x))/(1-%i*tan(x))^(3/2)" */
+
+block([g, G],
+  g : sqrt(a+%i*a*tan(x))/(1-%i*tan(x))^(3/2),
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   radcan((1 + t^2) * diff(subst(tan(x) = t, G), t) - subst(tan(x) = t, g)),
+   map(lambda([p], is(abs(float(subst([a = 2, x = p], diff(G, x) - g))) < 1e-12)), [1/2, 2, 4])]);
+[true, 0, [true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
