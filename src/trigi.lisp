@@ -370,6 +370,20 @@
                        (funcall bop (div 1 x))))))
           (if ans ans (domain-error (if y (add x (mul '$%i y)) x) f))))))
 
+;; Return a *BIG-FLOAT-OP* function for F that computes 1/BOP(z). Used for cot,
+;; coth and csch, analogous to FLONUM-EVAL, to prevent losing digits or causing
+;; errors like exponentialize() would. It declines where BOP declines. Where BOP
+;; is 0, at a pole of F, it signals a domain error for F.
+(defun big-float-inverse (bop f)
+  #'(lambda (x &optional y)
+      (let ((w (funcall bop x y)))
+        (when w
+          (destructuring-bind (u . v) (trisplit w)
+            (let ((d (add (mul u u) (mul v v))))
+              (if (zerop1 d)
+                (domain-error (if y (add x (mul '$%i y)) x) f)
+                (add (div u d) (mul '$%i (div (neg v) d))))))))))
+
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x
   ;; arg and an optional y arg for the real and imaginary parts.  The
@@ -389,7 +403,11 @@
   (frob %asec (big-float-recip 'big-float-acos 'asec))
   (frob %acot (big-float-recip 'big-float-atan 'acot))
   (frob %acsch (big-float-recip 'big-float-asinh 'acsch))
-  (frob %acoth (big-float-recip 'big-float-atanh 'acoth)))
+  (frob %acoth (big-float-recip 'big-float-atanh 'acoth))
+  (frob %tan #'big-float-tan)
+  (frob %cot (big-float-inverse 'big-float-tan 'cot))
+  (frob %coth (big-float-inverse 'big-float-tanh 'coth))
+  (frob %csch (big-float-inverse 'big-float-sinh 'csch)))
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
 ;; reflection rule is something like f(-x) --> f(x), or  f(-x) --> %pi - f(x). 

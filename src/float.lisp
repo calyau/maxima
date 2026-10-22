@@ -2476,6 +2476,13 @@
 	(add u (mul '$%i v)))
       (fptanh x)))
 
+;; tan(z), z = x + %i*y, as -%i*tanh(%i*z), since the rectform() form of tan
+;; cancels near its poles. For real z it declines, leaving it to TANBIGFLOAT.
+(defun big-float-tan (x &optional y)
+  (when y
+    (multiple-value-bind (u v) (complex-tanh (neg y) x)
+      (add v (mul '$%i (neg u))))))
+
 ;; atanh(x) for real x, |x| <= 1.  X is a bigfloat, and a bigfloat is
 ;; returned.
 (defun fpatanh (x)
