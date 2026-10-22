@@ -3168,6 +3168,12 @@ block([x, y, z, u, q, w, b, c],
 [[pos, neg, pn, pn, [], imaginary, complex], [pos, pos, neg, pn, complex], [pos, neg]]$
 
 
+/* Bug #5696: "sign(sqrt(2)-cos(x)) is neg" */
+
+sign(sqrt(2)-cos(x));
+pos$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

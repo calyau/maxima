@@ -1778,7 +1778,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (flet ((ranged-p (e)
              (and (not (atom e))
                   (or (get (caar e) 'real-range) (eq (caar e) 'mabs)))))
-      (when (and (ranged-p xrhs) (not (ranged-p xlhs)))
+      (when (and (null sgn) (ranged-p xrhs) (not (ranged-p xlhs)))
         (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign))))
 
     ;; sign(f(x) - c) for a function f whose REAL-RANGE property gives the

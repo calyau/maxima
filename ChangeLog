@@ -254,6 +254,7 @@ Bug fixes for numbered bugs:
 * \#5690 integrate(1/sqrt(b*tan(f*x+e)^2+a),x) ends in a sign() error
 * \#5691 integrate() drops a part of sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
 * \#5695 fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a))))) loops forever
+* \#5696 sign(sqrt(2)-cos(x)) is neg
 
 Bug fixes for unnumbered bugs:
 ------------------------------
