@@ -849,6 +849,29 @@
 	((rzerop (car nc)) (cons (list (cdr nc) poly ratout-n) ans))
       (push (list (cdr nc) poly ratout-n) ans))))
 
+;; Make the factors in L = (f1 m1 f2 m2 ...) pairwise coprime in VAR, keeping
+;; their product. PFACTOR factors over the rationals, treating %i and radicals
+;; as variables, so with $ALGEBRAIC, two of its factors can still have a common
+;; factor, as x^2+1 and x+%i do. Two factors without algebraic numbers stay
+;; coprime, so only pairs with an algebraic factor are checked.
+(defun coprime-factors (l var)
+  (let ((facs (loop for (f m) on l by #'cddr collect (list f m))))
+    (loop (unless (loop for (x . rest) on facs
+                        thereis (loop for y in rest
+                                      for g = (and (or (palgp (car x)) (palgp (car y)))
+                                                   (plusp (pdegree (car x) var))
+                                                   (plusp (pdegree (car y) var))
+                                                   (pgcd (car x) (car y)))
+                                      for fx = (and g (plusp (pdegree g var))
+                                                    (pquotientchk-safe (car x) g))
+                                      for fy = (and fx (pquotientchk-safe (car y) g))
+                                      thereis (when fy
+                                                (setf (car x) fx (car y) fy)
+                                                (push (list g (+ (cadr x) (cadr y))) facs)
+                                                t)))
+            (return)))
+    (loop for (f m) in facs nconc (list f m))))
+
 (defun partfrac (rat ratout-var)
   (destructuring-let* (((ratout-wholepart frpart) (pdivide (car rat) (cdr rat)))
 		       ((num . denom) (ratqu frpart (cdr rat))))
@@ -863,7 +886,10 @@
          (let (apart ratout-y ratout-parnumer)
            (loop
              for (factor multiplicity)
-               on (pfactor bpart) by #'cddr
+               on (if $algebraic
+                      (coprime-factors (pfactor bpart) ratout-var)
+                      (pfactor bpart))
+               by #'cddr
              unless (zerop (pdegree factor ratout-var))
                do
                   (setq apart (pexpt factor multiplicity)

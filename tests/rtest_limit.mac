@@ -1746,6 +1746,59 @@ inf;
 [-log(2)/2, -log(2)/2, -log(2), -log(2)/2]$
 
 
+/* Bug #5616: "limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf"
+   Bug #5617: "limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf" */
+
+[limit(1/(sinh(x)-x), x, 0, plus), limit(1/(sinh(x)-x), x, 0, minus)];
+[inf, minf]$
+
+[limit(1/(exp(x)-1-x), x, 0, plus), limit(1/(exp(x)-1-x), x, 0, minus), limit(1/(exp(x)-1-x), x, 0)];
+[inf, inf, inf]$
+
+[limit(1/(sqrt(1+x)-1-x/2), x, 0, plus), limit(1/(sqrt(1+x)-1-x/2), x, 0, minus)];
+[minf, minf]$
+
+[limit(1/(cos(x)-1+x^2), x, 0, plus), limit(exp(1/(sinh(x)-x)), x, 0, plus)];
+[inf, inf]$
+
+
+/* Bug #5627: "limit(1/(x*(sin(x)-x)), x, 0, plus) gives inf instead of minf" */
+
+[limit(1/(x*(sin(x)-x)), x, 0, plus),
+ limit(1/(x*(x-sin(x))), x, 0, plus),
+ limit(1/((sinh(x)-x)*x), x, 0, plus)];
+[minf, inf, inf]$
+
+[limit(1/((sin(x)-x)*sin(x)), x, 0, plus),
+ limit(1/((sin(x)-x)*(x+sin(x))), x, 0, plus),
+ limit(1/((tan(x)-x)*x), x, 0, plus)];
+[minf, minf, inf]$
+
+
+/* Bug #5620: "Some limits involving acosh are wrong" */
+
+[limit(1/acosh(1+sin(x)-x), x, 0, plus), limit(1/acosh(1+x-sin(x)), x, 0, minus)];
+[infinity, infinity]$
+
+limit(log(acosh(1+sin(x)-x)), x, 0, plus);
+infinity$
+
+[limit(1/acosh(1+x^2), x, 0, plus), limit(1/acosh(1-x^2), x, 0, plus), limit(1/acosh(1+x-sin(x)), x, 0, plus)];
+[inf, infinity, inf]$
+
+
+/* Bug #5619: "limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity" */
+
+[limit(1/(sqrt(x)*log(x)), x, 0, minus), limit(%i*sqrt(x)/log(x), x, inf), limit(%i*x/log(x), x, inf)];
+[infinity, infinity, infinity]$
+
+[limit((1+%i)*exp(x)/x, x, inf), limit(x/(%i*log(x)), x, inf)];
+[infinity, infinity]$
+
+[limit(%i*x/(%i*log(x)+1), x, inf), limit(%i*log(x)/x, x, inf), limit(%i*x/(2*x+1), x, inf)];
+[inf, 0, %i/2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

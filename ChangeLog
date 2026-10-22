@@ -178,19 +178,37 @@ Bug fixes for numbered bugs:
 * \#5566 exp(%i*x/2+%i*%pi) is not simplified
 * \#5567 cos(x+n*%pi) is not simplified for an integer n
 * \#5569 acsch( 1.0e-6*%i );
+* \#5570 Bigfloat acsc, asec, acot, acsch and acoth lose digits near 0 and infinity
+* \#5571 Bigfloat atanh(1.0b0) signals "pquotient: attempted quotient by zero."
+* \#5572 Bigfloat asech loses digits
+* \#5573 radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent
+* \#5574 radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error
+* \#5575 radcan((2^x-1)/(2^(x/2)-1)) is not simplified to 2^(x/2)+1
+* \#5576 with modulus:7, radcan(2^(8*x)) returns 2^x
+* \#5577 with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))
 * \#5580 sqrt(2*(1-y)^2*(y-1)^2) simplifies to sqrt(2)
 * \#5581 with keepfloat:true, ratsimp(1.0*%i/(1.0+1.0*%i)^2) returns 1.0 instead of 0.5
 * \#5585 With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities
 * \#5588 1-d output formatting: -1/7 has redundant parentheses: -(1/7)
 * \#5593 acot(-x) and acoth(-x) are reflected even if x can be 0
+* \#5594 sign(acot(x)) is pnz even if the sign of x is known
+* \#5595 sign(acsch(x)) is pnz even if the sign of x is known
 * \#5596 csign() of a posfun is pos even for complex arguments, so abs(erfc(%i)) = erfc(%i)
+* \#5599 sign(coth(x)) is pnz even if the sign of x is known
 * \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5610 featurep(2*b, real) is true for an imaginary b
+* \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
+* \#5617 limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf
+* \#5619 limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity
+* \#5620 Some limits involving acosh are wrong
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
+* \#5626 limit() loses the side of -exp(-x) at inf
+* \#5627 limit(1/(x*(sin(x)-x)), x, 0, plus) gives inf instead of minf
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 * \#5631 Wrong definite integral of sqrt(1-cos(x)) for limits in [-%pi, 0]
@@ -212,8 +230,11 @@ Bug fixes for numbered bugs:
 * \#5652 Some integrals with algebraic:true cause "CQUOTIENT: quotient is not exact"
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
 * \#5655 linsolve returns wrong solutions for some systems with %i or radicals
+* \#5656 integrate: quotient by zero for sqrt(a+%i*a*tan(x))/(1-%i*tan(x))^(3/2)
+* \#5657 linsolve returns a wrong solution for a system with c and sqrt(c)
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
+* \#5663 jacobi_sn and jacobi_am lose many digits for larger arguments
 * \#5664 two minor tolerance test failures in tests/rtest16.mac
 * \#5665 integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap
 * \#5666 is(abs(z) >= 0) returns false when z contains %i
@@ -297,3 +318,4 @@ Other changes:
   may be negative now gets the same treatment as an even root.
 * Bigfloat square roots are now much faster and more accurate.
 * General performance improvements
+* featurep now works with non-symbols for real, complex and imaginary

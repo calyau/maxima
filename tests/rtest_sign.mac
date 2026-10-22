@@ -3136,6 +3136,38 @@ block([r],
 sqrt((2*a*b*e*x+(a^2-b^2)*e)/(a*b))/sqrt(2)$
 
 
+/* Bug #5594: "sign(acot(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, c],
+  local(x, y, z, u, q, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0)),
+  declare(c, complex),
+  [sign(acot(x)), sign(acot(y)), sign(acot(z)), sign(acot(u)), sign(acot(q)), sign(acot(q^2)), csign(acot(c))]);
+[pos, pos, neg, pn, pn, pos, complex]$
+
+
+/* Bug #5595: "sign(acsch(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, c],
+  local(x, y, z, u, q, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0)),
+  declare(c, complex),
+  [sign(acsch(y)), sign(acsch(z)), sign(acsch(u)), sign(acsch(q)), csign(acsch(c)), errcatch(sign(acsch(x)))]);
+[pos, neg, pn, pn, complex, []]$
+
+
+/* Bug #5599: "sign(coth(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, w, b, c],
+  local(x, y, z, u, q, w, b, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0), q > 0, q < 1, w > 2, w < 4),
+  declare(b, imaginary, c, complex),
+  [[sign(coth(y)), sign(coth(z)), sign(coth(u)), sign(coth(r)), errcatch(sign(coth(x))), csign(coth(b)), csign(coth(c))],
+   [sign(sec(q)), sign(sec(-q)), sign(sec(w)), sign(sec(r)), csign(sec(c))],
+   [sign(csc(q)), sign(csch(z))]]);
+[[pos, neg, pn, pn, [], imaginary, complex], [pos, pos, neg, pn, complex], [pos, neg]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -249,7 +249,7 @@
          (let ((q (ratreduce mess1 mess2)))
            (if (equal (cdr q) 1)
                (car q)
-               (or (pquotientchk-safe (car q) (cdr q))
+               (or (palgquotient (car q) (cdr q))
                    (car q))))
          )
         ))))
