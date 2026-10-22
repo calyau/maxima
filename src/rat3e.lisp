@@ -785,6 +785,8 @@
      (setq ovarlist (nconc vlist varlist)
 	   vlist nil)
      (mapc #'newvar1 nvarlist)	  ;*RATSIMP*=T PUTS RADICANDS ON VLIST
+     (dolist (v varlist)	  ; and those of radicals on initial varlist
+       (when (radfunp v nil) (newvar1 (cadr v))))
      (setq nvarlist (nconc nvarlist varlist) ; RADICALS ON RADLIST
 	   varlist (nconc (sortgreat vlist) (radsort radlist) varlist))
      (orderpointer varlist)

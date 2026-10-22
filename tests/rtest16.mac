@@ -4550,6 +4550,20 @@ block([j, z],
  true, false, false, true]$
 
 
+/* Bug #5695: "fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a)))))" loops forever */
+
+fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a)))));
+(f(a)-1)/(sqrt(c-1)*(c-f(a))^(3/2))$
+
+[fullratsimp(rat(sqrt(x-1)/(x-cos(a))^(3/2)-1/(sqrt(x-1)*sqrt(x-cos(a))))),
+ (rat(sqrt(y-x)), fullratsimp(f(y)/(y-x)^(3/2)))];
+[(cos(a)-1)/(sqrt(x-1)*(x-cos(a))^(3/2)), f(y)/(y-x)^(3/2)]$
+
+[ratsimp((f(a)-1)/(c-f(a))^(3/2)),
+ (rat(sqrt(c-f(a))), ratsimp((f(a)-1)/(c-f(a))^(3/2)))];
+[(f(a)-1)/(c-f(a))^(3/2), (f(a)-1)/(c-f(a))^(3/2)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
