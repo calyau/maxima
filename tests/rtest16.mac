@@ -4489,6 +4489,67 @@ block([browser : browser, url_base : url_base, b : browser, u : url_base],
 [%e^y*x^2, true, %e^y*(%i/sqrt(2) + 1/sqrt(2))*x]$
 
 
+/* Bug #5577: "with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))" */
+
+radcan(sqrt(0.5*x^2 + x + 0.5)), keepfloat;
+sqrt(0.5*x^2 + 1.0*x + 0.5)$
+
+
+/* Bug #5575: "radcan((2^x-1)/(2^(x/2)-1)) is not simplified to 2^(x/2)+1" */
+
+[radcan((2^x-1)/(2^(x/2)-1)), radcan((x^y-1)/(x^(y/2)-1)), radcan(((-1)^x-1)/((-1)^(x/2)-1))];
+[2^(x/2)+1, x^(y/2)+1, (-1)^(x/2)+1]$
+
+
+/* Bug #5573: "radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent" */
+
+[radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)),
+ radcan(2^(z*(log(x*y)-log(x)-log(y)))),
+ radcan(w^((sqrt(x*y)-sqrt(x)*sqrt(y))/z))];
+[1, 1, 1]$
+
+
+/* Bug #5574: "radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error" */
+
+[errcatch(radcan(log(sqrt(2)*sqrt(3) - sqrt(6)))),
+ errcatch(radcan(log(sqrt(x*y) - sqrt(x)*sqrt(y)))),
+ radcan((sqrt(x*y) - sqrt(x)*sqrt(y))^w)];
+[[], [], 0]$
+
+
+/* Bug #5576: "with modulus:7, radcan(2^(8*x)) returns 2^x" */
+
+[radcan(2^(8*x)), radcan(exp(x/8)+exp(x)), radcan(sqrt(x^2*y)), radcan(log(8*x))], modulus : 7;
+[2^(8*x), %e^x+%e^(x/8), abs(x)*sqrt(y), log(x)+3*log(2)]$
+
+
+/* Bug #5610: "featurep(2*b, real) is true for an imaginary b" */
+
+block([j, g],
+  local(j, g),
+  declare(j, imaginary, g, imaginary),
+  [featurep(2*j, real), featurep(%i*j, real), featurep(g(x), real),
+   featurep(j*g(x), real), featurep(erf(%i)^2, real),
+   featurep(x + 1, real), featurep(log(-1), real)]);
+[false, true, false, true, true, true, false]$
+
+
+/* featurep(..., complex|imaginary) for non-symbols,
+   "complex" meaning "has an imaginary part that's not literally 0" */
+
+block([j, z],
+  local(j, z),
+  declare(j, imaginary, z, complex),
+  [featurep(j, imaginary), featurep(j, complex), featurep(z, imaginary), featurep(z, complex),
+   featurep(j+1, imaginary), featurep(z+1, complex), featurep(2*j, imaginary), featurep(2*z, complex),
+   featurep(j+z, imaginary), featurep(j+z, complex), featurep(j*z, imaginary), featurep(j*z, complex),
+   featurep(j*j, real), featurep(j*j, complex), featurep(z*z, real), featurep(z*z, complex)]);
+[true, true, false, true,
+ false, true, true, true,
+ false, true, false, true,
+ true, false, false, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

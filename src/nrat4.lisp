@@ -423,7 +423,7 @@
 
 (defmfun ($radcan :properties ((evfun t))) (exp)
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
-	(t (let (($ratsimpexpons t))
+	(t (let (($ratsimpexpons t) modulus)
 	     (simplify (let (($expop 0) ($expon 0))
 			 (radcan1 (fr1 exp nil) *var)))))))
 
@@ -443,6 +443,10 @@
 							 (radcan1 e *var))
 						     (cdr x))))))
 		    varlist))
+	     ;; A logarithm whose argument simplified to zero is log(0).
+	     (dolist (x varlist)
+	       (when (and (mlogp x) (zerop1 (cadr x)))
+		 (merror (intl:gettext "log: encountered log(0)."))))
 	     (spc0 *var)
 	     (fr1 (rdis *exp) nil)))))
 
@@ -497,8 +501,7 @@
 (defun spc1 (x)
   (cond ((mlogp x) (putonloglist x))
 	((and (mexptp x) (not (eq (cadr x) '$%e)))
-         ($exp-form (list '(mtimes)
-                          (caddr x)
+         ($exp-form (mul (caddr x)
                           (putonloglist (list '(%log simp ratsimp)
                                               (cadr x))))))
 	(t x)))
@@ -553,7 +556,8 @@
   (dolist (v vl)
     (destructuring-let* ((((c1 . c) . r) (rzcontent (rform v)))
 			 (g (assoc r gcdlist :test #'equal)))
-      (cond (g (setf (cadr g) (plcm c (cadr g)))
+      (cond ((pzerop c1))
+            (g (setf (cadr g) (plcm c (cadr g)))
                (push (list ($exp-form (div* v c1)) c) (cddr g)))
             (t (push (list r c (list ($exp-form (div* v c1)) c)) gcdlist)))))
   (dolist (g gcdlist)

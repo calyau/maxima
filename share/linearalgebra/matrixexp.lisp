@@ -12,11 +12,8 @@
 ;; expressions strain Maxima's rational function code; to avoid errors
 ;; such as "..quotient by polynomial of higher degree" I found it necessary to
 ;;
-;;  (1) set gcd == spmod and algebraic == true,
-
-;;  (2) always give ratsimp and fullratsimp a value (even if nil) for its
-;;      optional second argument,
-
+;;  (1) set gcd to spmod and algebraic to true,
+;;  (2) always give ratsimp nil as its optional second argument,
 ;;  (3) set ratvars to an empty list at the start of most functions.
 
 ;; I didn't try to find the real cause for these bugs.  
@@ -26,13 +23,48 @@
   
 (in-package :maxima)
 
-(declare-top (special $matrix_elmement_mult $matrix_elmement_add))
+(declare-top (special $domain genvar varlist $matrix_element_mult $matrix_element_add))
 
 ($put '$matrixexp 2026 '$version)
 
+;; To make expression less prone to branch cut uncertainties (is (-1)^(1/3) = -1 or (sqrt(3)*%i)/2+1/2), 
+;; the function rect-minus-one-power replaces all subexpressions of the form (-1)^(rational number)
+;; by its principle value.
+(defun rect-minus-one-power (e)
+  "Convert all subexpressions of `e` of the form `(-1)^rational number`, to rectangular form 
+   by temporarily binding $domain to $complex and calling `$rectform.`"
+  (cond
+    ;; (-1)^q,  where q is a rational number
+    ((and (mexptp e) (eql (second e) -1) ($ratnump  (third e)))
+     ;; dispatch $rectform in an environment with domain : complex
+     (let (($domain '$complex)) ($rectform e)))
+    ;; Recursive descent over subexpressions
+    ((consp e)
+     (fapply (caar e) (mapcar #'rect-minus-one-power (cdr e))))
+    ;; Atom: unchanged
+    (t e)))
+
+(defun final-simp (e &optional (depth 4))
+  (let* (($ratsimpexpons t)
+         ($algebraic t)
+         ($radexpand t)
+         (ee ($resimplify (rect-minus-one-power ($factor ($ratsimp e nil))))))
+    (if (or (alike1 e ee) (<= depth 0))
+       ee
+       (final-simp ee (- depth 1)))))
+
 ;; Standard environment and function for simplification in this package.
-(defun matrixexp-simp (e)
-     ($fullratsimp e nil))
+(defun matrixexp-simp (e &optional (depth 4))
+  (let (($algebraic t)
+        ($ratsimpexpons t)
+        ($domain '$complex)
+        ($radexpand nil)
+        ($m1pbranch t)
+        ($ratvarswitch t)
+        (ee ($resimplify ($factor ($ratsimp (rect-minus-one-power e) nil)))))
+    (if (or (alike1 e ee) (<= depth 0))
+       ee
+       (matrixexp-simp ee (- depth 1)))))
 
 (defmfun $spectral_rep (mat)
   ($require_square_matrix mat '$first '$spectral_rep)
@@ -40,7 +72,7 @@
   (setq mat ($ratdisrep mat))
   (let (($ratmx nil) ($domain '$complex) ($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
 	($ratfac nil) (z (gensym)) (res) (m) (n ($length ($args mat))) 
-	(p) (p1) (p2) (sp) (proj) ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
+	(p) (p1) (p2) (sp) (proj) ($matrix_element_mult "*") ($matrix_element_add "+"))
 
     (setq p ($newdet (sub mat (mul z ($ident n)))))
     (if (oddp n) (setq p (mul -1 p)))
@@ -111,7 +143,8 @@
 
 (defmfun $matrixexp (mat &optional (x 1))
   (let (($ratmx nil) ($gcd '$spmod) (sp) (d) (p) (id) (n ($length ($args mat))) (f)
-        ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
+        ($matrix_element_mult "*") ($matrix_element_add "+")
+        ($domain '$complex))
     ($ratvars)
     ($require_square_matrix mat '$first '$matrixexp)
     ($require_unblockedmatrix mat '$first '$matrixexp)
@@ -145,11 +178,13 @@
       (merror "The ~:M argument to `~:M' must be a lambda form with ~:M variable(s)" pos fun-name n))))
 
 (defmfun $matrixfun (lamexpr mat)
+  (let ((ff))
   (let (($gcd '$spmod) ($ratmx nil) (z (gensym)) (expr) (var) (sp) (d) (p) (di) 
-	      (n ($length ($args mat))) (f 0)  ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
+	      (n ($length ($args mat))) (f 0)  ($matrix_element_mult "*") ($matrix_element_add "+")
+        ($domain '$complex))
 
-    ($require_square_matrix mat '$second '$matrixexp)
-    ($require_unblockedmatrix mat '$second '$matrixexp)
+    ($require_square_matrix mat '$second '$matrixfun)
+    ($require_unblockedmatrix mat '$second '$matrixfun)
     
     (setq expr (require-lambda lamexpr 1 '$first '$matrixfun))
     (setq var (nth 0 (nth 0 expr)))
@@ -164,8 +199,9 @@
     (dotimes (i (+ n 1))
       (setq f (add f (ncmul2 di (ncmul2 (fapply 'mlist (mapcar #'(lambda (s) (maxima-substitute s z expr)) sp)) p))))
       (setq di (ncmul2 di d))
-      (setq expr (div ($diff expr z) (factorial (+ i 1))))) 
-    (matrixexp-simp f)))
+      (setq expr (div ($diff expr z) (factorial (+ i 1)))))
+    (setq ff f))
+    (final-simp ff)))
      
 ;; Return the residue of the rational expression e with respect to the
 ;; variable var at the point pt.  Assumptions:

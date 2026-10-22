@@ -139,7 +139,7 @@
 (defun ratfact (x fn)
   (cond ((and $keepfloat (or (pfloatp (car x)) (pfloatp (cdr x)))
 	      (setq fn 'floatfact) nil))
-	((not (equal (cdr x) 1))
+	((not (onep1 (cdr x)))
 	 (nconc (funcall fn (car x)) (fixmult (funcall fn (cdr x)) -1)))
 	(t (funcall fn (car x)))))
 	 

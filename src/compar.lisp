@@ -1495,18 +1495,22 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list 'mabs 'sign-mabs)
 	 (list '$min #'(lambda (x) (sign-minmax (caar x) (cdr x))))
 	 (list '$max #'(lambda (x) (sign-minmax (caar x) (cdr x))))
-	 (list '%csc #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
-	 (list '%csch #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
+	 (list '%csc 'sign-csc/sec/csch/coth)
+     (list '%sec 'sign-csc/sec/csch/coth)
+	 (list '%csch 'sign-csc/sec/csch/coth)
+	 (list '%coth 'sign-csc/sec/csch/coth)
 	 (list '%acos 'sign-asin/acos/atanh)
 	 (list '%asin 'sign-asin/acos/atanh)
 	 (list '%atan 'sign-atan/asinh)
+	 (list '%acot 'sign-acot)
 	 (list '%asinh 'sign-atan/asinh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
-	 (list '%asec 'sign-asec/acsc/asech/acoth)
-	 (list '%acsc 'sign-asec/acsc/asech/acoth)
-	 (list '%asech 'sign-asec/acsc/asech/acoth)
-	 (list '%acoth 'sign-asec/acsc/asech/acoth)
+	 (list '%asec 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsc 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsch 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%asech 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acoth 'sign-asec/acsc/asech/acsch/acoth)
 	 (list '%tan 'sign-tan/cot)
 	 (list '%cot 'sign-tan/cot)
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
@@ -2298,13 +2302,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	(t ; x >= 1
 	 (setq sign '$pz))))
 
-;; The functions asec, acsc, asech and acoth are reciprocal argument forms of
-;; functions that already have a sign function: asec(x) = acos(1/x),
-;; acsc(x) = asin(1/x), asech(x) = acosh(1/x) and acoth(x) = atanh(1/x).
+;; The functions asec, acsc, asech, acoth and acsch are reciprocal argument
+;; forms of functions whose sign SIGN already knows: asec(x) = acos(1/x),
+;; acsc(x) = asin(1/x), asech(x) = acosh(1/x), acoth(x) = atanh(1/x) and
+;; acsch(x) = asinh(1/x).
 ;;
-(defun sign-asec/acsc/asech/acoth (x)
+(defun sign-asec/acsc/asech/acsch/acoth (x)
   (if (eq '$zero (sign* (cadr x)))
-    ;; Of these four, acoth(0) = -%i*%pi/2 is the only one defined at zero.
+    ;; Of these five, acoth(0) = -%i*%pi/2 is the only one defined at zero.
     ;; The others should have been caught by the simplifier already before
     ;; reaching this code, but better safe than sorry. At zero, there's a
     ;; division by zero in their logarithmic form, so use DBZS-ERR.
@@ -2318,6 +2323,24 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
       (sign `((,f) ,(inv (cadr x)))))))
+
+;; acot(x) = atan(1/x) for x # 0, and acot(0) = %pi/2. So for real x, acot(x)
+;; is positive for x >= 0, negative for x < 0, and never zero.
+(defun sign-acot (x)
+  (let ((arg (cadr x)) arg-sign)
+    (sign arg)
+    (setq arg-sign sign)
+    (setq sign (case arg-sign
+                 (($pos $zero $pz) '$pos)
+                 ($neg '$neg)
+                 (($pn $nz $pnz) '$pn)
+                 (($complex $imaginary) '$complex)
+                 (t arg-sign))
+          minus nil
+          evens nil
+          ;; For $ASKSIGN: a nonzero ARG has the sign of acot(ARG).
+          odds (when (eq sign '$pn)
+                 (ncons (if (eq arg-sign '$pn) arg x))))))
 
 ;; atan(%i*y) = %i*atanh(y) and asinh(%i*y) = %i*asin(y) are imaginary only
 ;; for -1 <= y <= 1, so the rule of SIGN-ODDFUN that takes the sign of the
@@ -2581,6 +2604,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (unless (eq sign '$zero)
            (sign-any x))))))
 
+;; The sign function of csc, sec, csch and coth, each the reciprocal of the
+;; function its RECIP property names: sign(f(x)) = sign(1/g(x)). It does not
+;; suit cot, which is zero where tan has poles.
+(defun sign-csc/sec/csch/coth (x)
+  (sign (inv (ftake (get (caar x) 'recip) (cadr x)))))
+
 (defun imag-err (x)
   (if sign-imag-errp
       (merror (intl:gettext "sign: argument cannot be non-real; found ~M") x)
@@ -2639,7 +2668,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         ((eq ind '$real)
          (if (atom e)
              (or (numberp e) (kindp e '$real) (numberp (numer e)))
-             (free ($rectform e) '$%i)))
+             (zerop1 ($imagpart e))))
+        ((eq ind '$complex)
+         ;; "complex" in the sense of "has an imaginary part that's not
+         ;; literally 0", not in the strict mathematical sense where every real
+         ;; number is also a complex number - that would not be very useful.
+         (if (symbolp e)
+           (kindp e '$complex)
+           (not (zerop1 ($imagpart e)))))
+        ((eq ind '$imaginary)
+         ;; "imaginary" in the sense of "real part literally 0 and imaginary
+         ;; part not literally 0", so zero itself is not considered imaginary.
+         (if (symbolp e)
+           (kindp e '$imaginary)
+           (destructuring-let (((re . im) (trisplit e)))
+             (and (zerop1 re) (not (zerop1 im))))))
         ((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer
