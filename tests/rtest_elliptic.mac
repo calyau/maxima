@@ -1280,15 +1280,14 @@ block([u : 99.0, m : 1.5],
 
 
 
-/* For m > 1, R_J gets complex arguments, and bf-rj1 computed
- * A^(-3/2) as 1/sqrt(A^3) instead of 1/(A*sqrt(A)).  When
- * |arg(A)| > %pi/3 that has the wrong sign, and about half the digits
- * were lost.  Reference values from mpmath.
+/*
+ * Bug #5694: elliptic_pi loses accuracy for m > 1
+ * Reference values from mpmath.
  */
 block([fpprec : 32],
   [closeto(elliptic_pi(0.5, 2.0, 2.0)
            - (1.5327383490292811 - 2.9715954381245590*%i),
-           9.1552e-16),
+           1.2561e-15),
    closeto(elliptic_pi(0.5b0, 2b0, 2b0)
            - (1.532738349029281102859949898769821b0
               - 2.971595438124559042449586389035297b0*%i),
