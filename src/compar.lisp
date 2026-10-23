@@ -1726,6 +1726,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defvar *in-expt-of-base* nil
   "T inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
 
+(defvar *root-rewrites* nil
+  "The pairs (Q^R . S) for which SIGNDIFF-SPECIAL decides the sign of Q^R - S
+  by that of Q - S^(1/R). That can lead back to the same pair, which then must
+  not be rewritten again.")
+
 (defun expt-of-base (expr q)
   "If EXPR is a power of base Q (or EXPR = Q, then the exponent is implicitly 1),
   returns the exponent (1 or k). Otherwise returns NIL.
@@ -1759,8 +1764,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; That same-base case is handled by the exponent-comparison rule further below.
 			(not *in-expt-of-base*) ; prevent endless recursion
 			(not (expt-of-base xrhs (cadr xlhs)))
-			(eq (sign* (sub (cadr xlhs)
-					(power xrhs (div 1 (caddr xlhs)))))
+			(notany #'(lambda (p)
+				    (and (alike1 (car p) xlhs)
+					 (alike1 (cdr p) xrhs)))
+				*root-rewrites*)
+			(eq (let ((*root-rewrites*
+				    (acons xlhs xrhs *root-rewrites*)))
+			      (sign* (sub (cadr xlhs)
+					  (power xrhs (div 1 (caddr xlhs))))))
 			    '$pos))))
 	      (and (mexptp xlhs) (mexptp xrhs)
 		   ;; Q^R - Q^T, Q>1, (R-T) > 0, with real R and T

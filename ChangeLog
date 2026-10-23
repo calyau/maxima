@@ -263,6 +263,7 @@ Bug fixes for numbered bugs:
 * \#5701 rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2
 * \#5703 Translated for x in e loops give other values than interpreted ones, or Lisp errors
 * \#5704 with_stdout() to a file name is slow
+* \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
 
 Bug fixes for unnumbered bugs:
 ------------------------------

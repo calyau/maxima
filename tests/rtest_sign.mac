@@ -3196,6 +3196,16 @@ block([u],
 [pos, pos, pos]$
 
 
+/* Bug #5709: "sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false" */
+
+block([radexpand : false],
+  local(x, y),
+  assume(x > 9, y > 0),
+  [sign(sqrt(2*y) - y), sign(sqrt(16*y) - y), sign((2*y)^(1/3) - y),
+   is(sqrt(2*y) > y), sign(sqrt(sqrt(x) + 1) - 2)]);
+[pnz, pnz, pnz, unknown, pos]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
