@@ -262,6 +262,7 @@ Bug fixes for numbered bugs:
 * \#5700 rectform of coth and cot divides by zero at their zeros
 * \#5701 rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2
 * \#5703 Translated for x in e loops give other values than interpreted ones, or Lisp errors
+* \#5704 with_stdout() to a file name is slow
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -4592,6 +4592,44 @@ block([msg : (errcatch(1/0), error)],
 [true, true, true, true]$
 
 
+/* Bug #5704: "with_stdout() to a file name is slow"
+   (these tests don't actually measure speed, but with_stdout's functionality) */
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_1.txt"), file_output_append : false, r, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  r : with_stdout(f, printf(true, "b~%"), 42),
+  s : openr(f),
+  l : [readline(s), readline(s)],
+  close(s),
+  [r, l]);
+[42, ["b", false]]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_2.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  file_output_append : true,
+  with_stdout(f, printf(true, "b~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  l);
+["a", "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_3.txt"), g : sconcat(maxima_tempdir, "/with_stdout_4.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%"), with_stdout(g, printf(true, "b~%")), printf(true, "c~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  s : openr(g),
+  l : append(l, [readline(s), readline(s)]),
+  close(s),
+  l);
+["a", "c", false, "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_5.txt"), file_output_append : false],
+  [catch(with_stdout(f, throw(1), 2)), errcatch(with_stdout(f, error("with_stdout"), 3)), with_stdout(f, 4)]);
+[1, [], 4]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
