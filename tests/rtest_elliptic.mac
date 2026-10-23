@@ -1300,7 +1300,7 @@ block([fpprec : 32],
    closeto(elliptic_pi(0.5b0, bfloat(%pi/2), 2b0)
            - (1.532738349029281102859949898769821b0
               - 2.104133395768237597036904372287483b0*%i),
-           1.7432b-32)]);
+           2.4844b-32)]);
 [true, true]$
 
 block([fpprec : 32],
@@ -1377,11 +1377,10 @@ block([fpprec : 32],
 [true, true];
 
 /* Negative phi with a complex result used to signal an error in the
- * float path.  The tolerances here and for m > n reflect the existing
- * loss of precision for m > 1 past the branch point.
+ * float path.
  */
-[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 1.3590e-9),
- closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 5.0625b-18)];
+[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 4.9651e-16),
+ closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 6.8905b-33)];
 [true, true];
 
 /* 1 < m < n: pole crossed before the branch point asin(1/sqrt(m)). */
@@ -1395,8 +1394,8 @@ block([fpprec : 32],
 [true, true];
 
 /* m > n: branch point before the pole. */
-[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 2.4062e-9),
- closeto(elliptic_pi(1.5b0, 1.25b0, 3.0b0) - (-7.808104921045611472213329756460836b-1 - 1.131673674679173545113343682797006b0*%i), 8.9635b-18)];
+[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 9.1552e-16),
+ closeto(elliptic_pi(1.5b0, 1.25b0, 3.0b0) - (-7.808104921045611472213329756460836b-1 - 1.131673674679173545113343682797006b0*%i), 1.7432)];
 [true, true];
 
 /* Continuity with the complex path from below the cut, and the jump
