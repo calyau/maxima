@@ -1273,7 +1273,7 @@ APPLY means like APPLY.")
 			(t return-mode)))
        (tunbind 'mdo) (tunbind (cadr form))
        (return
-	 `(,mode do ((,var) (mdo (cdr ,init) (cdr mdo)))
+	 `(,mode do ((,var) (mdo (mdoin-elements ,init) (cdr mdo)))
 		 ((null mdo) '$done) .
 		  ((declare (special ,var)) (setq ,var (car mdo)) .
 		 ,(cond ((atom (cdr action)) nil)

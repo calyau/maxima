@@ -838,10 +838,11 @@
 		   (root (div (add cosh (neg cos))
 			      (add cosh cos))
 			 2))
-		 (take '(%atan)
-		       (if (eq (caar l) '%tan)
-			   (div (take '(%sinh) 2frst) (take '(%sin) 2scnd))
-			   (div (take '(%sin) 2scnd) (take '(%sinh) 2frst)))))))
+		 ;; RISPLIT's denominator for tan and tanh is never
+		 ;; negative, so the argument is that of the numerator.
+		 (if (eq (caar l) '%tan)
+		   (genatan (take '(%sinh) 2frst) (take '(%sin) 2scnd))
+		   (genatan (take '(%sin) 2scnd) (take '(%sinh) 2frst))))))
 	((specrepp l) (absarg (specdisrep l) absflag))
 	((let ((foot (coversinemyfoot l)))
 	   (and foot (not (=0 (cdr (risplit (cadr l))))) (absarg foot absflag))))
