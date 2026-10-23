@@ -257,6 +257,7 @@ Bug fixes for numbered bugs:
 * \#5696 sign(sqrt(2)-cos(x)) is neg
 * \#5697 trigreduce gives Lisp errors or wrong results for products like cos(%pi/8)^2*sin(%pi/8)^2
 * \#5698 Bigfloat coth, tan, cot and csch signal errors or lose digits near their zeros and poles
+* \#5699 assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it
 
 Bug fixes for unnumbered bugs:
 ------------------------------

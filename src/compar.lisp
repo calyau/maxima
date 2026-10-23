@@ -3397,6 +3397,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ;; Remember that they were swapped to swap them back afterwards.
       (when (equal lhs 0)
         (setq lhs rhs rhs 0 swapped t))
+      ;; If LHS is a lone power that REWRITE-MEXPT-RETAINING-SIGN changes,
+      ;; split the result from scratch, so that (x+1)^3>0 becomes x>-1, as
+      ;; x+1>0 does, and 0>(x+1)^3 becomes -1>x, as 0>x+1 does.
+      (when (and (equal rhs 0) (mexptp lhs))
+        (let ((new (rewrite-mexpt-retaining-sign lhs)))
+          (unless (eq new lhs)
+            (return-from compsplt (compsplt (if swapped (neg new) new))))))
       (when (equal rhs 0)
 	    ;; Rewrite mexpts in factors so that e.g. x^3/y>0 becomes x*y>0. */
 	    (setq lhs
