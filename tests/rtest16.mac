@@ -4481,6 +4481,213 @@ block([browser : browser, url_base : url_base, b : browser, u : url_base],
 [true, true]$
 
 
+/* Bug #5683: "Merging powers of %e in a product can leave a nested product" */
+
+[%e^(log(x)/2 + y)*%e^(log(x)/2)*x,
+ is(%e^(log(x)/2 + y)*%e^(log(x)/2)*x = x^2*%e^y),
+ %e^(%i*%pi/8 + y)*%e^(%i*%pi/8)*x];
+[%e^y*x^2, true, %e^y*(%i/sqrt(2) + 1/sqrt(2))*x]$
+
+
+/* Bug #5577: "with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))" */
+
+radcan(sqrt(0.5*x^2 + x + 0.5)), keepfloat;
+sqrt(0.5*x^2 + 1.0*x + 0.5)$
+
+
+/* Bug #5575: "radcan((2^x-1)/(2^(x/2)-1)) is not simplified to 2^(x/2)+1" */
+
+[radcan((2^x-1)/(2^(x/2)-1)), radcan((x^y-1)/(x^(y/2)-1)), radcan(((-1)^x-1)/((-1)^(x/2)-1))];
+[2^(x/2)+1, x^(y/2)+1, (-1)^(x/2)+1]$
+
+
+/* Bug #5573: "radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent" */
+
+[radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)),
+ radcan(2^(z*(log(x*y)-log(x)-log(y)))),
+ radcan(w^((sqrt(x*y)-sqrt(x)*sqrt(y))/z))];
+[1, 1, 1]$
+
+
+/* Bug #5574: "radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error" */
+
+[errcatch(radcan(log(sqrt(2)*sqrt(3) - sqrt(6)))),
+ errcatch(radcan(log(sqrt(x*y) - sqrt(x)*sqrt(y)))),
+ radcan((sqrt(x*y) - sqrt(x)*sqrt(y))^w)];
+[[], [], 0]$
+
+
+/* Bug #5576: "with modulus:7, radcan(2^(8*x)) returns 2^x" */
+
+[radcan(2^(8*x)), radcan(exp(x/8)+exp(x)), radcan(sqrt(x^2*y)), radcan(log(8*x))], modulus : 7;
+[2^(8*x), %e^x+%e^(x/8), abs(x)*sqrt(y), log(x)+3*log(2)]$
+
+
+/* Bug #5610: "featurep(2*b, real) is true for an imaginary b" */
+
+block([j, g],
+  local(j, g),
+  declare(j, imaginary, g, imaginary),
+  [featurep(2*j, real), featurep(%i*j, real), featurep(g(x), real),
+   featurep(j*g(x), real), featurep(erf(%i)^2, real),
+   featurep(x + 1, real), featurep(log(-1), real)]);
+[false, true, false, true, true, true, false]$
+
+
+/* featurep(..., complex|imaginary) for non-symbols,
+   "complex" meaning "has an imaginary part that's not literally 0" */
+
+block([j, z],
+  local(j, z),
+  declare(j, imaginary, z, complex),
+  [featurep(j, imaginary), featurep(j, complex), featurep(z, imaginary), featurep(z, complex),
+   featurep(j+1, imaginary), featurep(z+1, complex), featurep(2*j, imaginary), featurep(2*z, complex),
+   featurep(j+z, imaginary), featurep(j+z, complex), featurep(j*z, imaginary), featurep(j*z, complex),
+   featurep(j*j, real), featurep(j*j, complex), featurep(z*z, real), featurep(z*z, complex)]);
+[true, true, false, true,
+ false, true, true, true,
+ false, true, false, true,
+ true, false, false, true]$
+
+
+/* Bug #5695: "fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a)))))" loops forever */
+
+fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a)))));
+(f(a)-1)/(sqrt(c-1)*(c-f(a))^(3/2))$
+
+[fullratsimp(rat(sqrt(x-1)/(x-cos(a))^(3/2)-1/(sqrt(x-1)*sqrt(x-cos(a))))),
+ (rat(sqrt(y-x)), fullratsimp(f(y)/(y-x)^(3/2)))];
+[(cos(a)-1)/(sqrt(x-1)*(x-cos(a))^(3/2)), f(y)/(y-x)^(3/2)]$
+
+[ratsimp((f(a)-1)/(c-f(a))^(3/2)),
+ (rat(sqrt(c-f(a))), ratsimp((f(a)-1)/(c-f(a))^(3/2)))];
+[(f(a)-1)/(c-f(a))^(3/2), (f(a)-1)/(c-f(a))^(3/2)]$
+
+
+/* Bug #5697: "trigreduce gives Lisp errors or wrong results for products like cos(%pi/8)^2*sin(%pi/8)^2" */
+
+[trigreduce(cos(%pi/8)^2*sin(%pi/8)^2), trigreduce(cos(%pi/8)^3*sin(%pi/8)^3),
+  trigreduce(csc(%pi/8)^2*sec(%pi/8)^2), trigreduce(csc(%pi/12)*sec(%pi/12)*x)];
+[1/8, 1/2^(9/2), 8, 4*x]$
+
+[trigreduce(sin(asin(y)/2)*cos(asin(y)/2)), trigreduce(sin(asin(y)/2)^2*cos(asin(y)/2)^2),
+  trigreduce(csc(acos(y)/2)^2*sec(acos(y)/2)^2), trigreduce(cos(acot(y)/2)^2*sin(acot(y)/2)^2),
+  trigreduce(cosh(atanh(y)/2)^2*sinh(atanh(y)/2)^2)];
+[y/2, y^2/4, 4/(1-y^2), 1/(4*(1/y^2+1)*y^2), y^2/(4*(1-y)*(y+1))]$
+
+limit(cos(%pi/8)^2*sin(%pi/8)^2*(x+1)/x, x, inf);
+1/8$
+
+every(lambda([e], is(abs(float(trigreduce(e) - e)) < 1e-12*abs(float(e)))),
+  create_list(apply(f, [k*%pi/n])^a*apply(g, [k*%pi/n])^b,
+              f, [sin, cos, tan], g, [cos, sec, csc], n, [8, 12], k, [1, 5], a, 1, 3, b, 1, 3));
+true$
+
+
+/* Bug #5701: "rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2" */
+
+block([msg : (errcatch(1/0), error)],
+  map(lambda([u], errcatch(rectform(u)) = [] and error = msg),
+      [1/(log(%i) - %i*%pi/2), sech(log(%i)), csch(2*log(%i)), (log(%i) - %i*%pi/2)^(-1001)]));
+[true, true, true, true]$
+
+
+/* Bug #5704: "with_stdout() to a file name is slow"
+   (these tests don't actually measure speed, but with_stdout's functionality) */
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_1.txt"), file_output_append : false, r, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  r : with_stdout(f, printf(true, "b~%"), 42),
+  s : openr(f),
+  l : [readline(s), readline(s)],
+  close(s),
+  [r, l]);
+[42, ["b", false]]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_2.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  file_output_append : true,
+  with_stdout(f, printf(true, "b~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  l);
+["a", "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_3.txt"), g : sconcat(maxima_tempdir, "/with_stdout_4.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%"), with_stdout(g, printf(true, "b~%")), printf(true, "c~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  s : openr(g),
+  l : append(l, [readline(s), readline(s)]),
+  close(s),
+  l);
+["a", "c", false, "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_5.txt"), file_output_append : false],
+  [catch(with_stdout(f, throw(1), 2)), errcatch(with_stdout(f, error("with_stdout"), 3)), with_stdout(f, 4)]);
+[1, [], 4]$
+
+
+/* Bug #5613: "rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real" */
+
+[rectform(x^(1/3)), imagpart(x^(3/5)), carg(x^(1/3)), carg(x^(2/3)), carg(x^3),
+ polarform(x^(2/3)), conjugate(x^(1/3)), conjugate(x^(2/3)),
+ subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3)), polarform(x^(1/3)),
+                polarform(x^3)])];
+[x^(1/3), 0, atan2(0, x), 0, atan2(0, x), x^(2/3), x^(1/3), x^(2/3),
+ [-2, %pi, -2, -512]]$
+
+block(
+ local(y),
+ assume(y < 0),
+ [rectform(y^(1/3)), rectform(y^(-2/3)), realpart(y^(3/5)), imagpart(y^(3/5)),
+  rectform(y^(1/5)*%i + y^(2/5)), carg(y^(1/3)), conjugate(y^(1/3)),
+  rectform(conjugate(y^(1/3))),
+  rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3)),
+                          polarform(y^(-2/3)), polarform(2*y^(1/3))]))]);
+[y^(1/3), y^(-2/3), y^(3/5), 0, y^(2/5) + %i*y^(1/5), %pi, y^(1/3), y^(1/3),
+ [-2, -2, 1/4, -4]]$
+
+block([radexpand : false],
+ [imagpart((-2)^(1/3)), sign(rectform((-2)^(1/3))), carg((-2)^(1/3)),
+  rectform(polarform((-2)^(1/3))), is(conjugate((-2)^(1/3)) = (-2)^(1/3))]);
+[0, neg, %pi, -2^(1/3), true]$
+
+/* Even roots, domain : complex and symbolic exponents stay on the
+   principal branch. */
+block(
+ local(y),
+ assume(y < 0),
+ [subst(x = -4, [rectform(x^(1/2)), carg(x^(1/2))]), op(conjugate(sqrt(x))),
+  subst([x = -8, a = 1/3], rectform(x^a)),
+  block([domain : complex],
+   [subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3))]),
+    rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3))])),
+    op(conjugate(x^(1/3)))])]);
+[[2*%i, %pi/2], conjugate, sqrt(3)*%i + 1,
+ [[sqrt(3)*%i + 1, %pi/3], [sqrt(3)*%i + 1, sqrt(3)*%i + 1], conjugate]]$
+
+/* sign() took a real odd root of a negative number as complex inside
+   rectform() and failed */
+
+[imagpart(sqrt(1 - (sqrt(2)-2)^(1/3))), imagpart(sqrt(3 + (sqrt(2)-2)^(1/3))),
+ rectform(sqrt((sqrt(2)-2)^(1/3) - 1)), rectform(log((sqrt(2)-2)^(1/3) - 1))];
+[0, 0, sqrt(1-(sqrt(2)-2)^(1/3))*%i, log(1-(sqrt(2)-2)^(1/3))+%i*%pi]$
+
+/* Symbolic exponents whose denominator is odd, as csign() sees them */
+
+block([],
+  local(n, m, y),
+  declare(n, integer, m, integer),
+  assume(y < 0),
+  [rectform(y^(1/(2*n+1))), imagpart(y^(2/(2*n+1))), imagpart((-8)^(1/(2*n+1))),
+   carg(y^(1/(2*n+1))), carg(y^(2/(2*n+1))), carg(y^(m/(2*n+1))),
+   conjugate(y^(1/(2*n+1))), is(imagpart(y^(1/(2*n))) # 0),
+   is(imagpart(y^(a/(2*n+1))) # 0)]);
+[y^(1/(2*n+1)), 0, 0, %pi, 0, atan2(0, y^(m/(2*n+1))), y^(1/(2*n+1)), true, true]$
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

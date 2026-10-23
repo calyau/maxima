@@ -805,7 +805,9 @@ ignoring dummy variables and array indices."
                     (setq z (gensym))
                     (setq ee (maxima-substitute z (power (ftake '%cos g) 2) e))
                     (setq ee (maxima-substitute (sub 1 z) (power (ftake '%sin g) 2) ee))
-                    (when (freeof z (sratsimp ee))
+                    (unless (freeof z ee)
+                      (setq ee (sratsimp ee)))
+                    (when (freeof z ee)
                         (setq e ee)))
                 e)
             ;; maybe this isn't needed, but it's not wrong.
@@ -985,7 +987,7 @@ ignoring dummy variables and array indices."
 	(or (alike1 e f) (freeof var (sratsimp (div e f)))))
 
 (defun limit2 (n dn var val)
-  (prog (n1 d1 lim-sign gcp sheur-ans)
+  (prog (n1 d1 lim-sign gcp sheur-ans cinf)
      (setq n (hyperex n) dn (hyperex dn))
     (setq d1 (limit dn var val nil)
 	      n1 (limit n var val nil))
@@ -1041,7 +1043,9 @@ ignoring dummy variables and array indices."
 		  ((eq n1 d1) (setq lim-sign 1) (go cp))
 		  (t (setq lim-sign -1) (go cp))))
 	   ((and (infinityp d1) (infinityp n1))
-	    (setq lim-sign (if (or (eq d1 '$minf) (eq n1 '$minf)) -1 1))
+	    ;; One of the two is infinity, which has no sign.
+	    (setq lim-sign (if (or (eq d1 '$minf) (eq n1 '$minf)) -1 1)
+		  cinf t)
 	    (go cp))
 	   (t (return (simplimtimes `(,n1 ,(m^ d1 -1))))))
      cp   (setq n ($expand n) dn ($expand dn))
@@ -1058,7 +1062,10 @@ ignoring dummy variables and array indices."
 	      (setq d1 new-dn)))
 	   (t (setq d1 dn)))
      (setq sheur-ans (sheur0 n1 d1))
-     (cond ((or (member sheur-ans '($inf $zeroa) :test #'eq)
+     (cond ((and cinf (member sheur-ans '($inf $zeroa)))
+	    ;; Growth rates give only the modulus of a complex quotient.
+	    (return (if (eq sheur-ans '$inf) '$infinity 0)))
+	   ((or (member sheur-ans '($inf $zeroa) :test #'eq)
 		(free sheur-ans var))
 	    (return (simplimtimes `(,lim-sign ,sheur-ans))))
 	   ((and (alike1 sheur-ans dn)
@@ -2459,6 +2466,14 @@ ignoring dummy variables and array indices."
 	((not (freeof '$und exp))
       (if (eq exp '$und) '$und (throw 'limit nil)))
 
+    ;; SIMPINF maps zeroa and zerob to 0, so it would drop the side of a product
+    ;; like 2*zeroa. SIMPLIMTIMES keeps it.
+    ((and (mtimesp exp)
+          (freeof var exp)
+          (amongl '($zeroa $zerob) exp)
+          (not (amongl '($inf $minf $infinity $ind) exp)))
+     (simplimtimes (cdr exp)))
+
     ;; When exp is freeof var, optionally apply simplify followed by simpinf. Yes, the
 	;; call to simplify is needed: sometimes exp has the form XXX^1, for example.
 	((freeof var exp)
@@ -2572,7 +2587,9 @@ ignoring dummy variables and array indices."
              ($zeroa
               (unless zf (setf zf 1)))
              ($zerob
-              (setf zf (* -1 (or zf 1))))))
+              (setf zf (* -1 (or zf 1))))
+             ;; A zero without a side leaves the product without one.
+             (t (setf zf 0))))
 
           ;; If the limit is not some form of infinity or
           ;; undefined/indeterminate.
@@ -2692,7 +2709,7 @@ ignoring dummy variables and array indices."
 	         (pop simplimplus-problems)))))
 
 (defun simplimplus1 (exp)
-  (prog (sum y infl infinityl minfl indl undl zerobl zeroal ans r)
+  (prog (sum y infl infinityl minfl indl undl zerobl zeroal ans r undir)
       (do ((exp (cdr exp) (cdr exp)) (f))
 	 ((null exp) nil)
        (setq f (limit (car exp) var val 'think))
@@ -2704,7 +2721,11 @@ ignoring dummy variables and array indices."
 	     ((eq f '$inf)  (push (car exp) infl))
 	     ((eq f '$minf)  (push (car exp) minfl))
 	     ((eq f '$infinity) (push (car exp) infinityl))
-		 (t  (push f sum))))
+		 (t  (push f sum)
+		     ;; This term tends to its limit from an unknown side.
+		     (when (and (not (freeof var (car exp)))
+				(free f '$zeroa) (free f '$zerob))
+		       (setq undir t)))))
 
     ;; When there are two or more infinity terms, we dispatch gruntz1 on
 	;; the rectangular form of their sum. When gruntz1 is able to find the
@@ -2735,7 +2756,7 @@ ignoring dummy variables and array indices."
 			         ((eq r '$und) (push infinityl-sum undl))
 			         ((eq r '$minf) (push infinityl-sum minfl))
 					 ((eq r '$inf) (push infinityl-sum infl))
-					 (t (push r sum)))))))
+					 (t (push r sum) (setq undir t)))))))
 					 
 	;; An infinity term next to inf or minf terms: the larger side decides,
 	;; and when neither does, the terms are re-summed below like inf and minf
@@ -2783,7 +2804,7 @@ ignoring dummy variables and array indices."
 			    (throw 'limit t))
 			  ;; A finite limit, 0 included, condenses the ind terms.
 			  (r (push r sum)
-			     (setq indl nil))))
+			     (setq indl nil undir t))))
 	 ;; Add the members of the list sum.
 	 (setq sum (fapply 'mplus sum))
 
@@ -2800,7 +2821,11 @@ ignoring dummy variables and array indices."
                              sum)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
-	    (return (cond ((atom sum)  sum)
+	    ;; The side of a vanishing sum is unknown when a term tends to its
+	    ;; limit from an unknown side: The limit of sinh(x) is 0 with no
+	    ;; side, and sinh(x)-x tends to zeroa although -x tends to zerob.
+	    (return (cond ((and undir (zerop1 (ridofab sum))) 0)
+			  ((atom sum)  sum)
 			  ((or (not (free sum '$zeroa))
 			       (not (free sum '$zerob)))
 			   (simpab sum))
@@ -4071,8 +4096,10 @@ ignoring dummy variables and array indices."
 (defun simplim%acosh (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (value))
     (cond ((equal (ridofab lim) 1)
-           ;; From below 1, acosh vanishes along the imaginary axis.
-           (if (eql -1 (behavior (sub (cadr e) 1) x pt)) 0 '$zeroa))
+           ;; Only from above 1 does acosh tend to zeroa. From below 1 it
+           ;; vanishes along the imaginary axis, and when BEHAVIOR cannot
+           ;; tell the side, the zero has no side either.
+           (if (eql 1 (behavior (sub (cadr e) 1) x pt)) '$zeroa 0))
           ((eq lim '$inf) lim)
           ((eq lim '$minf) '$infinity)
           ((member lim '($und $ind $infinity) :test #'eq) '$und)

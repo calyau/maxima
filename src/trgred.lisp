@@ -182,8 +182,11 @@
 
 (defun sp1tlin (l trig)
   (cond ((null (cdr l)) nil)
+	;; a factor simplified by SP1UNTREP can be an atom or a power of one
+	((atom (cadr l)) (sp1tlin (cdr l) trig))
 	((and (eq (caaadr l) 'mexpt)
 	      (integerp (caddr (cadr l)))
+	      (not (atom (cadadr l)))
 	      (member (caaadr (cadr l))
 		    (if trig '(%sin %cos) '(%sinh %cosh)) :test #'eq))
 	 (cons (funcall (cdr (assoc (caaadr (cadr l)) *sc^ndisp* :test #'eq))
@@ -442,7 +445,10 @@
 
 (defun sp1addto (fn arg exp)
   (setq arg (list (list fn) arg))
-  (sp1add (if (equal exp 1) arg (m^ arg exp))))
+  ;; leave the power unsimplified, like FN(ARG): SP1UNTREP simplifies it
+  ;; later, while simplified now it could be something SP1ADD cannot put in
+  ;; a bucket, such as 1/2 for sin(%pi/4)^2
+  (sp1add (if (equal exp 1) arg (list '(mexpt) arg exp))))
 
 (defun sp1expt (b e)
   (cond ((mexptp b)

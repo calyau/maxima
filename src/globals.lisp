@@ -1285,6 +1285,11 @@
 ;; While RISCHP is set, RISPLIT adds the squared modulus and the argument of
 ;; each complex number that it takes a root of.
 (defvar *risplit-roots* nil)
+;; T while INTEGRATE-SQRT-PAIR integrates the single root that it makes of a
+;; product of roots, if RADCAN1 takes that root apart otherwise than the roots
+;; it replaces. BRANCH-FACTOR then counts roots of expressions in the variable
+;; of integration too.
+(defvar *branch-var-roots* nil)
 (defvar wflag nil)
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)

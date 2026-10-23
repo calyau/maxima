@@ -950,3 +950,95 @@ block([m],
   declare(m, integer),
   [cos(%pi*(4*m+3)^3), cos(%pi*(6*m+5)^3), sin(%pi*(4*m+3)^3+%pi/2)]);
 [-1, -1, -1]$
+
+
+/* Bug #5679: "Bigfloat atan(x) is wrong if x has a precision other than fpprec" */
+
+block([fpprec : 32, x : [1/2, 3/4, 2, -2], lo, hi],
+  lo : block([fpprec : 16], bfloat(x)),
+  hi : block([fpprec : 64], bfloat(x)),
+  x : bfloat(x),
+  [is(map(atan, lo) = map(atan, x)), is(map(atan, hi) = map(atan, x))]);
+[true, true]$
+
+
+/* Bug #5567: "cos(x+n*%pi) is not simplified for an integer n" */
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+n*%pi), cos(x+n*%pi), sec(x+n*%pi), csc(x+n*%pi), tan(x+n*%pi), cot(x+n*%pi)]);
+[(-1)^n*sin(x), (-1)^n*cos(x), (-1)^n*sec(x), (-1)^n*csc(x), tan(x), cot(x)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+(n+1)*%pi), cos(x+n*%pi+%pi/2), sin(x+3*n*%pi), sec(x+n*%pi+%pi/2), csc(x-n*%pi)]);
+[(-1)^(n+1)*sin(x), (-1)^(n+1)*sin(x), (-1)^n*sin(x), (-1)^(n+1)*csc(x), (-1)^n*csc(x)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [csc(n*%pi+%pi/2), sec(n*%pi+%pi/3), tan(n*%pi+%pi/4), cot(n*%pi+%pi/3)]);
+[(-1)^n, 2*(-1)^n, 1, 1/sqrt(3)]$
+
+block([n],
+  local(n),
+  declare(n, integer),
+  [sin(x+n*%pi+%pi/5), csc(n*%pi+%pi/5),
+   errcatch(csc(n*%pi)), errcatch(sec(n*%pi+%pi/2)),
+   errcatch(tan(n*%pi+%pi/2)), errcatch(cot(n*%pi))]);
+[sin(x+%pi*n+%pi/5), csc(%pi*n+%pi/5), [], [], [], []]$
+
+block([g : lambda([n], [sin(x+n*%pi), cos(x+n*%pi+%pi/2), sec(x+n*%pi+%pi/2), csc(x-n*%pi),
+                        csc(n*%pi+%pi/2), sec(n*%pi+%pi/3), tan(n*%pi+%pi/4), cot(n*%pi+%pi/3)]), m],
+  local(m),
+  declare(m, integer),
+  every(lambda([k], lmax(abs(float(subst([m = k, x = 3/10], g(m)) - subst(x = 3/10, g(k))))) < 1e-14),
+        makelist(k, k, -3, 3)));
+true$
+
+
+/* Bug #5570: "Bigfloat acsc, asec, acot, acsch and acoth lose digits near 0 and infinity" */
+
+map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [z]))],
+                         is(block([fpprec : 40], cabs(u - v) / cabs(v)) < 1e-15))),
+    [acsc, acsc, asec, asec, acot, acsch, acsch, acsch, acoth],
+    [-1b-6, -1b-6*%i, 1b-6, 1b-6*%i, 1b6*%i, -1b-6, 1b-6*%i, 1b6, 1b6]);
+[true, true, true, true, true, true, true, true, true]$
+
+
+/* Bug #5572: "Bigfloat asech loses digits" */
+
+map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [z]))],
+                         is(block([fpprec : 40], cabs(u - v) / cabs(v)) < 1e-15))),
+    [acosh, asech, asech, asech, asech, asech],
+    [1.000001b0+1b-6*%i, 0.999999b0+1b-6*%i, 2b0-1b-6*%i, 1b0+1b-6*%i, 2b0+1b6*%i, 0.5b0-1b-6*%i]);
+[true, true, true, true, true, true]$
+
+
+/* Bug #5697: "Bigfloat coth, tan, cot and csch signal errors or lose digits near their zeros and poles" */
+
+map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [z]))],
+                         is(block([fpprec : 40], cabs(u - v) / cabs(v)) < 1e-15))),
+    [coth, coth, coth, coth, tan, tan, cot, cot, csch, csch],
+    [%i*bfloat(%pi/2), 1b-5 + %i*bfloat(%pi/2), 1b-10, -1b-20,
+     bfloat(%pi/2) + 1b-20*%i, bfloat(%pi/2) + 1b-5*%i,
+     bfloat(%pi/2) - 1b-20*%i, bfloat(%pi/2) + 1b-5*%i, 1b-10, -1b-20]);
+[true, true, true, true, true, true, true, true, true, true]$
+
+
+/* Bug #5700: "rectform of coth and cot divides by zero at their zeros" */
+
+[rectform(coth(log(%i))), rectform(coth(3*log(%i))), realpart(coth(log(%i))),
+ imagpart(coth(log(%i))), is(equal(coth(log(%i)), 0)), sign(coth(log(%i))),
+ cabs(coth(log(%i))), carg(coth(log(%i)))];
+[0, 0, 0, 0, true, zero, 0, 0]$
+
+[rectform(coth(x + %i*y)), rectform(cot(x + %i*y))];
+[sinh(2*x)/(cosh(2*x) - cos(2*y)) - %i*sin(2*y)/(cosh(2*x) - cos(2*y)),
+ sin(2*x)/(cosh(2*y) - cos(2*x)) - %i*sinh(2*y)/(cosh(2*y) - cos(2*x))]$
+
+[subst([x = 0, y = %pi/2], rectform(coth(x + %i*y))),
+ subst([x = %pi/2, y = 0], rectform(cot(x + %i*y)))];
+[0, 0]$

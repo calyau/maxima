@@ -3386,6 +3386,45 @@ true;
 false;
 
 
+/* Bug #5703: "Translated for x in e loops give other values than interpreted ones, or Lisp errors" */
+
+block([translate : false, e1, e2],
+  local(f, g),
+  f(e) := block([l : []], for u in e do l : endcons(u, l), l),
+  e1 : [f(x+1), f(a/b), f(sqrt(x)), f(-a), f(g[1](x, y)), block([inflag : true], [f(x+1), f(a/b)])],
+  translate_or_lose(f),
+  e2 : [f(x+1), f(a/b), f(sqrt(x)), f(-a), f(g[1](x, y)), block([inflag : true], [f(x+1), f(a/b)])],
+  kill(f),
+  [e1, is(e1 = e2)]);
+[[[x, 1], [a, b], [x], [a], [x, y], [[1, x], [a, 1/b]]], true]$
+
+block([translate : false, use_fast_arrays : false, k, e1, e2],
+  local(f, h),
+  f(e) := block([l : []], for u in e do l : endcons(u, l), l),
+  h[1] : 2,
+  h[3] : 4,
+  use_fast_arrays : true,
+  k[1] : 5,
+  k[2] : 6,
+  e1 : [f(rat(x^2+1)), block([inflag : true], f(rat(x^2+1))), f(h), f(k), errcatch(f(x)), errcatch(f(1.5b0))],
+  translate_or_lose(f),
+  e2 : [f(rat(x^2+1)), block([inflag : true], f(rat(x^2+1))), f(h), f(k), errcatch(f(x)), errcatch(f(1.5b0))],
+  kill(f),
+  [e1, is(e1 = e2)]);
+[[[x^2, 1], [1, x^2], [[[1], 2], [[3], 4]], [[[1], 5], [[2], 6]], [], []], true]$
+
+block([translate : false, e1, e2],
+  local(f, len),
+  f(e) := block([l : []], for u in e do l : endcons([u, atom(u)], l), l),
+  len(e) := if atom(e) then 1 else block([s : 1], for u in e do s : s + len(u), s),
+  e1 : [map(f, [x-1, x-0.5, a-b, 1/sqrt(x)]), map(len, [x-1, (x-1)/(x+1), [x-1, -a]])],
+  translate_or_lose(f, len),
+  e2 : [map(f, [x-1, x-0.5, a-b, 1/sqrt(x)]), map(len, [x-1, (x-1)/(x+1), [x-1, -a]])],
+  kill(f, len),
+  [e1, is(e1 = e2)]);
+[[[[[x, true], [-1, true]], [[x, true], [-0.5, true]], [[a, true], [-b, false]], [[1, true], [sqrt(x), false]]], [3, 7, 6]], true]$
+
+
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
 (kill (translate_or_lose, compile_or_lose), 0);
 0;

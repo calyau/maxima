@@ -38,6 +38,7 @@ Bug fixes for numbered bugs:
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
+* \#5078 carg() of tan() or tanh() of a complex number is off by %pi when the real part of the result is negative
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
@@ -177,20 +178,39 @@ Bug fixes for numbered bugs:
 * \#5560 cos(%pi*(4*m+3)^3) simplifies to 1 for integer m; it is -1
 * \#5561 acot(-0.0) signals 'argument -0.0 isn't in the domain of acot'
 * \#5566 exp(%i*x/2+%i*%pi) is not simplified
+* \#5567 cos(x+n*%pi) is not simplified for an integer n
 * \#5569 acsch( 1.0e-6*%i );
+* \#5570 Bigfloat acsc, asec, acot, acsch and acoth lose digits near 0 and infinity
+* \#5571 Bigfloat atanh(1.0b0) signals "pquotient: attempted quotient by zero."
+* \#5572 Bigfloat asech loses digits
+* \#5573 radcan(exp((sqrt(2)*sqrt(3)-sqrt(6))/y)) signals expt: undefined: 0 to a negative exponent
+* \#5574 radcan(log(sqrt(2)*sqrt(3)-sqrt(6))) returns log(0) instead of signalling an error
+* \#5575 radcan((2^x-1)/(2^(x/2)-1)) is not simplified to 2^(x/2)+1
+* \#5576 with modulus:7, radcan(2^(8*x)) returns 2^x
+* \#5577 with keepfloat:true, radcan(sqrt(0.5*x^2+x+0.5)) returns %e^(0.5*log(0.5*x^2+1.0*x+0.5))
 * \#5580 sqrt(2*(1-y)^2*(y-1)^2) simplifies to sqrt(2)
 * \#5581 with keepfloat:true, ratsimp(1.0*%i/(1.0+1.0*%i)^2) returns 1.0 instead of 0.5
 * \#5585 With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities
 * \#5588 1-d output formatting: -1/7 has redundant parentheses: -(1/7)
 * \#5593 acot(-x) and acoth(-x) are reflected even if x can be 0
+* \#5594 sign(acot(x)) is pnz even if the sign of x is known
+* \#5595 sign(acsch(x)) is pnz even if the sign of x is known
 * \#5596 csign() of a posfun is pos even for complex arguments, so abs(erfc(%i)) = erfc(%i)
+* \#5599 sign(coth(x)) is pnz even if the sign of x is known
 * \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5610 featurep(2*b, real) is true for an imaginary b
+* \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
+* \#5617 limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf
+* \#5619 limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity
+* \#5620 Some limits involving acosh are wrong
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
+* \#5626 limit() loses the side of -exp(-x) at inf
+* \#5627 limit(1/(x*(sin(x)-x)), x, 0, plus) gives inf instead of minf
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 * \#5631 Wrong definite integral of sqrt(1-cos(x)) for limits in [-%pi, 0]
@@ -212,8 +232,11 @@ Bug fixes for numbered bugs:
 * \#5652 Some integrals with algebraic:true cause "CQUOTIENT: quotient is not exact"
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
 * \#5655 linsolve returns wrong solutions for some systems with %i or radicals
+* \#5656 integrate: quotient by zero for sqrt(a+%i*a*tan(x))/(1-%i*tan(x))^(3/2)
+* \#5657 linsolve returns a wrong solution for a system with c and sqrt(c)
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
+* \#5663 jacobi_sn and jacobi_am lose many digits for larger arguments
 * \#5664 two minor tolerance test failures in tests/rtest16.mac
 * \#5665 integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap
 * \#5666 is(abs(z) >= 0) returns false when z contains %i
@@ -225,6 +248,23 @@ Bug fixes for numbered bugs:
 * \#5676 factor() returns a multiple of some polynomials with %i
 * \#5677 risch() returns wrong polylogarithms for some log integrands
 * \#5678 ratsimp() overflows the stack under some equal() facts
+* \#5679 Bigfloat atan(x) is wrong if x has a precision other than fpprec
+* \#5680 integrate(x*sec(x)^2,x,0,1) and some limits return results with gensyms
+* \#5681 integrate(tan(x),x,0,%pi/4) and limit(log(cos(x)),x,%pi/4) signal an error
+* \#5683 Merging powers of %e in a product can leave a nested product
+* \#5689 integrate(%e^x*x*log(x),x) returns a noun form
+* \#5690 integrate(1/sqrt(b*tan(f*x+e)^2+a),x) ends in a sign() error
+* \#5691 integrate() drops a part of sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
+* \#5695 fullratsimp(rat(sqrt(c-1)/(c-f(a))^(3/2)-1/(sqrt(c-1)*sqrt(c-f(a))))) loops forever
+* \#5696 sign(sqrt(2)-cos(x)) is neg
+* \#5697 trigreduce gives Lisp errors or wrong results for products like cos(%pi/8)^2*sin(%pi/8)^2
+* \#5698 Bigfloat coth, tan, cot and csch signal errors or lose digits near their zeros and poles
+* \#5699 assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it
+* \#5700 rectform of coth and cot divides by zero at their zeros
+* \#5701 rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2
+* \#5703 Translated for x in e loops give other values than interpreted ones, or Lisp errors
+* \#5704 with_stdout() to a file name is slow
+* \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -239,45 +279,50 @@ Bug fixes for unnumbered bugs:
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
 * zn_factor_generators could return different generators from identical calls
+* integrate() hung for %e^(3*%i*atan(a*x)) and returned noun forms for
+  some products of square roots of linear functions, such as
+  (b*asin(c*x)+a)/(sqrt(c*d*x+d)*sqrt(k-c*k*x))
+* integrate() asked needless sign questions, or stopped with an error
+  about a non-real argument of sign(), for some quotients with roots,
+  such as sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a)
+* integrate() gave wrong antiderivatives for some products of square
+  roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
+* integrate() left integrals in some antiderivatives with inverse
+  trigonometric functions and roots, such as asec(x)*sqrt(x^2-1)/x^4
 * integrate() returned exponential forms for some integrands with roots
   or logarithms, such as cos(sqrt(x)), and took very long for some of
   them, such as cos(b*x^(1/3)+a)/x^(7/2)
+* integrate() took very long for some integrands whose antiderivatives
+  hold erf() of complex arguments, such as exp(-x)*cos(sqrt(x))
+* integrate() stopped with a division by zero for atan2(y,0), as in
+  atan2(x,0) and sqrt(atan(a*x))/x
 * integrate() gave wrong antiderivatives for some integrands with
   parameters of unknown sign, such as sin(b*x^2) for b < 0
-* integrate() dropped the real part of some antiderivatives, as for
-  sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
+* integrate() took very long for some products of polynomials and
+  sin(b*x^2), such as (f*x+e)^2*sin(b*(d*x+c)^2+a)
+* risch() dropped parts of some antiderivatives that are not constant,
+  as for (-sec(x))^n*sqrt(sec(x)+1), where it returned 0
 * integrate() took very long for some trigonometric integrands, such
   as x/(a*sin(x)+a)^2
-* integrate() returned a noun form for %e^x*x*log(x)
-* integrate() gave wrong antiderivatives for some products of square
-  roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
-* integrate() gave wrong antiderivatives for some powers of sums of
-  trigonometric functions, such as sqrt(%i*tan(x)+1)/sec(x)^(3/2)
+* integrate() took very long for some integrands with square roots of
+  trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
+* risch() took very long for some products of polynomials and
+  trigonometric functions, such as (d*x+c)^2/(sin(x)+1)^2
+* integrate() returned complex forms for some trigonometric integrands
+  with roots, such as sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2)
+* integrate() took very long for some trigonometric integrands with
+  parameters, such as sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2)
 * integrate() gave wrong antiderivatives for 1/(z*sqrt(z^2+z+1)) and
   similar integrands when z is declared complex, and for
   1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)
-* integrate() took very long for some integrands whose antiderivatives
-  hold erf() of complex arguments, such as exp(-x)*cos(sqrt(x))
-* integrate() took very long for some integrands with square roots of
-  trigonometric functions, such as sqrt(a*cos(x+c)+a)*sec(x+c)^2
-* integrate() returned only part of some antiderivatives with square
-  roots of trigonometric functions, as for sec(x)*(sec(x)+1)*sqrt(a*sec(x)+a)
-* risch() took very long for some products of polynomials and
-  trigonometric functions, such as (d*x+c)^2/(sin(x)+1)^2
-* integrate() took very long for some trigonometric integrands with
-  parameters, such as sin(f*x+e)^3/(b*tan(f*x+e)^2+a)^(5/2)
+* integrate() returned noun forms for some hyperbolic integrands, such
+  as atanh(tanh(a+b*x))^(1/2)/x^(3/2)
 * integrate() gave wrong antiderivatives for some roots of products,
   such as %e^acoth(a*x)*sqrt(c-a^2*c*x^2) for c < 0
 * integrate() gave wrong antiderivatives for some integrands after a
   substitution, such as sqrt(csch(2*log(c*x)))/x^4 for c*x < 0
-* integrate() took very long for some products of polynomials and
-  sin(b*x^2), such as (f*x+e)^2*sin(b*(d*x+c)^2+a)
-* integrate() gave wrong antiderivatives for some roots with a negative
-  factor, such as sqrt(a*sec(x)+a) for a < 0
-* integrate() gave wrong antiderivatives for some symbolic powers of
-  asin() and its kin, such as asin(b*x+a)^n/sqrt(-b^2*x^2-2*a*b*x-a^2+1)
-* integrate() could end in an error from sign() after sign questions
-  for some trigonometric integrands, such as tan(x)/sqrt(b*tan(x)^2+a)
+* integrate() returned noun forms for some integrands with acsc(x),
+  such as acsc(x)/(x^2*(x^2-1)^(5/2))
 
 Changes in the Windows installer:
 ---------------------------------
@@ -329,3 +374,4 @@ Other changes:
   may be negative now gets the same treatment as an even root.
 * Bigfloat square roots are now much faster and more accurate.
 * General performance improvements
+* featurep now works with non-symbols for real, complex and imaginary

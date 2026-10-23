@@ -983,7 +983,7 @@
            (sub v
                 (mul '$%i u))))
          (t
-         (bcons (fpatan (cdr x))))))
+         (bcons (fpatan (cdr (bigfloatp x)))))))
       
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
 ;; arg(x+%i*y).)
@@ -2476,6 +2476,13 @@
 	(add u (mul '$%i v)))
       (fptanh x)))
 
+;; tan(z), z = x + %i*y, as -%i*tanh(%i*z), since the rectform() form of tan
+;; cancels near its poles. For real z it declines, leaving it to TANBIGFLOAT.
+(defun big-float-tan (x &optional y)
+  (when y
+    (multiple-value-bind (u v) (complex-tanh (neg y) x)
+      (add v (mul '$%i (neg u))))))
+
 ;; atanh(x) for real x, |x| <= 1.  X is a bigfloat, and a bigfloat is
 ;; returned.
 (defun fpatanh (x)
@@ -2579,6 +2586,9 @@
 	    (bcons (fptimes* beta nu)))))
 
 (defun big-float-atanh (x &optional y)
+  ;; The poles at +/-1.
+  (when (and (or (null y) (zerop1 y)) (onep1 (ftake 'mabs x)))
+    (domain-error x 'atanh))
   (if y
       (multiple-value-bind (u v) (complex-atanh x y)
 	(add u (mul '$%i v)))
@@ -2612,6 +2622,32 @@
       (multiple-value-bind (u v) (complex-acos x y)
 	(add u (mul '$%i v)))
       (fpacos x)))
+
+;; acosh(w) from w-1 = RE-W-1+%i*IM-W-1 and w+1 = RE-W+1+%i*IM-W+1, which are
+;; bigfloats, following Kahan: the real part is
+;; asinh(Re(conj(sqrt(w-1))*sqrt(w+1))), the imaginary part
+;; 2*atan2(Im(sqrt(w-1)),Re(sqrt(w+1))). A Maxima number is returned.
+(defun kahan-acosh (re-w-1 im-w-1 re-w+1 im-w+1)
+  (multiple-value-bind (re-sqrt-w-1 im-sqrt-w-1) (complex-sqrt re-w-1 im-w-1)
+    (multiple-value-bind (re-sqrt-w+1 im-sqrt-w+1) (complex-sqrt re-w+1 im-w+1)
+      (add (fpasinh (bcons (fpplus (fptimes* re-sqrt-w-1 re-sqrt-w+1)
+                                   (fptimes* im-sqrt-w-1 im-sqrt-w+1))))
+           (mul '$%i (bcons (fptimes* (intofp 2)
+                                      (fpatan2 im-sqrt-w-1 re-sqrt-w+1))))))))
+
+(defun big-float-acosh (x &optional y)
+  (let ((y (or y (bcons (intofp 0)))))
+    (kahan-acosh (sub x 1) y (add x 1) y)))
+
+;; asech(z) = acosh(1/z), from 1/z-1 = (1-z)/z and 1/z+1 = (1+z)/z. These keep
+;; the digits that rounding 1/z would lose near z = 1 and z = -1. At 0 decline.
+(defun big-float-asech (x &optional y)
+  (let* ((y (or y (bcons (intofp 0))))
+         (d (add (mul x x) (mul y y))))
+    (unless (zerop1 d)
+      (let ((im (div (neg y) d)))
+        (kahan-acosh (div (sub (mul (sub 1 x) x) (mul y y)) d) im
+                     (div (add (mul (add 1 x) x) (mul y y)) d) im)))))
 
 (defun complex-log (x y)
   (let* ((x (cdr (bigfloatp x)))

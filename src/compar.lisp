@@ -912,10 +912,17 @@
 	(t (or (has-int-symbols (car e))
 	       (has-int-symbols (cdr e))))))
 
+;; The limit of A as EPS, which is '$ZEROA or '$ZEROB, goes to 0 from direction
+;; DIR. limit() rejects '$ZEROA and '$ZEROB as its variable, since they're
+;; constants, so use a fresh variable.
+(defun infinitesimal-limit (a eps dir)
+  (let ((v (gensym)))
+    (maxima-substitute eps v ($limit (maxima-substitute v eps a) v 0 dir))))
+
 ;;; Do substitutions for special symbols.
 (defun nmr (a)
-  (unless (free a '$zeroa) (setq a ($limit a '$zeroa 0 '$plus)))
-  (unless (free a '$zerob) (setq a ($limit a '$zerob 0 '$minus)))
+  (unless (free a '$zeroa) (setq a (infinitesimal-limit a '$zeroa '$plus)))
+  (unless (free a '$zerob) (setq a (infinitesimal-limit a '$zerob '$minus)))
   (unless (free a 'z**) (setq a ($limit a 'z** 0 '$plus)))
   (unless (free a '*z*) (setq a ($limit a '*z* 0 '$plus)))
   (unless (free a 'epsilon) (setq a ($limit a 'epsilon 0 '$plus)))
@@ -1404,19 +1411,25 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (t (imag-err x)))) ;throw error for sign of complex
       (t nil)))) ;x isn't a float or a complex float, return nil
 
+;; RISPLIT binds domain to complex for its simplifications, but the signs
+;; asked for there are those of real values, under the domain outside of it.
 (defun sign1 (x)
+  (let (($domain (or *risplit-domain* $domain)))
+    (sign1-in-domain x)))
+
+(defun sign1-in-domain (x)
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
 
   (let ((sgn (sign-complex-float x)))
    (when sgn 
     (setq sign sgn)
-     (return-from sign1 sgn))
+     (return-from sign1-in-domain sgn))
 
   (when (and *complexsign* (atom x) (eq x '$infinity))
     ;; In Complex Mode the sign of infinity is complex.
     (when *debug-compar* (format t "~& in sign1 detect $infinity.~%"))
-    (return-from sign1 '$complex))
+    (return-from sign1-in-domain '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror (intl:gettext "sign: sign of ~:M is undefined.") x)))
   (prog (dum exp)
@@ -1488,18 +1501,22 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list 'mabs 'sign-mabs)
 	 (list '$min #'(lambda (x) (sign-minmax (caar x) (cdr x))))
 	 (list '$max #'(lambda (x) (sign-minmax (caar x) (cdr x))))
-	 (list '%csc #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
-	 (list '%csch #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
+	 (list '%csc 'sign-csc/sec/csch/coth)
+     (list '%sec 'sign-csc/sec/csch/coth)
+	 (list '%csch 'sign-csc/sec/csch/coth)
+	 (list '%coth 'sign-csc/sec/csch/coth)
 	 (list '%acos 'sign-asin/acos/atanh)
 	 (list '%asin 'sign-asin/acos/atanh)
 	 (list '%atan 'sign-atan/asinh)
+	 (list '%acot 'sign-acot)
 	 (list '%asinh 'sign-atan/asinh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
-	 (list '%asec 'sign-asec/acsc/asech/acoth)
-	 (list '%acsc 'sign-asec/acsc/asech/acoth)
-	 (list '%asech 'sign-asec/acsc/asech/acoth)
-	 (list '%acoth 'sign-asec/acsc/asech/acoth)
+	 (list '%asec 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsc 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acsch 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%asech 'sign-asec/acsc/asech/acsch/acoth)
+	 (list '%acoth 'sign-asec/acsc/asech/acsch/acoth)
 	 (list '%tan 'sign-tan/cot)
 	 (list '%cot 'sign-tan/cot)
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
@@ -1509,11 +1526,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
 
 ;; The REAL-RANGE property of a function that is real for every real
-;; argument: The bounds of its values as a list (LO HI), each end NIL for no
-;; bound, else (BOUND INCLUSIVE-P), where BOUND is in simplified form and
-;; INCLUSIVE-P indicates whether the bound can actually be attained.
+;; argument, and for carg for every argument: The bounds of its values as a
+;; list (LO HI), each end NIL for no bound, else (BOUND INCLUSIVE-P), where
+;; BOUND is in simplified form and INCLUSIVE-P indicates whether the bound can
+;; actually be attained.
 ;; A bound is not required to be tight, only true. SIGNDIFF-SPECIAL reads it to
-;; compare f(x)-c with zero, through SIGN-FROM-RANGE.
+;; compare f(x)-c with zero, through SIGN-FROM-RANGE, and SIGN-FROM-SUM-RANGE
+;; to bound a sum of such values.
 (mapc #'(lambda (s) (putprop (first s) (second s) 'real-range))
   '((%sin ((-1 t) (1 t)))
     (%cos ((-1 t) (1 t)))
@@ -1524,7 +1543,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (%erfc ((0 nil) (2 nil)))
     (%tanh ((-1 nil) (1 nil)))
     (%atan ((((mtimes simp) ((rat simp) -1 2) $%pi) nil)
-            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))))
+            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))
+    (%atan2 ((((mtimes simp) -1 $%pi) nil) ($%pi t)))
+    (%carg ((((mtimes simp) -1 $%pi) nil) ($%pi t)))))
 
 ;; The sign of f-C for a function f whose values lie in RANGE, see the
 ;; REAL-RANGE property, or NIL when the range does not decide it.
@@ -1538,6 +1559,51 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (case (sign* (sub c (car hi)))
                ($pos '$neg)
                (($zero $pz) (if (cadr hi) '$nz '$neg)))))))
+
+;; The REAL-RANGE of E when E calls a function with that property and the range
+;; applies: carg is real for every argument, the others for real arguments.
+(defun real-range-of (e)
+  (let ((range (and (not (atom e)) (get (caar e) 'real-range))))
+    (and range
+         (or (eq (caar e) '%carg)
+             (every #'(lambda (a) (zerop1 ($imagpart a))) (cdr e)))
+         range)))
+
+;; If each term of the sum X is a real constant or a number times a call with
+;; a REAL-RANGE, and the bounds these give the sum decide its sign, set SIGN
+;; and return T, as SIGNSUM does. Otherwise return NIL.
+(defun sign-from-sum-range (x)
+  (let ((lo 0) (lo-incl t) (hi 0) (hi-incl t) (ranged nil))
+    (dolist (term (cdr x))
+      (let* ((k (if (and (mtimesp term) (mnump (cadr term)) (null (cdddr term)))
+                    (cadr term)
+                    1))
+             (range (real-range-of (if (eql k 1) term (caddr term)))))
+        (cond (range
+               ;; A negative factor swaps the ends of the range.
+               (destructuring-bind (tlo thi) (if (mnegp k) (reverse range) range)
+                 (setq ranged t
+                       lo (and lo tlo (add lo (mul k (car tlo))))
+                       lo-incl (and lo-incl (cadr tlo))
+                       hi (and hi thi (add hi (mul k (car thi))))
+                       hi-incl (and hi-incl (cadr thi)))))
+              ((and (constp term) (zerop1 ($imagpart term)))
+               (setq lo (and lo (add lo term))
+                     hi (and hi (add hi term))))
+              (t
+               (return-from sign-from-sum-range nil)))))
+    (let ((s (and ranged
+                  (or (and lo
+                           (case (sign* lo)
+                             ($pos '$pos)
+                             ($zero (if lo-incl '$pz '$pos))))
+                      (and hi
+                           (case (sign* hi)
+                             ($neg '$neg)
+                             ($zero (if hi-incl '$nz '$neg))))))))
+      (when s
+        (setq sign s minus nil odds (list x) evens nil)
+        t))))
 
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
@@ -1654,6 +1720,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((signdiff x))
 	((prog2 (setq s sign e evens o odds m minus) nil))
 	((signsum x))
+	((sign-from-sum-range x))
 	((prog2 (cond ((strongp s sign))
 		      (t (setq s sign e evens o odds m minus)))
 	     nil))
@@ -1715,6 +1782,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defvar *in-expt-of-base* nil
   "T inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
 
+(defvar *root-rewrites* nil
+  "The pairs (Q^R . S) for which SIGNDIFF-SPECIAL decides the sign of Q^R - S
+  by that of Q - S^(1/R). That can lead back to the same pair, which then must
+  not be rewritten again.")
+
 (defun expt-of-base (expr q)
   "If EXPR is a power of base Q (or EXPR = Q, then the exponent is implicitly 1),
   returns the exponent (1 or k). Otherwise returns NIL.
@@ -1748,8 +1820,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; That same-base case is handled by the exponent-comparison rule further below.
 			(not *in-expt-of-base*) ; prevent endless recursion
 			(not (expt-of-base xrhs (cadr xlhs)))
-			(eq (sign* (sub (cadr xlhs)
-					(power xrhs (div 1 (caddr xlhs)))))
+			(notany #'(lambda (p)
+				    (and (alike1 (car p) xlhs)
+					 (alike1 (cdr p) xrhs)))
+				*root-rewrites*)
+			(eq (let ((*root-rewrites*
+				    (acons xlhs xrhs *root-rewrites*)))
+			      (sign* (sub (cadr xlhs)
+					  (power xrhs (div 1 (caddr xlhs))))))
 			    '$pos))))
 	      (and (mexptp xlhs) (mexptp xrhs)
 		   ;; Q^R - Q^T, Q>1, (R-T) > 0, with real R and T
@@ -1767,14 +1845,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (flet ((ranged-p (e)
              (and (not (atom e))
                   (or (get (caar e) 'real-range) (eq (caar e) 'mabs)))))
-      (when (and (ranged-p xrhs) (not (ranged-p xlhs)))
+      (when (and (null sgn) (ranged-p xrhs) (not (ranged-p xlhs)))
         (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign))))
 
     ;; sign(f(x) - c) for a function f whose REAL-RANGE property gives the
     ;; bounds of its values.
-    (when (and (null sgn) (not (atom xlhs)) (get (caar xlhs) 'real-range)
-               (zerop1 ($imagpart (cadr xlhs))))
-      (setq sgn (sign-from-range (get (caar xlhs) 'real-range) xrhs)))
+    (let ((range (and (null sgn) (real-range-of xlhs))))
+      (when range
+        (setq sgn (sign-from-range range xrhs))))
 
     ;; signum takes no value strictly between -1 and 1 but 0, so
     ;; signum(x) - c is nonzero for a c known to lie there and to be nonzero.
@@ -2291,13 +2369,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	(t ; x >= 1
 	 (setq sign '$pz))))
 
-;; The functions asec, acsc, asech and acoth are reciprocal argument forms of
-;; functions that already have a sign function: asec(x) = acos(1/x),
-;; acsc(x) = asin(1/x), asech(x) = acosh(1/x) and acoth(x) = atanh(1/x).
+;; The functions asec, acsc, asech, acoth and acsch are reciprocal argument
+;; forms of functions whose sign SIGN already knows: asec(x) = acos(1/x),
+;; acsc(x) = asin(1/x), asech(x) = acosh(1/x), acoth(x) = atanh(1/x) and
+;; acsch(x) = asinh(1/x).
 ;;
-(defun sign-asec/acsc/asech/acoth (x)
+(defun sign-asec/acsc/asech/acsch/acoth (x)
   (if (eq '$zero (sign* (cadr x)))
-    ;; Of these four, acoth(0) = -%i*%pi/2 is the only one defined at zero.
+    ;; Of these five, acoth(0) = -%i*%pi/2 is the only one defined at zero.
     ;; The others should have been caught by the simplifier already before
     ;; reaching this code, but better safe than sorry. At zero, there's a
     ;; division by zero in their logarithmic form, so use DBZS-ERR.
@@ -2311,6 +2390,24 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
       (sign `((,f) ,(inv (cadr x)))))))
+
+;; acot(x) = atan(1/x) for x # 0, and acot(0) = %pi/2. So for real x, acot(x)
+;; is positive for x >= 0, negative for x < 0, and never zero.
+(defun sign-acot (x)
+  (let ((arg (cadr x)) arg-sign)
+    (sign arg)
+    (setq arg-sign sign)
+    (setq sign (case arg-sign
+                 (($pos $zero $pz) '$pos)
+                 ($neg '$neg)
+                 (($pn $nz $pnz) '$pn)
+                 (($complex $imaginary) '$complex)
+                 (t arg-sign))
+          minus nil
+          evens nil
+          ;; For $ASKSIGN: a nonzero ARG has the sign of acot(ARG).
+          odds (when (eq sign '$pn)
+                 (ncons (if (eq arg-sign '$pn) arg x))))))
 
 ;; atan(%i*y) = %i*atanh(y) and asinh(%i*y) = %i*asin(y) are imaginary only
 ;; for -1 <= y <= 1, so the rule of SIGN-ODDFUN that takes the sign of the
@@ -2574,6 +2671,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (unless (eq sign '$zero)
            (sign-any x))))))
 
+;; The sign function of csc, sec, csch and coth, each the reciprocal of the
+;; function its RECIP property names: sign(f(x)) = sign(1/g(x)). It does not
+;; suit cot, which is zero where tan has poles.
+(defun sign-csc/sec/csch/coth (x)
+  (sign (inv (ftake (get (caar x) 'recip) (cadr x)))))
+
 (defun imag-err (x)
   (if sign-imag-errp
       (merror (intl:gettext "sign: argument cannot be non-real; found ~M") x)
@@ -2632,7 +2735,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         ((eq ind '$real)
          (if (atom e)
              (or (numberp e) (kindp e '$real) (numberp (numer e)))
-             (free ($rectform e) '$%i)))
+             (zerop1 ($imagpart e))))
+        ((eq ind '$complex)
+         ;; "complex" in the sense of "has an imaginary part that's not
+         ;; literally 0", not in the strict mathematical sense where every real
+         ;; number is also a complex number - that would not be very useful.
+         (if (symbolp e)
+           (kindp e '$complex)
+           (not (zerop1 ($imagpart e)))))
+        ((eq ind '$imaginary)
+         ;; "imaginary" in the sense of "real part literally 0 and imaginary
+         ;; part not literally 0", so zero itself is not considered imaginary.
+         (if (symbolp e)
+           (kindp e '$imaginary)
+           (destructuring-let (((re . im) (trisplit e)))
+             (and (zerop1 re) (not (zerop1 im))))))
         ((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer
@@ -3347,6 +3464,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ;; Remember that they were swapped to swap them back afterwards.
       (when (equal lhs 0)
         (setq lhs rhs rhs 0 swapped t))
+      ;; If LHS is a lone power that REWRITE-MEXPT-RETAINING-SIGN changes,
+      ;; split the result from scratch, so that (x+1)^3>0 becomes x>-1, as
+      ;; x+1>0 does, and 0>(x+1)^3 becomes -1>x, as 0>x+1 does.
+      (when (and (equal rhs 0) (mexptp lhs))
+        (let ((new (rewrite-mexpt-retaining-sign lhs)))
+          (unless (eq new lhs)
+            (return-from compsplt (compsplt (if swapped (neg new) new))))))
       (when (equal rhs 0)
 	    ;; Rewrite mexpts in factors so that e.g. x^3/y>0 becomes x*y>0. */
 	    (setq lhs

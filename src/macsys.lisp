@@ -559,17 +559,18 @@
         result)
       (let*
         ((fname (namestring (maxima-string output)))
-         (filespec
+         (if-exists
            (if (or (eq $file_output_append '$true)
                    (eq $file_output_append t))
-             `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
-             `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
-        (eval
-          `(with-open-file ,filespec
-             (let ((body ',(cdr arg)) result)
-               (dolist (v body)
-                 (setq result (meval v)))
-               result)))))))
+             :append
+             :supersede)))
+        (with-open-file (*standard-output* fname :direction :output
+                                           :if-exists if-exists
+                                           :if-does-not-exist :create)
+          (let ((body (cdr arg)) result)
+            (dolist (v body)
+              (setq result (meval v)))
+            result))))))
 
 (defmfun $sconcat (&rest x)
   (let ((ans "") )

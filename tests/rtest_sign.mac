@@ -3136,6 +3136,90 @@ block([r],
 sqrt((2*a*b*e*x+(a^2-b^2)*e)/(a*b))/sqrt(2)$
 
 
+/* Bug #5594: "sign(acot(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, c],
+  local(x, y, z, u, q, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0)),
+  declare(c, complex),
+  [sign(acot(x)), sign(acot(y)), sign(acot(z)), sign(acot(u)), sign(acot(q)), sign(acot(q^2)), csign(acot(c))]);
+[pos, pos, neg, pn, pn, pos, complex]$
+
+
+/* Bug #5595: "sign(acsch(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, c],
+  local(x, y, z, u, q, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0)),
+  declare(c, complex),
+  [sign(acsch(y)), sign(acsch(z)), sign(acsch(u)), sign(acsch(q)), csign(acsch(c)), errcatch(sign(acsch(x)))]);
+[pos, neg, pn, pn, complex, []]$
+
+
+/* Bug #5599: "sign(coth(x)) is pnz even if the sign of x is known" */
+
+block([x, y, z, u, q, w, b, c],
+  local(x, y, z, u, q, w, b, c),
+  assume(equal(x, 0), y > 0, z < 0, notequal(u, 0), q > 0, q < 1, w > 2, w < 4),
+  declare(b, imaginary, c, complex),
+  [[sign(coth(y)), sign(coth(z)), sign(coth(u)), sign(coth(r)), errcatch(sign(coth(x))), csign(coth(b)), csign(coth(c))],
+   [sign(sec(q)), sign(sec(-q)), sign(sec(w)), sign(sec(r)), csign(sec(c))],
+   [sign(csc(q)), sign(csch(z))]]);
+[[pos, neg, pn, pn, [], imaginary, complex], [pos, pos, neg, pn, complex], [pos, neg]]$
+
+
+/* Bug #5696: "sign(sqrt(2)-cos(x)) is neg" */
+
+sign(sqrt(2)-cos(x));
+pos$
+
+
+/* Bug #5699: "assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it" */
+
+block([x],
+  local(x),
+  [assume((x+1)^3 > 0), facts(), is(x+1 > 0), is(x > -1), sign(x+1), forget(x+1 > 0), facts()]);
+[[x > -1], [x > -1], true, true, pos, [x > -1], []]$
+
+block([a, b, c, d, h, k],
+  local(a, b, c, d, h, k),
+  [assume(1/(a-1) > 0, (b-c)^3 > 0, (1-d)^(1/3) < 0, equal((h+1)^5, 0), notequal((k-2)^3, 0)),
+   [is(a > 1), is(b > c), is(d > 1), is(equal(h, -1)), is(notequal(k, 2))],
+   forget(a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)),
+   facts()]);
+[[a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], [true, true, true, true, true],
+ [a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], []]$
+
+block([u],
+  local(u),
+  [asksign(1/(u-1)), sign(u-1), sign(u)]), ask_hide_prompt; pos;
+[pos, pos, pos]$
+
+
+/* Bug #5709: "sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false" */
+
+block([radexpand : false],
+  local(x, y),
+  assume(x > 9, y > 0),
+  [sign(sqrt(2*y) - y), sign(sqrt(16*y) - y), sign((2*y)^(1/3) - y),
+   is(sqrt(2*y) > y), sign(sqrt(sqrt(x) + 1) - 2)]);
+[pnz, pnz, pnz, unknown, pos]$
+
+
+/* Ranges of carg and atan2, and bounds of sums of terms with a known range.
+   Needed by the fix for bug #5217: "rectform(sqrt(x*y)) under domain : complex" */
+
+block([z1, z2],
+ local(z1, z2),
+ declare([z1, z2], complex),
+ [sign(carg(z1) - %pi), sign(carg(z1) + %pi), sign(carg(z1)/2 + carg(z2)/2 - %pi),
+  sign(carg(z1) + carg(z2)), sign(atan2(y, x) + %pi), sign(atan2(y, x)/2 - %pi/2),
+  sign(atan2(y, z1) - 4)]);
+[nz, pos, nz, pnz, pos, nz, pnz]$
+
+[sign(atan(x) + atan(y) + 4), sign(sin(x) + cos(y) - 3), sign(2 - sin(x) - cos(y))];
+[pos, neg, pz]$
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

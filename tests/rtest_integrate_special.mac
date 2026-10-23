@@ -107,7 +107,7 @@ integrate(expintegral_ei(x^(-1/2)),x);
 2*(expintegral_ei(1/sqrt(x))*x/2+gamma_incomplete(-2,-1/sqrt(x))/2);
 
 integrate(expintegral_ei(x^(-3/4)),x);
-4*(expintegral_ei(1/x^(3/4))*x/4+gamma_incomplete(-4/3,-1/x^(3/4))/4);
+4*(gamma_incomplete(-4/3,-1/x^(3/4))*(-1/x^(3/4))^(4/3)*x/4+expintegral_ei(1/x^(3/4))*x/4);
 
 integrate(expintegral_ei((x+1)^(1/2)),x);
 2*((x+1)*expintegral_ei(sqrt(x+1))/2-(sqrt(x+1)-1)*%e^sqrt(x+1)/2);

@@ -28,8 +28,7 @@
 (defvar *in-risch-p* nil)
 
 (defvar *integrate-sqrt-pair* nil
-  "T while INTEGRATE-SQRT-PAIR integrates, COEF while integration by parts
-  integrates its first factor.")
+  "COEF while integration by parts integrates its first factor.")
 
 (defvar *risch-use-triginv-all* nil
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
@@ -312,12 +311,16 @@
          ((mplusp *exp*)
           (return (mul2* const (integrate1 (cdr *exp*) var2))))
            
-         ;; Convert atan2(a,b) to atan(a/b) and try again.
+         ;; Convert atan2(a,b) to atan(a/b), or for b = 0 to signum(a)*%pi/2,
+         ;; and try again.
          ((setq w (isinop *exp* '%atan2))
           (setq *exp*
-                (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
-                                   w
-                                   *exp*))
+                (maxima-substitute
+                 (if (zerop1 (caddr w))
+                     (mul (take '(%signum) (cadr w)) '$%pi 1//2)
+                     (take '(%atan) (div (cadr w) (caddr w))))
+                 w
+                 *exp*))
           (return (mul* const
                         (integrator *exp* var2 stack))))
            
@@ -388,7 +391,7 @@
          (format t "arcpart = ~A~%" arcpart)
          (format t "coef =~%")
          (maxima-display coef))
-       (when (and arcpart (setq y (integrate-sqrt-pair integrand var2 t)))
+       (when (and arcpart (setq y (integrate-sqrt-pair integrand var2 t stack)))
          (return (mul* const y)))
        (cond ((and (not (null arcpart))
 		   (do  ((stacklist stack (cdr stacklist)))
@@ -444,7 +447,7 @@
 				  (setq y (powerlist *exp* var2)))
 			     y)
 			    ((unless arcpart
-			       (integrate-sqrt-pair integrand var2 nil)))
+			       (integrate-sqrt-pair integrand var2 nil stack)))
 			    ((and (not *in-risch-p*) ; Not called from rischint
 			          (setq y
                         ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
@@ -471,17 +474,24 @@
 				 result
 				 (list '(%integrate) *exp* var2)))))))))))
 
-;; Integrate EXPR with square roots of radicands r1, r2 and maybe r3 rational
-;; in VAR2 with y*m^k in place of r2^(k/2), where m = s*q^(1/2)/r1^(1/2),
-;; q = r1*r2/s^2, and s = r3^(1/2) if q is then free of VAR2, s = r1 if q is
-;; then a polynomial, else s = 1. As y = r2^(1/2)/m and y^2 = 1, y is 1 or -1
-;; and constant wherever the roots are continuous, and y = 1 if s = r1 and
-;; q > 0. Otherwise take EXPR only if it is odd or even in y, and integrate
-;; it with y = 1. EARLY, before integration by parts, leaves s = 1 to it and
-;; avoids RISCHINT. For the factor that integration by parts integrates
-;; first, take only algebraic results, as others lead it to integrals it
-;; cannot do. Not within RISCHINT, which can split radicals wrongly.
-(defun integrate-sqrt-pair (expr var2 early)
+;; Integrate EXPR with square roots of radicands rational in VAR2, of which
+;; r1, r2 and maybe r3 are the first, with y*m^k in place of r2^(k/2), where
+;; m = s*q^(1/2)/r1^(1/2), q = r1*r2/s^2, and s = r3^(1/2) if q is then free
+;; of VAR2, s = r1 if q is then a polynomial, else s = 1. As y = r2^(1/2)/m
+;; and y^2 = 1, y is 1 or -1 and constant wherever the roots are continuous,
+;; and y = 1 if s = r1 and q > 0. Otherwise take EXPR only if it is odd or
+;; even in y, and integrate it with y = 1, passing on the STACK of INTEGRATOR,
+;; which stops integration by parts that comes back to an integral it is
+;; doing. EARLY, before integration by parts, leaves s = 1 to it and avoids
+;; RISCHINT. For the factor that integration by parts integrates first, take
+;; only algebraic results, as others lead it to integrals it cannot do. Not
+;; within RISCHINT, which can split radicals wrongly. RISCHINT starts with
+;; RADCAN1, which can take the single root apart otherwise than the roots it
+;; replaces, as sqrt((1-x)*(2-x)) into sqrt(x-2)*sqrt(x-1), which is -1 times
+;; that root where x < 1, while it keeps sqrt(1-x)*sqrt(2-x). If it so takes
+;; m apart otherwise than r2^(1/2), integrate with *BRANCH-VAR-ROOTS* set, so
+;; that RISCHINT makes up for it.
+(defun integrate-sqrt-pair (expr var2 early stack)
   (let ((y (gensym)) rs r1 r2 r3 n s q m res one)
     (labels ((roots (e)
                (cond ((atom e))
@@ -503,8 +513,7 @@
                         (every #'alg (cdr e))))))
       (roots expr)
       (setq r1 (first rs) r2 (second rs) r3 (third rs) n (length rs) rs nil)
-      (when (and r2 (< n 4) (not implicit-real)
-                 (not (eq *integrate-sqrt-pair* t)))
+      (when (and r2 (not implicit-real))
         (setq s (or (and r3
                          (loop repeat 3
                                thereis (and (freevar2 (sratsimp
@@ -525,16 +534,20 @@
                            '$pos)))
         (roots (setq expr (sub expr)))
         (and (< (length rs) n)
-             (or (not early) (not (eql s 1)))
+             (not (and early (eql s 1)))
              (or one
                  (let ((e1 (sratsimp (maxima-substitute 1 y expr)))
                        (e2 (sratsimp (maxima-substitute -1 y expr))))
-                   (cond ((alike1 e2 (sratsimp (neg e1))) t)
-                         ((alike1 e2 e1) (setq one t)))))
-             (setq res (let ((*integrate-sqrt-pair* t)
+                   (cond ((zerop1 (sratsimp (add e1 e2))) t)
+                         ((zerop1 (sratsimp (add e1 (neg e2)))) (setq one t)))))
+             (setq res (let ((*branch-var-roots*
+                               (or *branch-var-roots*
+                                   (not (alike1 (radcan1 m var2)
+                                                (radcan1 (power r2 1//2)
+                                                         var2)))))
                              (*in-risch-p* (or early *in-risch-p*))
                              ($errormsg nil) (e (maxima-substitute 1 y expr)))
-                         (car (errcatch (integrator e var2)))))
+                         (car (errcatch (integrator e var2 stack)))))
              (not (isinop res '%integrate))
              (or (alg res) (not (eq *integrate-sqrt-pair* 'coef)))
              (if one res (mul (div (power r2 1//2) m) res)))))))
@@ -1666,7 +1679,39 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *yz* norisch)
+  ;; Below, sec, csc and cot become 1/cos, 1/sin and 1/tan, and the
+  ;; simplifier writes a power sec(u)^r as cos(u)^(-r). If r has an even
+  ;; denominator, that differs from sec(u)^r by the factor
+  ;; k = sec(u)^f*cos(u)^f, f = r-floor(r), which is 1 where cos(u) > 0,
+  ;; and -1 where cos(u) < 0 if f = 1/2. So for such a factor of EXPR,
+  ;; integrate with cos(u)^(-r) and multiply by k, which is constant where
+  ;; cos(u) has no zero. If that stops with an error, as for
+  ;; cos(u)^(-3/2)*(cos(u)+1)^(-3), go on with EXPR.
+  (let ((k 1))
+    (flet ((recip (e)
+             (let ((g (and (mexptp e) (ratnump (caddr e))
+                           (evenp (caddr (caddr e))) (not (atom (cadr e)))
+                           (cdr (assoc (caar (cadr e))
+                                       '((%sec . %cos) (%csc . %sin)
+                                         (%cot . %tan)))))))
+               (if (null g)
+                   e
+                   (let* ((r (caddr e))
+                          (f (div (mod (cadr r) (caddr r)) (caddr r)))
+                          (h (ftake g (cadr (cadr e)))))
+                     (setq k (mul k (power (cadr e) f) (power h f)))
+                     (power h (neg r)))))))
+      (let ((new (if (mtimesp expr)
+                     (muln (mapcar #'recip (cdr expr)) t)
+                     (recip expr))))
+        (unless (eql k 1)
+          (let ((res (let (($errormsg nil)) (errcatch (trigint new var2)))))
+            (when res
+              (return-from trigint
+                (if (isinop (car res) '%integrate)
+                    (car res)
+                    (mul k (car res))))))))))
+  (prog (y repl y1 y2 *yy* z m n *yz*)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1808,10 +1853,6 @@
                    '((mtimes) 2 ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
      (setq repl (subvar '((mquotient) ((%sin) x) ((mplus) 1 ((%cos) x)))
                         var2))
-     ;; RISCHINT can take a power of a complex rational function of x apart
-     ;; into powers with branches that do not fit EXPR. Leave such Y to
-     ;; RISCHINT on EXPR.
-     (setq norisch (and (not (freeof '$%i y)) (not (rat8 y 'x))))
      (go get2)
   get3
      (setq y (list '(mtimes) -1 *yy* *yz*))
@@ -1837,8 +1878,7 @@
        ;; Do not integrate for the global variable VAR, but substitute it.
        ;; This way possible assumptions on VAR are no longer present. The
        ;; algorithm of DEFINT depends on this behavior. See Bug 3085498.
-       (let (($triginverses '$all) (newvar (make-new-var "trigint" repl))
-             (*in-risch-p* (or norisch *in-risch-p*)))
+       (let (($triginverses '$all) (newvar (make-new-var "trigint" repl)))
          (substint repl
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)

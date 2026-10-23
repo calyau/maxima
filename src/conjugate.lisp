@@ -263,6 +263,9 @@
           ;((on-negative-real-axisp x) ;conjugate(x^p) = exp(-%i %pi conjugate(p)) (-x)^p 
           ;    (setq p (take '($conjugate) p)) 
           ;    (mul (power '$%e (mul -1 '$%i '$%pi p)) (power (mul -1 x) p)))
+          ((and (odd-root-exponent-p p) (eq t (meqp (cdr (trisplit x)) 0)))
+           ;; The real root of a real X, see ODD-ROOT-EXPONENT-P.
+           (power x p))
           (t
            (list '($conjugate simp) (power x p))))))
 

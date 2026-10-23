@@ -23,6 +23,24 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
+;; The value of domain outside of RISPLIT, which binds domain to complex.
+(defvar *risplit-domain* nil)
+
+;; True if a real base raised to POW is the real root: with domain : real, the
+;; simplifier and SIGN take the real root for a rational POW with an odd
+;; denominator, as in (-8)^(1/3) = -2. SIGN-MEXPT does so for a symbolic POW
+;; too, as 1/(2*n+1) for an integer n, if its numerator is an integer.
+(defun odd-root-exponent-p (pow)
+  (and (not (eq (or *risplit-domain* $domain) '$complex))
+       (cond ((ratnump pow) (oddp (caddr pow)))
+             ((mnump pow) nil)
+             (t
+              (multiple-value-bind (num denom)
+                  (with-default-quotient-dispflags (num-denom-split pow))
+                (and (not (eql denom 1))
+                     (eq (evod denom) '$odd)
+                     (or (evod num) (maxima-integerp num))))))))
+
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression
@@ -233,6 +251,10 @@
       ((fixnump pow)
        (risplit-expt-fixnum-pow sp pow))
 
+      ((and (=0 (cdr sp)) (odd-root-exponent-p pow))
+       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P.
+       (cons l 0))
+
       ((and (ratnump pow)
             (fixnump (cadr pow))
             (not (< (cadr pow) (- $maxnegex)))
@@ -262,6 +284,10 @@
   ;; below. Instead, we calculate it when it's needed (a maximum of once).
   (destructuring-bind (real . imag) sp
     (cond
+      ((and (< power 0) (zerop1 real) (zerop1 imag))
+       ;; Signal the simplifier's error for 0 to a negative power.
+       (cons (power real power) 0))
+
       ((= power -1)
        ;; Handle the case of 1/(x+%i*y) carefully.  This
        ;; is needed if x and y are (Lisp) numbers to
@@ -304,16 +330,8 @@
                   (powers r alpha)))
         (post (add (mul beta (take '(%log) r))
                    (mul alpha theta))))
-    (if (and (zerop1 beta) (not (atom theta)) (eq (caar theta) '%atan2)
-             (zerop1 (caddr theta)))
-        ;; THETA = atan2(y,0) is signum(y)*%pi/2. Use the values of the
-        ;; cosine and sine, as RATSIMP can take very long for expressions
-        ;; with the cosine and sine of ALPHA*THETA.
-        (let ((post (mul alpha '$%pi 1//2)))
-          (cons (mul pre (take '(%cos) post))
-                (mul pre (take '(%signum) (cadr theta)) (take '(%sin) post))))
-        (cons (mul pre (take '(%cos) post))
-              (mul pre (take '(%sin) post))))))
+    (cons (mul pre (take '(%cos) post))
+          (mul pre (take '(%sin) post)))))
 
 ;; Split BASE^POW into real and imaginary parts. SP is (RISPLIT BASE) and is
 ;; assumed to be a complex number, POW is assumed to be a float or a bigfloat.
@@ -429,7 +447,8 @@
 ;;; (<Real part> . <imaginary part>).
 
 (defun risplit (l)
-  (let (($domain '$complex) ($m1pbranch t) $logarc op)
+  (let ((*risplit-domain* (or *risplit-domain* $domain))
+        ($domain '$complex) ($m1pbranch t) $logarc op)
     (cond ((atom l)
            ;; Symbols are assumed to represent real values, unless they have
            ;; been declared to be complex. If they have been declared to be both
@@ -490,6 +509,20 @@
 	  ((and (member (caar l) '(%atan %csc %sec %cot %csch %sech %coth) :test #'eq)
 		(=0 (cdr (risplit (cadr l)))))
 	   (cons l 0))
+          ((member (caar l) '(%cot %coth))
+           ;; Split cot(z) and coth(z) directly. Splitting 1/tan(z) and
+           ;; 1/tanh(z) divides by zero where cot(z) or coth(z) is zero.
+           (let* ((sp (risplit (cadr l)))
+                  (2rl (mul (car sp) 2))
+                  (2im (mul (cdr sp) 2))
+                  (denom (if (eq (caar l) '%cot)
+                             (sub (take '(%cosh) 2im) (take '(%cos) 2rl))
+                             (sub (take '(%cosh) 2rl) (take '(%cos) 2im)))))
+             (if (eq (caar l) '%cot)
+                 (cons (div (take '(%sin) 2rl) denom)
+                       (neg (div (take '(%sinh) 2im) denom)))
+                 (cons (div (take '(%sinh) 2rl) denom)
+                       (neg (div (take '(%sin) 2im) denom))))))
           ((and (eq (caar l) '%atan2)
                 ;; SRATSIMP, since the real parts that the conjugate formulas
                 ;; below give can leave an imaginary part like
@@ -750,21 +783,6 @@
 
 
 ;; absarg
-;; The argument ARG of a product, which is the sum of the arguments of the
-;; factors, can lie outside (-%pi, %pi], as %pi/2+atan2(0,b) does for %i*b with
-;; b < 0, and RISPLIT then takes the other branch of a root such as sqrt(%i*b).
-;; Inside TRIGIN1 (RISCHP), reduce it to the principal argument if it is free of
-;; the variable and has an ATAN2 (the sign of a parameter) or a CARG term.
-;; Elsewhere the sum keeps roots continuous in the variable, as definite
-;; integration needs. The atan2 simplifier reduces the angle only if
-;; $TRIGINVERSES is not $ALL, which the integrator can bind.
-(defun absarg-principal (arg absflag)
-  (if (or absflag (not rischp) (not (mplusp arg)) (not (freeof rischp arg))
-          (and (freeof '%atan2 arg) (freeof '%carg arg)))
-      arg
-      (let (($triginverses t))
-        (genatan (take '(%sin) arg) (take '(%cos) arg)))))
-
 ;; returns pair (abs . arg)
 ;; if absflag is true, arg result is not guaranteed to be correct
 
@@ -778,6 +796,45 @@
 ;; techniques, however, are not perfect.
 
 (defmacro half () ''((rat simp) 1 2))  ;1/2
+
+;; Return the argument of a product in (-%pi, %pi], given ARGS, the arguments
+;; of its factors. Multiples of %pi and the arguments atan2(0, u) of real
+;; factors u combine into c*%pi + s*atan2(0, u1*u2*...), with -1 < c <= 1, s = 1
+;; for c <= 0 and s = -1 otherwise, which is in range and keeps the atan2(0, u)
+;; of a single real factor as it is. With other arguments, the sum is reduced
+;; modulo 2*%pi unless SIGN shows that it is in range, but not in the Risch
+;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous.
+(defun absarg-product-arg (args)
+  (let ((c 0) (reals nil) (others nil))
+    (dolist (arg args)
+      (cond ((eq arg '$%pi)
+             (setq c (add c 1)))
+            ((and (not (atom arg))
+                  (eq (caar arg) 'mtimes)
+                  (mnump (cadr arg))
+                  (eq (caddr arg) '$%pi)
+                  (null (cdddr arg)))
+             (setq c (add c (cadr arg))))
+            ((and (not (atom arg))
+                  (eq (caar arg) '%atan2)
+                  (zerop1 (cadr arg)))
+             (push (caddr arg) reals))
+            ((not (zerop1 arg))
+             (push arg others))))
+    (let ((arg (2pistrip (mul c '$%pi))))
+      (when reals
+        (let ((u (muln reals t)))
+          (setq arg (if (eq ($sign arg) '$pos)
+                        (sub arg (take '(%atan2) 0 u))
+                        (add arg (take '(%atan2) 0 u))))))
+      (let ((sum (2pistrip (addn (cons arg others) t))))
+        (if (or implicit-real
+                (null others)
+                (and (null (cdr others)) (zerop1 arg))
+                (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
+                     (eq ($sign (add sum '$%pi)) '$pos)))
+            sum
+            (reduce-angle-mod-2pi sum))))))
 
 (defun absarg (l &optional (absflag nil))
 ;; Commenting out the the expansion of the expression l. It seems to be not
@@ -822,16 +879,26 @@
 	      (absl () (rplacd abars absl)))
 	     (())
 	   (unless n
-	     (return (cons (muln absl t)
-			   (absarg-principal (2pistrip (addn argl t))
-					     absflag))))
+	     (return (cons (muln absl t) (absarg-product-arg argl))))
 	   (setq abars (absarg (car n) absflag))))
         ((eq (caar l) 'mexpt)
          ;; An expression z^a
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
                (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))
                ($radexpand nil))
-           (cond ((and (zerop1 (cdr sp))
+           (cond ((and (or (integerp (caddr l)) (odd-root-exponent-p (caddr l)))
+                       (=0 (cdr (risplit (cadr l)))))
+                  ;; An integer power or real root of a real z, see
+                  ;; ODD-ROOT-EXPONENT-P. Its argument is that of z for an odd
+                  ;; numerator, 0 for an even one, and that of the real z^a
+                  ;; itself for an integer numerator of unknown parity.
+                  (cons (power (car aa) (caddr l))
+                        (case (evod (with-default-quotient-dispflags
+                                      (num-denom-split (caddr l))))
+                          ($odd (cdr aa))
+                          ($even 0)
+                          (t (take '(%atan2) 0 l)))))
+                 ((and (zerop1 (cdr sp))
                        (eq ($sign (sub 1 (take '(mabs) (car sp)))) '$pos))
                   ;; Special case: a is real and abs(a) < 1.
                   ;; This simplifies e.g. carg(sqrt(z)) -> carg(z)/2
@@ -861,10 +928,11 @@
 		   (root (div (add cosh (neg cos))
 			      (add cosh cos))
 			 2))
-		 (take '(%atan)
-		       (if (eq (caar l) '%tan)
-			   (div (take '(%sinh) 2frst) (take '(%sin) 2scnd))
-			   (div (take '(%sin) 2scnd) (take '(%sinh) 2frst)))))))
+		 ;; RISPLIT's denominator for tan and tanh is never
+		 ;; negative, so the argument is that of the numerator.
+		 (if (eq (caar l) '%tan)
+		   (genatan (take '(%sinh) 2frst) (take '(%sin) 2scnd))
+		   (genatan (take '(%sin) 2scnd) (take '(%sinh) 2frst))))))
 	((specrepp l) (absarg (specdisrep l) absflag))
 	((let ((foot (coversinemyfoot l)))
 	   (and foot (not (=0 (cdr (risplit (cadr l))))) (absarg foot absflag))))

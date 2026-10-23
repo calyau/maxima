@@ -356,6 +356,34 @@
                   (intl:gettext "atan2: atan2(0,0) is undefined."))
                 (cl:atan y x)))))
 
+;; Return *BIG-FLOAT-OP* function for F that applies BOP to 1/z. Used for acsc,
+;; asec, acot, acsch and acoth, analogous to FLONUM-EVAL, to prevent losing
+;; digits like rectform() and logarc() would near 0 and inf. At 0 it declines,
+;; and where BOP fails, at a pole of F, it signals a domain error for F.
+(defun big-float-recip (bop f)
+  #'(lambda (x &optional y)
+      (unless (and (zerop1 x) (or (null y) (zerop1 y)))
+        (let ((ans (ignore-errors
+                     (if y
+                       (let ((d (add (mul x x) (mul y y))))
+                         (funcall bop (div x d) (div (neg y) d)))
+                       (funcall bop (div 1 x))))))
+          (if ans ans (domain-error (if y (add x (mul '$%i y)) x) f))))))
+
+;; Return a *BIG-FLOAT-OP* function for F that computes 1/BOP(z). Used for cot,
+;; coth and csch, analogous to FLONUM-EVAL, to prevent losing digits or causing
+;; errors like exponentialize() would. It declines where BOP declines. Where BOP
+;; is 0, at a pole of F, it signals a domain error for F.
+(defun big-float-inverse (bop f)
+  #'(lambda (x &optional y)
+      (let ((w (funcall bop x y)))
+        (when w
+          (destructuring-bind (u . v) (trisplit w)
+            (let ((d (add (mul u u) (mul v v))))
+              (if (zerop1 d)
+                (domain-error (if y (add x (mul '$%i y)) x) f)
+                (add (div u d) (mul '$%i (div (neg v) d))))))))))
+
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x
   ;; arg and an optional y arg for the real and imaginary parts.  The
@@ -365,10 +393,21 @@
   (frob %asinh #'big-float-asinh)
   (frob %tanh #'big-float-tanh)
   (frob %atanh #'big-float-atanh)
-  (frob %acos 'big-float-acos)
-  (frob %log 'big-float-log)
-  (frob %sqrt 'big-float-sqrt)
-  (frob %atan 'big-float-atan))
+  (frob %acos #'big-float-acos)
+  (frob %acosh #'big-float-acosh)
+  (frob %asech #'big-float-asech)
+  (frob %log #'big-float-log)
+  (frob %sqrt #'big-float-sqrt)
+  (frob %atan #'big-float-atan)
+  (frob %acsc (big-float-recip 'big-float-asin 'acsc))
+  (frob %asec (big-float-recip 'big-float-acos 'asec))
+  (frob %acot (big-float-recip 'big-float-atan 'acot))
+  (frob %acsch (big-float-recip 'big-float-asinh 'acsch))
+  (frob %acoth (big-float-recip 'big-float-atanh 'acoth))
+  (frob %tan #'big-float-tan)
+  (frob %cot (big-float-inverse 'big-float-tan 'cot))
+  (frob %coth (big-float-inverse 'big-float-tanh 'coth))
+  (frob %csch (big-float-inverse 'big-float-sinh 'csch)))
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
 ;; reflection rule is something like f(-x) --> f(x), or  f(-x) --> %pi - f(x). 
@@ -541,6 +580,11 @@
 	  coeff (linearize ratcoeff)
 	  zl-rem (get-not-const-or-int-terms x '$%pi))
     (cond ((zerop1 zl-rem) (%piargs coeff ratcoeff))
+	  ;; COEFF = (K . Y) with K odd: sin(x+(K*n+Y)*%pi) for an integer n
+	  ;; is (-1)^(K*n)*sin(x+Y*%pi).
+	  ((and (integerp (car coeff)) (oddp (car coeff)))
+	   (let ((s (%piargs-sin/cos (add zl-rem (mul (cdr coeff) '$%pi)))))
+	     (and s (mul (power -1 (sub ratcoeff (cdr coeff))) s))))
 	  ((not (mevenp (car coeff))) nil)
 	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%sin zl-rem))
 	  ((equal 1 x) (neg (ftake* '%sin zl-rem)))
@@ -664,10 +708,11 @@
      ;; return their quotient.
      ((and (zerop1 zl-rem)
 	   (setq sin-of-coeff-pi
-		 (%piargs coeff nil)))
+		 (%piargs coeff nice-terms)))
       (setq cos-of-coeff-pi
 	    (%piargs (cons (car coeff)
-			   (rplus 1//2 (cdr coeff))) nil))
+			   (rplus 1//2 (cdr coeff)))
+		     (add nice-terms 1//2)))
       (cond ((zerop1 sin-of-coeff-pi) 
 	     0)		;; tan(integer*%pi)
 	    ((zerop1 cos-of-coeff-pi)
@@ -745,7 +790,12 @@
      (setq ratcoeff (get-const-or-int-terms x '$%pi)
 	   coeff (linearize ratcoeff)
 	   zl-rem (get-not-const-or-int-terms x '$%pi))
-     (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff nil))) (div 1 zl-rem))
+     (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff ratcoeff))) (div 1 zl-rem))
+		   ;; As in %PIARGS-SIN/COS, unless the above set ZL-REM to NIL
+		   ((and zl-rem (integerp (car coeff)) (oddp (car coeff)))
+		    (let ((s (%piargs-csc/sec
+			      (add zl-rem (mul (cdr coeff) '$%pi)))))
+		      (and s (mul (power -1 (sub ratcoeff (cdr coeff))) s))))
 		   ((not (mevenp (car coeff))) nil)
 		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%csc zl-rem))
 		   ((equal 1 x) (neg (ftake* '%csc zl-rem)))

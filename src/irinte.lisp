@@ -71,9 +71,26 @@
 	res
 	(intirfactoroot funct x))))
 
+;; INTIR3-REF splits D*P*R0^E0 divided by a quadratic into pieces, each a
+;; power of a linear factor times D*P*R0^E0, after asking for the sign of
+;; the discriminant of the quadratic. INTIR2 integrates the pieces only if
+;; JMAUG matches them, directly or after INTIRFACTOROOT has factored R0^E0.
+;; True if JMAUG so matches D*P*R0^E0 times a power of a generic linear
+;; factor.
+(defun intir3-pieces-p (assoclist x)
+  (let* ((e (mul (cdras 'd assoclist) (cdras 'p assoclist)
+                 (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
+                 (inv (add x (gensym)))))
+         (factors (timestest e)))
+    (or (jmaug e x)
+        (jmaug (distrfactor factors x) x)
+        (let ((*globalcareflag* t))
+          (declare (special *globalcareflag*))
+          (jmaug (distrfactor factors x) x)))))
+
 (defun intir3 (exp x)
   (prog ((assoclist (elliptquad exp x)) e f g r0)
-     (cond (assoclist
+     (cond ((and assoclist (intir3-pieces-p assoclist x))
 	    (setq e (cdras 'e assoclist) f (cdras 'f assoclist)
 		  g (cdras 'g assoclist) r0 (cdras 'r0 assoclist))
 	    (assume `(($notequal) ,e 0))
@@ -237,7 +254,7 @@
 	 (p*r0^e0 (mul p (power r0 e0)))                  ;; quadratic:  sqrt(f^2-4*e*g)
 	 (2*e*x+f (add (mul 2 e x) f))
 	 (2*e*d*invdisc (mul 2 e d (inv discr)))
-	 ;; INTIR2 returns NIL for an integral it cannot do
+	 ;; INTIR2 returns NIL for an integral it cannot do.
 	 (i1 (intir2 (mul (inv (sub 2*e*x+f discr)) p*r0^e0) x))
 	 (i2 (and i1 (intir2 (mul (inv (add 2*e*x+f discr)) p*r0^e0) x))))
     (and i2 (mul 2*e*d*invdisc (sub i1 i2)))))

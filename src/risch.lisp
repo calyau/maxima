@@ -26,6 +26,9 @@
   "T lets RISCHEXPVAR return partial solutions, which can leave integrals for
   HYPERTRIGINT1 to evaluate.")
 
+(defvar *risch-partial-count* 0
+  "The number of times RISCHEXPVAR could have returned a partial solution.")
+
 (defmacro pair (al bl) `(mapcar #'cons ,al ,bl))
 
 ;; internal representation of risch expressions: list with canonical rational
@@ -124,20 +127,26 @@
 
 ;; True if NEW, which RADCAN1 made of EXP, has a constant root or %i that
 ;; EXP does not have, with a base that is not positive and not the base of
-;; a power in EXP, as when sqrt(c-c*x^2) becomes sqrt(c)*sqrt(1-x)*sqrt(x+1).
-;; Taking a positive factor out of a root is exact, and so is taking a sum
-;; apart in an exponent, as d^(x+c) into d^x*d^c. For a variable declared
-;; complex, such as one that the integrator substitutes, roots of
-;; expressions in VAR count too, as when sqrt(1/t^2) becomes 1/t.
+;; a power with an exponent other than an integer in EXP, as when
+;; sqrt(c-c*x^2) becomes sqrt(c)*sqrt(1-x)*sqrt(x+1). Taking a positive
+;; factor out of a root is exact, and so is taking a sum apart in an
+;; exponent, as d^(x+c) into d^x*d^c. For a variable declared complex, such
+;; as one that the integrator substitutes, roots of expressions in VAR count
+;; too, as when sqrt(1/t^2) becomes 1/t, and so they do while
+;; *BRANCH-VAR-ROOTS* is set, as when sqrt((1-t^2)*(3+2*t-3*t^2)) becomes
+;; sqrt(t-1)*sqrt(t+1)*sqrt(3*t^2-2*t-3).
 (defun new-const-roots-p (exp new var)
-  (let ((old (const-roots exp var (decl-complexp var)))
-        (bases (let ((l nil))
-                 (labels ((walk (e)
-                            (unless (atom e)
-                              (when (mexptp e) (pushnew (cadr e) l :test #'alike1))
-                              (mapc #'walk (cdr e)))))
-                   (walk exp))
-                 l)))
+  (let* ((all (or *branch-var-roots* (decl-complexp var)))
+         (old (const-roots exp var all))
+         (bases (let ((l nil))
+                  (labels ((walk (e)
+                             (unless (atom e)
+                               (when (and (mexptp e)
+                                          (not (integerp (caddr e))))
+                                 (pushnew (cadr e) l :test #'alike1))
+                               (mapc #'walk (cdr e)))))
+                    (walk exp))
+                  l)))
     (and (some #'(lambda (r)
                    (not (or (member r old :test #'alike1)
                             (and (mexptp r)
@@ -146,31 +155,27 @@
                                            (catch 'sign-imag-err
                                              ($sign (cadr r))))
                                          '$pos))))))
-               (const-roots new var (decl-complexp var)))
+               (const-roots new var all))
          t)))
 
 ;; RADCAN1 in INTSETUP can take a power of a product apart, as
 ;; sqrt(c-c*x^2) into sqrt(c)*sqrt(1-x)*sqrt(x+1), which holds only up to a
 ;; factor such as -1 that is constant where the powers are continuous.
-;; Return NIL if EXP and NEW are equal up to such exact rewriting, else
-;; that factor EXP/NEW, or T if it may not be constant. It is constant if
-;; its logarithmic derivative EXP'/EXP-NEW'/NEW is zero, which RATSIMP finds
-;; without taking powers apart. RISCHINT multiplies a result free of
-;; integrals by a constant factor.
+;; Return that factor EXP/NEW if it is constant and not 1, else NIL. It is
+;; constant if its logarithmic derivative EXP'/EXP-NEW'/NEW is zero, which
+;; RATSIMP finds without taking powers apart.
 (defun branch-factor (exp new var)
-  (if (or (zerop1 exp) (zerop1 new) (not (new-const-roots-p exp new var)))
-      nil
-      (let* (($%e_to_numlog t) ($logsimp t) ($algebraic t)
-             ;; Write the %e^(log(u)/4) that RADCAN1 makes of roots of U as
-             ;; roots again, which the zero test below needs.
-             (new (resimplify new))
-             (k (sratsimp (resimplify (div exp new)))))
-        (cond ((equal k 1) nil)
-              ((car (errcatch
-                     (zerop1 (sratsimp (sub (div (sdiff exp var) exp)
-                                            (div (sdiff new var) new))))))
-               k)
-              (t t)))))
+  (and (not (zerop1 exp)) (not (zerop1 new)) (new-const-roots-p exp new var)
+       (let* (($%e_to_numlog t) ($logsimp t) ($algebraic t)
+              ;; Write the %e^(log(u)/4) that RADCAN1 makes of roots of U as
+              ;; roots again, which the zero test below needs.
+              (new (resimplify new))
+              (k (sratsimp (resimplify (div exp new)))))
+         (and (not (equal k 1))
+              (car (errcatch
+                    (zerop1 (sratsimp (sub (div (sdiff exp var) exp)
+                                           (div (sdiff new var) new))))))
+              k))))
 
 ;; Bound to T by TRIGIN1 for the exponential form of a trigonometric
 ;; integrand, for which RISCHINT applies no factor.
@@ -184,8 +189,8 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp risch-y z risch-var risch-ratform risch-liflag branch
-	 risch-mainvar varlist genvar $ratfac $ratalgdenom risch-degree
+  (prog ($%e_to_numlog $logsimp risch-y z risch-var risch-ratform risch-liflag
+	 branch risch-mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (declare (ignorable rischform-value))
      (if (specrepp exp)
@@ -202,10 +207,13 @@
      (cond (risch-trigint
 	    (return (trigin1 exp risch-intvar)))
 	   (risch-hypertrigint
-	    (let ((r (hypertrigint1 exp risch-intvar t)) p)
-	      ;; If that leaves an integral, try partial solutions of
-	      ;; RISCHEXPVAR, and take their result if it leaves none.
-	      (when (isinop r '%integrate)
+	    (let* ((n *risch-partial-count*)
+		   (r (hypertrigint1 exp risch-intvar t)) p)
+	      ;; If that leaves an integral and RISCHEXPVAR could have used a
+	      ;; partial solution, try again with partial solutions, and take
+	      ;; that result if it leaves none. Otherwise the second try would
+	      ;; repeat the first.
+	      (when (and (isinop r '%integrate) (> *risch-partial-count* n))
 		(setq p (let ((*risch-partial* t) ($errormsg nil))
 			  (car (errcatch
 				(hypertrigint1 exp risch-intvar t))))))
@@ -214,8 +222,6 @@
 	    (go noun)))
      (multiple-value-setq (risch-y risch-operator branch)
        (intsetup exp risch-intvar))
-     (setq branch (and branch (not trig)
-                       (branch-factor exp branch risch-intvar)))
      (if risch-operator
 	 (go noun))
      (setq risch-ratform (car risch-y))
@@ -237,7 +243,12 @@
 		      (simplify (list* '(mplus)
 				       (disrep (car z) risch-ratform)
 				       (cdr z)))))))
-     (return (if (and branch (not (eq branch t)) (freeof '%integrate z))
+     ;; Multiply a result free of integrals by the factor by which INTSETUP
+     ;; changed the integrand, if it is constant.
+     (setq branch (and branch (not trig) (freeof '%integrate z)
+                       (let (varlist genvar ($gcd '$algebraic))
+                         (branch-factor exp branch risch-intvar))))
+     (return (if branch
                  (let (($%e_to_numlog t) ($logsimp t) ($algebraic nil))
                    (sratsimp (mul branch z)))
                  z))
@@ -319,30 +330,66 @@
          nil)
         (t (every #'no-exp-log-p (cdr e)))))
 
-;; True if E has no roots other than roots of positive numbers.
-(defun no-roots-p (e)
-  (cond ((atom e) t)
-        ((mexptp e)
-         (and (or (integerp (caddr e))
-                  (and (eq (cadr e) '$%e) (freeof '%log (caddr e)))
-                  (and (mnump (cadr e)) (eq (csign (cadr e)) '$pos)))
-              (no-roots-p (cadr e))
-              (no-roots-p (caddr e))))
-        (t (every #'no-roots-p (cdr e)))))
+;; The radicand R with each variable of VARS doubled and its trigonometric
+;; functions of sums and multiples expanded, as a rational function of the
+;; variables and of the tangents U = tan(u/2) of the arguments u of the
+;; trigonometric functions left, as sin(u) = 2*U/(1+U^2). ALIST maps those
+;; arguments to fresh symbols for U. Return the rational function and the
+;; extended ALIST, or NIL if two arguments are numeric multiples of each
+;; other, which the variables U would not show.
+(defun tan-half-form (r vars alist)
+  (labels ((walk (e)
+             (cond
+               ((atom e) e)
+               ((not (member (caar e) '(%sin %cos %tan %cot %sec %csc)))
+                (recur-apply #'walk e))
+               (t
+                (let* ((arg (cadr e))
+                       (u (cond ((cdr (assoc arg alist :test #'alike1)))
+                                ((some #'(lambda (p)
+                                           (mnump (sratsimp (div arg (car p)))))
+                                       alist)
+                                 (return-from tan-half-form nil))
+                                (t (cdar (push (cons arg (gensym)) alist)))))
+                       (p (add 1 (mul u u)))
+                       (m (sub 1 (mul u u))))
+                  (case (caar e)
+                    (%sin (div (mul 2 u) p))
+                    (%cos (div m p))
+                    (%tan (div (mul 2 u) m))
+                    (%cot (div m (mul 2 u)))
+                    (%sec (div p m))
+                    (%csc (div p (mul 2 u)))))))))
+    (values (sratsimp
+             (walk (let (($trigexpand t) ($trigexpandplus t)
+                         ($trigexpandtimes t))
+                     (resimplify
+                      (reduce #'(lambda (e v) (maxima-substitute (mul 2 v) v e))
+                              vars :initial-value r)))))
+            alist)))
 
-;; True if P is positive for no real values of VAR and the parameters, or if
-;; -P is the square of an expression that is real for them. Doubling the
-;; variables first lets RADCAN1 find square roots such as that of 1-cos(x),
-;; which is sqrt(2)*sin(x/2).
-(defun minus-real-square-p (p var)
-  (or (member (csign p) '($neg $nz $zero))
-      (let* (($exponentialize t) ($logarc t) ($logsimp t) ($%e_to_numlog t)
-             (p2 (reduce #'(lambda (e v) (maxima-substitute (mul 2 v) v e))
-                         (cdr ($listofvars p)) :initial-value p))
-             (w (radcan1 (power (neg p2) 1//2) var)))
-        (and (no-roots-p w)
-             (zerop1 (radcan1 (sub w (maxima-substitute (neg '$%i) '$%i w))
-                              var))))))
+;; True if E is built from variables and rational numbers by sums, products
+;; and integer powers.
+(defun rational-function-p (e)
+  (cond ((atom e) (or (integerp e)
+                      (and (symbolp e) (not (maxima-constantp e)))))
+        ((ratnump e))
+        ((mexptp e) (and (integerp (caddr e)) (rational-function-p (cadr e))))
+        ((member (caar e) '(mplus mtimes))
+         (every #'rational-function-p (cdr e)))))
+
+;; True if 1 is the exclusive or of some of the nonnegative integers VECTORS,
+;; that is, if the vector with only its first coordinate 1 is a sum of some
+;; of the VECTORS over the integers mod 2, whose coordinates are their bits.
+(defun gf2-one-in-span-p (vectors)
+  (let ((rows nil))
+    (dolist (v vectors nil)
+      ;; ROWS have distinct highest bits and come in decreasing order.
+      (dolist (row rows)
+        (when (logbitp (1- (integer-length row)) v)
+          (setq v (logxor v row))))
+      (cond ((= v 1) (return t))
+            ((> v 1) (setq rows (sort (cons v rows) #'>)))))))
 
 ;; In splitting the expressions EXPRS into real and imaginary parts, RISPLIT
 ;; took the square roots of the radicands *RISPLIT-ASSUMED* to be real. True if
@@ -352,13 +399,22 @@
 ;; related to them too, so the roots that RISPLIT took of complex numbers must
 ;; have constant arguments and positive numbers as moduli. EXPRS must also be
 ;; free of functions such as ABS, which RISPLIT does not split by the roots.
+;;
+;; With the variables doubled, so that half angles count, as in 1-cos(x) =
+;; 2*sin(x/2)^2, TAN-HALF-FORM writes each radicand as C*S*Q^2 with a number
+;; C, a rational function Q and a product S of distinct factors irreducible
+;; over the rationals, which $FACTOR finds. A product of radicands is then a
+;; number times a square only if each factor occurs in an even number of
+;; their S, and then minus a square if an odd number of their C are
+;; negative. Gaussian elimination mod 2 on the vectors of the signs of C and
+;; the factors of S finds whether some product is so.
 (defun risplit-roots-consistent-p (exprs var)
-  (let ((rads (and (listp *risplit-assumed*)
-                   (union *risplit-assumed* (sqrt-radicands exprs)
-                          :test #'alike1))))
+  (let* ((rads (and (listp *risplit-assumed*)
+                    (union *risplit-assumed* (sqrt-radicands exprs)
+                           :test #'alike1)))
+         (vars (cdr ($listofvars (cons '(mlist) rads))))
+         (alist nil) (factors nil))
     (and rads
-         (<= (length rads) 6)
-         (every #'no-roots-p rads)
          (every #'(lambda (r)
                     (let ((m (let (($exponentialize t))
                                (radcan1 (first r) var))))
@@ -370,12 +426,106 @@
                                 '(mabs %signum $conjugate %realpart %imagpart))
                          (no-exp-log-p e)))
                 exprs)
-         (loop for mask from 1 below (ash 1 (length rads))
-               never (minus-real-square-p
-                      (muln (loop for r in rads for k from 0
-                                  when (logbitp k mask) collect r)
-                            t)
-                      var)))))
+         (not (gf2-one-in-span-p
+               (mapcar
+                #'(lambda (r)
+                    (let ((f (multiple-value-bind (e l)
+                                 (tan-half-form r vars alist)
+                               (setq alist l)
+                               (and e (rational-function-p e) ($factor e))))
+                          (v 0))
+                      (when (or (null f) (zerop1 f))
+                        (return-from risplit-roots-consistent-p nil))
+                      ;; Bit 0 of V is the sign of C, bit j+1 factor j of
+                      ;; FACTORS.
+                      (dolist (p (if (mtimesp f) (cdr f) (list f)) v)
+                        (let ((b (if (mexptp p) (cadr p) p))
+                              (k (if (mexptp p) (caddr p) 1)))
+                          (cond ((mnump b)
+                                 (when (and (mnegp b) (oddp k))
+                                   (setq v (logxor v 1))))
+                                ((oddp k)
+                                 (let ((j (position b factors :test #'alike1)))
+                                   (unless j
+                                     (setq j (length factors)
+                                           factors (append factors (list b))))
+                                   (setq v (logxor v (ash 2 j))))))))))
+                rads))))))
+
+;; True if the radicands RADS are all positive at some real values of their
+;; variables. TAN-HALF-FORM writes each as a quotient N/D of polynomials in
+;; the variables and in the tangents U of half the arguments u of its
+;; trigonometric functions, and N/D is positive where N*D is. If each u is a
+;; polynomial in a variable that occurs in no other u and outside them in
+;; none of RADS, the U and the variables outside the u take any real values
+;; together. Where each of these variables v_j is s_j*t^w_j, with s_j = 1 or
+;; -1 and weights w_1 > w_2 > ... far enough apart, N*D has the sign of its
+;; first term in the lexicographic order of v_1, v_2, ... as t grows, and of
+;; its last term as t goes to 0. So the radicands are all positive at such
+;; points if for each of them the sign of the coefficient of that term
+;; times the s_j with odd exponents in it is 1. That is a system of linear
+;; equations mod 2, which has a solution unless the sum of some of them is
+;; 0 = 1.
+(defun positive-somewhere-p (rads)
+  (let* (varlist genvar
+         (vars (cdr ($listofvars (cons '(mlist) rads))))
+         (alist nil)
+         (forms (mapcar #'(lambda (r)
+                            (multiple-value-bind (e a)
+                                (tan-half-form r vars alist)
+                              (setq alist a)
+                              (if (and e (rational-function-p e))
+                                  e
+                                  (return-from positive-somewhere-p nil))))
+                        rads))
+         (l (cdr ($rat (cons '(mlist) forms))))
+         (gv (fourth (caar l))))
+    (dolist (a alist)
+      (unless (some #'(lambda (v)
+                        (and (polyp-var (car a) v)
+                             (every #'(lambda (b)
+                                        (or (eq b a) (freeof v (car b))))
+                                    alist)
+                             (every #'(lambda (f) (freeof v f)) forms)))
+                    (cdr ($listofvars (car a))))
+        (return-from positive-somewhere-p nil)))
+    (labels ((term (p first)
+               ;; Bit 0 of the result is the sign of the coefficient of the
+               ;; first or last term of P, bit j+1 the parity of the exponent
+               ;; of the jth variable of GV in it.
+               (cond ((pcoefp p)
+                      (if (and (realp p) (not (zerop p)))
+                          (if (minusp p) 1 0)
+                          (return-from positive-somewhere-p nil)))
+                     (t
+                      (let* ((ts (if first (cdr p) (last p 2)))
+                             (v (term (cadr ts) first)))
+                        (if (oddp (car ts))
+                            (logxor v (ash 2 (position (car p) gv)))
+                            v)))))
+             (sign-vectors (first)
+               (mapcar #'(lambda (r)
+                           (logxor (term (cadr r) first) (term (cddr r) first)))
+                       l)))
+      (or (not (gf2-one-in-span-p (sign-vectors t)))
+          (not (gf2-one-in-span-p (sign-vectors nil)))))))
+
+;; True if splitting YYY and its derivative F into real and imaginary parts
+;; commutes with the derivative, so that a part of YYY is constant if the
+;; matching part of F is zero. YA and FA are what RISPLIT took for granted
+;; in the splits, as *RISPLIT-ASSUMED* notes it.
+;; - If it took nothing for granted in splitting YYY, the parts of YYY are
+;;   its real and imaginary parts, and so are those of F where the radicands
+;;   FA are positive. For F free of %i, the imaginary part of YYY is then
+;;   constant there, if FA are positive somewhere.
+;; - Otherwise the splits must agree with the relations between the roots.
+(defun risplit-exact-p (ya fa yyy f var)
+  (or (and (null ya)
+           (or (null fa)
+               (and (listp fa) (freeof '$%i f) (positive-somewhere-p fa))))
+      (and (listp ya) (listp fa)
+           (let ((*risplit-assumed* (union ya fa :test #'alike1)))
+             (risplit-roots-consistent-p (list yyy f) var)))))
 
 ;; YYY rewritten with exp(a+%i*b) = exp(a)*(cos(b)+%i*sin(b)), without the
 ;; terms free of VAR, if that is free of %i. Otherwise NIL.
@@ -386,45 +536,7 @@
                 d)))
     (and (freeof '$%i d) d)))
 
-;; True if F is a power (c*y)^r with r not an integer, c a factor free of VAR
-;; and y one depending on it, where c is negative and y can be negative. The
-;; Risch integrator writes F as c^r*y^r, which differs from F by a constant
-;; factor such as -1 where F is real, and RISPLIT takes c^r to be real.
-(defun trigin1-negative-root-p (f var)
-  (when (and (mexptp f) (ratnump (caddr f)) (not (freeof var (cadr f)))
-             (freeof '$%i f)
-             (some #'(lambda (v) (not (eq v var))) (cdr ($listofvars f))))
-    (let* ((b ($factor (cadr f)))
-           (fs (if (mtimesp b) (cdr b) (list b)))
-           (c (muln (remove-if-not #'(lambda (u) (freeof var u)) fs) t))
-           (y (muln (remove-if #'(lambda (u) (freeof var u)) fs) t)))
-      (flet ((sgn (e)
-               (let ((sign-imag-errp nil))
-                 (catch 'sign-imag-err ($sign e)))))
-        (and (not (mnump c))
-             (eq (sgn c) '$neg)
-             (not (member (sgn y) '($pos $pz $zero))))))))
-
-;; True if E has a power of an expression with an inverse trigonometric
-;; function of VAR, with an exponent that is not a number, such as
-;; asin(x)^n. The Risch integrator writes asin() and its kin as logarithms
-;; of complex expressions, and RISPLIT does not split symbolic powers of
-;; these correctly.
-(defun trigin1-symbolic-power-p (e var)
-  (and (not (atom e))
-       (or (and (mexptp e) (not (mnump (caddr e))) (freeof var (caddr e))
-                (not (freeof var (cadr e)))
-                (some #'(lambda (op) (not (freeof op (cadr e))))
-                      '(%asin %acos %atan %acot %asec %acsc)))
-           (some #'(lambda (u) (trigin1-symbolic-power-p u var)) (cdr e)))))
-
 (defun trigin1 (risch-*exp risch-var)
-  ;; Leave the integral if a root has a negative factor or there is a
-  ;; symbolic power of asin() or its kin, see above.
-  (when (or (trigin1-symbolic-power-p risch-*exp risch-var)
-            (some #'(lambda (f) (trigin1-negative-root-p f risch-var))
-                  (if (mtimesp risch-*exp) (cdr risch-*exp) (list risch-*exp))))
-    (return-from trigin1 (list '(%integrate) risch-*exp risch-var)))
   (let ((yyy (let ((*risch-trig* t))
                (hypertrigint1 risch-*exp risch-var nil))))
     (setq yyy (multiple-value-bind (num denom)
@@ -443,29 +555,28 @@
       (setq result (or (trigin1-demoivre yyy risch-var) (sratsimp yyy)))
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
-     ;; RISPLIT can signal an error, as from sign() for the root of an
-     ;; expression that the answers to sign questions make negative. Leave
-     ;; the integral then.
+     ;; RISPLIT can ask sign() about an expression that is not real, which
+     ;; throws to SIGN-IMAG-ERR here. The integral is then left unevaluated.
      (destructuring-let (((yyy-re . yyy-im)
-                          (or (car (let (($errormsg nil))
-                                     (errcatch (risplit yyy))))
+                          (let ((s (let (sign-imag-errp)
+                                     (catch 'sign-imag-err (risplit yyy)))))
+                            (if (consp s)
+                              s
                               (return-from trigin1
-                                (list '(%integrate) risch-*exp risch-var)))))
+                                (list '(%integrate) risch-*exp risch-var))))))
       (flet ((locally-const-p (e)
         "E is locally constant iff its derivative vanishes."
         ;; The derivative of E is the matching part of the integrand. Keep E
         ;; unless RADCAN1 finds that part zero. RADCAN1 can be very slow for E.
-        (let ((p (risplit risch-*exp)) ($exponentialize t) ($logarc t))
-          (unless (zerop1 (radcan1 (if (eq e yyy-re) (car p) (cdr p))
-                                   risch-var))
-            (return-from locally-const-p nil)))
-        ;; Unless RISPLIT took anything to be positive or real in splitting
-        ;; the integrand and the antiderivative, E is then constant.
-        (unless *risplit-assumed* (return-from locally-const-p t))
-        ;; So it is if RISPLIT took only square roots to be real, in a way
-        ;; that agrees with the relations between them.
-        (when (risplit-roots-consistent-p (list yyy risch-*exp) risch-var)
-          (return-from locally-const-p t))
+        (let* ((ya *risplit-assumed*) (*risplit-assumed* nil)
+               (p (risplit risch-*exp)))
+          (unless (zerop1 (let (($exponentialize t) ($logarc t))
+                            (radcan1 (if (eq e yyy-re) (car p) (cdr p))
+                                     risch-var)))
+            (return-from locally-const-p nil))
+          ;; Then E is constant if the splits commute with the derivative.
+          (when (risplit-exact-p ya *risplit-assumed* yyy risch-*exp risch-var)
+            (return-from locally-const-p t)))
         ;; RISPLIT took the polylogarithms in E to be real. Keep such a part
         ;; if it has parameters, which is always right, as RADCAN1 can take
         ;; minutes for it.
@@ -476,28 +587,27 @@
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
-              (zerop1 (radcan1 (sdiff e risch-var) risch-var))))))
+              ;; RISCHINT binds $LOGSIMP to false, which keeps forms such as
+              ;; (%e^(log(u)/2))^2 in the derivative of a part. Write them as
+              ;; powers of U first if the part holds an integral, which
+              ;; would otherwise stay in the result.
+              (zerop1 (radcan1 (if (freeof '%integrate e)
+                                   (sdiff e risch-var)
+                                   (let (($logsimp t) ($%e_to_numlog t))
+                                     (resimplify (sdiff e risch-var))))
+                               risch-var))))))
       ;; Drop the parts that are constant (unsolved integrals survive this).
-      ;; RISPLIT takes the variable, radicands and the arguments of logarithms
-      ;; to be positive and polylogarithms to be real, so a part found
-      ;; constant is constant only where that holds. If RISPLIT left a
-      ;; noun-form %REALPART or %IMAGPART, the result is YYY, so do not test
-      ;; the parts. ERRCATCH: on an error, which occurs in the test suite, keep
-      ;; the part.
+      ;; If RISPLIT left a noun-form %REALPART or %IMAGPART, the result is
+      ;; YYY, so do not test the parts. ERRCATCH: on an error, which occurs in
+      ;; the test suite, keep the part.
       (let* ((split (and (freeof '%realpart yyy-re) (freeof '%imagpart yyy-im)))
              (yyy-re (if (and split (car (errcatch (locally-const-p yyy-re))))
                          0 yyy-re))
              (yyy-im (if (and split (car (errcatch (locally-const-p yyy-im))))
                          0 yyy-im)))
-      ;; With parameters, simplify the parts apart, as SRATSIMP can take
-      ;; minutes for their sum.
-      (setq result (if (and split
-                            (notevery #'(lambda (v) (eq v risch-var))
-                                      (cdr ($listofvars yyy))))
-                       (add (sratsimp yyy-re) (mul '$%i (sratsimp yyy-im)))
-                       (sratsimp (if split
-                                     (add yyy-re (mul '$%i yyy-im))
-                                     yyy))))))))
+      (setq result (sratsimp (if split
+                               (add yyy-re (mul '$%i yyy-im))
+                               yyy)))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.
@@ -1064,8 +1174,10 @@
        (lsa wl))
      ;; If the top equation, which has no unknowns, fails, solve the others.
      ;; RISCHEXPLOG, which calls this via EXPPOLYCONTROL, checks the remainder.
-     (when (and (null flag) *risch-partial* (eq risch-y 'inconsistent))
-       (multiple-value-setq (risch-y risch-m) (lsa (butlast wl))))
+     (when (and (null flag) (eq risch-y 'inconsistent))
+       (incf *risch-partial-count*)
+       (when *risch-partial*
+	 (multiple-value-setq (risch-y risch-m) (lsa (butlast wl)))))
      ;; LSA calls the system singular when it has more than one solution.
      ;; Here the antiderivatives those solutions give differ only by a
      ;; constant, so any one of them will do, and the DOWN2 walk finds one.
