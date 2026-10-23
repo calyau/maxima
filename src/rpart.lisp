@@ -470,6 +470,20 @@
 	  ((and (member (caar l) '(%atan %csc %sec %cot %csch %sech %coth) :test #'eq)
 		(=0 (cdr (risplit (cadr l)))))
 	   (cons l 0))
+          ((member (caar l) '(%cot %coth))
+           ;; Split cot(z) and coth(z) directly. Splitting 1/tan(z) and
+           ;; 1/tanh(z) divides by zero where cot(z) or coth(z) is zero.
+           (let* ((sp (risplit (cadr l)))
+                  (2rl (mul (car sp) 2))
+                  (2im (mul (cdr sp) 2))
+                  (denom (if (eq (caar l) '%cot)
+                             (sub (take '(%cosh) 2im) (take '(%cos) 2rl))
+                             (sub (take '(%cosh) 2rl) (take '(%cos) 2im)))))
+             (if (eq (caar l) '%cot)
+                 (cons (div (take '(%sin) 2rl) denom)
+                       (neg (div (take '(%sinh) 2im) denom)))
+                 (cons (div (take '(%sinh) 2rl) denom)
+                       (neg (div (take '(%sin) 2im) denom))))))
           ((and (eq (caar l) '%atan2)
                 ;; SRATSIMP, since the real parts that the conjugate formulas
                 ;; below give can leave an imaginary part like

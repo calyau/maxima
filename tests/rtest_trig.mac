@@ -1026,3 +1026,19 @@ map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [
      bfloat(%pi/2) + 1b-20*%i, bfloat(%pi/2) + 1b-5*%i,
      bfloat(%pi/2) - 1b-20*%i, bfloat(%pi/2) + 1b-5*%i, 1b-10, -1b-20]);
 [true, true, true, true, true, true, true, true, true, true]$
+
+
+/* Bug #5700: "rectform of coth and cot divides by zero at their zeros" */
+
+[rectform(coth(log(%i))), rectform(coth(3*log(%i))), realpart(coth(log(%i))),
+ imagpart(coth(log(%i))), is(equal(coth(log(%i)), 0)), sign(coth(log(%i))),
+ cabs(coth(log(%i))), carg(coth(log(%i)))];
+[0, 0, 0, 0, true, zero, 0, 0]$
+
+[rectform(coth(x + %i*y)), rectform(cot(x + %i*y))];
+[sinh(2*x)/(cosh(2*x) - cos(2*y)) - %i*sin(2*y)/(cosh(2*x) - cos(2*y)),
+ sin(2*x)/(cosh(2*y) - cos(2*x)) - %i*sinh(2*y)/(cosh(2*y) - cos(2*x))]$
+
+[subst([x = 0, y = %pi/2], rectform(coth(x + %i*y))),
+ subst([x = %pi/2, y = 0], rectform(cot(x + %i*y)))];
+[0, 0]$
