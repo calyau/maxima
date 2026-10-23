@@ -1272,10 +1272,12 @@ APPLY means like APPLY.")
 	     mode (cond ((null *returns*) '$any)
 			(t return-mode)))
        (tunbind 'mdo) (tunbind (cadr form))
+       ;; MDOIN-ELEMENTS can give unsimplified values, such as ((MMINUS) 1)
+       ;; for x-1, which the interpreter simplifies when it reads the variable.
        (return
 	 `(,mode do ((,var) (mdo (mdoin-elements ,init) (cdr mdo)))
 		 ((null mdo) '$done) .
-		  ((declare (special ,var)) (setq ,var (car mdo)) .
+		  ((declare (special ,var)) (setq ,var (simplify (car mdo))) .
 		 ,(cond ((atom (cdr action)) nil)
 			((eq 'progn (cadr action)) (cddr action))
 			(t (list (cdr action))))))))))

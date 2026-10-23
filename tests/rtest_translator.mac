@@ -3413,6 +3413,17 @@ block([translate : false, use_fast_arrays : false, k, e1, e2],
   [e1, is(e1 = e2)]);
 [[[x^2, 1], [1, x^2], [[[1], 2], [[3], 4]], [[[1], 5], [[2], 6]], [], []], true]$
 
+block([translate : false, e1, e2],
+  local(f, len),
+  f(e) := block([l : []], for u in e do l : endcons([u, atom(u)], l), l),
+  len(e) := if atom(e) then 1 else block([s : 1], for u in e do s : s + len(u), s),
+  e1 : [map(f, [x-1, x-0.5, a-b, 1/sqrt(x)]), map(len, [x-1, (x-1)/(x+1), [x-1, -a]])],
+  translate_or_lose(f, len),
+  e2 : [map(f, [x-1, x-0.5, a-b, 1/sqrt(x)]), map(len, [x-1, (x-1)/(x+1), [x-1, -a]])],
+  kill(f, len),
+  [e1, is(e1 = e2)]);
+[[[[[x, true], [-1, true]], [[x, true], [-0.5, true]], [[a, true], [-b, false]], [[1, true], [sqrt(x), false]]], [3, 7, 6]], true]$
+
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
 (kill (translate_or_lose, compile_or_lose), 0);
