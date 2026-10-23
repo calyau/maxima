@@ -259,6 +259,7 @@ Bug fixes for numbered bugs:
 * \#5698 Bigfloat coth, tan, cot and csch signal errors or lose digits near their zeros and poles
 * \#5699 assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it
 * \#5700 rectform of coth and cot divides by zero at their zeros
+* \#5701 rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2
 
 Bug fixes for unnumbered bugs:
 ------------------------------

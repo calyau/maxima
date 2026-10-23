@@ -4584,6 +4584,14 @@ every(lambda([e], is(abs(float(trigreduce(e) - e)) < 1e-12*abs(float(e)))),
 true$
 
 
+/* Bug #5701: "rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2" */
+
+block([msg : (errcatch(1/0), error)],
+  map(lambda([u], errcatch(rectform(u)) = [] and error = msg),
+      [1/(log(%i) - %i*%pi/2), sech(log(%i)), csch(2*log(%i)), (log(%i) - %i*%pi/2)^(-1001)]));
+[true, true, true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

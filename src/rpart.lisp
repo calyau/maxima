@@ -262,6 +262,10 @@
   ;; below. Instead, we calculate it when it's needed (a maximum of once).
   (destructuring-bind (real . imag) sp
     (cond
+      ((and (< power 0) (zerop1 real) (zerop1 imag))
+       ;; Signal the simplifier's error for 0 to a negative power.
+       (cons (power real power) 0))
+
       ((= power -1)
        ;; Handle the case of 1/(x+%i*y) carefully.  This
        ;; is needed if x and y are (Lisp) numbers to
