@@ -304,7 +304,7 @@ block([fpprec : 28, m, e0, xxx, ratprint : false],
      bfloat(rectform(expand(e0))) - xxx,
      bfloat(rectform(ratsimp(e0))) - xxx,
      bfloat(rectform(ev(e0))) - xxx]));
-[true, true, true, false]$
+[true, true, true, true]$
 
 /* see Maxima bug 2596 (https://sourceforge.net/p/maxima/bugs/2596/) */
 block([mat : matrix([1,2,3],[3,2,0],[1,2,1])], resimplify(matrixfun(lambda ([q],1/q),mat)));

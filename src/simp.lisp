@@ -2085,7 +2085,7 @@
 		      1 t)))))
 
 (defun simpexpt (x y z)
-  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity)
+  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity factor-signs)
      (setq check x)
      (twoargcheck x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
@@ -2263,7 +2263,16 @@
             (return (mul2 (power (cadr gr) pot)
                           (power (caddr gr) (mul2 -1 pot)))))
            ((not (eq (caar gr) 'mtimes)) (go up))
-           ((or (eq $radexpand '$all) (and $radexpand (simplexpon pot)))
+           ((or (eq $radexpand '$all)
+                (and $radexpand (simplexpon pot)
+                     ;; With domain:real an odd root of a negative factor is
+                     ;; the real root, which is right only if all factors are
+                     ;; real. Leave a product with a factor that may be complex
+                     ;; to the $CSIGN loop below, which reuses FACTOR-SIGNS.
+                     (or (maxima-integerp pot)
+                         (not (intersection
+                               (setq factor-signs (mapcar #'$csign (cdr gr)))
+                               '($complex $imaginary))))))
             (setq res (list 1))
             (go start))
            ((and (or (not (numberp (cadr gr)))
@@ -2282,7 +2291,8 @@
                 (return (div (power -1 pot)
                              (power w pot)))))
            ((or (eq $domain '$complex) (not $radexpand)) (go up)))
-     (return (do ((l (cdr gr) (cdr l)) (res (ncons 1)) (rad))
+     (return (do ((l (cdr gr) (cdr l)) (res (ncons 1)) (rad)
+                  (signs factor-signs (cdr signs)))
                  ((null l)
                   (cond ((equal res '(1))
                          (eqtest (list '(mexpt) gr pot) check))
@@ -2296,7 +2306,7 @@
                          (eqtest (testt (cons '(mtimes) res)) check))))
                ;; Check with $csign to be more complete. This prevents wrong 
                ;; simplifications like sqrt(-z^2)->%i*sqrt(z^2) for z complex.
-               (setq z ($csign (car l)))
+               (setq z (if signs (car signs) ($csign (car l))))
                (if (member z '($complex $imaginary))
                    (setq z '$pnz)) ; if appears complex, unknown sign
                (setq w (cond ((member z '($neg $nz))
