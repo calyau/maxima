@@ -2085,7 +2085,7 @@
 		      1 t)))))
 
 (defun simpexpt (x y z)
-  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity)
+  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity factor-signs)
      (setq check x)
      (twoargcheck x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
@@ -2263,7 +2263,16 @@
             (return (mul2 (power (cadr gr) pot)
                           (power (caddr gr) (mul2 -1 pot)))))
            ((not (eq (caar gr) 'mtimes)) (go up))
-           ((or (eq $radexpand '$all) (and $radexpand (simplexpon pot)))
+           ((or (eq $radexpand '$all)
+                (and $radexpand (simplexpon pot)
+                     ;; With domain:real an odd root of a negative factor is
+                     ;; the real root, which is right only if all factors are
+                     ;; real. Leave a product with a factor that may be complex
+                     ;; to the $CSIGN loop below, which reuses FACTOR-SIGNS.
+                     (or (maxima-integerp pot)
+                         (not (intersection
+                               (setq factor-signs (mapcar #'$csign (cdr gr)))
+                               '($complex $imaginary))))))
             (setq res (list 1))
             (go start))
            ((and (or (not (numberp (cadr gr)))
@@ -2282,7 +2291,8 @@
                 (return (div (power -1 pot)
                              (power w pot)))))
            ((or (eq $domain '$complex) (not $radexpand)) (go up)))
-     (return (do ((l (cdr gr) (cdr l)) (res (ncons 1)) (rad))
+     (return (do ((l (cdr gr) (cdr l)) (res (ncons 1)) (rad)
+                  (signs factor-signs (cdr signs)))
                  ((null l)
                   (cond ((equal res '(1))
                          (eqtest (list '(mexpt) gr pot) check))
@@ -2296,7 +2306,7 @@
                          (eqtest (testt (cons '(mtimes) res)) check))))
                ;; Check with $csign to be more complete. This prevents wrong 
                ;; simplifications like sqrt(-z^2)->%i*sqrt(z^2) for z complex.
-               (setq z ($csign (car l)))
+               (setq z (if signs (car signs) ($csign (car l))))
                (if (member z '($complex $imaginary))
                    (setq z '$pnz)) ; if appears complex, unknown sign
                (setq w (cond ((member z '($neg $nz))
@@ -2445,7 +2455,9 @@
                      (odnump (caddr gr))))
             ;; Simplify (z^a)^b -> z^(a*b)
             (setq pot (mul pot (caddr gr))
-                  gr (cadr gr)))
+                  gr (cadr gr))
+            (when (m1-real-root-p gr pot)
+              (return (m1-principal-power pot))))
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
@@ -2499,6 +2511,8 @@
             (setq temp (cons '(mexpt) (if check 
                                           (list (cadr x) (mult (caddr x) w))
                                           (list x w))))
+            (when (and check (m1-real-root-p (cadr x) (caddr temp)))
+              (setq temp (m1-principal-power (caddr temp))))
             (if (and (not *timesinp*) (not (eq x '$%i)))
                 (let ((*timesinp* t))
                   (setq temp (simplifya temp t))))
@@ -2533,7 +2547,9 @@
                                    (eq (car x) '$%i)))
                           (rplacd fm (cddr fm))
                           (cond ((mnump (setq x (if (mnump (car x))
-                                                    (exptrl (car x) w)
+                                                    (if (m1-real-root-p (car x) w)
+                                                        (m1-principal-power w)
+                                                        (exptrl (car x) w))
                                                     (power (car x) w))))
                                  ;; Do not return the number directly. Rescan it
                                  ;; like any other result, so that a rational
@@ -3002,6 +3018,20 @@
 (defun simplexpon (e)
   (or (maxima-integerp e)
       (and (eq $domain '$real) (ratnump e) (oddp (caddr e)))))
+
+;; With domain:real, (-1)^(p/q) for odd q is the real root. A power of -1
+;; that survives simplification has an even denominator and is a principal
+;; value, and so is a power or product of such powers. M1-REAL-ROOT-P is T
+;; when folding exponents gives BASE^E that would be read as a real root.
+;; M1-PRINCIPAL-POWER returns the principal value of (-1)^E instead, as
+;; m1pbranch does.
+
+(defun m1-real-root-p (base e)
+  (and (eql base -1) (eq $domain '$real) (ratnump e) (oddp (caddr e))))
+
+(defun m1-principal-power (e)
+  (let (($%emode t))
+    (power '$%e (mul e '$%i '$%pi))))
 
 ;; This function is not called in Maxima core or share code
 ;; and can be cut out.

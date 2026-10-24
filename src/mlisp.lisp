@@ -2434,15 +2434,20 @@ wrapper for this."
      (key-lists (cdddr info)))
     (key-value-pairs-given-key-lists x key-lists)))
 
+;; Return the list of values that "for x in e" assigns to x in turn,
+;; given the value of e. Translated loops call this too.
+(defun mdoin-elements (set)
+  (if ($atom (setq set (format1 set)))
+      (cond
+        ((hash-table-p set) (key-value-pairs-for-hashed-array set))
+        ((safe-mget set 'hashar) (key-value-pairs-for-undeclared-array set))
+        (t (merror (intl:gettext "do loop: atomic 'in' argument must be a hashed or undeclared array; found: ~M") set)))
+      (margs set)))
+
 (defmspec mdoin (form)
   (setq form (cdr form))
   (funcall #'(lambda  (mdop my-var set test action)
-	       (setq set (if ($atom (setq set (format1 (meval (cadr form)))))
-			     (cond
-			       ((hash-table-p set) (key-value-pairs-for-hashed-array set))
-			       ((safe-mget set 'hashar) (key-value-pairs-for-undeclared-array set))
-			       (t (merror (intl:gettext "do loop: atomic 'in' argument must be a hashed or undeclared array; found: ~M") set)))
-			     (margs set))
+	       (setq set (mdoin-elements (meval (cadr form)))
 		     test (list '(mor)
 				(if (car (cddddr form))
 				    (list '(mgreaterp) my-var (car (cddddr form))))

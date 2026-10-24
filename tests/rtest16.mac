@@ -4584,6 +4584,81 @@ every(lambda([e], is(abs(float(trigreduce(e) - e)) < 1e-12*abs(float(e)))),
 true$
 
 
+/* Bug #5701: "rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2" */
+
+block([msg : (errcatch(1/0), error)],
+  map(lambda([u], errcatch(rectform(u)) = [] and error = msg),
+      [1/(log(%i) - %i*%pi/2), sech(log(%i)), csch(2*log(%i)), (log(%i) - %i*%pi/2)^(-1001)]));
+[true, true, true, true]$
+
+
+/* Bug #5704: "with_stdout() to a file name is slow"
+   (these tests don't actually measure speed, but with_stdout's functionality) */
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_1.txt"), file_output_append : false, r, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  r : with_stdout(f, printf(true, "b~%"), 42),
+  s : openr(f),
+  l : [readline(s), readline(s)],
+  close(s),
+  [r, l]);
+[42, ["b", false]]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_2.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%")),
+  file_output_append : true,
+  with_stdout(f, printf(true, "b~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  l);
+["a", "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_3.txt"), g : sconcat(maxima_tempdir, "/with_stdout_4.txt"), file_output_append : false, s, l],
+  with_stdout(f, printf(true, "a~%"), with_stdout(g, printf(true, "b~%")), printf(true, "c~%")),
+  s : openr(f),
+  l : [readline(s), readline(s), readline(s)],
+  close(s),
+  s : openr(g),
+  l : append(l, [readline(s), readline(s)]),
+  close(s),
+  l);
+["a", "c", false, "b", false]$
+
+block([f : sconcat(maxima_tempdir, "/with_stdout_5.txt"), file_output_append : false],
+  [catch(with_stdout(f, throw(1), 2)), errcatch(with_stdout(f, error("with_stdout"), 3)), with_stdout(f, 4)]);
+[1, [], 4]$
+
+
+/* Bug #5707: "ratsimp treats sqrt(x) and x^(1/4) as unrelated" */
+
+[ratsimp((7^(1/4)+1)*(7^(1/4)-1)*sqrt(7)),
+ ratsimp(sqrt(x)*(x^(1/4)*y+1) - x^(3/4)*y),
+ ratsimp((7^(1/4)+1)^2*(sqrt(7)+1) - (sqrt(7)+1)*(sqrt(7)+2*7^(1/4)+1))];
+[7-sqrt(7), sqrt(x), 0]$
+
+ratsimp(  (7^(1/4)*(7^(3/4)*%i*a*c + 3*sqrt(2)*sqrt(7)*%i*a*c
+          - 4*sqrt(7)*%i*a*c + 7^(1/4)*%i*a*c - 4*%i*a*c + 7^(5/4)*a*c
+          + 7^(3/4)*a*c - 4*sqrt(7)*a*c - 3*sqrt(2)*a*c - 4*a*c + 8*7^(3/4)*b
+          - 8*sqrt(7)*b + 8*7^(1/4)*b - 8*b))/48
+        + (7^(3/4)*%i*a*c + 3*sqrt(2)*sqrt(7)*%i*a*c - 4*sqrt(7)*%i*a*c
+          + 7^(1/4)*%i*a*c - 4*%i*a*c + 7^(5/4)*a*c + 7^(3/4)*a*c
+          - 4*sqrt(7)*a*c - 3*sqrt(2)*a*c - 4*a*c + 8*7^(3/4)*b - 8*sqrt(7)*b
+          + 8*7^(1/4)*b - 8*b)/48
+        + ((sqrt(2)*%i - %i - 1)*(sqrt(2)*sqrt(7)*%i - 2*7^(1/4)*%i
+          + sqrt(2)*%i - 2*7^(3/4) + sqrt(2)*sqrt(7) - sqrt(2))*a*c)/32);
+b$
+
+[ratsimp((x^(1/6)+x^(1/4))/(sqrt(x)-x^(1/3))),
+ block([domain : complex], ratsimp((x^(1/6)+x^(1/4))/(sqrt(x)-x^(1/3))))];
+[(x^(1/4)+x^(1/6))/(sqrt(x)-x^(1/3)), 1/(x^(1/4)-x^(1/6))]$
+
+block([radexpand : false, e],
+  e : ((-2)^(1/3)-1)/((-2)^(1/6)-1),
+  [is(ratsimp(e) = e), block([domain : complex], is(ratsimp(e) = (-2)^(1/6) + 1))]);
+[true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
