@@ -783,16 +783,51 @@
 ;; For real n > 1, the integrand of elliptic_pi has simple poles at
 ;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
 ;; p < 0 and x, y, z >= 0 it returns the Cauchy principal value, so
-;; bf-elliptic-pi does too.  Replacing n by n - i0 and applying the
-;; Sokhotski-Plemelj formula adds
+;; bf-elliptic-pi does too.
 ;;
-;;   -i*%pi/2*sqrt(n/((n-1)*(n-m)))
+;; Write the integral as h/g where
 ;;
-;; for each such call: twice per cycle of %pi from the complete
-;; integral when m <= 1, and once (with the sign of the reduced phi)
-;; when the reduced phi satisfies n*sin(phi)^2 > 1 >= m*sin(phi)^2.
-;; The other cases go through bf-rj1, which already gives the n - i0
-;; value.  This matches the branch used by Mathematica and mpmath.
+;;   h(theta) = 1/sqrt(1-m*sin(theta)^2)
+;;   g(theta) = 1-n*sin(theta)^2
+;;
+;; For n > 1, g has simple zeroes at theta*, %pi-theta* and multiples
+;; of k*%pi.  For m < n, h is smooth near each of them.
+;;
+;; Replacing n by n - %i*eps,
+;;
+;;   1-(n-%i*eps)*sin(theta)^2 = g(theta) + %i*eps*sin(theta)^2
+;;
+;; Near the pole, 1-n*sin(theta)^2 ~= 0 so sin(theta)^2 ~= 1/n, n > 0.
+;;
+;; When we do this the pole moves to
+;;
+;;   theta = theta* + %i*eps*sin(theta*)^2/|g'(theta*)|
+;;
+;; which is just above the real axis.  Thus the integration path is
+;; just below the pole.  This is equivalent to indenting the path with
+;; a semicircle below the pole.  The path goes counter-clockwise so it
+;; contributes +%i*%pi times the residue at the pole:
+;;
+;;   Res(h/g, theta*) = h(theta*)/g'(theta*)
+;;
+;; At theta*, sin(theta*) = 1/sqrt(n) and therefore cos(theta*) = sqrt((n-1)/n).
+;;
+;;   g'(theta*) = -2*n*sin(theta*)*cos(theta*) = -2*sqrt(n-1)
+;;   h(theta*) = 1/sqrt(1-m/n) = sqrt(n/(n-m))
+;;
+;; Hence
+;;
+;;   Res(h/g, theta*) = -1/2*sqrt(n/(n-1)/(n-m))
+;;
+;; and the contribution is -%i*%pi*Res(h/g,theta*) for each pole.
+;;
+;; We need to count every pole between 0 and phi, accounting for the
+;; the sign of phi.  With phi = c*%pi + r, |r| <= %pi/2, that is 2*c
+;; poles plus sgn(r) if n*sin(r)^2 > 1.  For m > 1 the complete
+;; integral, and r past the branch point m*sin(r)^2 = 1, go through
+;; bf-rj1, which already includes the term.  The other cases go
+;; through bf-rj1, which already gives the n - i0 value.  This matches
+;; the branch used by Mathematica and mpmath.
 (defun bf-elliptic-pi-residue (n phi m)
   (if (and (realp n) (realp phi) (realp m) (> n 1))
       (let* ((bf-pi (%pi phi))
@@ -807,7 +842,9 @@
 			       0))))
 	(if (zerop crossings)
 	    0
-	    (* (complex 0 -1) crossings (/ bf-pi 2)
+	    (* (complex 0 -1)
+               crossings
+               (/ bf-pi 2)
 	       (sqrt (/ n (* (- n 1) (- n m)))))))
       0))
 
