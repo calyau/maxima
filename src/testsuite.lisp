@@ -112,9 +112,8 @@
         ((mlist simp) "rtest_signum")
         "rtest_lambert_w"
         ((mlist simp) "rtest_elliptic"
-	 #-(or allegro gcl) ((mlist simp) 135)
-	 #+allegro ((mlist simp) 92 135)
-         #+gcl ((mlist simp) 135 284 287))
+	 #-allegro ((mlist simp) 135)
+	 #+allegro ((mlist simp) 92 135))
         ((mlist simp) "rtest_integrate" ((mlist simp) 826 827))
         "rtest_integrate_special"
         ((mlist simp) "rtest_sqrt"

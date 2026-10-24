@@ -656,8 +656,11 @@
 		(and (zerop (imagpart yn)) (>= (realpart yn) 0))
 		(and (zerop (imagpart zn)) (>= (realpart zn) 0))
 		(and (zerop (imagpart qn)) (> (realpart qn) 0)))
+           ;; Gcl Version_2_7_2pre15 has a buggy sort function that
+           ;; doesn't actually sort the args here.  But 2.6.14 works.
+           ;; Use stable-sort which works fine everywhere.
 	   (destructuring-bind (xn yn zn)
-	       (sort (list xn yn zn) #'<)
+	       (stable-sort (list xn yn zn) #'<)
 	     (let* ((pn (+ yn (* (- zn yn) (/ (- yn xn) (+ yn qn)))))
 		    (s (- (* (- pn yn) (bf-rj1 xn yn zn pn))
 			  (* 3 (bf-rf xn yn zn)))))
