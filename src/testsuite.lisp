@@ -286,7 +286,7 @@
     ((mlist simp) "rtest_abs_integrate" ((mlist) 173 249))
     "rtest_pochhammer"
     ((mlist simp) "rtest_to_poly_solve"
-     ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322))
+     ((mlist simp) 64 74 80 116 140 141 168 184 245 322))
     ((mlist simp) "rtest_sym"
      #-(or sbcl ccl gcl clisp cmucl ecl) ((mlist simp) 15 64)
      #+sbcl ((mlist simp))

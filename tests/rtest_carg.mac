@@ -212,4 +212,23 @@ block([nv : lambda([e], float(expand(rectform(float(e)))))],
 [true, true, true, true, atan2(-%i*erf(%i), 0)]$
 
 
+/* Bug #5078: "carg() of tan() or tanh() of a complex number is off by %pi when the real part of the result is negative" */
+
+[carg(tan(x + %i*y)), carg(tanh(x + %i*y)), carg(cot(x + %i*y)), carg(coth(x + %i*y))];
+[atan2(sinh(2*y), sin(2*x)), atan2(sin(2*y), sinh(2*x)), atan2(-sinh(2*y), sin(2*x)), atan2(-sin(2*y), sinh(2*x))]$
+
+map(lambda([f, u],
+      block([w : apply(f, [u]), v],
+        v : rectform(float(w)),
+        [is(abs(float(carg(w)) - carg(v)) < 1e-14),
+         is(cabs(float(rectform(polarform(w))) - v) < 1e-14),
+         is(cabs(float(rectform(log(w))) - log(v)) < 1e-14)])),
+    [tan, cot, tanh, coth],
+    [2 + 3*%i, 2 + 3*%i, -2 + 3*%i, -2 + 3*%i]);
+[[true, true, true], [true, true, true], [true, true, true], [true, true, true]]$
+
+[cabs(tan(log(%i))), carg(tan(log(%i))), cabs(tanh(%i*log(%i))), carg(tanh(%i*log(%i))), cabs(coth(y*log(%i)))];
+[sqrt(cosh(%pi) - 1)/sqrt(cosh(%pi) + 1), %pi/2, sqrt(cosh(%pi) - 1)/sqrt(cosh(%pi) + 1), %pi, sqrt(cos(%pi*y) + 1)/sqrt(1 - cos(%pi*y))]$
+
+
 /* ---------- End of file rtest_carg.mac ------------------------------------ */

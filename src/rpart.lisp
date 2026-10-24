@@ -262,6 +262,10 @@
   ;; below. Instead, we calculate it when it's needed (a maximum of once).
   (destructuring-bind (real . imag) sp
     (cond
+      ((and (< power 0) (zerop1 real) (zerop1 imag))
+       ;; Signal the simplifier's error for 0 to a negative power.
+       (cons (power real power) 0))
+
       ((= power -1)
        ;; Handle the case of 1/(x+%i*y) carefully.  This
        ;; is needed if x and y are (Lisp) numbers to
@@ -470,6 +474,20 @@
 	  ((and (member (caar l) '(%atan %csc %sec %cot %csch %sech %coth) :test #'eq)
 		(=0 (cdr (risplit (cadr l)))))
 	   (cons l 0))
+          ((member (caar l) '(%cot %coth))
+           ;; Split cot(z) and coth(z) directly. Splitting 1/tan(z) and
+           ;; 1/tanh(z) divides by zero where cot(z) or coth(z) is zero.
+           (let* ((sp (risplit (cadr l)))
+                  (2rl (mul (car sp) 2))
+                  (2im (mul (cdr sp) 2))
+                  (denom (if (eq (caar l) '%cot)
+                             (sub (take '(%cosh) 2im) (take '(%cos) 2rl))
+                             (sub (take '(%cosh) 2rl) (take '(%cos) 2im)))))
+             (if (eq (caar l) '%cot)
+                 (cons (div (take '(%sin) 2rl) denom)
+                       (neg (div (take '(%sinh) 2im) denom)))
+                 (cons (div (take '(%sinh) 2rl) denom)
+                       (neg (div (take '(%sin) 2im) denom))))))
           ((and (eq (caar l) '%atan2)
                 ;; SRATSIMP, since the real parts that the conjugate formulas
                 ;; below give can leave an imaginary part like
@@ -820,10 +838,11 @@
 		   (root (div (add cosh (neg cos))
 			      (add cosh cos))
 			 2))
-		 (take '(%atan)
-		       (if (eq (caar l) '%tan)
-			   (div (take '(%sinh) 2frst) (take '(%sin) 2scnd))
-			   (div (take '(%sin) 2scnd) (take '(%sinh) 2frst)))))))
+		 ;; RISPLIT's denominator for tan and tanh is never
+		 ;; negative, so the argument is that of the numerator.
+		 (if (eq (caar l) '%tan)
+		   (genatan (take '(%sinh) 2frst) (take '(%sin) 2scnd))
+		   (genatan (take '(%sin) 2scnd) (take '(%sinh) 2frst))))))
 	((specrepp l) (absarg (specdisrep l) absflag))
 	((let ((foot (coversinemyfoot l)))
 	   (and foot (not (=0 (cdr (risplit (cadr l))))) (absarg foot absflag))))

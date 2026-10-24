@@ -288,4 +288,40 @@ z^a;
 (reset(domain), reset(radexpand), done);
 done;
 
+
+/* Bug #5705: "((-1)^(1/6))^2 simplifies to -1" */
+
+[((-1)^(1/6))^2, (-1)^(1/6)*(-1)^(1/6), ((-1)^(1/6))^4,
+ ((-1)^(1/4))^(4/3), ((-1)^(1/10))^2, ((-8)^(1/6))^2];
+[(sqrt(3)*%i)/2+1/2, (sqrt(3)*%i)/2+1/2, (sqrt(3)*%i)/2-1/2,
+ (sqrt(3)*%i)/2+1/2, %e^((%i*%pi)/5), 2*((sqrt(3)*%i)/2+1/2)]$
+
+[(-1)^(1/3), (-1)^(2/3), block([domain : complex], is(((-1)^(1/6))^2 = (-1)^(1/3)))];
+[-1, 1, true]$
+
+block([e : 1/(1+(-1)^(1/6)), r],
+  r : block([algebraic : true], ratsimp(e)),
+  is(cabs(float(rectform(r - e))) < 1e-14));
+true$
+
+
+/* Bug #5706: "(-2*%i)^(1/3) simplifies to the wrong cube root" */
+
+[(-2*%i)^(1/3), (-2*(-1)^(1/4))^(1/3), (2*%i)^(1/3), (-8*y)^(1/3), (-8*sqrt(y))^(1/3)];
+[2^(1/3)*(-%i)^(1/3), 2^(1/3)*(-(-1)^(1/4))^(1/3), (-1)^(1/6)*2^(1/3), -2*y^(1/3), 2*(-sqrt(y))^(1/3)]$
+
+block([j, z, n, p],
+  local(j, z, n, p),
+  declare(j, imaginary, z, complex),
+  assume(n < 0, p > 0),
+  map(lambda([a, b], is(a = b)),
+      [(-2*j)^(1/3), (-2*z)^(1/3), (-2*sqrt(n))^(1/3), (-8*sqrt(p))^(1/3), (-1/p^(3/4))^(4/3)*p],
+      [2^(1/3)*(-j)^(1/3), 2^(1/3)*(-z)^(1/3), 2^(1/3)*(-sqrt(n))^(1/3), -2*p^(1/6), 1]));
+[true, true, true, true, true]$
+
+block([e : (-2*%i)^(1/3)],
+  is(cabs(float(rectform(e - exp(log(-2*%i)/3)))) < 1e-14));
+true$
+
+
 /* ---------- End of file rtest_power.mac ----------------------------------- */

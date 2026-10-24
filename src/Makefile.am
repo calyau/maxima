@@ -455,6 +455,8 @@ ecllib_SCRIPTS = binary-ecl/maxima
 EXECUTEECL = $(ECL_NAME) -norc
 BUILT_FILES += binary-ecl/maxima
 
+ecl:binary-ecl/maxima
+
 if WIN32
 # When using ECL (Windows or crosscompiling on Linux), (build-maxima-lib) does not seem to work.
 # Do something similar than with ABCL below.
@@ -467,8 +469,6 @@ install-ecl-folder:
 	chmod +x $(DESTDIR)$(ecllibdir)/maxima
 uninstall-ecl-folder:
 	if test x"$(ecllibdir)" = x"" ; then echo "Error: No known maxima version"; exit -1; else rm -f "$(DESTDIR)$(ecllibdir)/*"; fi
-
-ecl:binary-ecl/maxima
 
 binary-ecl/maxima:
 	$(MAKE) bd

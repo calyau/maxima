@@ -37,6 +37,7 @@ Bug fixes for numbered bugs:
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
+* \#5078 carg() of tan() or tanh() of a complex number is off by %pi when the real part of the result is negative
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
@@ -257,6 +258,15 @@ Bug fixes for numbered bugs:
 * \#5696 sign(sqrt(2)-cos(x)) is neg
 * \#5697 trigreduce gives Lisp errors or wrong results for products like cos(%pi/8)^2*sin(%pi/8)^2
 * \#5698 Bigfloat coth, tan, cot and csch signal errors or lose digits near their zeros and poles
+* \#5699 assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it
+* \#5700 rectform of coth and cot divides by zero at their zeros
+* \#5701 rectform gives a Lisp error or 0 for negative powers of zeros like log(%i)-%i*%pi/2
+* \#5703 Translated for x in e loops give other values than interpreted ones, or Lisp errors
+* \#5704 with_stdout() to a file name is slow
+* \#5705 ((-1)^(1/6))^2 simplifies to -1
+* \#5706 (-2*%i)^(1/3) simplifies to the wrong cube root
+* \#5707 ratsimp treats sqrt(x) and x^(1/4) as unrelated
+* \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
 
 Bug fixes for unnumbered bugs:
 ------------------------------

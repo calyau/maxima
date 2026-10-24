@@ -3174,6 +3174,38 @@ sign(sqrt(2)-cos(x));
 pos$
 
 
+/* Bug #5699: "assume((x+1)^3 > 0) adds x+1 > 0, but is() and forget() do not see it" */
+
+block([x],
+  local(x),
+  [assume((x+1)^3 > 0), facts(), is(x+1 > 0), is(x > -1), sign(x+1), forget(x+1 > 0), facts()]);
+[[x > -1], [x > -1], true, true, pos, [x > -1], []]$
+
+block([a, b, c, d, h, k],
+  local(a, b, c, d, h, k),
+  [assume(1/(a-1) > 0, (b-c)^3 > 0, (1-d)^(1/3) < 0, equal((h+1)^5, 0), notequal((k-2)^3, 0)),
+   [is(a > 1), is(b > c), is(d > 1), is(equal(h, -1)), is(notequal(k, 2))],
+   forget(a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)),
+   facts()]);
+[[a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], [true, true, true, true, true],
+ [a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], []]$
+
+block([u],
+  local(u),
+  [asksign(1/(u-1)), sign(u-1), sign(u)]), ask_hide_prompt; pos;
+[pos, pos, pos]$
+
+
+/* Bug #5709: "sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false" */
+
+block([radexpand : false],
+  local(x, y),
+  assume(x > 9, y > 0),
+  [sign(sqrt(2*y) - y), sign(sqrt(16*y) - y), sign((2*y)^(1/3) - y),
+   is(sqrt(2*y) > y), sign(sqrt(sqrt(x) + 1) - 2)]);
+[pnz, pnz, pnz, unknown, pos]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
