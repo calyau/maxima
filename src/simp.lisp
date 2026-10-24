@@ -2445,7 +2445,9 @@
                      (odnump (caddr gr))))
             ;; Simplify (z^a)^b -> z^(a*b)
             (setq pot (mul pot (caddr gr))
-                  gr (cadr gr)))
+                  gr (cadr gr))
+            (when (m1-real-root-p gr pot)
+              (return (m1-principal-power pot))))
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
@@ -2499,6 +2501,8 @@
             (setq temp (cons '(mexpt) (if check 
                                           (list (cadr x) (mult (caddr x) w))
                                           (list x w))))
+            (when (and check (m1-real-root-p (cadr x) (caddr temp)))
+              (setq temp (m1-principal-power (caddr temp))))
             (if (and (not *timesinp*) (not (eq x '$%i)))
                 (let ((*timesinp* t))
                   (setq temp (simplifya temp t))))
@@ -2533,7 +2537,9 @@
                                    (eq (car x) '$%i)))
                           (rplacd fm (cddr fm))
                           (cond ((mnump (setq x (if (mnump (car x))
-                                                    (exptrl (car x) w)
+                                                    (if (m1-real-root-p (car x) w)
+                                                        (m1-principal-power w)
+                                                        (exptrl (car x) w))
                                                     (power (car x) w))))
                                  ;; Do not return the number directly. Rescan it
                                  ;; like any other result, so that a rational
@@ -3002,6 +3008,20 @@
 (defun simplexpon (e)
   (or (maxima-integerp e)
       (and (eq $domain '$real) (ratnump e) (oddp (caddr e)))))
+
+;; With domain:real, (-1)^(p/q) for odd q is the real root. A power of -1
+;; that survives simplification has an even denominator and is a principal
+;; value, and so is a power or product of such powers. M1-REAL-ROOT-P is T
+;; when folding exponents gives BASE^E that would be read as a real root.
+;; M1-PRINCIPAL-POWER returns the principal value of (-1)^E instead, as
+;; m1pbranch does.
+
+(defun m1-real-root-p (base e)
+  (and (eql base -1) (eq $domain '$real) (ratnump e) (oddp (caddr e))))
+
+(defun m1-principal-power (e)
+  (let (($%emode t))
+    (power '$%e (mul e '$%i '$%pi))))
 
 ;; This function is not called in Maxima core or share code
 ;; and can be cut out.
