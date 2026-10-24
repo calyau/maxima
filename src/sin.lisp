@@ -319,8 +319,7 @@
                  (if (zerop1 (caddr w))
                      (mul (take '(%signum) (cadr w)) '$%pi 1//2)
                      (take '(%atan) (div (cadr w) (caddr w))))
-                 w
-                 *exp*))
+                 w *exp*))
           (return (mul* const
                         (integrator *exp* var2 stack))))
            
@@ -528,10 +527,7 @@
                     1)
               q ($expand (sratsimp (div (mul r1 r2) (mul s s))))
               m (div (mul s (power q 1//2)) (power r1 1//2))
-              one (and (eq s r1)
-                       (eq (let ((sign-imag-errp nil))
-                             (catch 'sign-imag-err ($sign q)))
-                           '$pos)))
+              one (and (eq s r1) (eq (csign q) '$pos)))
         (roots (setq expr (sub expr)))
         (and (< (length rs) n)
              (not (and early (eql s 1)))
@@ -1687,13 +1683,12 @@
   ;; integrate with cos(u)^(-r) and multiply by k, which is constant where
   ;; cos(u) has no zero. If that stops with an error, as for
   ;; cos(u)^(-3/2)*(cos(u)+1)^(-3), go on with EXPR.
-  (let ((k 1))
+  (let ((k 1) res)
     (flet ((recip (e)
              (let ((g (and (mexptp e) (ratnump (caddr e))
                            (evenp (caddr (caddr e))) (not (atom (cadr e)))
-                           (cdr (assoc (caar (cadr e))
-                                       '((%sec . %cos) (%csc . %sin)
-                                         (%cot . %tan)))))))
+                           (member (caar (cadr e)) '(%sec %csc %cot))
+                           (get (caar (cadr e)) 'recip))))
                (if (null g)
                    e
                    (let* ((r (caddr e))
@@ -1701,16 +1696,13 @@
                           (h (ftake g (cadr (cadr e)))))
                      (setq k (mul k (power (cadr e) f) (power h f)))
                      (power h (neg r)))))))
-      (let ((new (if (mtimesp expr)
-                     (muln (mapcar #'recip (cdr expr)) t)
-                     (recip expr))))
-        (unless (eql k 1)
-          (let ((res (let (($errormsg nil)) (errcatch (trigint new var2)))))
-            (when res
-              (return-from trigint
-                (if (isinop (car res) '%integrate)
-                    (car res)
-                    (mul k (car res))))))))))
+      (setq res (muln (mapcar #'recip (if (mtimesp expr) (cdr expr) (list expr)))
+                      t))
+      (unless (eql k 1)
+        (setq res (let (($errormsg nil)) (errcatch (trigint res var2))))
+        (when res
+          (return-from trigint
+            (if (isinop (car res) '%integrate) (car res) (mul k (car res))))))))
   (prog (y repl y1 y2 *yy* z m n *yz*)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to

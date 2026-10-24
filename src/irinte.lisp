@@ -71,22 +71,19 @@
 	res
 	(intirfactoroot funct x))))
 
-;; INTIR3-REF splits D*P*R0^E0 divided by a quadratic into pieces, each a
-;; power of a linear factor times D*P*R0^E0, after asking for the sign of
-;; the discriminant of the quadratic. INTIR2 integrates the pieces only if
-;; JMAUG matches them, directly or after INTIRFACTOROOT has factored R0^E0.
-;; True if JMAUG so matches D*P*R0^E0 times a power of a generic linear
-;; factor.
+;; True if JMAUG matches P*R0^E0 times a power of a linear factor, directly
+;; or after factoring as INTIRFACTOROOT does. INTIR2 can integrate the pieces
+;; into which INTIR3-REF splits EXP, after asking for the sign of a
+;; discriminant, only then.
 (defun intir3-pieces-p (assoclist x)
-  (let* ((e (mul (cdras 'd assoclist) (cdras 'p assoclist)
-                 (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
-                 (inv (add x (gensym)))))
-         (factors (timestest e)))
+  (let ((e (mul (cdras 'p assoclist)
+                (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
+                (inv (add x (gensym))))))
     (or (jmaug e x)
-        (jmaug (distrfactor factors x) x)
+        (jmaug (distrfactor (timestest e) x) x)
         (let ((*globalcareflag* t))
           (declare (special *globalcareflag*))
-          (jmaug (distrfactor factors x) x)))))
+          (jmaug (distrfactor (timestest e) x) x)))))
 
 (defun intir3 (exp x)
   (prog ((assoclist (elliptquad exp x)) e f g r0)
@@ -292,7 +289,7 @@
 ;; m is an integer, n is a number(?).  a, b, c, e, and f are
 ;; expressions independent of x (var).
 (defun inti (funct x assoclist)
-  (prog (met n expr f e #+nil denom)
+  (prog ((met (make-symbol (symbol-name '#:yannis))) n expr f e #+nil denom)
      (setq n (cdras 'n assoclist))
      (when (or (null assoclist) (maxima-integerp n))
        (return nil))
@@ -319,11 +316,9 @@
 
      ;; Apply the linear substitution y = f*x+e.  That is x = (y-e)/f.
      ;; Then use INTIRA to integrate this.  The integrand becomes
-     ;; something like p(y)*y^m and other terms.
-     (setq met (make-symbol (symbol-name '#:yannis)))
-     ;; For complex x, y is complex too.
-     (when (decl-complexp x)
-       (declare1 (list met) t '$complex 'kind))
+     ;; something like p(y)*y^m and other terms. For complex x, y is
+     ;; complex too.
+     (when (decl-complexp x) (declare1 (list met) t '$complex 'kind))
      (setq expr (intira (distrexpandroot
 			 (cdr ($substitute
 			       (mul (inv f)
@@ -1133,7 +1128,13 @@
 ;;
 (defun den1den1 (c b a x ec-1)
   (let ((exp2 (add (mul b x) a a))                ; exp2 = b*x+2*a
-        (exp3 (inv (simplify (list '(mabs) x))))) ; exp3 = 1/abs(x)
+        ;; exp3 = 1/abs(x), which keeps the results real for real x, but 1/x
+        ;; for complex x. That gives the formulas for x > 0. The asinh and
+        ;; asin formulas then hold only up to a sign, so the logarithm
+        ;; formula takes their place, and the sign abs(2*a+b*x)/(2*a+b*x)
+        ;; becomes (2*a+b*x)/(2*sqrt(a)*sqrt(R)), which is 1 or -1 on each
+        ;; region where sqrt(R) is analytic.
+        (exp3 (inv (if (decl-complexp x) x (simplify (list '(mabs) x))))))
     (prog (signdiscrim
 	   (signa (checksigntm (simplifya a nil)))
 	   exp1)
@@ -1142,17 +1143,9 @@
        (setq signdiscrim (signdis3 c b a signa ec-1)
 	     exp1 (power a (inv -2)))
        #+nil (format t "signa = ~A~%signdiscrim = ~A~%" signa signdiscrim)
-       ;; For complex x, dividing by abs(x) is wrong. Use x, which gives the
-       ;; formulas for x > 0. The asinh and asin formulas then hold only up
-       ;; to a sign, so the logarithm formula takes their place, and the sign
-       ;; abs(2*a+b*x)/(2*a+b*x) becomes (2*a+b*x)/(2*sqrt(a)*sqrt(R)),
-       ;; which is 1 or -1 on each region where sqrt(R) is analytic.
-       (when (decl-complexp x)
-	 (setq exp3 (inv x)))
 
        (when (and (eq signa '$positive)
-		  (eq signdiscrim '$negative)
-		  (not (decl-complexp x)))
+		  (eq signdiscrim '$negative) (not (decl-complexp x)))
 	 ;; G&R case a > 0, del > 0
 	 ;;
 	 ;; -1/sqrt(a)*asinh((2*a+b*x)/x/sqrt(del)
@@ -1175,8 +1168,7 @@
 		       -1 exp1
 		       `((%log) ,(augmult (mul exp3 exp2))))))
        (when (or (eq signa '$positive)
-		 (and (decl-complexp x)
-		      (eq signa '$negative)
+		 (and (decl-complexp x) (eq signa '$negative)
 		      (eq signdiscrim '$positive)))
 	 ;; G&R case a > 0, and for complex x also a < 0, del < 0
 	 ;;
@@ -1184,8 +1176,6 @@
 	 ;;
 	 ;; R = c*x^2+b*x+a.
 	 ;;
-	 ;; For real x, dividing by abs(x) instead of x keeps the result
-	 ;; real.
 	 (return (mul* -1 exp1
 		       `((%log)
 			 ,(add (mul b x exp3)
