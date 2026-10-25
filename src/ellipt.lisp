@@ -4249,7 +4249,8 @@ first kind:
       e
       (simplify (make-elliptic-e e))))
   
-	 
+
+(in-package :bigfloat)
 ;; Eu(u,m) = integrate(jacobi_dn(v,m)^2,v,0,u)
 ;;         = integrate(sqrt((1-m*t^2)/(1-t^2)),t,0,jacobi_sn(u,m))
 ;;
@@ -4273,8 +4274,8 @@ first kind:
 (defun elliptic-eu (u m)
   (cond ((realp u)
 	 ;; E(u + 2*n*K) = E(u) + 2*n*E
-	 (let ((ell-k (to (elliptic-k m)))
-	       (ell-e (elliptic-ec m)))
+	 (let ((ell-k (bf-elliptic-k m))
+	       (ell-e (bf-elliptic-ec m)))
 	   (multiple-value-bind (n u-rem)
 	       (floor u (* 2 ell-k))
 	     ;; 0 <= u-rem < 2*K
@@ -4283,12 +4284,12 @@ first kind:
 		       ;; 0 <= u-rem < K so
 		       ;; E(u + K) = E(u) + E - m*sn(u)*cd(u)
 		       (let ((u-k (- u ell-k)))
-			 (- (+ (elliptic-e (cl:asin (bigfloat::sn u-k m)) m)
+			 (- (+ (bf-elliptic-e (asin (sn u-k m)) m)
 			       ell-e)
-			    (/ (* m (bigfloat::sn u-k m) (bigfloat::cn u-k m))
-			       (bigfloat::dn u-k m)))))
+			    (/ (* m (sn u-k m) (cn u-k m))
+			       (dn u-k m)))))
 		      (t
-		       (elliptic-e (cl:asin (bigfloat::sn u m)) m)))))))
+		       (bf-elliptic-e (asin (sn u m)) m)))))))
 	((complexp u)
 	 ;; From Lawden:
 	 ;;
@@ -4301,11 +4302,13 @@ first kind:
 	   (+ (elliptic-eu u-r m)
 	      (* #c(0 1)
 		 (- (+ u-i
-		       (/ (* (bigfloat::sn u-i m1) (bigfloat::dn u-i m1))
-			  (bigfloat::cn u-i m1)))
+		       (/ (* (sn u-i m1) (dn u-i m1))
+			  (cn u-i m1)))
 		    (+ (elliptic-eu u-i m1)
-		       (/ (* m (bigfloat::sn u-r m) (bigfloat::sn u-i m1) (bigfloat::sn u m))
-			  (bigfloat::cn u-i m1))))))))))
+		       (/ (* m (sn u-r m) (sn u-i m1) (sn u m))
+			  (cn u-i m1))))))))))
+
+(in-package :maxima)
 
 (defgrad %elliptic_eu ($u $m)
   ;; wrt u
@@ -4315,18 +4318,25 @@ first kind:
 )
 
 (def-simplifier elliptic_eu (u m)
-  (cond
-    ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
-    ;; so handle only floats and complex floats here.
-    ((float-numerical-eval-p u m)
-     (elliptic-eu ($float u) ($float m)))
-    ((complex-float-numerical-eval-p u m)
-     (let ((u-r ($realpart u))
-	   (u-i ($imagpart u))
-	   (m ($float m)))
-       (complexify (elliptic-eu (complex u-r u-i) m))))
-    (t
-     (give-up))))
+  (let (args)
+    (cond
+      ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
+      ;; so handle only floats and complex floats here.
+      ((float-numerical-eval-p u m)
+       (bigfloat::elliptic-eu ($float u) ($float m)))
+      ((complex-float-numerical-eval-p u m)
+       (let ((u-r ($realpart u))
+	     (u-i ($imagpart u))
+	     (m ($float m)))
+         (complexify (bigfloat::elliptic-eu (complex u-r u-i) m))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::elliptic-eu (bigfloat:to u) (bigfloat:to m))))
+      ((setf args (complex-bigfloat-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::elliptic-eu (bigfloat:to u) (bigfloat:to m)))))
+      (t
+       (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.
