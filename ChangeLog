@@ -270,6 +270,7 @@ Bug fixes for numbered bugs:
 * \#5707 ratsimp treats sqrt(x) and x^(1/4) as unrelated
 * \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
 * \#5710 ((-2)^(1/6))^2 simplifies to the real root (-2)^(1/3) with radexpand : false
+* \#5711 integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))
 
 Bug fixes for unnumbered bugs:
 ------------------------------
