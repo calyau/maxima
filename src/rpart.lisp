@@ -783,6 +783,45 @@
 
 (defmacro half () ''((rat simp) 1 2))  ;1/2
 
+;; Return the argument of a product in (-%pi, %pi], given ARGS, the arguments
+;; of its factors. Multiples of %pi and the arguments atan2(0, u) of real
+;; factors u combine into c*%pi + s*atan2(0, u1*u2*...), with -1 < c <= 1, s = 1
+;; for c <= 0 and s = -1 otherwise, which is in range and keeps the atan2(0, u)
+;; of a single real factor as it is. With other arguments, the sum is reduced
+;; modulo 2*%pi unless $SIGN shows that it is in range, but not in the Risch
+;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous.
+(defun absarg-product-arg (args)
+  (let ((c 0) reals others)
+    (dolist (arg args)
+      (cond ((eq arg '$%pi)
+             (setq c (add c 1)))
+            ((and (not (atom arg))
+                  (eq (caar arg) 'mtimes)
+                  (mnump (cadr arg))
+                  (eq (caddr arg) '$%pi)
+                  (null (cdddr arg)))
+             (setq c (add c (cadr arg))))
+            ((and (not (atom arg))
+                  (eq (caar arg) '%atan2)
+                  (zerop1 (cadr arg)))
+             (push (caddr arg) reals))
+            ((not (zerop1 arg))
+             (push arg others))))
+    (let ((arg (2pistrip (mul c '$%pi))))
+      (when reals
+        (let ((u (muln reals t)))
+          (setq arg (if (eq ($sign arg) '$pos)
+                      (sub arg (ftake '%atan2 0 u))
+                      (add arg (ftake '%atan2 0 u))))))
+      (let ((sum (2pistrip (addn (cons arg others) t))))
+        (if (or implicit-real
+                (null others)
+                (and (null (cdr others)) (zerop1 arg))
+                (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
+                     (eq ($sign (add sum '$%pi)) '$pos)))
+          sum
+          (reduce-angle-mod-2pi sum))))))
+
 (defun absarg (l &optional (absflag nil))
 ;; Commenting out the the expansion of the expression l. It seems to be not
 ;; necessary, but can cause expression swelling (DK 01/2010).
@@ -824,7 +863,7 @@
 	      (absl () (rplacd abars absl)))
 	     (())
 	   (unless n
-	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
+	     (return (cons (muln absl t) (absarg-product-arg argl))))
 	   (setq abars (absarg (car n) absflag))))
         ((eq (caar l) 'mexpt)
          ;; An expression z^a

@@ -1523,11 +1523,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
 
 ;; The REAL-RANGE property of a function that is real for every real
-;; argument: The bounds of its values as a list (LO HI), each end NIL for no
-;; bound, else (BOUND INCLUSIVE-P), where BOUND is in simplified form and
-;; INCLUSIVE-P indicates whether the bound can actually be attained.
+;; argument, and for carg for every argument: The bounds of its values as a
+;; list (LO HI), each end NIL for no bound, else (BOUND INCLUSIVE-P), where
+;; BOUND is in simplified form and INCLUSIVE-P indicates whether the bound can
+;; actually be attained.
 ;; A bound is not required to be tight, only true. SIGNDIFF-SPECIAL reads it to
-;; compare f(x)-c with zero, through SIGN-FROM-RANGE.
+;; compare f(x)-c with zero, through SIGN-FROM-RANGE, and SIGN-FROM-SUM-RANGE
+;; to bound a sum of such values.
 (mapc #'(lambda (s) (putprop (first s) (second s) 'real-range))
   '((%sin ((-1 t) (1 t)))
     (%cos ((-1 t) (1 t)))
@@ -1538,7 +1540,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (%erfc ((0 nil) (2 nil)))
     (%tanh ((-1 nil) (1 nil)))
     (%atan ((((mtimes simp) ((rat simp) -1 2) $%pi) nil)
-            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))))
+            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))
+    (%atan2 ((((mtimes simp) -1 $%pi) nil) ($%pi t)))
+    (%carg ((((mtimes simp) -1 $%pi) nil) ($%pi t)))))
 
 ;; The sign of f-C for a function f whose values lie in RANGE, see the
 ;; REAL-RANGE property, or NIL when the range does not decide it.
@@ -1552,6 +1556,49 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (case (sign* (sub c (car hi)))
                ($pos '$neg)
                (($zero $pz) (if (cadr hi) '$nz '$neg)))))))
+
+;; The REAL-RANGE of E when E calls a function with that property and the range
+;; applies: carg is real for every argument, the others for real arguments.
+(defun real-range-of (e)
+  (let ((range (and (not (atom e)) (get (caar e) 'real-range))))
+    (and range
+         (or (eq (caar e) '%carg)
+             (every #'(lambda (a) (zerop1 ($imagpart a))) (cdr e)))
+         range)))
+
+;; If each term of the sum X is a real constant or a number times a call with
+;; a REAL-RANGE, and the bounds these give the sum decide its sign, set SIGN
+;; and return T, as SIGNSUM does. Otherwise return NIL.
+(defun sign-from-sum-range (x)
+  (let ((lo 0) (lo-incl t) (hi 0) (hi-incl t) ranged)
+    (dolist (term (cdr x))
+      (let* ((k (if (and (mtimesp term) (mnump (cadr term)) (null (cdddr term)))
+                  (cadr term)
+                  1))
+             (range (real-range-of (if (eql k 1) term (caddr term)))))
+        (cond (range
+               ;; A negative factor swaps the ends of the range.
+               (destructuring-bind (tlo thi) (if (mnegp k) (reverse range) range)
+                 (setq ranged t
+                       lo (and lo tlo (add lo (mul k (car tlo))))
+                       lo-incl (and lo-incl (cadr tlo))
+                       hi (and hi thi (add hi (mul k (car thi))))
+                       hi-incl (and hi-incl (cadr thi)))))
+              ((and (constp term) (zerop1 ($imagpart term)))
+               (setq lo (and lo (add lo term))
+                     hi (and hi (add hi term))))
+              (t
+               (return-from sign-from-sum-range nil)))))
+    (let ((s (and ranged (or (and lo (case (sign* lo)
+                                       ($pos '$pos)
+                                       ($zero (if lo-incl '$pz '$pos))))
+                             (and hi (case (sign* hi)
+                                       ($neg '$neg)
+                                       ($zero (if hi-incl '$nz '$neg))))))))
+      (when s
+        (setq sign s minus nil odds (list x) evens nil)
+        t))))
+
 
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
@@ -1668,6 +1715,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((signdiff x))
 	((prog2 (setq s sign e evens o odds m minus) nil))
 	((signsum x))
+	((sign-from-sum-range x))
 	((prog2 (cond ((strongp s sign))
 		      (t (setq s sign e evens o odds m minus)))
 	     nil))
@@ -1797,9 +1845,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
     ;; sign(f(x) - c) for a function f whose REAL-RANGE property gives the
     ;; bounds of its values.
-    (when (and (null sgn) (not (atom xlhs)) (get (caar xlhs) 'real-range)
-               (zerop1 ($imagpart (cadr xlhs))))
-      (setq sgn (sign-from-range (get (caar xlhs) 'real-range) xrhs)))
+    (let ((range (and (null sgn) (real-range-of xlhs))))
+      (when range
+        (setq sgn (sign-from-range range xrhs))))
 
     ;; signum takes no value strictly between -1 and 1 but 0, so
     ;; signum(x) - c is nonzero for a c known to lie there and to be nonzero.
