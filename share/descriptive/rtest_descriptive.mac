@@ -216,6 +216,97 @@ skewness(s2);
 [0.1580509020000979,0.2926379232061854,0.09242174416107717,
         0.2059984348148687,0.2142520248890832]$
 
+errcatch (pearson_correlation (1, [1, 2, 3, 4]));
+[];
+
+errcatch (pearson_correlation ([1, 2, 3], 1));
+[];
+
+errcatch (pearson_correlation ([1, 2, 3], [1, 2, 3, 4]));
+[];
+
+pearson_correlation ([], []);
+matrix ([]);
+
+pearson_correlation (X_list: [1, 2, 3, 4], Y_list: [1, 2, 3, 4]);
+1;
+
+pearson_correlation (X_list, - Y_list);
+-1;
+
+(X_list: [67, -81, 19, -5],
+ Y_list: [-109/37, -150/37, -4, 11],
+ 0);
+0;
+
+/* X_list and Y_list are both mean zero and inner product is zero, therefore Pearson correlation is zero. */
+
+[ mean (X_list), mean (Y_list), X_list . Y_list ];
+[0, 0, 0];
+
+pearson_correlation (X_list, Y_list);
+0;
+
+pearson_correlation (transpose (matrix (X_list, Y_list)), Y_list);
+matrix ([0], [1]);
+
+pearson_correlation (X_list, transpose (matrix (X_list, Y_list)));
+matrix ([1, 0]);
+
+radcan (pearson_correlation (X_list / 3, transpose (matrix (X_list, Y_list * 4))));
+matrix ([1, 0]);
+
+(X_matrix:
+     matrix ([ -6,  -4,   5, -10],
+             [  7,   6,  -5,   4],
+             [ -3,  -8,   8,   3],
+             [-10,  -4,  -8,  -4],
+             [  6,  -3,   4,  -4],
+             [  9,  -9,  -4,  -2],
+             [  2,   0,   2,   2],
+             [ -9,   3,  -5,  -8],
+             [ -1,   9,   1,  -4],
+             [ -1, -10,  -2,  -2]),
+ Y_matrix:
+     matrix ([  8,  -7,   9, -10],
+             [ -4,   3,  -8,  -7],
+             [-10,  -1,   9,  -6],
+             [  4,   5,  -3,   6],
+             [ -8,   1, -10,  -6],
+             [ -9,  -1,   8,   5],
+             [ -8, -10,   1,  -2],
+             [ -9,  -3,   6,   8],
+             [  7,  -2,   6,  -6],
+             [  2,   9,   8, -10]),
+ cor_X_Y_from_R:
+     matrix ([ -0.40862609486576129, 0.02847019102457996,-0.3382887148618304,-0.24641741864103525 ],
+             [  0.18011514912016074,-0.27755529528673795,-0.3401797293185747, 0.02311287400474575 ],
+             [ -0.07973131644865401,-0.45355793550306145, 0.2415737015731099,-0.62418827670082211 ],
+             [ -0.45957915857588694, 0.15856015560576689,-0.2706712482148060,-0.18134830410708488 ]),
+ 0);
+0;
+
+float (pearson_correlation (X_matrix, Y_matrix));
+''cor_X_Y_from_R;
+
+float (pearson_correlation (Y_matrix, X_matrix));
+''(transpose (cor_X_Y_from_R));
+
+float (pearson_correlation (transpose (X_matrix)[3], Y_matrix));
+''(matrix (cor_X_Y_from_R[3]));
+
+/* remove column 2 from X_matrix and columns 1 and 3 from Y_matrix */
+float (pearson_correlation (submatrix (X_matrix, 2), submatrix (Y_matrix, 1, 3)));
+''(submatrix (2, submatrix (cor_X_Y_from_R, 1, 3)));
+
+/* Pearson correlation of X with X is equal to correlation matrix of X */
+
+(s2: read_matrix (file_search ("wind.data")),
+ /* ensure exact arithmetic by converting floats to rationals */
+ r2: ratsimp (s2),
+ radcan (pearson_correlation (r2, r2) - cor (r2)));
+matrix ([0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]);
+
 pearson_skewness(s1);
 189*sqrt(11)/(10*sqrt(84259))$
 
