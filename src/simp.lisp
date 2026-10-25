@@ -2454,10 +2454,11 @@
                      (eq $domain '$real)
                      (odnump (caddr gr))))
             ;; Simplify (z^a)^b -> z^(a*b)
-            (setq pot (mul pot (caddr gr))
-                  gr (cadr gr))
-            (when (m1-real-root-p gr pot)
-              (return (m1-principal-power pot))))
+            (let ((e (mul pot (caddr gr))))
+              (when (neg-real-root-p (cadr gr) (caddr gr) e)
+                (return (neg-principal-power (cadr gr) e)))
+              (setq pot e
+                    gr (cadr gr))))
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
@@ -2511,8 +2512,8 @@
             (setq temp (cons '(mexpt) (if check 
                                           (list (cadr x) (mult (caddr x) w))
                                           (list x w))))
-            (when (and check (m1-real-root-p (cadr x) (caddr temp)))
-              (setq temp (m1-principal-power (caddr temp))))
+            (when (and check (neg-real-root-p (cadr x) (caddr x) (caddr temp)))
+              (setq temp (neg-principal-power (cadr x) (caddr temp))))
             (if (and (not *timesinp*) (not (eq x '$%i)))
                 (let ((*timesinp* t))
                   (setq temp (simplifya temp t))))
@@ -2547,8 +2548,8 @@
                                    (eq (car x) '$%i)))
                           (rplacd fm (cddr fm))
                           (cond ((mnump (setq x (if (mnump (car x))
-                                                    (if (m1-real-root-p (car x) w)
-                                                        (m1-principal-power w)
+                                                    (or (neg-power-product
+                                                         (car x) (sub w (cadr x)) (cadr x))
                                                         (exptrl (car x) w))
                                                     (power (car x) w))))
                                  ;; Do not return the number directly. Rescan it
@@ -3019,19 +3020,48 @@
   (or (maxima-integerp e)
       (and (eq $domain '$real) (ratnump e) (oddp (caddr e)))))
 
-;; With domain:real, (-1)^(p/q) for odd q is the real root. A power of -1
-;; that survives simplification has an even denominator and is a principal
-;; value, and so is a power or product of such powers. M1-REAL-ROOT-P is T
-;; when folding exponents gives BASE^E that would be read as a real root.
-;; M1-PRINCIPAL-POWER returns the principal value of (-1)^E instead, as
-;; m1pbranch does.
+;; With domain:real, b^(p/q) for a negative number b and odd q is the real
+;; root, as (-8)^(1/3) = -2, while for even q it is the principal value.
+;; Folding the exponents of such powers is only valid within one of the two
+;; readings. A power of -1 that survives simplification has an even
+;; denominator, but with radexpand:false other negative numbers keep their
+;; odd roots, as (-2)^(1/3).
+;;
+;; NEG-REAL-ROOT-P is true when folding exponents turns BASE^INNER, a
+;; principal value, into BASE^E that would be read as a real root.
+;; NEG-PRINCIPAL-POWER returns the principal value of BASE^E instead, as
+;; m1pbranch does for -1.
 
-(defun m1-real-root-p (base e)
-  (and (eql base -1) (eq $domain '$real) (ratnump e) (oddp (caddr e))))
+(defun neg-number-p (x)
+  (and (or (integerp x) (ratnump x)) (mnegp x)))
 
-(defun m1-principal-power (e)
+(defun neg-real-root-p (base inner e)
+  (and (eq $domain '$real) (neg-number-p base)
+       (ratnump inner) (evenp (caddr inner))
+       (ratnump e) (oddp (caddr e))))
+
+(defun neg-principal-power (base e)
   (let (($%emode t))
-    (power '$%e (mul e '$%i '$%pi))))
+    (mul (power (neg base) e)
+         (power* '$%e (list '(mtimes) e '$%pi '$%i)))))
+
+;; BASE^E1*BASE^E2 for a negative number BASE where adding the exponents
+;; would mix up the two readings, else NIL. The product of two principal
+;; values is the principal value of BASE^(E1+E2). A real root times a
+;; principal value is split into the sign of the root, (-BASE)^(E1+E2) and
+;; a principal power of -1.
+(defun neg-power-product (base e1 e2)
+  (when (and (eq $domain '$real) (neg-number-p base) (ratnump e1) (ratnump e2))
+    (let ((e (add e1 e2)))
+      (cond ((and (evenp (caddr e1)) (evenp (caddr e2)))
+             (when (neg-real-root-p base e1 e)
+               (neg-principal-power base e)))
+            ((evenp (caddr e1))
+             (neg-power-product base e2 e1))
+            ((evenp (caddr e2))
+             (mul (if (oddp (cadr e1)) -1 1)
+                  (power (neg base) e)
+                  (power -1 e2)))))))
 
 ;; This function is not called in Maxima core or share code
 ;; and can be cut out.
