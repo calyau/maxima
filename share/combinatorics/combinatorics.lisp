@@ -144,8 +144,34 @@
            (setf (nth j rm) (nth (nth j rm) qm))))
     rm))
 
+(defmfun $permult_via_array_permult (pm &rest lmpm)
+  (let*
+    ((n (1- (length pm)))
+     (pm-array (make-array n))
+     (lmpm-arrays (loop for x in lmpm collect (make-array n))))
+    (do
+      ((i 0 (1+ i))
+       (pm (rest pm) (rest pm))
+       (lmpm-list-tuples (apply 'mapcar 'list (mapcar 'rest lmpm)) (rest lmpm-list-tuples)))
+      ((= i n)
+       (let ((result) (result-array (apply $array_permult pm-array lmpm-arrays)))
+         (dotimes (i n) (push (1+ (aref result-array i)) result))
+         (cons '(mlist) (reverse result))))
+      ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
+      (setf (aref pm-array i) (1- (car pm)))
+      (let ((lmpm-1 (car lmpm-list-tuples)))
+        (mapcar (lambda (a x) (setf (aref a i) x)) lmpm-arrays lmpm-1)))))
+
+(defmfun $array_permult (pm &rest lmpm)
+  (if lmpm
+    (let ((product-perm pm))
+      (dolist (pm1 lmpm)
+        (setq product-perm ($array_permute product-perm pm1)))
+      product-perm)
+    (copy-seq pm)))
+
 ;;; $perm_inverse computes the inverse of permutation p
-(defmfun $perm_inverse (pm)
+#+nil (defmfun $perm_inverse (pm)
       (check-perm pm "perm_inverse") 
   (let ((inverse (copy-list pm)))
     ;; if the element pm[j] of the permutation is equal to i, then
@@ -154,9 +180,30 @@
       (setf (nth (nth (1+ j) pm) inverse) (1+ j)))
     inverse))
 
+(defmfun $array_perm_inverse (pm)
+  (let ((inverse (copy-seq pm)))
+    (dotimes (j (length pm))
+      (setf (aref inverse (aref pm j)) j))
+    inverse))
+
+(defmfun $perm_inverse_via_array_perm_inverse (pm)
+  (let*
+    ((n (1- (length pm)))
+     (pm-array (make-array n)))
+    (do
+      ((i 0 (1+ i))
+       (pm (rest pm) (rest pm)))
+      ((= i n)
+       (let ((result) (result-array ($array_perm_inverse pm-array)))
+         (dotimes (i n) (push (1+ (aref result-array i)) result))
+         (cons '(mlist) (reverse result))))
+      (setf (aref pm-array i) (1- (car pm)))))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
+
+#-nil (defmfun $perm_inverse (pm) ($perm_inverse_via_array_perm_inverse pm))
+
 ;;; $permute permutes the elements of list (or set) lsm according
 ;;; to the permutation pm
-(defmfun $permute (pm lsm)
+#+nil (defmfun $permute (pm lsm)
   (check-perm pm "permute") 
 ;  (check-list-or-set lsm "permute")
   (check-list-length lsm ($length pm) "permute")
@@ -164,6 +211,30 @@
     (dolist (j (reverse (rest pm)))
       (setq result (cons (nth j lsm) result)))
     (cons (car lsm) result)))
+
+(defmfun $array_permute (pm lsm)
+  (let ((result (make-array (length lsm))))
+    (dotimes (j (length pm))
+      (setf (aref result j) (aref lsm (aref pm j))))
+    result))
+
+(defmfun $permute_via_array_permute (pm lsm)
+  (let*
+    ((n (1- (length pm)))
+     (pm-array (make-array n))
+     (lsm-array (make-array n)))
+    (do
+      ((i 0 (1+ i))
+       (pm (rest pm) (rest pm))
+       (lsm (rest lsm) (rest lsm)))
+      ((= i n)
+       (let ((result) (result-array ($array_permute pm-array lsm-array)))
+         (dotimes (i n) (push (aref result-array i) result))
+         (cons '(mlist) (reverse result))))
+      (setf (aref pm-array i) (1- (car pm))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
+      (setf (aref lsm-array i) (car lsm)))))
+
+#-nil (defmfun $permute (pm lsm) ($permute_via_array_permute pm lsm))
 
 ;;; $apply_cycles permutes the elements of list (or set) lsm according to the
 ;;; list of cycles lmcm, applying the cycles on the end of the list first
