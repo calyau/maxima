@@ -23,6 +23,24 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
+;; The value of domain outside of RISPLIT, which binds $DOMAIN to '$COMPLEX.
+(defvar *risplit-domain* nil)
+
+;; T if a real base raised to POW is the real root: With domain : real, the
+;; simplifier and SIGN take the real root for a rational POW with an odd
+;; denominator, as in (-8)^(1/3) = -2. SIGN-MEXPT does so for a symbolic POW
+;; too, as 1/(2*n+1) for an integer n, if its numerator is an integer.
+(defun odd-root-exponent-p (pow)
+  (and (not (eq (or *risplit-domain* $domain) '$complex))
+       (cond ((ratnump pow) (oddp (caddr pow)))
+             ((mnump pow) nil)
+             (t
+              (multiple-value-bind (num denom)
+                  (with-default-quotient-dispflags (num-denom-split pow))
+                (and (not (eql denom 1))
+                     (eq (evod denom) '$odd)
+                     (or (evod num) (maxima-integerp num))))))))
+
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression
@@ -233,6 +251,10 @@
       ((fixnump pow)
        (risplit-expt-fixnum-pow sp pow))
 
+      ((and (=0 (cdr sp)) (odd-root-exponent-p pow))
+       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P.
+       (cons l 0))
+
       ((and (ratnump pow)
             (fixnump (cadr pow))
             (not (< (cadr pow) (- $maxnegex)))
@@ -413,7 +435,8 @@
 ;;; (<Real part> . <imaginary part>).
 
 (defun risplit (l)
-  (let (($domain '$complex) ($m1pbranch t) $logarc op)
+  (let ((*risplit-domain* (or *risplit-domain* $domain))
+        ($domain '$complex) ($m1pbranch t) $logarc op)
     (cond ((atom l)
            ;; Symbols are assumed to represent real values, unless they have
            ;; been declared to be complex. If they have been declared to be both
@@ -808,7 +831,19 @@
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
                (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))
                ($radexpand nil))
-           (cond ((and (zerop1 (cdr sp))
+           (cond ((and (or (integerp (caddr l)) (odd-root-exponent-p (caddr l)))
+                       (=0 (cdr (risplit (cadr l)))))
+                  ;; An integer power or real root of a real z, see
+                  ;; ODD-ROOT-EXPONENT-P. Its argument is that of z for an odd
+                  ;; numerator, 0 for an even one, and that of the real z^a
+                  ;; itself for an integer numerator of unknown parity.
+                  (cons (power (car aa) (caddr l))
+                        (case (evod (with-default-quotient-dispflags
+                                      (num-denom-split (caddr l))))
+                          ($odd (cdr aa))
+                          ($even 0)
+                          (t (ftake '%atan2 0 l)))))
+                 ((and (zerop1 (cdr sp))
                        (eq ($sign (sub 1 (take '(mabs) (car sp)))) '$pos))
                   ;; Special case: a is real and abs(a) < 1.
                   ;; This simplifies e.g. carg(sqrt(z)) -> carg(z)/2

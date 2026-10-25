@@ -4659,6 +4659,57 @@ block([radexpand : false, e],
 [true, true]$
 
 
+/* Bug #5613: "rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real" */
+
+[rectform(x^(1/3)), imagpart(x^(3/5)), carg(x^(1/3)), carg(x^(2/3)), carg(x^3),
+ polarform(x^(2/3)), conjugate(x^(1/3)), conjugate(x^(2/3)),
+ subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3)), polarform(x^(1/3)), polarform(x^3)])];
+[x^(1/3), 0, atan2(0, x), 0, atan2(0, x), x^(2/3), x^(1/3), x^(2/3), [-2, %pi, -2, -512]]$
+
+block([y],
+  local(y),
+  assume(y < 0),
+  [rectform(y^(1/3)), rectform(y^(-2/3)), realpart(y^(3/5)), imagpart(y^(3/5)),
+   rectform(y^(1/5)*%i + y^(2/5)), carg(y^(1/3)), conjugate(y^(1/3)),
+   rectform(conjugate(y^(1/3))),
+   rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3)),
+                           polarform(y^(-2/3)), polarform(2*y^(1/3))]))]);
+[y^(1/3), y^(-2/3), y^(3/5), 0, y^(2/5) + %i*y^(1/5), %pi, y^(1/3), y^(1/3),
+ [-2, -2, 1/4, -4]]$
+
+[imagpart((-2)^(1/3)), sign(rectform((-2)^(1/3))), carg((-2)^(1/3)),
+ rectform(polarform((-2)^(1/3))), is(conjugate((-2)^(1/3)) = (-2)^(1/3))], radexpand : false;
+[0, neg, %pi, -2^(1/3), true]$
+
+/* Even roots, domain : complex and symbolic exponents stay on the principal branch: */
+block([x, y],
+  local(y),
+  assume(y < 0),
+  [subst(x = -4, [rectform(x^(1/2)), carg(x^(1/2))]), op(conjugate(sqrt(x))),
+   subst([x = -8, a = 1/3], rectform(x^a)),
+   block([domain : complex],
+     [subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3))]),
+      rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3))])),
+      op(conjugate(x^(1/3)))])]);
+[[2*%i, %pi/2], conjugate, sqrt(3)*%i + 1,
+ [[sqrt(3)*%i + 1, %pi/3], [sqrt(3)*%i + 1, sqrt(3)*%i + 1], conjugate]]$
+
+[imagpart(sqrt(1 - (sqrt(2)-2)^(1/3))), imagpart(sqrt(3 + (sqrt(2)-2)^(1/3))),
+ rectform(sqrt((sqrt(2)-2)^(1/3) - 1)), rectform(log((sqrt(2)-2)^(1/3) - 1))];
+[0, 0, sqrt(1-(sqrt(2)-2)^(1/3))*%i, log(1-(sqrt(2)-2)^(1/3))+%i*%pi]$
+
+/* Symbolic exponents whose denominator is odd: */
+block([n, m, y],
+  local(n, m, y),
+  declare(n, integer, m, integer),
+  assume(y < 0),
+  [rectform(y^(1/(2*n+1))), imagpart(y^(2/(2*n+1))), imagpart((-8)^(1/(2*n+1))),
+   carg(y^(1/(2*n+1))), carg(y^(2/(2*n+1))), carg(y^(m/(2*n+1))),
+   conjugate(y^(1/(2*n+1))), is(imagpart(y^(1/(2*n))) # 0),
+   is(imagpart(y^(a/(2*n+1))) # 0)]);
+[y^(1/(2*n+1)), 0, 0, %pi, 0, atan2(0, y^(m/(2*n+1))), y^(1/(2*n+1)), true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -1412,6 +1412,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (t nil)))) ;x isn't a float or a complex float, return nil
 
 (defun sign1 (x)
+ ;; RISPLIT binds $DOMAIN to '$COMPLEX for its simplifications, but the signs
+ ;; asked for there are those of real values, under the domain outside of it.
+ (let (($domain (or *risplit-domain* $domain)))
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
 
@@ -1458,7 +1461,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                    (setq sign s odds o evens e minus m)))
                            t)))))
 	 (sign exp))
-     (return sign))))
+     (return sign)))))
 
 (defun numer (x)
   (let (($numer t) ; currently, no effect on $float, but proposed to
