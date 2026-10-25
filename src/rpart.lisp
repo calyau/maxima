@@ -252,8 +252,12 @@
        (risplit-expt-fixnum-pow sp pow))
 
       ((and (=0 (cdr sp)) (odd-root-exponent-p pow))
-       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P.
-       (cons l 0))
+       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P. Take it of
+       ;; the real part of BASE, as BASE itself can contain %i, and simplify
+       ;; it in the domain outside of RISPLIT.
+       (cons (let (($domain (or *risplit-domain* $domain)))
+               (power (car sp) pow))
+             0))
 
       ((and (ratnump pow)
             (fixnump (cadr pow))
