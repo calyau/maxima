@@ -2304,27 +2304,46 @@
          (if (eq (caar e) '%sum) u (mul2 e u))))))
 
 (defun idiffgrad (e x)
-  (let ((fun (caar e)) grad args)
+  (let ((fun (caar e)) grad args result)
     (cond ((and (eq fun 'mqapply) (zl-get (caaadr e) 'grad))
-       (idiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
-              x))
+       (setq result
+             (idiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
+                        x))
+       ;; A noun form for f(n,x) is one for f[n](x)
+       (if (isinop result '%idiff) (idiff%deriv (list e x 1)) result))
       ((or (eq fun 'mqapply) (null (setq grad (zl-get fun 'grad))))
        (if (not (depends e x)) 0 (idiff%deriv (list e x 1))))
       ((not (= (length (cdr e)) (length (car grad))))
        (merror "Wrong number of arguments for ~:M" fun))
       (t (setq args (idiffmap (cdr e) x))
-         (addn (mapcar
-            #'mul2
-            (cdr (substitutel
-              (cdr e) (car grad)
-              (do ((l1 (cdr grad) (cdr l1))
-                   (args args (cdr args)) (l2))
-                  ((null l1) (cons '(mlist) (nreverse l2)))
-                (setq l2 (cons (cond ((equal (car args) 0) 0)
-                         (t (car l1)))
-                       l2)))))
-            args)
-           t)))))
+         ;; The derivatives are used as SDIFFGRAD uses them: The arguments
+         ;; are substituted for the placeholder names in parallel, and a
+         ;; derivative given as a function is called with the arguments.
+         (let ((subst (cons '(mlist)
+                            (mapcar #'(lambda (a b) (list '(mequal) a b))
+                                    (car grad) (cdr e)))))
+           (setq result
+                 (addn (mapcar
+                        #'mul2
+                        (do ((l1 (cdr grad) (cdr l1))
+                             (args args (cdr args)) (l2))
+                            ((null l1) (nreverse l2))
+                          (setq l2 (cons (cond ((equal (car args) 0) 0)
+                                               ((functionp (car l1))
+                                                (multiple-value-bind (d final)
+                                                    (apply (car l1) (cdr e))
+                                                  (if final
+                                                      d
+                                                      ($psubstitute subst d))))
+                                               (t ($psubstitute subst (car l1))))
+                                         l2)))
+                        args)
+                       t)))
+         (if (or (null result) (not (freeof nil result)))
+           ;; A derivative has returned NIL for an argument whose
+           ;; derivative is not 0. Return a noun form.
+           (idiff%deriv (list e x 1))
+           result)))))
 
 (defmfun idiff (e x)
   (cond

@@ -287,6 +287,7 @@ Bug fixes for unnumbered bugs:
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
 * zn_factor_generators could return different generators from identical calls
+* idiff() from itensor now uses derivative rules as diff() does
 
 Changes in the Windows installer:
 ---------------------------------
