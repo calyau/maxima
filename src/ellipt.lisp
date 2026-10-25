@@ -656,8 +656,11 @@
 		(and (zerop (imagpart yn)) (>= (realpart yn) 0))
 		(and (zerop (imagpart zn)) (>= (realpart zn) 0))
 		(and (zerop (imagpart qn)) (> (realpart qn) 0)))
+           ;; Gcl Version_2_7_2pre15 has a buggy sort function that
+           ;; doesn't actually sort the args here.  But 2.6.14 works.
+           ;; Use stable-sort which works fine everywhere.
 	   (destructuring-bind (xn yn zn)
-	       (sort (list xn yn zn) #'<)
+	       (stable-sort (list xn yn zn) #'<)
 	     (let* ((pn (+ yn (* (- zn yn) (/ (- yn xn) (+ yn qn)))))
 		    (s (- (* (- pn yn) (bf-rj1 xn yn zn pn))
 			  (* 3 (bf-rf xn yn zn)))))
@@ -766,9 +769,7 @@
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
 		(* (/ nn 3) (expt sin-phi 3)
 		   (bf-rj (expt cos-phi 2) k2sin 1.0
@@ -781,6 +782,74 @@
 	(let ((complete (bf-elliptic-pi-complete n m)))
 	  (+ (* 2 cycles complete)
 	     (base n rem m))))))
+
+;; For real n > 1, the integrand of elliptic_pi has simple poles at
+;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
+;; p < 0 and x, y, z >= 0 it returns the Cauchy principal value, so
+;; bf-elliptic-pi does too.
+;;
+;; Write the integral as h/g where
+;;
+;;   h(theta) = 1/sqrt(1-m*sin(theta)^2)
+;;   g(theta) = 1-n*sin(theta)^2
+;;
+;; For n > 1, g has simple zeroes at theta*, %pi-theta* and multiples
+;; of k*%pi.  For m < n, h is smooth near each of them.
+;;
+;; Replacing n by n - %i*eps,
+;;
+;;   1-(n-%i*eps)*sin(theta)^2 = g(theta) + %i*eps*sin(theta)^2
+;;
+;; Near the pole, 1-n*sin(theta)^2 ~= 0 so sin(theta)^2 ~= 1/n, n > 0.
+;;
+;; When we do this the pole moves to
+;;
+;;   theta = theta* + %i*eps*sin(theta*)^2/|g'(theta*)|
+;;
+;; which is just above the real axis.  Thus the integration path is
+;; just below the pole.  This is equivalent to indenting the path with
+;; a semicircle below the pole.  The path goes counter-clockwise so it
+;; contributes +%i*%pi times the residue at the pole:
+;;
+;;   Res(h/g, theta*) = h(theta*)/g'(theta*)
+;;
+;; At theta*, sin(theta*) = 1/sqrt(n) and therefore cos(theta*) = sqrt((n-1)/n).
+;;
+;;   g'(theta*) = -2*n*sin(theta*)*cos(theta*) = -2*sqrt(n-1)
+;;   h(theta*) = 1/sqrt(1-m/n) = sqrt(n/(n-m))
+;;
+;; Hence
+;;
+;;   Res(h/g, theta*) = -1/2*sqrt(n/(n-1)/(n-m))
+;;
+;; and the contribution is -%i*%pi*Res(h/g,theta*) for each pole.
+;;
+;; We need to count every pole between 0 and phi, accounting for the
+;; the sign of phi.  With phi = c*%pi + r, |r| <= %pi/2, that is 2*c
+;; poles plus sgn(r) if n*sin(r)^2 > 1.  For m > 1 the complete
+;; integral, and r past the branch point m*sin(r)^2 = 1, go through
+;; bf-rj1, which already includes the term.  The other cases go
+;; through bf-rj1, which already gives the n - i0 value.  This matches
+;; the branch used by Mathematica and mpmath.
+(defun bf-elliptic-pi-residue (n phi m)
+  (if (and (realp n) (realp phi) (realp m) (> n 1))
+      (let* ((bf-pi (%pi phi))
+	     (cycles (round phi bf-pi))
+	     (rem (- phi (* cycles bf-pi)))
+	     (s2 (expt (sin rem) 2))
+	     (crossings (+ (if (<= m 1)
+			       (* 2 cycles)
+			       0)
+			   (if (and (> (* n s2) 1) (<= (* m s2) 1))
+			       (signum rem)
+			       0))))
+	(if (zerop crossings)
+	    0
+	    (* (complex 0 -1)
+               crossings
+               (/ bf-pi 2)
+	       (sqrt (/ n (* (- n 1) (- n m)))))))
+      0))
 
 ;; Compute inverse_jacobi_sn, for float or bigfloat args.
 (defun bf-inverse-jacobi-sn (u m)
@@ -2181,7 +2250,8 @@ first kind:
     (cond
       ((float-numerical-eval-p n phi m)
        ;; Numerically evaluate it
-       (elliptic-pi ($float n) ($float phi) ($float m)))
+       (add (elliptic-pi ($float n) ($float phi) ($float m))
+	    (to (bigfloat::bf-elliptic-pi-residue ($float n) ($float phi) ($float m)))))
       ((setf args (complex-float-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2189,9 +2259,12 @@ first kind:
 		      (bigfloat:to ($float phi))
 		      (bigfloat:to ($float m)))))
       ((bigfloat-numerical-eval-p n phi m)
-       (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
-				     (bigfloat:to phi)
-				     (bigfloat:to m))))
+       (to (bigfloat:+ (bigfloat::bf-elliptic-pi (bigfloat:to n)
+						 (bigfloat:to phi)
+						 (bigfloat:to m))
+		       (bigfloat::bf-elliptic-pi-residue (bigfloat:to n)
+							 (bigfloat:to phi)
+							 (bigfloat:to m)))))
       ((setq args (complex-bigfloat-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2277,7 +2350,7 @@ first kind:
   ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
   ;; is an odd function of phi.
   (when (minusp (realpart phi))
-    (return-from elliptic-pi (- (elliptic-pi n (- phi) m))))
+    (return-from elliptic-pi (neg (elliptic-pi n (- phi) m))))
 
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
@@ -2289,9 +2362,7 @@ first kind:
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
 		    (* (/ nn 3) (expt sin-phi 3)
 		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
