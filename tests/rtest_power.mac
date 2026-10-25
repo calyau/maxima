@@ -341,4 +341,15 @@ true$
 [[complex, complex, complex, neg, pos], true, true, true, true, -2, true]$
 
 
+/* Bug #5713: "%i^(2/3) simplifies to -1" */
+
+block([x],
+  local(x),
+  assume(x > 0),
+  [%i^(2/3), %i^(-2/3), (2*%i)^(2/3), %i^(2/5), (%i*x)^(2/3),
+   block([domain : complex], is(%i^(2/3) = (-1)^(1/3)))]);
+[(sqrt(3)*%i)/2 + 1/2, 1/2 - (sqrt(3)*%i)/2, 2^(2/3)*((sqrt(3)*%i)/2 + 1/2),
+ %e^((%i*%pi)/5), ((sqrt(3)*%i)/2 + 1/2)*x^(2/3), true]$
+
+
 /* ---------- End of file rtest_power.mac ----------------------------------- */

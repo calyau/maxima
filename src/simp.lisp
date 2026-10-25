@@ -2976,7 +2976,11 @@
 	      ((= i 1) '$%i)
 	      ((= i 2) -1)
 	      (t (list '(mtimes simp) -1 '$%i))))
-    (power -1 (mul2 pot '((rat simp) 1 2)))))
+    ;; %i^pot = (-1)^(pot/2), where %i = (-1)^(1/2) is a principal value
+    (let ((e (mul2 pot '((rat simp) 1 2))))
+      (if (neg-real-root-p -1 '((rat simp) 1 2) e)
+	  (neg-principal-power -1 e)
+	  (power -1 e)))))
 
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
