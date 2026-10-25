@@ -817,7 +817,13 @@
           (setq arg (if (eq ($sign arg) '$pos)
                       (sub arg (ftake '%atan2 0 u))
                       (add arg (ftake '%atan2 0 u))))))
-      (let ((sum (2pistrip (addn (cons arg others) t))))
+      (let ((sum (if (and others (null (cdr others)) (zerop1 arg)
+                          (not implicit-real))
+                     ;; The argument of the only factor that is not real, as
+                     ;; ABSARG gave it. 2PISTRIP would take atan(3)-%pi to
+                     ;; atan(3)+%pi.
+                     (car others)
+                     (2pistrip (addn (cons arg others) t)))))
         (if (or implicit-real
                 (null others)
                 (and (null (cdr others)) (zerop1 arg))
