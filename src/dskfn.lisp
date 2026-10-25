@@ -172,6 +172,8 @@
 	   (if (member item (cdr $props) :test #'eq) (pradd2lnc rename '$props))
 	   (setq val (mget item 'oldrules))
 	   (and val (setq x (cons nil (nconc (cdr (reverse val)) (cdr x))))))
+     (when (get item 'defstruct-template)
+       (dskstore-structure item))
 	 (if (member item (cdr $features) :test #'eq) (pradd2lnc rename '$features))
 	 (when (member (getop item) (cdr $props) :test #'eq)
 	   (dolist (ind indlist) (propschk item rename ind))
@@ -238,6 +240,19 @@
 (defun list-hash-pairs (h)
   (loop for value being the hash-values of h using (hash-key key)
         collect (list key value)))
+
+(defun dskstore-structure (x)
+  (let
+    ((translate-property (get x 'translate))
+     (dimension-property (get x 'dimension))
+     (defstruct-default-property (get x 'defstruct-default))
+     (defstruct-template-property (get x 'defstruct-template)))
+    (dskdefprop x translate-property 'translate)
+    (dskdefprop x dimension-property 'dimension)
+    (dskdefprop x defstruct-default-property 'defstruct-default)
+    (dskdefprop x defstruct-template-property 'defstruct-template)
+    ;; Looks like the structures infolist has the default, not the template.
+    (pradd2lnc defstruct-default-property '$structures)))
 
 (defun mpropschk (item rename)
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))
