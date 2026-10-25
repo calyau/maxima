@@ -4710,6 +4710,13 @@ block([n, m, y],
 [y^(1/(2*n+1)), 0, 0, %pi, 0, atan2(0, y^(m/(2*n+1))), y^(1/(2*n+1)), true, true]$
 
 
+/* Bug #5294: "diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v" */
+
+block([v, y], [diff(struve_h(v, y), y), diff(struve_l(v, y), y)]);
+[(y^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,y)+struve_h(v-1,y))/2,
+ (y^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,y)+struve_l(v-1,y))/2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

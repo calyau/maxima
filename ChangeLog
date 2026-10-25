@@ -117,6 +117,7 @@ Bug fixes for numbered bugs:
 * \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
+* \#5294 diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5304 featurep(x, alphabetic) raises a Lisp error for a non-string argument
 * \#5305 facts(number) misses floats and bignums and matches parts of rationals and bigfloats
