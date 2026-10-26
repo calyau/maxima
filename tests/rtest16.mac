@@ -4739,6 +4739,21 @@ block([y],
 [true, true]$
 
 
+/* Bug #5719: "bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root" */
+
+block([z],
+  map(lambda([f], is(cabs(float(rectform(
+        subst(z = -2, block([hypergeometric_representation : true], apply(f, [1/3, z])))
+        - apply(f, [1/3, -2.0])))) < 1e-10)),
+      [bessel_j, bessel_y, bessel_i, bessel_k]));
+[true, true, true, true]$
+
+map(lambda([u], is(cabs(float(rectform(u))) < 1e-10)),
+    [bessel_j(1/3, -2*%i) - bessel_j(1/3, -2.0*%i),
+     bessel_i(1/3, -2*%i) - bessel_i(1/3, -2.0*%i)]);
+[true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

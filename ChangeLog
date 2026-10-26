@@ -276,6 +276,7 @@ Bug fixes for numbered bugs:
 * \#5716 diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real
 * \#5717 limit() returns ind when the one-sided limits are different forms of the same number
 * \#5718 hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0
+* \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
 
 Bug fixes for unnumbered bugs:
 ------------------------------
