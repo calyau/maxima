@@ -689,7 +689,7 @@ See also @ref{elliptic_f} and @ref{elliptic_ec}.
 The incomplete elliptic integral of the second kind, defined as
 
 m4_displaymath(
-<<<E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt>>>
+<<<E(u, m) = \int_0^u {\rm dn}^2(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt>>>
 ,
 <<<@math{elliptic_eu(u, m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}>>>
 )
