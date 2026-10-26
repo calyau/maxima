@@ -3439,7 +3439,7 @@
        ;; Expand for b a positive integer and a not a negative integer.
        (mul
          (ftake* '%beta a b)
-         (power z a)
+         (principal-power z a)
          (let ((index (gensumindex)))
            (simpsum1
              (div
@@ -3455,7 +3455,7 @@
          (ftake* '%beta a b)
          (sub 1
            (mul
-             (power (sub 1 z) b)
+             (principal-power (sub 1 z) b)
              (let ((index (gensumindex)))
                (simpsum1 
                  (div
@@ -3551,7 +3551,7 @@
        ;;       + z^a*beta(1-a-b,a)*(-z)^(-a)
        ;;
        ;; We need to handle more cases here
-       (mul (div (power z a)
+       (mul (div (principal-power z a)
 		 a)
 	    (ftake '%hypergeometric
 		   (make-mlist a (sub 1 b))
@@ -3806,7 +3806,7 @@
          (ftake* '%beta a b)
          (sub
            (mul
-             (power (sub 1 z1) b)
+             (principal-power (sub 1 z1) b)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3816,7 +3816,7 @@
                    (simplify (list '(mfactorial) index)))
                 index 0 (sub a 1))))
            (mul
-             (power (sub 1 z2) b)
+             (principal-power (sub 1 z2) b)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3831,7 +3831,7 @@
          (ftake* '%beta a b)
          (sub
            (mul
-             (power z2 a)
+             (principal-power z2 a)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3841,7 +3841,7 @@
                    (simplify (list '(mfactorial) index)))
                 index 0 (sub b 1))))
            (mul
-             (power z1 a)
+             (principal-power z1 a)
              (let ((index (gensumindex)))
                (simpsum1
                  (div

@@ -4541,3 +4541,24 @@ block([z],
       [gamma_incomplete(1/3, -8.0), gamma_incomplete_lower(1/3, -8.0),
        gamma_incomplete_regularized(1/3, -8.0)]));
 [true, true, true]$
+
+
+/* Bug #5720: "beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i" */
+
+expand(beta_incomplete(1/3, 2, -8));
+9*sqrt(3)*%i+9$
+
+block([z, z1, z2],
+  map(lambda([u, w], is(cabs(float(rectform(u - w))) < 1e-10)),
+      [subst(z = -8, beta_incomplete(1/3, 2, z)),
+       subst(z = 9, beta_incomplete(2, 1/3, z)),
+       subst(z = -8, beta_incomplete_regularized(1/3, 2, z)),
+       subst([z1 = -8, z2 = -1], beta_incomplete_generalized(1/3, 2, z1, z2)),
+       subst([z1 = 9, z2 = 2], beta_incomplete_generalized(2, 1/3, z1, z2)),
+       subst(z = -8, block([hypergeometric_representation : true], beta_incomplete(1/3, 1/2, z)))],
+      [beta_incomplete(1/3, 2, -8.0), beta_incomplete(2, 1/3, 9.0),
+       beta_incomplete_regularized(1/3, 2, -8.0),
+       beta_incomplete_generalized(1/3, 2, -8.0, -1.0),
+       beta_incomplete_generalized(2, 1/3, 9.0, 2.0),
+       beta_incomplete(1/3, 1/2, -8.0)]));
+[true, true, true, true, true, true]$
