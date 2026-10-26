@@ -933,7 +933,7 @@
        ;; hypergeometric([a],[a+1],-z) to
        ;; hypergeometric([1],[a+1],z)*exp(-z).
        (sub (ftake '%gamma a)
-	    (mul (power z a)
+	    (mul (principal-power z a)
 		 (div 1 a)
 		 (ftake '%hypergeometric
 			(make-mlist a)

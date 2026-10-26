@@ -4529,3 +4529,15 @@ block([x],
 [-%e^-3/3^(2/3), 2,
  -((sqrt(%pi)*(5*gamma(5/6)*struve_h(4/3,3)-5*struve_h(-2/3,3)*gamma(5/6))
    -2^(2/3)*3^(4/3))/(10*sqrt(%pi)*gamma(5/6)))]$
+
+
+/* Bug #5718: "hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0" */
+
+block([z],
+  map(lambda([u, v], is(cabs(float(rectform(subst(z = -8, u) - v))) < 1e-10)),
+      block([hypergeometric_representation : true],
+        [gamma_incomplete(1/3, z), gamma_incomplete_lower(1/3, z),
+         gamma_incomplete_regularized(1/3, z)]),
+      [gamma_incomplete(1/3, -8.0), gamma_incomplete_lower(1/3, -8.0),
+       gamma_incomplete_regularized(1/3, -8.0)]));
+[true, true, true]$

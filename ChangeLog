@@ -275,6 +275,7 @@ Bug fixes for numbered bugs:
 * \#5713 %i^(2/3) simplifies to -1
 * \#5716 diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real
 * \#5717 limit() returns ind when the one-sided limits are different forms of the same number
+* \#5718 hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0
 
 Bug fixes for unnumbered bugs:
 ------------------------------
