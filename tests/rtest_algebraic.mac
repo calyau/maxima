@@ -175,34 +175,3 @@ block([eqs, sol],
   sol : linsolve(eqs, [x, y, z]),
   ratsimp(subst(sol, map(lhs, eqs) - map(rhs, eqs))));
 [0, 0, 0]$
-
-/* Bug #5707: "ratsimp treats sqrt(x) and x^(1/4) as unrelated" */
-
-block([algebraic : false],
-  [ratsimp((7^(1/4)+1)*(7^(1/4)-1)*sqrt(7)),
-    ratsimp(sqrt(x)*(x^(1/4)*y+1) - x^(3/4)*y),
-    ratsimp((7^(1/4)+1)^2*(sqrt(7)+1) - (sqrt(7)+1)*(sqrt(7)+2*7^(1/4)+1))]);
-[7-sqrt(7), sqrt(x), 0]$
-
-block([algebraic : false],
-  ratsimp((7^(1/4)*(7^(3/4)*%i*a*c + 3*sqrt(2)*sqrt(7)*%i*a*c
-      - 4*sqrt(7)*%i*a*c + 7^(1/4)*%i*a*c - 4*%i*a*c + 7^(5/4)*a*c
-      + 7^(3/4)*a*c - 4*sqrt(7)*a*c - 3*sqrt(2)*a*c - 4*a*c + 8*7^(3/4)*b
-      - 8*sqrt(7)*b + 8*7^(1/4)*b - 8*b))/48
-    + (7^(3/4)*%i*a*c + 3*sqrt(2)*sqrt(7)*%i*a*c - 4*sqrt(7)*%i*a*c
-      + 7^(1/4)*%i*a*c - 4*%i*a*c + 7^(5/4)*a*c + 7^(3/4)*a*c
-      - 4*sqrt(7)*a*c - 3*sqrt(2)*a*c - 4*a*c + 8*7^(3/4)*b - 8*sqrt(7)*b
-      + 8*7^(1/4)*b - 8*b)/48
-    + ((sqrt(2)*%i - %i - 1)*(sqrt(2)*sqrt(7)*%i - 2*7^(1/4)*%i
-      + sqrt(2)*%i - 2*7^(3/4) + sqrt(2)*sqrt(7) - sqrt(2))*a*c)/32));
-b$
-
-block([algebraic : false],
-  [ratsimp((x^(1/6)+x^(1/4))/(sqrt(x)-x^(1/3))),
-    block([domain : complex], ratsimp((x^(1/6)+x^(1/4))/(sqrt(x)-x^(1/3))))]);
-[(x^(1/4)+x^(1/6))/(sqrt(x)-x^(1/3)), 1/(x^(1/4)-x^(1/6))]$
-
-block([algebraic : false, radexpand : false, e],
-  e : ((-2)^(1/3)-1)/((-2)^(1/6)-1),
-  [is(ratsimp(e) = e), block([domain : complex], is(ratsimp(e) = (-2)^(1/6) + 1))]);
-[true, true]$

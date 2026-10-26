@@ -23,10 +23,10 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
-;; The value of domain outside of RISPLIT, which binds domain to complex.
+;; The value of domain outside of RISPLIT, which binds $DOMAIN to '$COMPLEX.
 (defvar *risplit-domain* nil)
 
-;; True if a real base raised to POW is the real root: with domain : real, the
+;; T if a real base raised to POW is the real root: With domain : real, the
 ;; simplifier and SIGN take the real root for a rational POW with an odd
 ;; denominator, as in (-8)^(1/3) = -2. SIGN-MEXPT does so for a symbolic POW
 ;; too, as 1/(2*n+1) for an integer n, if its numerator is an integer.
@@ -252,8 +252,12 @@
        (risplit-expt-fixnum-pow sp pow))
 
       ((and (=0 (cdr sp)) (odd-root-exponent-p pow))
-       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P.
-       (cons l 0))
+       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P. Take it of
+       ;; the real part of BASE, as BASE itself can contain %i, and simplify
+       ;; it in the domain outside of RISPLIT.
+       (cons (let (($domain (or *risplit-domain* $domain)))
+               (power (car sp) pow))
+             0))
 
       ((and (ratnump pow)
             (fixnump (cadr pow))
@@ -345,11 +349,20 @@
       (destructuring-bind (r . theta) (absarg1 (add (car sp) (mul '$%i (cdr sp))))
         (risplit-expt-general-form r theta pow 0)))))
 
+;; IMPLICIT-REAL takes E to be nonnegative. While *RISPLIT-NOTING*, note that
+;; as an assumption unless csign shows it. RISPLIT calls within the check do
+;; not count.
+(defun risplit-note-nonneg (e)
+  (when (and *risplit-noting* (not *risplit-assumed*))
+    (let ((*risplit-noting* nil) (sign-imag-errp t) ($errormsg nil))
+      (unless (member (car (errcatch ($csign e))) '($pos $pz $zero))
+        (setq *risplit-assumed* t)))))
+
 ;; Split BASE^POWER into real and imaginary parts. We assume that BASE is real
 ;; and that POWER is a rational number.
 (defun risplit-expt-real^rat (base power)
   (case (cond ((mnegp base) '$neg)
-              (implicit-real '$pos)
+              (implicit-real (risplit-note-nonneg base) '$pos)
               ;; BASE is real, but can contain %i, as %i*erf(%i) does.
               ;; Use $sign not asksign.
               (t (let ((sign-imag-errp nil))
@@ -423,7 +436,7 @@
 		(not (eq (csign arg1) t)))
 	   (setq arg arg1)
 	   (if implicit-real
-	       (cons arg 0)
+	       (progn (risplit-note-nonneg arg) (cons arg 0))
 	       (let ((fact (assume `(($notequal) ,arg 0))))
 	       (unwind-protect
 			(absarg arg)
@@ -577,7 +590,9 @@
 ;;;  Perhaps the best compromise is to return 'realpart/'imagpart
 ;;;   under the control of a switch set by the integrators.  First
 ;;;   all such dependencies must be found in the integ
-	  ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li)) (cons l 0))
+	  ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li))
+	   (when *risplit-noting* (setq *risplit-assumed* t))
+	   (cons l 0))
 	  ((prog2 (setq op (if (eq (caar l) 'mqapply) (caaadr l) (caar l)))
 	       (decl-complexp op))
 	   (risplit-noun l))
@@ -788,10 +803,10 @@
 ;; factors u combine into c*%pi + s*atan2(0, u1*u2*...), with -1 < c <= 1, s = 1
 ;; for c <= 0 and s = -1 otherwise, which is in range and keeps the atan2(0, u)
 ;; of a single real factor as it is. With other arguments, the sum is reduced
-;; modulo 2*%pi unless SIGN shows that it is in range, but not in the Risch
+;; modulo 2*%pi unless $SIGN shows that it is in range, but not in the Risch
 ;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous.
 (defun absarg-product-arg (args)
-  (let ((c 0) (reals nil) (others nil))
+  (let ((c 0) reals others)
     (dolist (arg args)
       (cond ((eq arg '$%pi)
              (setq c (add c 1)))
@@ -811,16 +826,22 @@
       (when reals
         (let ((u (muln reals t)))
           (setq arg (if (eq ($sign arg) '$pos)
-                        (sub arg (take '(%atan2) 0 u))
-                        (add arg (take '(%atan2) 0 u))))))
-      (let ((sum (2pistrip (addn (cons arg others) t))))
+                      (sub arg (ftake '%atan2 0 u))
+                      (add arg (ftake '%atan2 0 u))))))
+      (let ((sum (if (and others (null (cdr others)) (zerop1 arg)
+                          (not implicit-real))
+                     ;; The argument of the only factor that is not real, as
+                     ;; ABSARG gave it. 2PISTRIP would take atan(3)-%pi to
+                     ;; atan(3)+%pi.
+                     (car others)
+                     (2pistrip (addn (cons arg others) t)))))
         (if (or implicit-real
                 (null others)
                 (and (null (cdr others)) (zerop1 arg))
                 (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
                      (eq ($sign (add sum '$%pi)) '$pos)))
-            sum
-            (reduce-angle-mod-2pi sum))))))
+          sum
+          (reduce-angle-mod-2pi sum))))))
 
 (defun absarg (l &optional (absflag nil))
 ;; Commenting out the the expansion of the expression l. It seems to be not
@@ -881,7 +902,7 @@
                                       (num-denom-split (caddr l))))
                           ($odd (cdr aa))
                           ($even 0)
-                          (t (take '(%atan2) 0 l)))))
+                          (t (ftake '%atan2 0 l)))))
                  ((and (zerop1 (cdr sp))
                        (eq ($sign (sub 1 (take '(mabs) (car sp)))) '$pos))
                   ;; Special case: a is real and abs(a) < 1.

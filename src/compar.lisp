@@ -1411,25 +1411,22 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (t (imag-err x)))) ;throw error for sign of complex
       (t nil)))) ;x isn't a float or a complex float, return nil
 
-;; RISPLIT binds domain to complex for its simplifications, but the signs
-;; asked for there are those of real values, under the domain outside of it.
 (defun sign1 (x)
-  (let (($domain (or *risplit-domain* $domain)))
-    (sign1-in-domain x)))
-
-(defun sign1-in-domain (x)
+ ;; RISPLIT binds $DOMAIN to '$COMPLEX for its simplifications, but the signs
+ ;; asked for there are those of real values, under the domain outside of it.
+ (let (($domain (or *risplit-domain* $domain)))
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
 
   (let ((sgn (sign-complex-float x)))
    (when sgn 
     (setq sign sgn)
-     (return-from sign1-in-domain sgn))
+     (return-from sign1 sgn))
 
   (when (and *complexsign* (atom x) (eq x '$infinity))
     ;; In Complex Mode the sign of infinity is complex.
     (when *debug-compar* (format t "~& in sign1 detect $infinity.~%"))
-    (return-from sign1-in-domain '$complex))
+    (return-from sign1 '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror (intl:gettext "sign: sign of ~:M is undefined.") x)))
   (prog (dum exp)
@@ -1464,7 +1461,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                    (setq sign s odds o evens e minus m)))
                            t)))))
 	 (sign exp))
-     (return sign))))
+     (return sign)))))
 
 (defun numer (x)
   (let (($numer t) ; currently, no effect on $float, but proposed to
@@ -1573,11 +1570,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; a REAL-RANGE, and the bounds these give the sum decide its sign, set SIGN
 ;; and return T, as SIGNSUM does. Otherwise return NIL.
 (defun sign-from-sum-range (x)
-  (let ((lo 0) (lo-incl t) (hi 0) (hi-incl t) (ranged nil))
+  (let ((lo 0) (lo-incl t) (hi 0) (hi-incl t) ranged)
     (dolist (term (cdr x))
       (let* ((k (if (and (mtimesp term) (mnump (cadr term)) (null (cdddr term)))
-                    (cadr term)
-                    1))
+                  (cadr term)
+                  1))
              (range (real-range-of (if (eql k 1) term (caddr term)))))
         (cond (range
                ;; A negative factor swaps the ends of the range.
@@ -1592,18 +1589,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                      hi (and hi (add hi term))))
               (t
                (return-from sign-from-sum-range nil)))))
-    (let ((s (and ranged
-                  (or (and lo
-                           (case (sign* lo)
-                             ($pos '$pos)
-                             ($zero (if lo-incl '$pz '$pos))))
-                      (and hi
-                           (case (sign* hi)
-                             ($neg '$neg)
-                             ($zero (if hi-incl '$nz '$neg))))))))
+    (let ((s (and ranged (or (and lo (case (sign* lo)
+                                       ($pos '$pos)
+                                       ($zero (if lo-incl '$pz '$pos))))
+                             (and hi (case (sign* hi)
+                                       ($neg '$neg)
+                                       ($zero (if hi-incl '$nz '$neg))))))))
       (when s
         (setq sign s minus nil odds (list x) evens nil)
         t))))
+
 
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))

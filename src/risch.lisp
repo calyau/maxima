@@ -293,6 +293,7 @@
 		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)
 	  (rp-polylogp t)
+	  (*risplit-noting* nil) (*risplit-assumed* nil)
 	  $logarc $exponentialize result)
      (if (decl-complexp risch-var)
       ;; RISPLIT's parts are the real and imaginary parts of YYY only for a
@@ -306,18 +307,28 @@
      ;; RISPLIT can ask sign() about an expression that is not real, which
      ;; throws to SIGN-IMAG-ERR here. The integral is then left unevaluated.
      (destructuring-let (((yyy-re . yyy-im)
-                          (let ((s (let (sign-imag-errp)
+                          (let ((s (let (sign-imag-errp (*risplit-noting* t))
                                      (catch 'sign-imag-err (risplit yyy)))))
                             (if (consp s)
                               s
                               (return-from trigin1
                                 (list '(%integrate) risch-*exp risch-var))))))
-      (flet ((locally-const-p (e)
+      (flet ((locally-const-p (e f)
         "E is locally constant iff its derivative vanishes."
         ;; If RISPLIT left a noun-form %REALPART or %IMAGPART, the result is
         ;; YYY below, so do not test the parts.
         (unless (and (freeof '%realpart yyy-re) (freeof '%imagpart yyy-im))
           (return-from locally-const-p nil))
+        ;; F, the same part of the integrand, is the derivative of E. Keep E
+        ;; if RADCAN1 leaves F nonzero, which is always safe. Drop it if
+        ;; RADCAN1 reduces F to zero, unless a split took something to be
+        ;; real or nonnegative without proof.
+        (let ((d (and f (freeof '%realpart f) (freeof '%imagpart f)
+                      (let (($errormsg nil) ($exponentialize t) ($logarc t))
+                        (car (errcatch (radcan1 (resimplify f) risch-var)))))))
+          (when d
+            (cond ((not (zerop1 d)) (return-from locally-const-p nil))
+                  ((not *risplit-assumed*) (return-from locally-const-p t)))))
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
@@ -333,14 +344,28 @@
       ;; Strip locally constant parts (unsolved integrals survive this).
       ;; ERRCATCH: In case of an error (occurs during test suite, treat the part
       ;; as non-constant - keeping is always safe, dropping is not.
-      (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re))) 0 yyy-re))
-            (yyy-im (if (car (errcatch (locally-const-p yyy-im))) 0 yyy-im)))
+      ;; F holds the parts of the integrand, or NIL.
+      (let* ((f (let ((s (let (sign-imag-errp (*risplit-noting* t))
+                           (catch 'sign-imag-err (risplit risch-*exp)))))
+                  (and (consp s) s)))
+             (yyy-re (if (car (errcatch (locally-const-p yyy-re (car f))))
+                         0 yyy-re))
+             (yyy-im (if (car (errcatch (locally-const-p yyy-im (cdr f))))
+                         0 yyy-im)))
       ;; If YYY-RE contains a noun-form %REALPART or YYY-IM contains a noun-form
       ;; %IMAGPART, then just work with YYY instead of YYY-RE + %i * YYY-IM.
-      (setq result (sratsimp (if (and (freeof '%realpart yyy-re)
-                                      (freeof '%imagpart yyy-im))
-                               (add yyy-re (mul '$%i yyy-im))
-                               yyy)))))))
+      (setq result (if (and (freeof '%realpart yyy-re)
+                            (freeof '%imagpart yyy-im))
+                       ;; With both parts, the polynomials of the sum hold
+                       ;; %i, and RISCHINT's algebraic gcd then takes all
+                       ;; their gcds by the subresultant algorithm, which
+                       ;; can exhaust the heap. The default gcd does so only
+                       ;; for gcds without cofactors.
+                       (let (($gcd (if (or (zerop1 yyy-re) (zerop1 yyy-im))
+                                       $gcd
+                                       '$spmod)))
+                         (sratsimp (add yyy-re (mul '$%i yyy-im))))
+                       (sratsimp yyy)))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.

@@ -6883,11 +6883,18 @@ block([f, F],
 
 /* Bug #5241: "Risch integrator drops algebraic unit from a denominator" */
 
+/* The result is real. radcan cannot reduce the exponential form of its
+   derivative to f, so check it at points. */
+
 block([f, F],
  f : x*sin(x)*log(sin(x)+1),
  F : risch(f, x),
- if freeof('integrate, F) then block([exponentialize : true, logarc : true, logexpand : super], radcan(diff(F, x) - f)) else 'fail);
-0;
+ if freeof('integrate, F)
+ then map(lambda([p],
+                 radcan(ratsimp(trigexpand(rectform(subst(p, diff(F, x) - f)))))),
+          [[x = 2*atan(1/2)], [x = 2*atan(3)]])
+ else 'fail);
+[0, 0];
 
 block([f, F],
  f : (x+%i)*(%e^x+1)^2/%e^x + 1/(%e^x+%i),
@@ -7306,6 +7313,17 @@ block([g, G],
    radcan((1 + t^2) * diff(subst(tan(x) = t, G), t) - subst(tan(x) = t, g)),
    map(lambda([p], is(abs(float(subst([a = 2, x = p], diff(G, x) - g))) < 1e-12)), [1/2, 2, 4])]);
 [true, 0, [true, true, true]]$
+
+
+/* Bug #5711: "integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))" */
+
+[integrate(sqrt(1+x)/sqrt(1-x)*(c-c*x), x),
+ integrate(sqrt(1+x)/sqrt(1-x)*(2-2*x), x)];
+[(c*asin(x))/2+(c*x*sqrt(1-x^2))/2, asin(x)+x*sqrt(1-x^2)]$
+
+[integrate((c-c*x)^3/((1-x)^3*sqrt(1-x^2)), x),
+ integrate((c-c*x)^2*sqrt(1-x^2)/(1-x)^2, x)];
+[c^3*asin(x), (c^2*asin(x))/2+(c^2*x*sqrt(1-x^2))/2]$
 
 /* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
    integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
@@ -7815,6 +7833,58 @@ block([gs, Gs],
                   [2, 3])),
        [1, 2])]);
 [[true, true], [[0, 0], [0, 0]]]$
+
+/* The Risch integrator tested each of the real and the imaginary part of
+   its result for being constant by RADCAN1 of its derivative. That took
+   too long for the first integral and wrongly dropped a part of the
+   second. The same part of the integrand is that derivative. */
+
+block([gs, Gs, ps, f],
+  gs : [(d*x+c)/(a*sin(f*x+e)+a)^2, sin(f*x+e)^3/sqrt(b*tan(f*x+e)^2+a)],
+  ps : [[a = 1, b = 2, c = 0, d = 1, e = 0, f = 1, x = 2*atan(1/2)],
+        [a = 3, b = 1/2, c = 1, d = 2, e = 0, f = 2, x = -2*atan(1/3)]],
+  Gs : map(lambda([g], integrate(g, x)), gs),
+  [map(lambda([G], freeof('integrate, G)), Gs),
+   map(lambda([i],
+              map(lambda([p],
+                         block([halfangles : true],
+                           radcan(ratsimp(trigexpand(rectform(
+                             subst(p, diff(Gs[i], x) - gs[i]))))))),
+                  ps)),
+       [1, 2])]);
+[[true, true], [[0, 0], [0, 0]]]$
+
+block([g, G],
+  g : %e^-(3*%i*atan(b*x+a))/x^4,
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p],
+              radcan(ratsimp(trigexpand(rectform(subst(p, diff(G, x) - g)))))),
+       [[a = 0, b = 1, x = 1/2], [a = 1/3, b = 2, x = -3]])]);
+[true, [0, 0]]$
+
+/* For the Risch integrator, RISPLIT takes li[2] to be real, which is not
+   true for every argument. The parts of the integrand then do not show
+   which part of the result is constant. */
+
+block([g, G],
+  g : x*sin(x)/(1+cos(x)),
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p],
+              radcan(ratsimp(trigexpand(rectform(subst(p, diff(G, x) - g)))))),
+       [[x = 2*atan(1/2)], [x = 2*atan(3)]])]);
+[true, [0, 0]]$
+
+/* integrate() returned the noun form when the integral of the expanded
+   integrand was not found, without trying its other methods. */
+
+block([fs, Fs],
+  fs : [%e^acoth(x)/(x+1)^2, %e^atanh(x)*x/(x+1)^2],
+  Fs : map(lambda([f], integrate(f, x)), fs),
+  [map(lambda([F], freeof('integrate, F)), Fs),
+   map(lambda([F, f], radcan(diff(F, x) - logarc(f))), Fs, fs)]);
+[[true, true], [0, 0]]$
 
 
 /**************************************/

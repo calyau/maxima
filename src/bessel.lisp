@@ -1797,7 +1797,7 @@
   ;; wrt v
   nil
   ;; Derivative wrt arg z.  A&S 12.1.10.
-  #$$ (x^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,z)+struve_h(v-1,z))/2$
+  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,z)+struve_h(v-1,z))/2$
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2025,7 +2025,7 @@
   ;; wrt v
   nil
   ;; Derivative wrt arg z.  A&S 12.2.5.
-  #$$ (x^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,z)+struve_l(v-1,z))/2$
+  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,z)+struve_l(v-1,z))/2$
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

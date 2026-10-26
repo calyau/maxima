@@ -772,59 +772,44 @@
       (memalike x varlist)
       (putonvlist x)))
 
-(defvar *radpairs* nil
-  "Radicals that FR1 writes as powers of another kernel, as a list of
-  (RADICAL KERNEL . POWER).")
-
-(defun unify-radicals (l)
+(defun unify-radicals (l pairs)
   ;; Radicals b^(1/m) and b^(1/n) of one base whose indices have a common
-  ;; factor are not independent: with k = lcm(m,n), both are powers of
-  ;; b^(1/k). Replace each such group in the kernel list L by b^(1/k), note
-  ;; the radicals it replaces in *RADPAIRS*, and return the new list.
-  (let (groups)
-    ;; GROUPS is a list of (base . classes), a class being (lcm . radicals)
+  ;; factor are powers of b^(1/k), k = lcm(m,n). Replace each class of such
+  ;; radicals in the kernel list L by b^(1/k), and return L and PAIRS with
+  ;; (RADICAL B^(1/K) . K/M) added for each radical that it replaces.
+  (let (groups)                 ; (base . classes), a class (lcm . radicals)
     (dolist (v l)
       (when (and (radfunp v nil) (eql (cadr (caddr v)) 1))
-        (let ((g (assol (cadr v) groups))
-              (n (caddr (caddr v))))
-          (unless g
-            (setq g (list (cadr v)))
-            (push g groups))
-          (let ((class (list n v)) rest)
-            (dolist (c (cdr g))
-              (if (> (gcd (car c) n) 1)
-                  (setq class (cons (lcm (car class) (car c))
-                                    (append (cdr c) (cdr class))))
-                  (push c rest)))
-            (setf (cdr g) (cons class rest))))))
-    (dolist (g groups l)
+        (let* ((n (caddr (caddr v))) (c (list n v)) rest
+               (g (or (assol (cadr v) groups)
+                      (car (push (list (cadr v)) groups)))))
+          (dolist (d (cdr g) (setf (cdr g) (cons c rest)))
+            (if (> (gcd (car d) n) 1)
+              (setq c (cons (lcm (car c) (car d)) (append (cdr d) (cdr c))))
+              (push d rest))))))
+    (dolist (g groups (values l pairs))
       (dolist (c (cdr g))
-        ;; With domain:real, x^(1/3) is the real root for x < 0, so
-        ;; x^(1/3) = (x^(1/6))^2 fails there. Mix even and odd indices of
-        ;; a base that may be negative only with domain:complex. The odd
-        ;; roots of -1 simplify to -1, so its classes have even indices only.
-        (when (and (cddr c)
-                   (or (and (numberp (car g))
-                            (or (plusp (car g)) (eql (car g) -1)))
-                       (not (eq $domain '$real))
-                       (oddp (car c)) (= (logcount (car c)) 1)))
-          (let* ((n (car c))
-                 (k (simplify (list '(mexpt) (car g) (list '(rat) 1 n)))))
-            (when (and (radfunp k nil) (alike1 (cadr k) (car g))
-                       (equal (caddr k) (list '(rat simp) 1 n)))
-              (dolist (m (cdr c))
-                (setq l (remove m l))
-                (unless (alike1 m k)
-                  (push (list* m k (/ n (caddr (caddr m)))) *radpairs*)))
-              (unless (or (memalike k l) (memalike k varlist))
-                (push k l)))))))))
+        ;; With domain:real, x^(1/3) = (x^(1/6))^2 fails for x < 0, so if b may
+        ;; be negative, n must be odd or a power of 2, which makes the powers of
+        ;; b^(1/n) all odd or all even roots. Odd roots of -1 simplify to -1.
+        (let ((b (car g)) (n (car c)) k)
+          (when (and (cddr c)
+                     (or (and (numberp b) (or (plusp b) (eql b -1)))
+                         (not (eq $domain '$real)) (oddp n) (= (logcount n) 1))
+                     (mexptp (setq k (simplify `((mexpt) ,b ((rat) 1 ,n)))))
+                     (alike1 (cadr k) b) (equal (caddr k) `((rat simp) 1 ,n)))
+            (dolist (m (cdr c))
+              (setq l (remove m l))
+              (or (alike1 m k)
+                  (push (list* m k (/ n (caddr (caddr m)))) pairs)))
+            (or (memalike k l) (memalike k varlist) (push k l))))))))
 
 (defun fr1 (x varlist)		    ;put radicands on initial varlist?
   (if (or (and (symbolp x) (not $algebraic) (not $ratwtlvl))
           (and (integerp x) (not modulus)))
    x ; early exit for symbols and integers
    (prog (genvar $norepeat *ratsimp* radlist vlist nvarlist ovarlist genpairs
-	  *radpairs*)
+	  pairs)
      (newvar1 x)
      (setq nvarlist (mapcar #'fr-args vlist))
      (cond ((not *ratsimp*)	;*ratsimp* not set for initial varlist
@@ -835,13 +820,13 @@
      (mapc #'newvar1 nvarlist)	  ;*RATSIMP*=T PUTS RADICANDS ON VLIST
      (dolist (v varlist)	  ; and those of radicals on initial varlist
        (when (radfunp v nil) (newvar1 (cadr v))))
-     (setq vlist (unify-radicals vlist)
-	   radlist (unify-radicals radlist))
+     (multiple-value-setq (vlist pairs) (unify-radicals vlist nil))
+     (multiple-value-setq (radlist pairs) (unify-radicals radlist pairs))
      (setq nvarlist (nconc nvarlist varlist) ; RADICALS ON RADLIST
 	   varlist (nconc (sortgreat vlist) (radsort radlist) varlist))
      (orderpointer varlist)
      (setq genpairs (mapcar #'(lambda (x y) (cons x (rget y))) varlist genvar))
-     (dolist (p *radpairs*)
+     (dolist (p pairs)
        (push (cons (car p) (ratexpt (assolike (cadr p) genpairs) (cddr p)))
 	     genpairs))
      (let (($algebraic $algebraic) ($ratalgdenom $ratalgdenom) radlist)

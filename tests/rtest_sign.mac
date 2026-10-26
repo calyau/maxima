@@ -3210,15 +3210,16 @@ block([radexpand : false],
    Needed by the fix for bug #5217: "rectform(sqrt(x*y)) under domain : complex" */
 
 block([z1, z2],
- local(z1, z2),
- declare([z1, z2], complex),
- [sign(carg(z1) - %pi), sign(carg(z1) + %pi), sign(carg(z1)/2 + carg(z2)/2 - %pi),
-  sign(carg(z1) + carg(z2)), sign(atan2(y, x) + %pi), sign(atan2(y, x)/2 - %pi/2),
-  sign(atan2(y, z1) - 4)]);
+  local(z1, z2),
+  declare([z1, z2], complex),
+  [sign(carg(z1) - %pi), sign(carg(z1) + %pi), sign(carg(z1)/2 + carg(z2)/2 - %pi),
+   sign(carg(z1) + carg(z2)), sign(atan2(y, x) + %pi), sign(atan2(y, x)/2 - %pi/2),
+   sign(atan2(y, z1) - 4)]);
 [nz, pos, nz, pnz, pos, nz, pnz]$
 
 [sign(atan(x) + atan(y) + 4), sign(sin(x) + cos(y) - 3), sign(2 - sin(x) - cos(y))];
 [pos, neg, pz]$
+
 
 /**************************************/
 /* Leave this at the end of the file! */

@@ -1277,6 +1277,11 @@
 
 (defvar rischp nil)
 (defvar rp-polylogp nil)
+;; T while TRIGIN1 splits with RISPLIT. RISPLIT then sets *RISPLIT-ASSUMED*
+;; to T when it takes a part to be real, or an expression to be
+;; nonnegative, without proof.
+(defvar *risplit-noting* nil)
+(defvar *risplit-assumed* nil)
 ;; T while INTEGRATE-SQRT-PAIR integrates the single root that it makes of a
 ;; product of roots, if RADCAN1 takes that root apart otherwise than the roots
 ;; it replaces. BRANCH-FACTOR then counts roots of expressions in the variable

@@ -235,13 +235,12 @@ map(lambda([f, u],
 
 [subst([x = -1, y = -1], rectform(sqrt(x*y))),
  block([domain : complex],
-  [subst([x = -1, y = -1], rectform(sqrt(x*y))),
-   subst([x = -1, y = -1, z = -1], rectform(sqrt(x*y*z)))])];
+   [subst([x = -1, y = -1], rectform(sqrt(x*y))),
+    subst([x = -1, y = -1, z = -1], rectform(sqrt(x*y*z)))])];
 [1, [1, %i]]$
 
 [carg(-x), carg(-2*x), carg(-x*y), carg(%i*x), carg((1+%i)*x)];
-[%pi - atan2(0, x), %pi - atan2(0, x), %pi - atan2(0, x*y), %pi/2 - atan2(0, x),
- %pi/4 - atan2(0, x)]$
+[%pi - atan2(0, x), %pi - atan2(0, x), %pi - atan2(0, x*y), %pi/2 - atan2(0, x), %pi/4 - atan2(0, x)]$
 
 subst([x = -1, y = -1], [carg(-x), carg(-x*y), carg(%i*x), carg((1+%i)*x)]);
 [0, %pi, -%pi/2, -3*%pi/4]$
@@ -251,12 +250,21 @@ subst(x = -8, [rectform(sqrt(-x)), polarform(sqrt(-x)), rectform(log(-x)),
 [2^(3/2), 2^(3/2), log(8), 2]$
 
 /* Products with complex factors (z, z1 and z2 are declared complex at the
-   top): reduced only when the sum can leave (-%pi, %pi]. */
+   top) are reduced only when the sum can leave (-%pi, %pi]: */
 [carg(%i*sqrt(z)), carg(sqrt(z1)*sqrt(z2)), carg(-%i*sqrt(x + %i*y))];
 [carg(z)/2 + %pi/2, carg(z1)/2 + carg(z2)/2, atan2(y, x)/2 - %pi/2]$
 
 subst([z1 = -1 + %i, z2 = -1 + %i],
       [carg(z1*z2), rectform(sqrt(z1*z2)), carg(-z1), polarform(-z1)]);
 [-%pi/2, 1 - %i, -%pi/4, sqrt(2)*%e^(-%i*%pi/4)]$
+
+block([x],
+  local(x),
+  assume(x > 0),
+  [carg((-1 - 3*%i)/2), carg(2*(-2 - %i)), carg(x*(-1 - 3*%i)),
+   carg(2*%e^(7*%i)), rectform(log((-1 - 3*%i)/2))]);
+[atan(3) - %pi, atan(1/2) - %pi, atan(3) - %pi, 7 - 2*%pi,
+ log(sqrt(10)/2) + %i*(atan(3) - %pi)]$
+
 
 /* ---------- End of file rtest_carg.mac ------------------------------------ */

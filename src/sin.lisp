@@ -433,15 +433,13 @@
 			    ;; times we've tried this and give up
 			    ;; after 4 (arbitrarily selected) times.
 			    ((and (< *integrator-level* 4)
-				  (not (alike1 *exp* (setq y ($expand *exp*)))))
-			     #+nil
-			     (progn
-			       (format t "*exp* = ~A~%" *exp*)
-			       (maxima-display *exp*)
-			       (format t "y   = ~A~%" y)
-			       (maxima-display y)
-			       (break))
-			     (integrator y var2 stack))
+				  (not (alike1 *exp* (setq y ($expand *exp*))))
+				  (setq y (integrator y var2 stack))
+				  ;; Keep it for later if it holds an integral,
+				  ;; and try the methods below.
+				  (setq result y)
+				  (not (isinop y '%integrate)))
+			     y)
 			    ((and (not powerl)
 				  (setq y (powerlist *exp* var2)))
 			     y)
@@ -465,6 +463,7 @@
 			    ((setq y (integrate-exp-special *exp* var2))
 			     ;; Maxima found an integral for a power function
 			     y)
+			    ((setq y (integrate-exp-atanh *exp* var2 stack)) y)
 			    (t
 			     ;; Integrate-exp-special has not found an integral
 			     ;; We look for a previous result obtained by
@@ -2637,6 +2636,31 @@
          (u freevar2 ,var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Integrate EXPR with every %e^(c*atanh(u)) written as (1+u)^(c/2)/(1-u)^(c/2)
+;; and every %e^(c*acoth(u)) as (1+1/u)^(c/2)/(1-1/u)^(c/2), as logarc() writes
+;; atanh(u) and acoth(u). Return NIL if there is none or no integral is found.
+(defun integrate-exp-atanh (expr var2 stack)
+  (labels ((arc-p (f)
+             (and (consp f) (member (caar f) '(%atanh %acoth))))
+           (rewrite (e)
+             (cond ((atom e) e)
+                   ((and (mexptp e) (eq (cadr e) '$%e))
+                    (let* ((x (caddr e))
+                           (f (if (mtimesp x) (find-if #'arc-p (cdr x)) x)))
+                      (if (and (arc-p f) (not (freeof var2 f))
+                               (freeof var2 (div x f)))
+                          (let ((w (if (eq (caar f) '%atanh)
+                                       (cadr f)
+                                       (inv (cadr f))))
+                                (c (div x (mul 2 f))))
+                            (div (power (add 1 w) c) (power (sub 1 w) c)))
+                          e)))
+                   (t (recur-apply #'rewrite e)))))
+    (let ((e (rewrite expr)))
+      (unless (alike1 e expr)
+        (let ((y (integrator e var2 stack)))
+          (unless (isinop y '%integrate) y))))))
 
 (defun integrate-exp-special (expr var2 &aux w const)
 

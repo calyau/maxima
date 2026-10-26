@@ -2085,8 +2085,7 @@
 		      1 t)))))
 
 (defun simpexpt (x y z)
-  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity
-         factor-signs)
+  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign pot-parity factor-signs)
      (setq check x)
      (twoargcheck x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
@@ -2977,7 +2976,11 @@
 	      ((= i 1) '$%i)
 	      ((= i 2) -1)
 	      (t (list '(mtimes simp) -1 '$%i))))
-    (power -1 (mul2 pot '((rat simp) 1 2)))))
+    ;; %i^pot = (-1)^(pot/2), where %i = (-1)^(1/2) is a principal value
+    (let ((e (mul2 pot '((rat simp) 1 2))))
+      (if (neg-real-root-p -1 '((rat simp) 1 2) e)
+	  (neg-principal-power -1 e)
+	  (power -1 e)))))
 
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
@@ -3051,10 +3054,8 @@
 ;; values is the principal value of BASE^(E1+E2). A real root times a
 ;; principal value is split into the sign of the root, (-BASE)^(E1+E2) and
 ;; a principal power of -1.
-
 (defun neg-power-product (base e1 e2)
-  (when (and (eq $domain '$real) (neg-number-p base)
-             (ratnump e1) (ratnump e2))
+  (when (and (eq $domain '$real) (neg-number-p base) (ratnump e1) (ratnump e2))
     (let ((e (add e1 e2)))
       (cond ((and (evenp (caddr e1)) (evenp (caddr e2)))
              (when (neg-real-root-p base e1 e)
