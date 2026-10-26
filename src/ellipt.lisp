@@ -4332,7 +4332,7 @@ first kind:
 ;; Checks.
 ;; Lawden gives the following relationships
 ;;
-;; E(u+v,m) = E(u,m) + E(v) - m*sn(u,m)*sn(v,m)*sn(u+v,m)
+;; E(u+v,m) = E(u,m) + E(v,m) - m*sn(u,m)*sn(v,m)*sn(u+v,m)
 ;; E(u,0) = u, E(u,1) = tanh u
 ;;
 ;; E(i*u,k) = i*sc(u,k')*dn(u,k') - i*E(u,k') + i*u
@@ -4395,13 +4395,13 @@ first kind:
             ;; So, let s = sqrt(m)*t:
             ;;
             ;;   E(u|m) = integrate(dn^2(t,m), t, 0, u)
-            ;;          = integrate(cn^2(s,1/m), s, 0, sqrt(m)*t)
+            ;;          = integrate(cn^2(s,1/m), s, 0, sqrt(m)*u)/sqrt(m)
             ;;
-            ;; But A&S 16.9.1 gives cn^2(z,m) = (1 - m) + m*dn^2(z,m) so
+            ;; But A&S 16.9.1 gives cn^2(z,mu) = 1 - 1/mu + dn^2(z,mu)/mu,
+            ;; so with mu = 1/m, cn^2(s,1/m) = (1 - m) + m*dn^2(s,1/m) and
             ;;
-            ;;   E(u|m) = (1-m)*sqrt(m)*t + m*integrate(dn^2(s,1/m),s,0,sqrt(m)*u)
-            ;;          = (1-m)*sqrt(m)*t + m*E(sqrt(m)*u|1/m)
-            ;;          = sqrt(m)*(E(sqrt(m)*u|1/m) - (m-1)*u)
+            ;;   E(u|m) = ((1-m)*sqrt(m)*u + m*E(sqrt(m)*u|1/m))/sqrt(m)
+            ;;          = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
 	    (let ((root-m (sqrt m)))
 	      (- (* root-m (elliptic-eu (* root-m u) (/ m)))
 		 (* (- m 1) u))))
@@ -4493,8 +4493,8 @@ first kind:
       ((float-numerical-eval-p u m)
        (bigfloat::elliptic-eu ($float u) ($float m)))
       ((complex-float-numerical-eval-p u m)
-       (let ((u-r ($realpart u))
-	     (u-i ($imagpart u))
+       (let ((u-r ($float ($realpart u)))
+	     (u-i ($float ($imagpart u)))
 	     (m ($float m)))
          (complexify (bigfloat::elliptic-eu (complex u-r u-i) m))))
       ((bigfloat-numerical-eval-p u m)
