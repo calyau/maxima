@@ -578,10 +578,6 @@ a @code{zip} decompressor, because wxMaxima stores the worksheet itself
 uncompressed.  Should a worksheet ever be met whose text part is compressed,
 @code{load} says so instead of loading part of it.
 
-Note also that structures will only be read back as structures if
-they have been defined by @code{defstruct} before the @code{load} command
-is called.
-
 See also @mrefcomma{loadfile} for Lisp files; and @mrefcomma{batch} @mrefcomma{batchload} and
 @mrefdot{demo} for Maxima files.
 
