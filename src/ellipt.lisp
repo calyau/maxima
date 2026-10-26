@@ -4492,17 +4492,19 @@ first kind:
       ;; so handle only floats and complex floats here.
       ((float-numerical-eval-p u m)
        (bigfloat::elliptic-eu ($float u) ($float m)))
-      ((complex-float-numerical-eval-p u m)
-       (let ((u-r ($float ($realpart u)))
-	     (u-i ($float ($imagpart u)))
-	     (m ($float m)))
-         (complexify (bigfloat::elliptic-eu (complex u-r u-i) m))))
+      ((setf args (complex-float-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::elliptic-eu (bigfloat:to ($float u))
+                                    (bigfloat:to ($float m))))))
       ((bigfloat-numerical-eval-p u m)
-       (to (bigfloat::elliptic-eu (bigfloat:to u) (bigfloat:to m))))
+       (to (bigfloat::elliptic-eu (bigfloat:to ($bfloat u))
+                                  (bigfloat:to ($bfloat m)))))
       ((setf args (complex-bigfloat-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat::elliptic-eu (bigfloat:to u) (bigfloat:to m)))))
+         (to (bigfloat::elliptic-eu (bigfloat:to ($bfloat u))
+                                    (bigfloat:to ($bfloat m))))))
       (t
        (give-up)))))
 
