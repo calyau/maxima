@@ -82,6 +82,7 @@ Univariate descriptive statistics:
    cv: variation coefficient
    mean_deviation: mean deviation
    median_deviation: median deviation
+   pearson_correlation: Pearson's correlation coefficient
    pearson_skewness: Pearson's skewness coefficient
    quartile_skewness: quartilic skewness coefficient
    km: Kaplan-Meier estimator of the survival function
@@ -580,6 +581,39 @@ median_deviation(x):=block([t,listarith:true],
            then median(abs(x-median(x)))
            else error("Input to 'median_deviation' must be a list of expressions or a matrix"))$
 
+
+/* Pearson's correlation coefficient
+ *
+ * When x and y are matrices, the result has a number of rows equal to the number of columns of x
+ * and a number columns equal to the number of columns of y.
+ *
+ * When x is a list, it is converted to a matrix of one column,
+ * likewise when y is a list, it is converted to a matrix of one column.
+ *
+ * The result is, in general, a matrix. However, when the result would be a one by one matrix
+ * and scalarmatrixp is true or all, the result is simplified to a scalar value (namely the sole element of the matrix).
+ *
+ * When x and y are empty, the result is an empty matrix.
+ */
+
+pearson_correlation (x, y) :=
+    block ([x1, y1, n],
+           x1: if matrixp (x) then x elseif listp (x) then transpose (x)
+                   else error ("pearson_correlation: first argument must be a list or matrix; found:", x),
+           y1: if matrixp (y) then y elseif listp (y) then transpose (y)
+                   else error ("pearson_correlation: second argument must be a list or matrix; found:", y),
+           n: if length (x1) = length (y1) then length (x1)
+                  else error ("pearson_correlation: arguments must be the same length; found:", x, "and", y),
+           if n = 0
+               then matrix ([])
+               else block ([mean_xy, mean_x, mean_y, sd_x, sd_y],
+                           mean_xy: (transpose (x1) . y1) / n,
+                           mean_x: mean (x1),
+                           mean_y: mean (y1),
+                           sd_x: std (x1),
+                           sd_y: std (y1),
+                           /* matrix divided by matrix is computed element by element, which is what we want here. */
+                           (mean_xy - transpose (mean_x) . mean_y) / (transpose (sd_x) . sd_y)));
 
 /* Pearson's skewness */
 pearson_skewness(x):=block([t,listarith:true],
