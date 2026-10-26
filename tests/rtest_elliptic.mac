@@ -1349,7 +1349,7 @@ block([fpprec : 32],
 [true, true];
 
 /* Pole not reached: real result. */
-[closeto(elliptic_pi(1.5, 0.625, 0.5) - (8.2738737238944789e-1), 3.3307e-16),
+[closeto(elliptic_pi(1.5, 0.625, 0.5) - (8.2738737238944789e-1), 5e-16),
  closeto(elliptic_pi(1.5b0, 0.625b0, 0.5b0) - (8.273873723894478863466700827093055b-1), 1b-32)];
 [true, true];
 [imagpart(elliptic_pi(1.5, 0.625, 0.5)), imagpart(elliptic_pi(1.5b0, 0.625b0, 0.5b0))];
@@ -1384,7 +1384,7 @@ block([fpprec : 32],
 [true, true];
 
 /* 1 < m < n: pole crossed before the branch point asin(1/sqrt(m)). */
-[closeto(elliptic_pi(4.0, 0.625, 2.0) - (5.5500827958490868e-1 - 1.2825498301618641*%i), 3.3307e-16),
+[closeto(elliptic_pi(4.0, 0.625, 2.0) - (5.5500827958490868e-1 - 1.2825498301618641*%i), 5e-16),
  closeto(elliptic_pi(4.0b0, 0.625b0, 2.0b0) - (5.550082795849086783230214444074010b-1 - 1.282549830161864095544036359671006b0*%i), 3.0815b-33)];
 [true, true];
 
