@@ -278,6 +278,7 @@ Bug fixes for numbered bugs:
 * \#5718 hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0
 * \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
 * \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
+* \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
 
 Bug fixes for unnumbered bugs:
 ------------------------------
