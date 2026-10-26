@@ -1793,11 +1793,20 @@
 (defprop %struve_h (mlist $matrix mequal) distribute_over)
 
 ; Derivatives of the Struve H function
-(defgrad %struve_h ($v $z)
+(defgrad %struve_h (v z)
   ;; wrt v
   nil
-  ;; Derivative wrt arg z.  A&S 12.1.10.
-  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,z)+struve_h(v-1,z))/2$
+  ;; Derivative wrt arg z.  A&S 12.1.10, with z^v on the principal branch
+  ;; of the function.
+  #'(lambda (v z)
+      (values (div (add (div (principal-power z v)
+                             (mul (power 2 v)
+                                  (power '$%pi 1//2)
+                                  (ftake '%gamma (add v 3//2))))
+                        (neg (ftake '%struve_h (add v 1) z))
+                        (ftake '%struve_h (add v -1) z))
+                   2)
+              t))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2021,11 +2030,20 @@
 (defprop %struve_l (mlist $matrix mequal) distribute_over)
 
 ; Derivatives of the Struve L function
-(defgrad %struve_l ($v $z)
+(defgrad %struve_l (v z)
   ;; wrt v
   nil
-  ;; Derivative wrt arg z.  A&S 12.2.5.
-  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,z)+struve_l(v-1,z))/2$
+  ;; Derivative wrt arg z.  A&S 12.2.5, with z^v on the principal branch
+  ;; of the function.
+  #'(lambda (v z)
+      (values (div (add (div (principal-power z v)
+                             (mul (power 2 v)
+                                  (power '$%pi 1//2)
+                                  (ftake '%gamma (add v 3//2))))
+                        (ftake '%struve_l (add v 1) z)
+                        (ftake '%struve_l (add v -1) z))
+                   2)
+              t))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

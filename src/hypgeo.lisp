@@ -1742,7 +1742,7 @@
 ;; matching factors (%i^P itself simplifies to (-1)^(P/2)). Any other Z gives
 ;; the power built with $RADEXPAND = T, because the binding of $RADEXPAND to
 ;; '$ALL by $SPECINT splits (-b)^P into (-1)^P*b^P, which is wrong for b < 0.
-(defun principal-power (z p)
+(defun specint-principal-power (z p)
   (multiple-value-bind (cnum re im) (complex-number-p z 'mnump)
     (if (and cnum (not (zerop1 im)))
       (mul (power (power (add (mul re re) (mul im im)) '((rat simp) 1 2)) p)
@@ -1765,7 +1765,7 @@
 (defun f36p147 (c a)
   (let ((-a (mul -1 a)))
     (mul c
-         (principal-power -a (mul -1 *hypgeo-par*))
+         (specint-principal-power -a (mul -1 *hypgeo-par*))
          `((%gamma_incomplete_lower simp) ,*hypgeo-par* ,-a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1782,7 +1782,7 @@
 
 (defun f37p147 (c a)
   (mul c
-       (principal-power a *hypgeo-par*)
+       (specint-principal-power a *hypgeo-par*)
        (take '(%gamma_incomplete) (mul -1 *hypgeo-par*) a)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

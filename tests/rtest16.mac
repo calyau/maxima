@@ -4011,7 +4011,7 @@ block([a, b, display_format_internal : true], string([a/b, b^(1/2), b^(-1/2)]));
 /* Bug #3082: "incorrect simplification of MTIMES expression containing MEXPT" */
 
 block([x], diff(%e^4*gamma_incomplete(-4/7, -x^7), x));
--7*%e^(x^7+4)/x^5;
+(7*%e^(x^7+4)*(((%e^((3*%i*%pi)/7)/2-1/2)*x)/abs(x)+%e^((3*%i*%pi)/7)/2+1/2))/(x^4*abs(x));
 
 block([x], 2*x*%e^x*%e^2);
 2*%e^(x+2)*x;
@@ -4726,6 +4726,17 @@ block([w],
    subst(realpart(w) = r, realpart((w + conjugate(w))^(1/3))),
    rectform(block([domain : complex], (-8)^(1/3)))]);
 [(2*cos(x) - 1)^(1/3), (2*r)^(1/3), -2]$
+
+
+/* Bug #5716: "diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real" */
+
+block([y],
+  map(lambda([u], is(cabs(float(rectform(u))) < 1e-14)),
+      [subst(y = -2, diff(struve_h(1/3, y), y))
+       - (%e^(%i*%pi/3)/(sqrt(%pi)*gamma(11/6)) - struve_h(4/3, -2) + struve_h(-2/3, -2))/2,
+       subst(y = -2, diff(struve_l(1/3, y), y))
+       - (%e^(%i*%pi/3)/(sqrt(%pi)*gamma(11/6)) + struve_l(4/3, -2) + struve_l(-2/3, -2))/2]));
+[true, true]$
 
 
 /**************************************/
