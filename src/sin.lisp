@@ -79,6 +79,13 @@
   (and (null (pzerop a))
        (free a var2)))
 
+;; True if EX is an exponential b^f whose base b is free of VAR2 or is an
+;; exponential itself, as in (%e^x)^v.
+(defun exponentialp (ex var2)
+  (and (mexptp ex)
+       (or (freevar2 (cadr ex) var2)
+           (exponentialp (cadr ex) var2))))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -287,7 +294,8 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result *risch-use-triginv-all*)
+    (prog (y const w arcpart coef integrand result skipexp
+           *risch-use-triginv-all*)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -348,28 +356,48 @@
        (progn
          (format t "car y =~%")
          (maxima-display (car y)))
-       (cond ((rat8 (car y) var2)
+       (cond ((or (rat8 (car y) var2)
+		  (and skipexp (exponentialp (car y) var2)))
 	      #+nil
 	      (format t "In loop, go skip~%")
 	      (go skip))
-	     ((and (setq w (intform (car y) var2))
+	     ((and (setq w (if skipexp
+			       ;; A clue after a failed exponential leaves
+			       ;; *EXP*, POWERL and *INTEGRATOR-LEVEL* as
+			       ;; they were.
+			       (let ((*exp* *exp*) (p powerl)
+				     (*integrator-level* *integrator-level*))
+				 (declare (special *exp* *integrator-level*))
+				 (prog1 (intform (car y) var2)
+				   (setq powerl p)))
+			       (intform (car y) var2)))
 		   ;; Do not return a noun form as result at this point, because
 		   ;; we would like to check for further special integrals.
 		   ;; We store the result for later use.
-		   (setq result w)
+		   (or skipexp (setq result w))
 		   (not (isinop w '%integrate)))
 	      #+nil
 	      (format t "In loop, case intform~%")
 	      (return (mul2* const w)))
+	     ((and (not *in-risch-p*) (exponentialp (car y) var2))
+	      ;; INTFORM failed on the exponential. Take the next factor that
+	      ;; is not an exponential as the clue, if there is one. Not for
+	      ;; the integrals RISCHINT leaves, whose radicals it may have
+	      ;; split on a wrong branch.
+	      (setq skipexp t)
+	      (go skip))
 	     (t
 	      #+nil
 	      (format t "In loop, go special~%")
 	      ;; Store a possible partial result
-	      (setq result w)
+	      (unless skipexp
+		(setq result w))
 	      (go special)))
      skip
        (setq y (cdr y))
-       (cond ((null y)
+       (cond ((and (null y) skipexp)
+	      (go special))
+	     ((null y)
               ;; Method 8: Rational functions
 	      (return (mul2* const (cond ((setq y (powerlist *exp* var2)) y)
 				         (t (ratint *exp* var2)))))))

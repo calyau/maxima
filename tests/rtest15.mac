@@ -24,11 +24,9 @@ integrate(3^log(x),x);
 integrate(sqrt(x+1/x-2),x,0,1);
 4/3$
 
-/* bug reported by kevin ellwood.  fixed mar 11 2004 
-Let's locally set `expintrep : gamma_incomplete` because it makes it easier to verify the answer is correct.
-*/
-block([expintrep : gamma_incomplete], integrate(exp(-k*t)/sqrt(k*t),t));
--(gamma_incomplete(1/2,k*t)/k)$
+/* bug reported by kevin ellwood.  fixed mar 11 2004 */
+integrate(exp(-k*t)/sqrt(k*t),t);
+sqrt(%pi)*erf(sqrt(k*t))/k$
 
 /* a bug in chebyf.  fixed 20 apr 2004. */
 

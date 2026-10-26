@@ -326,6 +326,8 @@ Bug fixes for unnumbered bugs:
 * integrate() returned noun forms for some integrands it can integrate,
   such as %e^acoth(x)/(x+1)^2, when the integral of the expanded
   integrand was not found
+* integrate() gave answers with a constant imaginary part for some
+  real integrands, such as %e^x*sqrt(x)
 
 Changes in the Windows installer:
 ---------------------------------
