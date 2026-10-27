@@ -4469,10 +4469,13 @@ first kind:
               (off-lattice (a b)
                 ;; How far a*w1 + b*w2 is from a period: 0 when a and
                 ;; b are integers.
-                (+ (abs (- a (round a)))
-                   (abs (- b (round b))))))
+                (+ (abs (nth-value 1 (round a)))
+                   (abs (nth-value 1 (round b))))))
          (multiple-value-bind (a b)
              (lattice-coords u)
+           ;; Reduce u to w = u - j*w1 - k*w2, near the origin, so sn,
+           ;; cn and dn are evaluated at a small argument.  Then
+           ;; E(u|m) = E(w|m) + LATTICE-E(j, k).
            (let* ((j (round a))
                   (k (round b))
                   (w (- u (* j w1) (* k w2))))
@@ -4486,10 +4489,27 @@ first kind:
                       (w-prime (* s rf))
                       (e (- w-prime
                             (* (/ m 3) s s s (bf-rd c2 d2 1)))))
+                 ;; Since w' = s*rf, e = s*rf - (m/3)*s^3*rd(c^2, d^2, 1)
+                 ;; is Carlson's form of E, and e = E(w'|m).  Either
+                 ;; w - w' or w + w' - 2*K(m) is a period.  A1 and B1
+                 ;; are the lattice coordinates of w - w', and A2 and B2
+                 ;; those of w + w' - 2*K(m).
                  (multiple-value-bind (a1 b1)
                      (lattice-coords (- w w-prime))
                    (multiple-value-bind (a2 b2)
                        (lattice-coords (- (+ w w-prime) w1))
+                     ;; In exact arithmetic one pair of coordinates is
+                     ;; integers.  With rounding, neither is exactly, so
+                     ;; OFF-LATTICE measures how far each pair is from
+                     ;; the nearest integers, |a - round(a)| +
+                     ;; |b - round(b)|, and the case with the smaller
+                     ;; distance is the one that holds:
+                     ;;
+                     ;;   If w - w' = a1*w1 + b1*w2,
+                     ;;   E(w|m) = e + LATTICE-E(round(a1), round(b1)).
+                     ;;
+                     ;;   If w + w' - 2*K(m) = a2*w1 + b2*w2,
+                     ;;   E(w|m) = 2*E(m) - e + LATTICE-E(round(a2), round(b2)).
                      (+ (lattice-e j k)
                         (if (<= (off-lattice a1 b1)
                                 (off-lattice a2 b2))
