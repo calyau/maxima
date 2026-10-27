@@ -1723,7 +1723,8 @@
 
 ;;------------------------------------------------------------------------
 ;; From nparse.lisp
-(defvar *alphabet* (list #\_ #\%))
+(defvar *alphabet-initial* (list #\_ #\%))
+(defvar *alphabet* (copy-list *alphabet-initial*))
 
 ;;------------------------------------------------------------------------
 ;; From ellipt.lisp
