@@ -4403,14 +4403,19 @@ first kind:
      ;; Carlson's idea: with s = sn(w|m), c = cn(w|m), d = dn(w|m),
      ;;
      ;;   w' = s*rf(c^2, d^2, 1)
-     ;;   e  = s*rf(c^2, d^2, 1) - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;      = integrate(1/sqrt((1-t^2)*(1-m*t^2)), t, 0, s)
      ;;
-     ;; are integrate(1/sqrt((1-t^2)*(1-m*t^2)), t, 0, s) and
-     ;; integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, s) along the same
-     ;; path (Carlson, Numer. Algorithms 10 (1995), eqs. (59)-(60)).
-     ;; Substituting t = sn(v|m), dt = cn(v|m)*dn(v|m)*dv, turns the first
-     ;; into integrate(1, v, 0, w') and the second into
-     ;; integrate(dn(v|m)^2, v, 0, w'), so e = E(w'|m) with sn(w'|m) = s.
+     ;;   e  = s*rf(c^2, d^2, 1) - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;      = w' - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;      = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, s)
+     ;;
+     ;; The integrals above are along the same path.  See (Carlson,
+     ;; Numer. Algorithms 10 (1995), eqs. (59)-(60)).
+     ;;
+     ;; Substituting t = sn(v|m), dt = cn(v|m)*dn(v|m)*dv, turns the
+     ;; first into integrate(1, v, 0, w') and the second into
+     ;; integrate(dn(v|m)^2, v, 0, w'), so e = E(w'|m) with sn(w'|m) =
+     ;; s.
      ;;
      ;; w' is a principal inverse of sn and need not be w.  sn(w|m) has
      ;; periods 4*K(m) and 2*i*K(1-m), so sn(w'|m) = sn(w|m) means that,
@@ -4435,12 +4440,21 @@ first kind:
             (ell-e (bf-elliptic-ec m))
             (ell-kp (bf-elliptic-k (- 1 m)))
             (ell-ep (bf-elliptic-ec (- 1 m)))
+            ;; w1 = 2*K(m)
             (w1 (* 2 ell-k))
+            ;; w2 = 2*%i*K'(m) = 2*%i*K(1-m)
             (w2 (* #c(0 2) ell-kp))
             (det (- (* (realpart w1) (imagpart w2))
                     (* (realpart w2) (imagpart w1)))))
        (flet ((lattice-coords (z)
                 ;; Real a and b such that z = a*w1 + b*w2.
+                ;; Write this in real and imaginary parts:
+                ;;
+                ;;   a*Re(w1) + b*Re(w2) = Re(z)
+                ;;   a*Im(w1) + b*Im(w2) = Im(z)
+                ;;
+                ;; Solve for a and b and return these values. DET is
+                ;; the determinant of the above matrix.
                 (values (/ (- (* (realpart z) (imagpart w2))
                               (* (realpart w2) (imagpart z)))
                            det)
@@ -4448,9 +4462,13 @@ first kind:
                               (* (realpart z) (imagpart w1)))
                            det)))
               (lattice-e (j k)
+                ;; E(z + j*w1 + k*w2|m) - E(z|m)
+                ;;   = 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
                 (+ (* 2 j ell-e)
                    (* #c(0 2) k (- ell-kp ell-ep))))
               (off-lattice (a b)
+                ;; How far a*w1 + b*w2 is from a period: 0 when a and
+                ;; b are integers.
                 (+ (abs (- a (round a)))
                    (abs (- b (round b))))))
          (multiple-value-bind (a b)
@@ -4458,8 +4476,10 @@ first kind:
            (let* ((j (round a))
                   (k (round b))
                   (w (- u (* j w1) (* k w2))))
+             ;; Compute sn(w|m), cn(w|m), and dn(w|m)
              (multiple-value-bind (s c d)
                  (elliptic-sn-cn-dn-descending w m (sqrt (- 1 m)))
+               ;; Use Carlson's idea to compute w' (W-PRIME) and e (E).
                (let* ((c2 (* c c))
                       (d2 (* d d))
                       (rf (bf-rf c2 d2 1))
@@ -4471,7 +4491,8 @@ first kind:
                    (multiple-value-bind (a2 b2)
                        (lattice-coords (- (+ w w-prime) w1))
                      (+ (lattice-e j k)
-                        (if (<= (off-lattice a1 b1) (off-lattice a2 b2))
+                        (if (<= (off-lattice a1 b1)
+                                (off-lattice a2 b2))
                             (+ e (lattice-e (round a1) (round b1)))
                             (+ (- (* 2 ell-e) e)
                                (lattice-e (round a2) (round b2))))))))))))))
