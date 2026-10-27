@@ -4382,11 +4382,89 @@ first kind:
 
 (defun elliptic-eu (u m)
   (cond
+    ((complexp m)
+     ;; Notation: E(u|m) is elliptic_eu(u,m), E(m) is elliptic_ec(m), and
+     ;; K(m) is elliptic_kc(m).  K(m), E(m), K(1-m) and E(1-m) are ELL-K,
+     ;; ELL-E, ELL-KP and ELL-EP below.
+     ;;
+     ;; Carlson's idea: with s = sn(u|m), c = cn(u|m), d = dn(u|m),
+     ;;
+     ;;   u' = s*rf(c^2, d^2, 1)
+     ;;   e  = s*rf(c^2, d^2, 1) - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;
+     ;; are integrate(1/sqrt((1-t^2)*(1-m*t^2)), t, 0, s) and
+     ;; integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, s) along the same
+     ;; path (Carlson, Numer. Algorithms 10 (1995), eqs. (59)-(60)).
+     ;; Substituting t = sn(v|m), dt = cn(v|m)*dn(v|m)*dv, turns the first
+     ;; into integrate(1, v, 0, u') and the second into
+     ;; integrate(dn(v|m)^2, v, 0, u'), so e = E(u'|m) with sn(u'|m) = s.
+     ;;
+     ;; u' is a principal inverse of sn and need not be u.  sn(u|m) has
+     ;; periods 4*K(m) and 2*i*K(1-m), so sn(u'|m) = sn(u|m) means that,
+     ;; for some integers j and k, either
+     ;;
+     ;;   u = u' + 2*j*K(m) + 2*i*k*K(1-m)
+     ;;
+     ;; or
+     ;;
+     ;;   u = 2*K(m) - u' + 2*j*K(m) + 2*i*k*K(1-m).
+     ;;
+     ;; With the quasi-periodicity
+     ;;
+     ;;   E(z + 2*K(m)|m) = E(z|m) + 2*E(m)
+     ;;   E(z + 2*i*K(1-m)|m) = E(z|m) + 2*i*(K(1-m) - E(1-m))
+     ;;
+     ;; and E(2*K(m) - z|m) = 2*E(m) - E(z|m), the two cases give
+     ;;
+     ;;   E(u|m) = e + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
+     ;;   E(u|m) = 2*E(m) - e + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
+     ;;
+     ;; j and k are the lattice coordinates of u - u' or of
+     ;; u + u' - 2*K(m); the case that holds is the one whose coordinates
+     ;; are integers.
+     (let* ((ell-k (bf-elliptic-k m))
+            (ell-e (bf-elliptic-ec m))
+            (ell-kp (bf-elliptic-k (- 1 m)))
+            (ell-ep (bf-elliptic-ec (- 1 m)))
+            (w1 (* 2 ell-k))
+            (w2 (* #c(0 2) ell-kp))
+            (det (- (* (realpart w1) (imagpart w2))
+                    (* (realpart w2) (imagpart w1)))))
+       (flet ((lattice-coords (z)
+                ;; Real a and b such that z = a*w1 + b*w2.
+                (values (/ (- (* (realpart z) (imagpart w2))
+                              (* (realpart w2) (imagpart z)))
+                           det)
+                        (/ (- (* (realpart w1) (imagpart z))
+                              (* (realpart z) (imagpart w1)))
+                           det)))
+              (lattice-e (j k)
+                (+ (* 2 j ell-e)
+                   (* #c(0 2) k (- ell-kp ell-ep))))
+              (off-lattice (a b)
+                (+ (abs (- a (round a)))
+                   (abs (- b (round b))))))
+         (multiple-value-bind (s c d)
+             (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
+           (let* ((c2 (* c c))
+                  (d2 (* d d))
+                  (rf (bf-rf c2 d2 1))
+                  (u-prime (* s rf))
+                  (e (- u-prime
+                        (* (/ m 3) s s s (bf-rd c2 d2 1)))))
+             (multiple-value-bind (a1 b1)
+                 (lattice-coords (- u u-prime))
+               (multiple-value-bind (a2 b2)
+                   (lattice-coords (- (+ u u-prime) w1))
+                 (if (<= (off-lattice a1 b1) (off-lattice a2 b2))
+                     (+ e (lattice-e (round a1) (round b1)))
+                     (+ (- (* 2 ell-e) e)
+                        (lattice-e (round a2) (round b2)))))))))))
     ((realp u)
      (cond ((= m 1)
-	    (tanh u))
-	   ((> m 1)
-	    ;; E(u|m) = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
+            (tanh u))
+           ((> m 1)
+            ;; E(u|m) = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
             ;;
             ;; From A&S 16.11:
             ;;
@@ -4402,30 +4480,30 @@ first kind:
             ;;
             ;;   E(u|m) = ((1-m)*sqrt(m)*u + m*E(sqrt(m)*u|1/m))/sqrt(m)
             ;;          = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
-	    (let ((root-m (sqrt m)))
-	      (- (* root-m (elliptic-eu (* root-m u) (/ m)))
-		 (* (- m 1) u))))
-	   (t
+            (let ((root-m (sqrt m)))
+              (- (* root-m (elliptic-eu (* root-m u) (/ m)))
+                 (* (- m 1) u))))
+           (t
             ;; DLMF https://dlmf.nist.gov/22.16.E28:
             ;;
-	    ;; E(u + 2*n*K|m) = E(u|m) + 2*n*E(m)
-	    (let ((ell-k (bf-elliptic-k m))
-		  (ell-e (bf-elliptic-ec m)))
-	      (multiple-value-bind (n u-rem)
-		  (floor u (* 2 ell-k))
-		;; 0 <= u-rem < 2*K
-		(+ (* 2 n ell-e)
-		   (cond ((>= u-rem ell-k)
-			  ;; 0 <= u-rem - K < K so
-			  ;; E(u + K|m) = E(u|m) + E(m) - m*sn(u|m)*cd(u|m)
+            ;; E(u + 2*n*K|m) = E(u|m) + 2*n*E(m)
+            (let ((ell-k (bf-elliptic-k m))
+                  (ell-e (bf-elliptic-ec m)))
+              (multiple-value-bind (n u-rem)
+                  (floor u (* 2 ell-k))
+                ;; 0 <= u-rem < 2*K
+                (+ (* 2 n ell-e)
+                   (cond ((>= u-rem ell-k)
+                          ;; 0 <= u-rem - K < K so
+                          ;; E(u + K|m) = E(u|m) + E(m) - m*sn(u|m)*cd(u|m)
                           ;;
                           ;; See https://dlmf.nist.gov/22.16.E28
-			  (let ((u-k (- u-rem ell-k)))
-			    (- (+ (bf-elliptic-e (atan (sn u-k m) (cn u-k m)) m)
-				  ell-e)
-			       (/ (* m (sn u-k m) (cn u-k m))
-				  (dn u-k m)))))
-			 (t
+                          (let ((u-k (- u-rem ell-k)))
+                            (- (+ (bf-elliptic-e (atan (sn u-k m) (cn u-k m)) m)
+                                  ell-e)
+                               (/ (* m (sn u-k m) (cn u-k m))
+                                  (dn u-k m)))))
+                         (t
                           ;; Eu(u|m) = E(am(w,m)|m).  But using
                           ;; am(w,m) = asin(sn(w,m)) is
                           ;; ill-conditioned as sn -> 1.  Instead,
@@ -4434,8 +4512,8 @@ first kind:
                           ;; sn(w,m)/cn(w,m) = tan(am(w,m)) so
                           ;; atan(sn(w,m)/cn(w,m)) = am(w,m).  But
                           ;; use atan2 to get the desired angle.
-			  (bf-elliptic-e (atan (sn u-rem m) (cn u-rem m))
-					 m)))))))))
+                          (bf-elliptic-e (atan (sn u-rem m) (cn u-rem m))
+                                         m)))))))))
     ((complexp u)
      ;; From Lawden:
      ;;
@@ -4450,31 +4528,31 @@ first kind:
      ;;
      ;; For m <= 0, cn(v,m') = dn(sqrt(m')*v,1/m') > 0.
      (let* ((u-r (realpart u))
-	    (m1 (- 1 m))
-	    (reducep (< m1 1))
-	    (ell-kp (if reducep (bf-elliptic-k m1) 0))
-	    (ell-ep (if reducep (bf-elliptic-ec m1) 0))
-	    (n (if reducep (round (imagpart u) (* 2 ell-kp)) 0))
-	    (v (- (imagpart u) (* 2 n ell-kp)))
-	    (s (cond ((not reducep) 0)
-		     ((> v (/ ell-kp 2)) 1)
-		     ((< v (- (/ ell-kp 2))) -1)
-		     (t 0)))
-	    (u-i (- v (* s ell-kp)))
-	    (w (complex u-r u-i)))
+            (m1 (- 1 m))
+            (reducep (< m1 1))
+            (ell-kp (if reducep (bf-elliptic-k m1) 0))
+            (ell-ep (if reducep (bf-elliptic-ec m1) 0))
+            (n (if reducep (round (imagpart u) (* 2 ell-kp)) 0))
+            (v (- (imagpart u) (* 2 n ell-kp)))
+            (s (cond ((not reducep) 0)
+                     ((> v (/ ell-kp 2)) 1)
+                     ((< v (- (/ ell-kp 2))) -1)
+                     (t 0)))
+            (u-i (- v (* s ell-kp)))
+            (w (complex u-r u-i)))
        (+ (elliptic-eu u-r m)
-	  (* #c(0 1) (+ (* 2 n) s) (- ell-kp ell-ep))
-	  (if (zerop s)
-	      0
-	      (/ (* (cn w m) (dn w m))
-		 (sn w m)))
-	  (* #c(0 1)
-	     (- (+ u-i
-		   (/ (* (sn u-i m1) (dn u-i m1))
-		      (cn u-i m1)))
-		(+ (elliptic-eu u-i m1)
-		   (/ (* m (sn u-r m) (sn u-i m1) (sn w m))
-		      (cn u-i m1))))))))))
+          (* #c(0 1) (+ (* 2 n) s) (- ell-kp ell-ep))
+          (if (zerop s)
+              0
+              (/ (* (cn w m) (dn w m))
+                 (sn w m)))
+          (* #c(0 1)
+             (- (+ u-i
+                   (/ (* (sn u-i m1) (dn u-i m1))
+                      (cn u-i m1)))
+                (+ (elliptic-eu u-i m1)
+                   (/ (* m (sn u-r m) (sn u-i m1) (sn w m))
+                      (cn u-i m1))))))))))
 
 (in-package :maxima)
 

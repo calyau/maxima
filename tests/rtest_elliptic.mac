@@ -1519,6 +1519,41 @@ true;
  closeto(elliptic_eu(0.5b0 + 0.5b0*%i, -2.0b0) - (3.088694859415205913497502340483152b-1 + 6.553229735337567962145163766489119b-1*%i), 3.1359b-32)];
 [true, true];
 
+/* elliptic_eu with complex m.  Reference values computed with mpmath
+ * as integrate(jacobi_dn(t,m)^2,t,0,u) at 45 digits along two paths.
+ */
+
+/* Complex m, no reduction of u. */
+[closeto(elliptic_eu(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 1.6900e-16),
+ closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 0.5b0 + 0.5b0*%i) - (5.854975495077468611925941646139621b-1 + 4.86249469889204907874227251328901b-1*%i), 7.7038b-33)];
+[true, true];
+
+/* Complex m, real u. */
+[closeto(elliptic_eu(0.5, 0.5 + 0.5*%i) - (4.8019172478354127e-1 - 1.8933592522499063e-2*%i), 1.0671e-16),
+ closeto(elliptic_eu(0.5b0, 0.5b0 + 0.5b0*%i) - (4.801917247835412736277388676969698b-1 - 1.893359252249906312281436402245733b-2*%i), 4.8057b-33)];
+[true, true];
+
+/* Complex m, Carlson's w' is congruent to 2*K - w. */
+[closeto(elliptic_eu(3.0 - 2.0*%i, 2.0 + 1.0*%i) - (1.6608742539419846e0 + 4.5199957139815433e-2*%i), 3.3559e-15),
+ closeto(elliptic_eu(3.0b0 - 2.0b0*%i, 2.0b0 + 1.0b0*%i) - (1.660874253941984584514095359544316b0 + 4.519995713981543299473554269306193b-2*%i), 1.0081b-31)];
+[true, true];
+
+/* Complex m, reduction by 2*i*K'. */
+[closeto(elliptic_eu(0.25 + 1.5*%i, -3.0 + 0.5*%i) - (3.0709709323478095e-1 + 6.2131516290181819e-1*%i), 1.1390e-15),
+ closeto(elliptic_eu(0.25b0 + 1.5b0*%i, -3.0b0 + 0.5b0*%i) - (3.070970932347809507917094052129578b-1 + 6.213151629018181945532907674753579b-1*%i), 3.8116b-32)];
+[true, true];
+
+/* Complex m, reduction by 2*K and 2*i*K', and shift by i*K'. */
+[closeto(elliptic_eu(7.0 + 3.0*%i, 0.5 - 0.5*%i) - (5.1757970146289175e0 + 2.1167820874187701e0*%i), 1.2417e-15),
+ closeto(elliptic_eu(7.0b0 + 3.0b0*%i, 0.5b0 - 0.5b0*%i) - (5.175797014628917544324764006050075b0 + 2.116782087418770088201089690544096b0*%i), 5.5920b-32)];
+[true, true];
+
+/* Complex m, shift by -i*K', and w - w' is a nonzero period. */
+[closeto(elliptic_eu(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 7.0217e-16),
+ closeto(elliptic_eu(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
+[true, true];
+
+
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
