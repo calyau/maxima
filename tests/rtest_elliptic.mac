@@ -1553,6 +1553,11 @@ true;
  closeto(elliptic_eu(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
+/* Complex m and large real u.  This shows that arg reduction of u improves accuracy signficantly.
+ * Without it, the answer has only about 4 correct digits.
+*/
+closeto(elliptic_eu(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
+true;
 
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);

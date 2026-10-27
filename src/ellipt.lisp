@@ -4387,40 +4387,49 @@ first kind:
      ;; K(m) is elliptic_kc(m).  K(m), E(m), K(1-m) and E(1-m) are ELL-K,
      ;; ELL-E, ELL-KP and ELL-EP below.
      ;;
-     ;; Carlson's idea: with s = sn(u|m), c = cn(u|m), d = dn(u|m),
+     ;; E(u|m) is quasi-periodic:
      ;;
-     ;;   u' = s*rf(c^2, d^2, 1)
+     ;;   E(z + 2*K(m)|m) = E(z|m) + 2*E(m)
+     ;;   E(z + 2*i*K(1-m)|m) = E(z|m) + 2*i*(K(1-m) - E(1-m))
+     ;;
+     ;; Write u = a*2*K(m) + b*2*i*K(1-m) with a and b real, and reduce u
+     ;; to w = u - j*2*K(m) - k*2*i*K(1-m) with j = round(a), k = round(b),
+     ;; so E(u|m) = E(w|m) + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m)).  For
+     ;; complex m, the descending Landen transformation in sn, cn and dn
+     ;; scales the argument by a complex factor, so a large argument gives
+     ;; sin an argument with a large imaginary part and sn, cn and dn
+     ;; overflow or lose all accuracy.
+     ;;
+     ;; Carlson's idea: with s = sn(w|m), c = cn(w|m), d = dn(w|m),
+     ;;
+     ;;   w' = s*rf(c^2, d^2, 1)
      ;;   e  = s*rf(c^2, d^2, 1) - (m/3)*s^3*rd(c^2, d^2, 1)
      ;;
      ;; are integrate(1/sqrt((1-t^2)*(1-m*t^2)), t, 0, s) and
      ;; integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, s) along the same
      ;; path (Carlson, Numer. Algorithms 10 (1995), eqs. (59)-(60)).
      ;; Substituting t = sn(v|m), dt = cn(v|m)*dn(v|m)*dv, turns the first
-     ;; into integrate(1, v, 0, u') and the second into
-     ;; integrate(dn(v|m)^2, v, 0, u'), so e = E(u'|m) with sn(u'|m) = s.
+     ;; into integrate(1, v, 0, w') and the second into
+     ;; integrate(dn(v|m)^2, v, 0, w'), so e = E(w'|m) with sn(w'|m) = s.
      ;;
-     ;; u' is a principal inverse of sn and need not be u.  sn(u|m) has
-     ;; periods 4*K(m) and 2*i*K(1-m), so sn(u'|m) = sn(u|m) means that,
-     ;; for some integers j and k, either
+     ;; w' is a principal inverse of sn and need not be w.  sn(w|m) has
+     ;; periods 4*K(m) and 2*i*K(1-m), so sn(w'|m) = sn(w|m) means that,
+     ;; for some integers p and q, either
      ;;
-     ;;   u = u' + 2*j*K(m) + 2*i*k*K(1-m)
+     ;;   w = w' + 2*p*K(m) + 2*i*q*K(1-m)
      ;;
      ;; or
      ;;
-     ;;   u = 2*K(m) - u' + 2*j*K(m) + 2*i*k*K(1-m).
+     ;;   w = 2*K(m) - w' + 2*p*K(m) + 2*i*q*K(1-m).
      ;;
-     ;; With the quasi-periodicity
+     ;; With the quasi-periodicity and E(2*K(m) - z|m) = 2*E(m) - E(z|m),
+     ;; the two cases give
      ;;
-     ;;   E(z + 2*K(m)|m) = E(z|m) + 2*E(m)
-     ;;   E(z + 2*i*K(1-m)|m) = E(z|m) + 2*i*(K(1-m) - E(1-m))
+     ;;   E(w|m) = e + 2*p*E(m) + 2*i*q*(K(1-m) - E(1-m))
+     ;;   E(w|m) = 2*E(m) - e + 2*p*E(m) + 2*i*q*(K(1-m) - E(1-m))
      ;;
-     ;; and E(2*K(m) - z|m) = 2*E(m) - E(z|m), the two cases give
-     ;;
-     ;;   E(u|m) = e + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
-     ;;   E(u|m) = 2*E(m) - e + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
-     ;;
-     ;; j and k are the lattice coordinates of u - u' or of
-     ;; u + u' - 2*K(m); the case that holds is the one whose coordinates
+     ;; p and q are the lattice coordinates of w - w' or of
+     ;; w + w' - 2*K(m); the case that holds is the one whose coordinates
      ;; are integers.
      (let* ((ell-k (bf-elliptic-k m))
             (ell-e (bf-elliptic-ec m))
@@ -4444,22 +4453,28 @@ first kind:
               (off-lattice (a b)
                 (+ (abs (- a (round a)))
                    (abs (- b (round b))))))
-         (multiple-value-bind (s c d)
-             (elliptic-sn-cn-dn-descending u m (sqrt (- 1 m)))
-           (let* ((c2 (* c c))
-                  (d2 (* d d))
-                  (rf (bf-rf c2 d2 1))
-                  (u-prime (* s rf))
-                  (e (- u-prime
-                        (* (/ m 3) s s s (bf-rd c2 d2 1)))))
-             (multiple-value-bind (a1 b1)
-                 (lattice-coords (- u u-prime))
-               (multiple-value-bind (a2 b2)
-                   (lattice-coords (- (+ u u-prime) w1))
-                 (if (<= (off-lattice a1 b1) (off-lattice a2 b2))
-                     (+ e (lattice-e (round a1) (round b1)))
-                     (+ (- (* 2 ell-e) e)
-                        (lattice-e (round a2) (round b2)))))))))))
+         (multiple-value-bind (a b)
+             (lattice-coords u)
+           (let* ((j (round a))
+                  (k (round b))
+                  (w (- u (* j w1) (* k w2))))
+             (multiple-value-bind (s c d)
+                 (elliptic-sn-cn-dn-descending w m (sqrt (- 1 m)))
+               (let* ((c2 (* c c))
+                      (d2 (* d d))
+                      (rf (bf-rf c2 d2 1))
+                      (w-prime (* s rf))
+                      (e (- w-prime
+                            (* (/ m 3) s s s (bf-rd c2 d2 1)))))
+                 (multiple-value-bind (a1 b1)
+                     (lattice-coords (- w w-prime))
+                   (multiple-value-bind (a2 b2)
+                       (lattice-coords (- (+ w w-prime) w1))
+                     (+ (lattice-e j k)
+                        (if (<= (off-lattice a1 b1) (off-lattice a2 b2))
+                            (+ e (lattice-e (round a1) (round b1)))
+                            (+ (- (* 2 ell-e) e)
+                               (lattice-e (round a2) (round b2))))))))))))))
     ((realp u)
      (cond ((= m 1)
             (tanh u))
