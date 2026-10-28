@@ -4754,6 +4754,15 @@ map(lambda([u], is(cabs(float(rectform(u))) < 1e-10)),
 [true, true]$
 
 
+/* Bug #5293: "subst(zz, true, if a then b elseif c then d else f) drops the else branch" */
+
+subst(zz, true, '(if p1 then q1 elseif p2 then q2 else q3));
+if p1 then q1 elseif p2 then q2 else q3$
+
+subst(zz, true, '(if p1 then true elseif p2 then q2 else q3));
+if p1 then zz elseif p2 then q2 else q3$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
