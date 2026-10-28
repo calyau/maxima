@@ -104,18 +104,19 @@
                  (exp (* -2 (abs (imagpart u)))))))))
 
 (defun jacobi-arg-halvings (u m)
-  ;; Return the number of times n that u is halved before the descending
-  ;; Landen transformation; sn, cn, and dn at u are then obtained by
-  ;; doubling the argument n times.
+  ;; Return the number of times, n, that u is halved before using the
+  ;; descending Landen transformation; sn, cn, and dn at u are then
+  ;; obtained by doubling the argument n times.
   ;;
   ;; The descending Landen transformation ends with sin(v) and cos(v),
   ;; where v = u/prod(1+sqrt(mu)) = pi*u/(2*K(m)), since K(m) =
   ;; pi/2*prod(1+sqrt(mu)).  The next step squares sin(v), which is
   ;; about exp(abs(imagpart(v)))/2, so with doubles it overflows when
   ;; abs(imagpart(v)) exceeds about log(most-positive-double-float)/2.
-  ;; Until then the transformation is accurate, so u is halved only when
-  ;; abs(imagpart(v)) exceeds half of that, and then just enough times to
-  ;; bring it below.  For real u and real m, v is real.
+  ;; Until then the transformation is accurate, so u is halved only
+  ;; when abs(imagpart(v)) exceeds half of that, and then just enough
+  ;; times to bring it below.  For real u and real m, v is real, so we
+  ;; don't need to do halvings either.
   ;;
   ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
   ;; never halved.
@@ -127,7 +128,7 @@
 	    (limit (/ (cl:log most-positive-double-float) 4)))
 	(if (<= y limit)
 	    0
-	    (ceiling (cl:log (/ y limit) 2))))))
+	    (values (ceiling (cl:log (/ y limit) 2)))))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 (defun descending-landen-sn (u m root-m1)
@@ -194,7 +195,7 @@
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1, computed at u/2^n and
 ;; doubled n times.  ROOT-M1 is sqrt(1-m).
-(defun descending-landen-sn-cn-dn-doubled (u m root-m1 n)
+(defun descending-landen-duplication (u m root-m1 n)
   ;; DLMF 22.8.1 to 22.8.3 with v = u:
   ;;
   ;;   sn(2*u|m) = 2*s*c*d/(1-m*s^4)
@@ -202,17 +203,23 @@
   ;;   dn(2*u|m) = (d^2-m*s^2*c^2)/(1-m*s^4)
   ;;
   ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
-  (multiple-value-bind (s c d)
-      (descending-landen-sn-cn-dn (/ u (expt 2 n)) m root-m1)
-    (dotimes (k n)
-      (let* ((s2 (* s s))
-	     (c2 (* c c))
-	     (d2 (* d d))
-	     (den (- 1 (* m s2 s2))))
-	(psetf s (/ (* 2 s c d) den)
-	       c (/ (- c2 (* s2 d2)) den)
-	       d (/ (- d2 (* m s2 c2)) den))))
-    (values s c d)))
+  ;;
+  ;; Use scale-float on the real and imaginary parts of u to compute
+  ;; u/2^n accurately.
+  (let ((scaled-u-r (scale-float (realpart u) (- n)))
+        (scaled-u-i (scale-float (imagpart u) (- n))))
+    (multiple-value-bind (s c d)
+        (descending-landen-sn-cn-dn (complex scaled-u-r scaled-u-i)
+                                    m root-m1)
+      (dotimes (k n)
+        (let* ((s2 (* s s))
+	       (c2 (* c c))
+	       (d2 (* d d))
+	       (den (- 1 (* m s2 s2))))
+	  (psetf s (/ (* 2 s c d) den)
+	         c (/ (- c2 (* s2 d2)) den)
+	         d (/ (- d2 (* m s2 c2)) den))))
+      (values s c d))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
 ;; halved first and the result doubled.
@@ -220,13 +227,13 @@
   (let ((n (jacobi-arg-halvings u m)))
     (if (zerop n)
 	(descending-landen-sn u m root-m1)
-	(values (descending-landen-sn-cn-dn-doubled u m root-m1 n)))))
+	(values (descending-landen-duplication u m root-m1 n)))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 ;; When u is large, u is halved first and the results doubled.
 (defun elliptic-sn-cn-dn-descending (u m root-m1)
-  (descending-landen-sn-cn-dn-doubled u m root-m1
-				      (jacobi-arg-halvings u m)))
+  (descending-landen-duplication u m root-m1
+				 (jacobi-arg-halvings u m)))
 
 (defun sn (u m)
   (cond ((zerop m)
