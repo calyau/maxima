@@ -178,11 +178,6 @@ block ([stringdisp: true], printf (false, "~m", C));
 structures;
 [ foo (a, 123, 456), baz (4321, y), quux (z) ];
 
-/* Restoring from save(..., all) causes "." to be handled slightly differently,
- * and a consequence is that numbers without leading digits (e.g. .12345) cause a syntax error.
- * Disable save(..., all) pending resolution of that bug.
- * See SF bug #3047: "'save' saves some built-in stuff"
- *
 (save (sconcat (maxima_tempdir, "/tmp-save-structures-3.lisp"), all),
  kill (structures),
  structures);
@@ -193,8 +188,6 @@ structures;
 
 structures;
 [ foo (a, 123, 456), baz (4321, y), quux (z) ];
- *
- */
 
 (save (sconcat (maxima_tempdir, "/tmp-save-structures-4.lisp"), baz, quux),
  kill (structures),
