@@ -225,6 +225,9 @@
   ;; This is done only when abs(s) <= 2.  Near a pole s and c are large,
   ;; s^2+c^2 = 1 cancels, and the correction would destroy an accurate
   ;; result.  There 1-m*s^4 is large and no correction is needed.
+  ;; Likewise d is corrected only when abs(d) >= 1/1000: near a zero of
+  ;; dn, m*s^2+d^2-1 cancels and dividing by d would magnify the
+  ;; rounding error.
   ;;
   ;; Use scale-float on the real and imaginary parts of u to compute
   ;; u/2^n accurately, taking care not to convert real numbers to
@@ -248,23 +251,43 @@
 	  (when (<= (abs s) 2)
 	    (let ((r (sqrt (+ (* s s) (* c c)))))
 	      (setf s (/ s r)
-		    c (/ c r)
-		    d (- d (/ (+ (* m s s) (* d d) -1) (* 2 d))))))))
+		    c (/ c r))
+	      (when (>= (abs d) 1/1000)
+		(setf d (- d (/ (+ (* m s s) (* d d) -1) (* 2 d)))))))))
       (values s c d))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
 ;; halved first and the result doubled.
 (defun elliptic-sn-descending (u m root-m1)
-  (let ((n (jacobi-arg-halvings u m)))
-    (if (zerop n)
-	(descending-landen-sn u m root-m1)
-	(values (descending-landen-duplication u m root-m1 n)))))
+  (if (zerop (jacobi-arg-halvings u m))
+      (descending-landen-sn u m root-m1)
+      (values (elliptic-sn-cn-dn-descending u m root-m1))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 ;; When u is large, u is halved first and the results doubled.
 (defun elliptic-sn-cn-dn-descending (u m root-m1)
-  (descending-landen-duplication u m root-m1
-				 (jacobi-arg-halvings u m)))
+  (let ((n (jacobi-arg-halvings u m)))
+    (if (and (plusp n) (> (realpart m) 1/2))
+	;; The doubling is unstable for m near 1, roughly when 3/4 <=
+	;; realpart(m) <= 9/4 and abs(imagpart(m)) <= 1, and correcting s,
+	;; c, and d after each step is not enough when m is very close to
+	;; 1.  So use Jacobi's imaginary transformation (A&S 16.20.1 to
+	;; 16.20.3, https://dlmf.nist.gov/22.6.T1):
+	;;
+	;;   sn(u|m) = -i*sc(i*u|1-m)
+	;;   cn(u|m) = nc(i*u|1-m)
+	;;   dn(u|m) = dc(i*u|1-m)
+	;;
+	;; realpart(1-m) < 1/2, where the doubling is stable.
+	(let ((iu (* #c(0 1) u))
+	      (m1 (- 1 m)))
+	  (multiple-value-bind (s c d)
+	      (descending-landen-duplication iu m1 (sqrt m)
+					     (jacobi-arg-halvings iu m1))
+	    (values (* #c(0 -1) (/ s c))
+		    (/ c)
+		    (/ d c))))
+	(descending-landen-duplication u m root-m1 n))))
 
 (defun sn (u m)
   (cond ((zerop m)
