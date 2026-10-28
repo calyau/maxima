@@ -103,8 +103,34 @@
               (* (epsilon u)
                  (exp (* -2 (abs (imagpart u)))))))))
 
+(defun jacobi-arg-halvings (u m)
+  ;; Return the number of times n that u is halved before the descending
+  ;; Landen transformation; sn, cn, and dn at u are then obtained by
+  ;; doubling the argument n times.
+  ;;
+  ;; The descending Landen transformation ends with sin(v) and cos(v),
+  ;; where v = u/prod(1+sqrt(mu)) = pi*u/(2*K(m)), since K(m) =
+  ;; pi/2*prod(1+sqrt(mu)).  The next step squares sin(v), which is
+  ;; about exp(abs(imagpart(v)))/2, so with doubles it overflows when
+  ;; abs(imagpart(v)) exceeds about log(most-positive-double-float)/2.
+  ;; Until then the transformation is accurate, so u is halved only when
+  ;; abs(imagpart(v)) exceeds half of that, and then just enough times to
+  ;; bring it below.  For real u and real m, v is real.
+  ;;
+  ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
+  ;; never halved.
+  (if (or (and (realp u) (realp m))
+	  (not (and (cl:numberp u) (cl:numberp m))))
+      0
+      (let ((y (* (float pi 1d0)
+		  (abs (imagpart (/ u (* 2 (bf-elliptic-k m)))))))
+	    (limit (/ (cl:log most-positive-double-float) 4)))
+	(if (<= y limit)
+	    0
+	    (ceiling (cl:log (/ y limit) 2))))))
+
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-descending (u m root-m1)
+(defun descending-landen-sn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4)
@@ -115,12 +141,12 @@
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      (multiple-value-bind (v mu root-mu root-mu1)
 	 (descending-transform u m root-m1)
-       (let ((s (elliptic-sn-descending v mu root-mu1)))
+       (let ((s (descending-landen-sn v mu root-mu1)))
 	 (/ (* (1+ root-mu) s)
 	    (1+ (* root-mu s s))))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-cn-dn-descending (u m root-m1)
+(defun descending-landen-sn-cn-dn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4) to 16.13.3
@@ -148,7 +174,7 @@
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
-	    (elliptic-sn-cn-dn-descending v mu root-mu1)
+	    (descending-landen-sn-cn-dn v mu root-mu1)
 	  ;; A&S 16.12.2 to 16.12.4
 	  (let* ((p (* root-mu s s))
 		 (den (1+ p)))
@@ -165,6 +191,42 @@
 			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
 			      (* root-mu c c)))
 		       den))))))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1, computed at u/2^n and
+;; doubled n times.  ROOT-M1 is sqrt(1-m).
+(defun descending-landen-sn-cn-dn-doubled (u m root-m1 n)
+  ;; DLMF 22.8.1 to 22.8.3 with v = u:
+  ;;
+  ;;   sn(2*u|m) = 2*s*c*d/(1-m*s^4)
+  ;;   cn(2*u|m) = (c^2-s^2*d^2)/(1-m*s^4)
+  ;;   dn(2*u|m) = (d^2-m*s^2*c^2)/(1-m*s^4)
+  ;;
+  ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
+  (multiple-value-bind (s c d)
+      (descending-landen-sn-cn-dn (/ u (expt 2 n)) m root-m1)
+    (dotimes (k n)
+      (let* ((s2 (* s s))
+	     (c2 (* c c))
+	     (d2 (* d d))
+	     (den (- 1 (* m s2 s2))))
+	(psetf s (/ (* 2 s c d) den)
+	       c (/ (- c2 (* s2 d2)) den)
+	       d (/ (- d2 (* m s2 c2)) den))))
+    (values s c d)))
+
+;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
+;; halved first and the result doubled.
+(defun elliptic-sn-descending (u m root-m1)
+  (let ((n (jacobi-arg-halvings u m)))
+    (if (zerop n)
+	(descending-landen-sn u m root-m1)
+	(values (descending-landen-sn-cn-dn-doubled u m root-m1 n)))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
+;; When u is large, u is halved first and the results doubled.
+(defun elliptic-sn-cn-dn-descending (u m root-m1)
+  (descending-landen-sn-cn-dn-doubled u m root-m1
+				      (jacobi-arg-halvings u m)))
 
 (defun sn (u m)
   (cond ((zerop m)
