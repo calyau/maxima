@@ -2492,8 +2492,9 @@ first kind:
 					(- 1 (* n (expt sin-phi 2)))))))))
     ;; FIXME: Reducing the arg by pi has significant round-off.
     ;; Consider doing something better.
-    (let* ((cycles (round (realpart phi) pi))
-	   (rem (- phi (* cycles pi))))
+    (let* ((float-pi (float pi 1d0))
+           (cycles (round (realpart phi) float-pi))
+	   (rem (- phi (* cycles float-pi))))
       (let ((complete (elliptic-pi-complete n m)))
 	(to (+ (* 2 cycles complete)
 	       (base n rem m)))))))

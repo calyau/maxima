@@ -86,8 +86,13 @@
 	 (div (subst1 x y (cadr z)) (subst1 x y (caddr z))))
 	((at-substp z) (subst-except-second-arg x y z))
 	((and (eq y t) (eq (caar z) 'mcond))
-	 (list (cons (caar z) nil) (subst1 x y (cadr z)) (subst1 x y (caddr z))
-	       (cadddr z) (subst1 x y (car (cddddr z)))))
+	 ;; Substitute into everything except the T of the final else clause.
+	 (cons (cons (caar z) nil)
+	       (maplist #'(lambda (l)
+			    (if (and (eq (car l) t) (cdr l) (null (cddr l)))
+				(car l)
+				(subst1 x y (car l))))
+			(cdr z))))
 	(t (let ((margs (mapcar #'(lambda (z1) (subst1 x y z1)) (cdr z)))
                  (oprx (getopr x)) (opry (getopr y)))
 	     (if (and $opsubst

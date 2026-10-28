@@ -301,7 +301,12 @@
 
 (defun extopchk (item val)
     (when (or (get item 'nud) (get item 'led) (get item 'lbp))
-      (fasprin `(define-symbol (quote ,val)))
+      ;; Emit call to DEFINE-SYMBOL, but exclude "." and "/";
+      ;; see comment on DEFINE-INITIAL-SYMBOLS over in src/nparse.lisp:
+      ;; exclude "." and "/" because they have other interpretations,
+      ;; as decimal point and part of comment, respectively.
+      (unless (or (equal val ".") (equal val "/"))
+        (fasprin `(define-symbol (quote ,val))))
       (if (member val *mopl* :test #'eq)
 	  (fasprin `(setq *mopl* (cons (quote ,val) *mopl*))))
       (when (setq val (get item 'dimension))

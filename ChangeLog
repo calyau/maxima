@@ -117,6 +117,7 @@ Bug fixes for numbered bugs:
 * \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
+* \#5293 subst(zz, true, if a then b elseif c then d else f) drops the else branch
 * \#5294 diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5304 featurep(x, alphabetic) raises a Lisp error for a non-string argument
@@ -202,6 +203,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5607 csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2
 * \#5610 featurep(2*b, real) is true for an imaginary b
 * \#5613 rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
