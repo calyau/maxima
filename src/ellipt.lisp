@@ -120,15 +120,26 @@
   ;;
   ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
   ;; never halved.
-  (if (or (and (realp u) (realp m))
-	  (not (and (cl:numberp u) (cl:numberp m))))
-      0
-      (let ((y (* (float pi 1d0)
-		  (abs (imagpart (/ u (* 2 (bf-elliptic-k m)))))))
-	    (limit (/ (cl:log most-positive-double-float) 4)))
-	(if (<= y limit)
-	    0
-	    (values (ceiling (cl:log (/ y limit) 2)))))))
+  ;;
+  ;; K(m) is expensive for complex m, so first use a cheap upper bound
+  ;; for abs(imagpart(v)).  K(m) = pi/(2*agm(1, sqrt(1-m))), and each
+  ;; step of the AGM is no larger in modulus than the larger of its
+  ;; arguments, so abs(agm(1, sqrt(1-m))) <= max(1, sqrt(abs(1-m))).
+  ;; Then
+  ;;
+  ;;   abs(imagpart(v)) <= abs(u)*max(1, sqrt(abs(1-m))).
+  ;;
+  ;; K(m) is computed only when this bound exceeds the limit.
+  (let ((limit (/ (cl:log most-positive-double-float) 4)))
+    (if (or (and (realp u) (realp m))
+	    (not (and (cl:numberp u) (cl:numberp m)))
+	    (<= (* (abs u) (max 1 (sqrt (abs (- 1 m))))) limit))
+	0
+	(let ((y (* (float pi 1d0)
+		    (abs (imagpart (/ u (* 2 (bf-elliptic-k m))))))))
+	  (if (<= y limit)
+	      0
+	      (values (ceiling (cl:log (/ y limit) 2))))))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
 (defun descending-landen-sn (u m root-m1)
