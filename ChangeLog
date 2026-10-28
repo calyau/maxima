@@ -202,6 +202,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5607 csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2
 * \#5610 featurep(2*b, real) is true for an imaginary b
 * \#5613 rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf

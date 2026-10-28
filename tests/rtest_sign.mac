@@ -3221,6 +3221,19 @@ block([z1, z2],
 [pos, neg, pz]$
 
 
+/* Bug #5607: "csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2" */
+
+block([b, c, p],
+ local(b, c, p),
+ declare(b, imaginary, c, complex),
+ assume(p > 0),
+ [csign(gamma(b)), csign(gamma(c)), csign(gamma(%i)),
+  csign(gamma(1 + %i)), csign(gamma(p)), sign(gamma(b)),
+  is(abs(gamma(b)^2) = gamma(b)^2), is(cabs(gamma(%i)^2) = gamma(%i)^2),
+  is(abs(float(expand(rectform(float(cabs(gamma(%i)^2))))) - cabs(float(gamma(%i)))^2) < 1e-12)]);
+[complex, complex, complex, complex, pos, pnz, false, false, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
