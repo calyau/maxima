@@ -331,7 +331,18 @@ oder alle Argumente angewendet werden.
 Standardwert: @code{real}
 
 Hat @code{domain} den Wert @code{complex}, wird @code{sqrt(x^2)} nicht zu
-@code{abs(x)} vereinfacht.
+@code{abs(x)} vereinfacht, sondern bleibt @code{sqrt(x^2)}.
+
+Hat @code{domain} den Wert @code{real}, wird eine reelle Gr@"oße, die mit einem
+gebrochenen Exponenten aus ganzzahligem Z@"ahler und ungeradem Nenner potenziert
+wird, wie in @code{x^(1/3)}, @code{x^(2/3)} oder @code{x^(1/n)}, wobei @code{n}
+als @code{odd} deklariert ist, als reelle Wurzel ausgewertet: @code{(-8)^(1/3)}
+vereinfacht sich zu @code{-2} und @code{(x^3)^(1/3)} zu @code{x}.
+@mrefcomma{sign} @mrefcomma{csign} @mrefcomma{rectform} @mrefcomma{realpart}
+@mrefcomma{imagpart} @mref{polarform} und @mref{carg} behandeln eine solche
+Potenz ebenfalls als reell. Hat @code{domain} den Wert @code{complex}, liegt die
+Potenz auf dem Hauptzweig: @code{(-8)^(1/3)} vereinfacht sich zu
+@code{2*(-1)^(1/3)}, deren @code{rectform} gleich @code{sqrt(3)*%i+1} ist.
 @end defvr
 
 @c --- 06.02.2011 DK -----------------------------------------------------------

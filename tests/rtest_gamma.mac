@@ -4460,3 +4460,105 @@ true$
 block([b, z],
   beta_incomplete_generalized(2, b, 0, z) - beta_incomplete(2, b, z));
 0$
+
+
+/* Bug #5716: "diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real" */
+
+/* diff() of the incomplete gamma and beta functions with respect to the
+   argument takes z^(a-1) on the principal branch, as the functions do, also
+   with domain : real, where (-8)^(1/3) is -2. For z = k*w^n with a real w
+   the power is written with w/abs(w). */
+
+block([y, z],
+  [diff(gamma_incomplete(1/3, z), z), diff(gamma_incomplete(1/3, -y^3), y),
+   diff(gamma_incomplete(1/3, y^3), y)]);
+[-%e^(log(z)/3-z)/z,
+ 3*%e^y^3*((((-sqrt(3)*%i)/4-3/4)*y)/abs(y)-(sqrt(3)*%i)/4+1/4),
+ -3*%e^-y^3*((((sqrt(3)*%i)/4+3/4)*y)/abs(y)-(sqrt(3)*%i)/4+1/4)]$
+
+block([y, z, z1, z2],
+  map(lambda([u], is(cabs(float(rectform(u))) < 1e-12*float(%e^8))),
+      [subst(z = -8, diff(gamma_incomplete(1/3, z), z))
+       - %e^8*(1 + sqrt(3)*%i)/8,
+       subst(y = 2, diff(gamma_incomplete(1/3, -y^3), y))
+       + 3*%e^8*(1 + sqrt(3)*%i)/2,
+       subst(y = -2, diff(gamma_incomplete(1/3, y^3), y))
+       - 3*%e^8*(1 + sqrt(3)*%i)/2,
+       subst(y = 1, diff(gamma_incomplete(1/3, %i*y^3), y))
+       + 3*%i*%e^(-%i*(1 + %pi/3)),
+       subst(z = -8, diff(gamma_incomplete_lower(1/3, z), z))
+       + %e^8*(1 + sqrt(3)*%i)/8,
+       subst(z = -8, diff(gamma_incomplete_regularized(1/3, z), z))
+       - %e^8*(1 + sqrt(3)*%i)/(8*gamma(1/3)),
+       subst(z1 = -8, diff(gamma_incomplete_generalized(1/3, z1, z2), z1))
+       - %e^8*(1 + sqrt(3)*%i)/8,
+       subst(z2 = -8, diff(gamma_incomplete_generalized(1/3, z1, z2), z2))
+       + %e^8*(1 + sqrt(3)*%i)/8,
+       subst(z = -8, diff(beta_incomplete(1/3, 2/3, z), z))
+       + (1 + sqrt(3)*%i)/(8*9^(1/3)),
+       subst(z = 9, diff(beta_incomplete(1/3, 2/3, z), z))
+       - (1 - sqrt(3)*%i)/(4*9^(2/3)),
+       subst(z = -8, diff(beta_incomplete_regularized(1/3, 2/3, z), z))
+       + sqrt(3)*(1 + sqrt(3)*%i)/(16*%pi*9^(1/3)),
+       subst(z1 = -8, diff(beta_incomplete_generalized(1/3, 2/3, z1, z2), z1))
+       - (1 + sqrt(3)*%i)/(8*9^(1/3)),
+       subst(z2 = 9, diff(beta_incomplete_generalized(1/3, 2/3, z1, z2), z2))
+       - (1 - sqrt(3)*%i)/(4*9^(2/3))]));
+[true, true, true, true, true, true, true, true, true, true, true, true, true]$
+
+/* where the sign is known the phase is a constant, and nothing changes
+   where the power is on the principal branch anyway */
+block([y],
+  local(y),
+  assume(y > 0),
+  [diff(gamma_incomplete(1/3, -y^3), y), diff(gamma_incomplete(1/3, y^3), y)]);
+[3*%e^(y^3)*(-sqrt(3)*%i/2 - 1/2), -3*%e^(-y^3)]$
+
+block([a, z],
+  [diff(gamma_incomplete(1/2, z), z), diff(gamma_incomplete(2/3, z^2), z),
+   diff(gamma_incomplete(a, -z^3), z)]);
+[-%e^(-z)/sqrt(z), -2*%e^(-z^2)*z^(1/3), 3*z^2*(-z^3)^(a-1)*%e^(z^3)]$
+
+/* limit() takes the derivatives where the one-sided limits come out in
+   different forms, as %e^(log(3)/3) for 3^(1/3) */
+block([x],
+  map(radcan,
+    [limit((gamma_incomplete(1/3, x + 1) - gamma_incomplete(1/3, 3))/(x - 2), x, 2),
+     limit((beta_incomplete(1/3, 2/3, x) - beta_incomplete(1/3, 2/3, 1/2))/(x - 1/2), x, 1/2),
+     limit((struve_h(1/3, x + 1) - struve_h(1/3, 3))/(x - 2), x, 2)]));
+[-%e^-3/3^(2/3), 2,
+ -((sqrt(%pi)*(5*gamma(5/6)*struve_h(4/3,3)-5*struve_h(-2/3,3)*gamma(5/6))
+   -2^(2/3)*3^(4/3))/(10*sqrt(%pi)*gamma(5/6)))]$
+
+
+/* Bug #5718: "hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0" */
+
+block([z],
+  map(lambda([u, v], is(cabs(float(rectform(subst(z = -8, u) - v))) < 1e-10)),
+      block([hypergeometric_representation : true],
+        [gamma_incomplete(1/3, z), gamma_incomplete_lower(1/3, z),
+         gamma_incomplete_regularized(1/3, z)]),
+      [gamma_incomplete(1/3, -8.0), gamma_incomplete_lower(1/3, -8.0),
+       gamma_incomplete_regularized(1/3, -8.0)]));
+[true, true, true]$
+
+
+/* Bug #5720: "beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i" */
+
+expand(beta_incomplete(1/3, 2, -8));
+9*sqrt(3)*%i+9$
+
+block([z, z1, z2],
+  map(lambda([u, w], is(cabs(float(rectform(u - w))) < 1e-10)),
+      [subst(z = -8, beta_incomplete(1/3, 2, z)),
+       subst(z = 9, beta_incomplete(2, 1/3, z)),
+       subst(z = -8, beta_incomplete_regularized(1/3, 2, z)),
+       subst([z1 = -8, z2 = -1], beta_incomplete_generalized(1/3, 2, z1, z2)),
+       subst([z1 = 9, z2 = 2], beta_incomplete_generalized(2, 1/3, z1, z2)),
+       subst(z = -8, block([hypergeometric_representation : true], beta_incomplete(1/3, 1/2, z)))],
+      [beta_incomplete(1/3, 2, -8.0), beta_incomplete(2, 1/3, 9.0),
+       beta_incomplete_regularized(1/3, 2, -8.0),
+       beta_incomplete_generalized(1/3, 2, -8.0, -1.0),
+       beta_incomplete_generalized(2, 1/3, 9.0, 2.0),
+       beta_incomplete(1/3, 1/2, -8.0)]));
+[true, true, true, true, true, true]$

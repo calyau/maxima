@@ -321,7 +321,7 @@
       ((mexpt) z ((mplus) -1 a))))
   'grad)
 
-(defgrad %gamma_incomplete ($a $z)
+(defgrad %gamma_incomplete (a z)
   ;; wrt a
   #'(lambda (a z)
       ;; Built from the actual arguments and returned with a second value
@@ -345,8 +345,11 @@
             (t
              ;; No derivative. Maxima generates a noun form.
              nil)))
-  ;; The derivative wrt z
-  #$$ -(%e^-z*z^(a-1))$
+  ;; The derivative wrt z, with z^(a-1) on the principal branch of the
+  ;; function
+  #'(lambda (a z)
+      (values (mul -1 (power '$%e (neg z)) (principal-power z (add a -1)))
+              t))
   )
 
 ;;; Integral of the Incomplete Gamma function
@@ -480,7 +483,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgrad %gamma_incomplete_lower ($a $z)
+(defgrad %gamma_incomplete_lower (a z)
   ;; wrt a
   ;;
   ;; According to
@@ -489,7 +492,8 @@
   nil
   ;; wrt z
   ;; Obvious from the definition of gamma_incomplete_lower
-  #$$ z^(a-1)*exp(-z) $
+  #'(lambda (a z)
+      (values (mul (principal-power z (add a -1)) (power '$%e (neg z))) t))
   )
 
 ;;
@@ -929,7 +933,7 @@
        ;; hypergeometric([a],[a+1],-z) to
        ;; hypergeometric([1],[a+1],z)*exp(-z).
        (sub (ftake '%gamma a)
-	    (mul (power z a)
+	    (mul (principal-power z a)
 		 (div 1 a)
 		 (ftake '%hypergeometric
 			(make-mlist a)
@@ -1421,12 +1425,17 @@
  +gamma(a)^2*hypergeometric_regularized([a,a],[a+1,a+1],-z1)*z1^a$
 
   ;; The derivative wrt z1
-  #$$-(z1^(a-1)*%e^-z1)$
+  #'(lambda (a z1 z2)
+      (declare (ignore z2))
+      (values (mul -1 (principal-power z1 (add a -1)) (power '$%e (neg z1))) t))
 
   ;; The derivative wrt z2
-  #$$z2^(a-1)*%e^-z2$)
+  #'(lambda (a z1 z2)
+      (declare (ignore z1))
+      (values (mul (principal-power z2 (add a -1)) (power '$%e (neg z2))) t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;; Generalized Incomplete Gamma function is a simplifying function
 
@@ -1599,7 +1608,10 @@
   #$$ 'gamma_incomplete_generalized_regularized(a,z,0)*(log(z)-psi[0](a))
   +gamma(a)*hypergeometric_regularized([a,a],[a+1,a+1],-z)*z^a$
   ;; The derivative wrt z
-  #$$ -((%e^-z*z^(a-1))/gamma(a))$
+  #'(lambda (a z)
+      (values (div (mul -1 (power '$%e (neg z)) (principal-power z (add a -1)))
+                   (ftake '%gamma a))
+              t))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3327,7 +3339,10 @@
   #$$ gamma(b)^2*hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-z)*(1-z)^b
   -beta_incomplete(b,a,1-z)*log(1-z)+beta(a,b)*(psi[0](b)-psi[0](b+a))$
   ;; The derivative wrt z
-  #$$ (1-z)^(b-1)*z^(a-1)$
+  #'(lambda (a b z)
+      (values (mul (principal-power (sub 1 z) (add b -1))
+                   (principal-power z (add a -1)))
+              t))
   )
 
 ;;; Integral of the Incomplete Beta function
@@ -3424,7 +3439,7 @@
        ;; Expand for b a positive integer and a not a negative integer.
        (mul
          (ftake* '%beta a b)
-         (power z a)
+         (principal-power z a)
          (let ((index (gensumindex)))
            (simpsum1
              (div
@@ -3440,7 +3455,7 @@
          (ftake* '%beta a b)
          (sub 1
            (mul
-             (power (sub 1 z) b)
+             (principal-power (sub 1 z) b)
              (let ((index (gensumindex)))
                (simpsum1 
                  (div
@@ -3536,7 +3551,7 @@
        ;;       + z^a*beta(1-a-b,a)*(-z)^(-a)
        ;;
        ;; We need to handle more cases here
-       (mul (div (power z a)
+       (mul (div (principal-power z a)
 		 a)
 	    (ftake '%hypergeometric
 		   (make-mlist a (sub 1 b))
@@ -3692,9 +3707,18 @@
                                               -hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-z2)*(1-z2)^b))
   -beta_incomplete(b,a,1-z2)*log(1-z2)+beta_incomplete(b,a,1-z1)*log(1-z1)$                          
   ;; The derivative wrt z1
-  #$$ -((1-z1)^(b-1)*z1^(a-1))$
+  #'(lambda (a b z1 z2)
+      (declare (ignore z2))
+      (values (mul -1
+                   (principal-power (sub 1 z1) (add b -1))
+                   (principal-power z1 (add a -1)))
+              t))
   ;; The derivative wrt z2
-  #$$ (1-z2)^(b-1)*z2^(a-1)$
+  #'(lambda (a b z1 z2)
+      (declare (ignore z1))
+      (values (mul (principal-power (sub 1 z2) (add b -1))
+                   (principal-power z2 (add a -1)))
+              t))
   )
 
 ;;; Integral of the Incomplete Beta function
@@ -3782,7 +3806,7 @@
          (ftake* '%beta a b)
          (sub
            (mul
-             (power (sub 1 z1) b)
+             (principal-power (sub 1 z1) b)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3792,7 +3816,7 @@
                    (simplify (list '(mfactorial) index)))
                 index 0 (sub a 1))))
            (mul
-             (power (sub 1 z2) b)
+             (principal-power (sub 1 z2) b)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3807,7 +3831,7 @@
          (ftake* '%beta a b)
          (sub
            (mul
-             (power z2 a)
+             (principal-power z2 a)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3817,7 +3841,7 @@
                    (simplify (list '(mfactorial) index)))
                 index 0 (sub b 1))))
            (mul
-             (power z1 a)
+             (principal-power z1 a)
              (let ((index (gensumindex)))
                (simpsum1
                  (div
@@ -3911,7 +3935,11 @@
  +beta_incomplete_regularized(b,a,1-z)*(-log(1-z)-psi[0](b+a)+psi[0](b))$
 
   ;; The derivative wrt z
-  #$$ ((1-z)^(b-1)*z^(a-1))/beta(a,b)$
+  #'(lambda (a b z)
+      (values (div (mul (principal-power (sub 1 z) (add b -1))
+                        (principal-power z (add a -1)))
+                   (ftake '%beta a b))
+              t))
   )
 
 ;;; Integral of the Generalized Incomplete Beta function

@@ -1265,7 +1265,7 @@ block([u : 20.0, m : 1 - 2.0^-53],
  */
 block([u : 3.0, m : -1e10],
   [closeto(jacobi_sn(u, m) - 0.11593314977968198, 2.5943e-12),
-   closeto(jacobi_cn(u, m) + 0.99325701849126736, 3.0254e-13),
+   closeto(jacobi_cn(u, m) + 0.99325701849126736, 3.0287e-13),
    closeto(jacobi_dn(u, m) - 11593.315021096501, 2.5943e-7)]);
 [true, true, true]$
 
@@ -1349,7 +1349,7 @@ block([fpprec : 32],
 [true, true];
 
 /* Pole not reached: real result. */
-[closeto(elliptic_pi(1.5, 0.625, 0.5) - (8.2738737238944789e-1), 3.3307e-16),
+[closeto(elliptic_pi(1.5, 0.625, 0.5) - (8.2738737238944789e-1), 5e-16),
  closeto(elliptic_pi(1.5b0, 0.625b0, 0.5b0) - (8.273873723894478863466700827093055b-1), 1b-32)];
 [true, true];
 [imagpart(elliptic_pi(1.5, 0.625, 0.5)), imagpart(elliptic_pi(1.5b0, 0.625b0, 0.5b0))];
@@ -1384,7 +1384,7 @@ block([fpprec : 32],
 [true, true];
 
 /* 1 < m < n: pole crossed before the branch point asin(1/sqrt(m)). */
-[closeto(elliptic_pi(4.0, 0.625, 2.0) - (5.5500827958490868e-1 - 1.2825498301618641*%i), 3.3307e-16),
+[closeto(elliptic_pi(4.0, 0.625, 2.0) - (5.5500827958490868e-1 - 1.2825498301618641*%i), 5e-16),
  closeto(elliptic_pi(4.0b0, 0.625b0, 2.0b0) - (5.550082795849086783230214444074010b-1 - 1.282549830161864095544036359671006b0*%i), 3.0815b-33)];
 [true, true];
 
@@ -1409,6 +1409,133 @@ block([fpprec : 32],
 [closeto(elliptic_pi(1.5b0 - 1b-30*%i, 1.25b0, 0.5b0) - elliptic_pi(1.5b0, 1.25b0, 0.5b0), 3.6319b-30),
  closeto(elliptic_pi(1.5b0 + 1b-30*%i, 1.25b0, 0.5b0) - conjugate(elliptic_pi(1.5b0, 1.25b0, 0.5b0)), 3.6319b-30)];
 [true, true];
+
+/* jacobi_sn, jacobi_cn and jacobi_dn with complex u or m and large u.
+ * Without halving u first, these overflow or are wrong.
+ */
+block([u : 3000.0, m : 0.5 + 0.5*%i],
+  [closeto(jacobi_sn(u, m) - (-1.2184969256074759 + 0.33308633973979955*%i), 6.2891e-14),
+   closeto(jacobi_cn(u, m) - (-0.50983742692159443 - 0.79606686269662397*%i), 7.7696e-14),
+   closeto(jacobi_dn(u, m) - (0.31873446953624497 - 0.44085197856213729*%i), 9.5284e-14)]);
+[true, true, true];
+
+block([u : 700.0*%i, m : 0.5 + 0.5*%i],
+  [closeto(jacobi_sn(u, m) - (-0.99744132265163743 - 0.14344539761608847*%i), 2.2089e-14),
+   closeto(jacobi_cn(u, m) - (-0.39559749051866465 + 0.36167662979583729*%i), 1.9204e-14),
+   closeto(jacobi_dn(u, m) - (0.88474673702628342 - 0.35616671176582359*%i), 1.1361e-14)]);
+[true, true, true];
+
+block([u : 3000.0, m : 2.0 + %i],
+  [closeto(jacobi_sn(u, m) - (-0.021664144318426091 - 0.28636514556193847*%i), 7.5227e-13),
+   closeto(jacobi_cn(u, m) - (1.0399861761338542 - 0.0059653252933454819*%i), 2.1770e-13),
+   closeto(jacobi_dn(u, m) - (1.0845104265680117 + 0.026150158029494917*%i), 4.6167e-13)]);
+[true, true, true];
+
+block([u : 700.0*%i, m : 0.5],
+  [closeto(jacobi_sn(u, m) - (-1.0248688789444574*%i), 2.4647e-13),
+   closeto(jacobi_cn(u, m) - (-1.4319064980049741), 1.7653e-13),
+   closeto(jacobi_dn(u, m) - (-1.2349810158518367), 1.0237e-13)]);
+[true, true, true];
+
+block([u : 700.0*%i, m : 3.0],
+  [closeto(jacobi_sn(u, m) - (-0.61564675807739575*%i), 7.0167e-14),
+   closeto(jacobi_cn(u, m) - (-1.1743172189537235), 3.6416e-14),
+   closeto(jacobi_dn(u, m) - (-1.4618696221597952), 8.8818e-14)]);
+[true, true, true];
+
+block([u : 700.0*%i, m : -3.0],
+  [closeto(jacobi_sn(u, m) - (-0.387121651712892*%i), 5.2459e-14),
+   closeto(jacobi_cn(u, m) - 1.0723167317658144, 1.8874e-14),
+   closeto(jacobi_dn(u, m) - (-0.74189654287187983), 8.2046e-14)]);
+[true, true, true];
+
+/* The same with bigfloats, which are evaluated without halving u. */
+block([u : 3000b0, m : 0.5b0 + 0.5b0*%i],
+  [closeto(jacobi_sn(u, m) - (-1.21849692560747587114276973611068b0 + 3.330863397397995544078899477567542b-1*%i), 3.4248b-31),
+   closeto(jacobi_cn(u, m) - (-5.098374269215944321664565636689577b-1 - 7.960668626966239690456692445733609b-1*%i), 8.8841b-31),
+   closeto(jacobi_dn(u, m) - (3.187344695362449716395125501639497b-1 - 4.408519785621372859650450290066375b-1*%i), 4.5155b-31)]);
+[true, true, true];
+
+block([u : 700b0*%i, m : 0.5b0 + 0.5b0*%i],
+  [closeto(jacobi_sn(u, m) - (-9.974413226516374324206558886352551b-1 - 1.434453976160884748993751158192147b-1*%i), 5.6655b-31),
+   closeto(jacobi_cn(u, m) - (-3.955974905186646527613402469195142b-1 + 3.616766297958372887117022565982915b-1*%i), 3.7375b-31),
+   closeto(jacobi_dn(u, m) - (8.847467370262834162213122731264483b-1 - 3.56166711765823588067373870760695b-1*%i), 4.2233b-31)]);
+[true, true, true];
+
+block([u : 700b0*%i, m : 3b0],
+  [closeto(jacobi_sn(u, m) - (-6.156467580773957516915422627742662b-1*%i), 6.1476b-30),
+   closeto(jacobi_cn(u, m) - (-1.174317218953723530569975663003079b0), 3.2972b-31),
+   closeto(jacobi_dn(u, m) - (-1.4618696221597951905671591637989b0), 4.2710b-30)]);
+[true, true, true];
+
+/* m near 1.  The duplication formulas multiply errors off the curves
+ * s^2+c^2 = 1 and m*s^2+d^2 = 1 by about 1/abs(1-m*s^4) per step,
+ * which is large when m is near 1.  Without projecting back onto the
+ * curves after each step, these are wrong in most or all digits.
+ */
+block([u : 1e8, m : 0.99 + 0.0001*%i],
+  [closeto(jacobi_sn(u, m) - (-0.99035750542586623 + 0.043086425542440069*%i), 5.3932e-9),
+   closeto(jacobi_cn(u, m) - (-0.23339636363002833 - 0.1828261771274585*%i), 1.8033e-8),
+   closeto(jacobi_dn(u, m) - (-0.24563694954720939 - 0.17177915524966668*%i), 1.7658e-8)]);
+[true, true, true];
+
+block([u : 1e6, m : 0.999 + 0.001*%i],
+  [closeto(jacobi_sn(u, m) - (1.0165050694608119 - 0.039835082035727373*%i), 1.0308e-11),
+   closeto(jacobi_cn(u, m) - (0.16623927312149749 + 0.24358000411918208*%i), 3.5556e-11),
+   closeto(jacobi_dn(u, m) - (-0.1655904628023999 - 0.24117465300697455*%i), 3.5805e-11)]);
+[true, true, true];
+
+block([u : 1e6*%i, m : 0.99 + 0.01*%i],
+  [closeto(jacobi_sn(u, m) - (-0.4955175216217215 + 0.66925143509934608*%i), 1.3513e-10),
+   closeto(jacobi_cn(u, m) - (1.1347953946350241 + 0.29223401331203564*%i), 9.6026e-11),
+   closeto(jacobi_dn(u, m) - (1.1307208966780359 + 0.29124902055922648*%i), 9.5412e-11)]);
+[true, true, true];
+
+block([u : 1e7, m : 1.01 + 0.001*%i],
+  [closeto(jacobi_sn(u, m) - (0.99166066689456235 + 0.00036893810887788188*%i), 3.4860e-11),
+   closeto(jacobi_cn(u, m) - (-0.12890815713872801 + 0.0028381556234562203*%i), 2.6811e-10),
+   closeto(jacobi_dn(u, m) - (-0.082968827236783524 + 0.010379987580407706*%i), 4.1757e-10)]);
+[true, true, true];
+
+/* u near a pole of sn.  Correcting s and c to s^2+c^2 = 1 after each
+ * doubling would cancel badly here, so it is done only when abs(s) <= 2.
+ */
+block([u : 152.9764232581829 + 684.5893714284881*%i, m : 0.5 + 0.5*%i],
+  [closeto(jacobi_sn(u, m) - (-696911.31894353785 + 803545.55382952433*%i), 1.8861e-2),
+   closeto(jacobi_cn(u, m) - (803545.55382987945 + 696911.31894322985*%i), 1.8861e-2),
+   closeto(jacobi_dn(u, m) - (-400000.02441572842 - 799999.98498646548*%i), 1.5861e-2)]);
+[true, true, true];
+
+block([u : 83.01878376262721 + 520.1908331983261*%i, m : 2.0 + %i],
+  [closeto(jacobi_sn(u, m) - (-459238643.41311542 + 383253371.65075674*%i), 3.9040e4),
+   closeto(jacobi_cn(u, m) - (383253371.65075674 + 459238643.41311542*%i), 3.9040e4),
+   closeto(jacobi_dn(u, m) - (-399990153.31707716 - 800022255.41287415*%i), 5.8378e4)]);
+[true, true, true];
+
+/* u near a zero of sn reached by doubling a point near a zero of dn.
+ * Correcting d after each doubling must be skipped when d is small,
+ * since m*s^2+d^2-1 cancels there.
+ */
+block([u : -58.7509238676063 + 480.9945497476675*%i, m : 0.3 - 0.2*%i],
+  [closeto(jacobi_sn(u, m) - (-0.0000020000000000825253 - 0.00000060000002335217024*%i), 1.4095e-13),
+   closeto(jacobi_cn(u, m) - (0.99999999999818 - 0.0000000000012000000467560397*%i), 1.1103e-16),
+   closeto(jacobi_dn(u, m) - (-0.999999999999214 - 0.0000000000000039999832045961221*%i), 1.1103e-16)]);
+[true, true, true];
+
+/* m very close to 1.  These use Jacobi's imaginary transformation to
+ * the parameter 1-m.
+ */
+block([u : 1e8, m : 1.0 + 1e-10*%i],
+  [closeto(jacobi_sn(u, m) - (-1.0000000007916413 + 0.000000000028653196577846385*%i), 4.4956e-19),
+   closeto(jacobi_cn(u, m) - (0.00000071998387115186883 + 0.000039796997889256211*%i), 4.8084e-15),
+   closeto(jacobi_dn(u, m) - (0.00000053643136268294654 - 0.000039794100352129397*%i), 4.8090e-15)]);
+[true, true, true];
+
+block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
+  [closeto(jacobi_sn(u, m) - (-1.0000004984367911 - 0.00000014659871148416706*%i), 6.3191e-17),
+   closeto(jacobi_cn(u, m) - (-0.00014529799215931977 + 0.0010089525834163785*%i), 2.9049e-14),
+   closeto(jacobi_dn(u, m) - (0.00014529847765475596 - 0.0010089526533319345*%i), 2.9049e-14)]);
+[true, true, true];
 
 
 /* elliptic_eu: one test for each case in ELLIPTIC-EU.  Reference

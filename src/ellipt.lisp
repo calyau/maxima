@@ -103,8 +103,46 @@
               (* (epsilon u)
                  (exp (* -2 (abs (imagpart u)))))))))
 
+(defun jacobi-arg-halvings (u m)
+  ;; Return the number of times, n, that u is halved before using the
+  ;; descending Landen transformation; sn, cn, and dn at u are then
+  ;; obtained by doubling the argument n times.
+  ;;
+  ;; The descending Landen transformation ends with sin(v) and cos(v),
+  ;; where v = u/prod(1+sqrt(mu)) = pi*u/(2*K(m)), since K(m) =
+  ;; pi/2*prod(1+sqrt(mu)).  The next step squares sin(v), which is
+  ;; about exp(abs(imagpart(v)))/2, so with doubles it overflows when
+  ;; abs(imagpart(v)) exceeds about log(most-positive-double-float)/2.
+  ;; Until then the transformation is accurate, so u is halved only
+  ;; when abs(imagpart(v)) exceeds half of that, and then just enough
+  ;; times to bring it below.  For real u and real m, v is real, so we
+  ;; don't need to do halvings either.
+  ;;
+  ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
+  ;; never halved.
+  ;;
+  ;; K(m) is expensive for complex m, so first use a cheap upper bound
+  ;; for abs(imagpart(v)).  K(m) = pi/(2*agm(1, sqrt(1-m))), and each
+  ;; step of the AGM is no larger in modulus than the larger of its
+  ;; arguments, so abs(agm(1, sqrt(1-m))) <= max(1, sqrt(abs(1-m))).
+  ;; Then
+  ;;
+  ;;   abs(imagpart(v)) <= abs(u)*max(1, sqrt(abs(1-m))).
+  ;;
+  ;; K(m) is computed only when this bound exceeds the limit.
+  (let ((limit (/ (cl:log most-positive-double-float) 4)))
+    (if (or (and (realp u) (realp m))
+	    (not (and (cl:numberp u) (cl:numberp m)))
+	    (<= (* (abs u) (max 1 (sqrt (abs (- 1 m))))) limit))
+	0
+	(let ((y (* (float pi 1d0)
+		    (abs (imagpart (/ u (* 2 (bf-elliptic-k m))))))))
+	  (if (<= y limit)
+	      0
+	      (values (ceiling (cl:log (/ y limit) 2))))))))
+
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-descending (u m root-m1)
+(defun descending-landen-sn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4)
@@ -115,12 +153,12 @@
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      (multiple-value-bind (v mu root-mu root-mu1)
 	 (descending-transform u m root-m1)
-       (let ((s (elliptic-sn-descending v mu root-mu1)))
+       (let ((s (descending-landen-sn v mu root-mu1)))
 	 (/ (* (1+ root-mu) s)
 	    (1+ (* root-mu s s))))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-cn-dn-descending (u m root-m1)
+(defun descending-landen-sn-cn-dn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4) to 16.13.3
@@ -148,7 +186,7 @@
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
-	    (elliptic-sn-cn-dn-descending v mu root-mu1)
+	    (descending-landen-sn-cn-dn v mu root-mu1)
 	  ;; A&S 16.12.2 to 16.12.4
 	  (let* ((p (* root-mu s s))
 		 (den (1+ p)))
@@ -165,6 +203,91 @@
 			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
 			      (* root-mu c c)))
 		       den))))))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1, computed at u/2^n and
+;; doubled n times.  ROOT-M1 is sqrt(1-m).
+(defun descending-landen-duplication (u m root-m1 n)
+  ;; DLMF 22.8.1 to 22.8.3 with v = u:
+  ;;
+  ;;   sn(2*u|m) = 2*s*c*d/(1-m*s^4)
+  ;;   cn(2*u|m) = (c^2-s^2*d^2)/(1-m*s^4)
+  ;;   dn(2*u|m) = (d^2-m*s^2*c^2)/(1-m*s^4)
+  ;;
+  ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
+  ;;
+  ;; Rounding errors that move s, c, and d off the curves s^2+c^2 = 1
+  ;; and m*s^2+d^2 = 1 are multiplied by about 1/abs(1-m*s^4) at each
+  ;; step.  For m near 1, s is near 1 or -1 for most of a period, so
+  ;; this can be 100 or more per step instead of 2.  After each step,
+  ;; s and c are therefore divided by sqrt(s^2+c^2), and d is corrected
+  ;; by one Newton step for m*s^2+d^2 = 1.
+  ;;
+  ;; This is done only when abs(s) <= 2.  Near a pole s and c are large,
+  ;; s^2+c^2 = 1 cancels, and the correction would destroy an accurate
+  ;; result.  There 1-m*s^4 is large and no correction is needed.
+  ;; Likewise d is corrected only when abs(d) >= 1/1000: near a zero of
+  ;; dn, m*s^2+d^2-1 cancels and dividing by d would magnify the
+  ;; rounding error.
+  ;;
+  ;; Use scale-float on the real and imaginary parts of u to compute
+  ;; u/2^n accurately, taking care not to convert real numbers to
+  ;; complex numbers.
+  (let ((scaled-u
+          (if (complexp u)
+              (complex (scale-float (realpart u) (- n))
+                       (scale-float (imagpart u) (- n)))
+              (scale-float u (- n)))))
+    (multiple-value-bind (s c d)
+        (descending-landen-sn-cn-dn scaled-u
+                                    m root-m1)
+      (dotimes (k n)
+        (let* ((s2 (* s s))
+	       (c2 (* c c))
+	       (d2 (* d d))
+	       (den (- 1 (* m s2 s2))))
+	  (psetf s (/ (* 2 s c d) den)
+	         c (/ (- c2 (* s2 d2)) den)
+	         d (/ (- d2 (* m s2 c2)) den))
+	  (when (<= (abs s) 2)
+	    (let ((r (sqrt (+ (* s s) (* c c)))))
+	      (setf s (/ s r)
+		    c (/ c r))
+	      (when (>= (abs d) 1/1000)
+		(setf d (- d (/ (+ (* m s s) (* d d) -1) (* 2 d)))))))))
+      (values s c d))))
+
+;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
+;; halved first and the result doubled.
+(defun elliptic-sn-descending (u m root-m1)
+  (if (zerop (jacobi-arg-halvings u m))
+      (descending-landen-sn u m root-m1)
+      (values (elliptic-sn-cn-dn-descending u m root-m1))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
+;; When u is large, u is halved first and the results doubled.
+(defun elliptic-sn-cn-dn-descending (u m root-m1)
+  (let ((n (jacobi-arg-halvings u m)))
+    (if (and (plusp n) (> (realpart m) 1/2))
+	;; The doubling is unstable for m near 1, roughly when 3/4 <=
+	;; realpart(m) <= 9/4 and abs(imagpart(m)) <= 1, and correcting s,
+	;; c, and d after each step is not enough when m is very close to
+	;; 1.  So use Jacobi's imaginary transformation (A&S 16.20.1 to
+	;; 16.20.3, https://dlmf.nist.gov/22.6.T1):
+	;;
+	;;   sn(u|m) = -i*sc(i*u|1-m)
+	;;   cn(u|m) = nc(i*u|1-m)
+	;;   dn(u|m) = dc(i*u|1-m)
+	;;
+	;; realpart(1-m) < 1/2, where the doubling is stable.
+	(let ((iu (* #c(0 1) u))
+	      (m1 (- 1 m)))
+	  (multiple-value-bind (s c d)
+	      (descending-landen-duplication iu m1 (sqrt m)
+					     (jacobi-arg-halvings iu m1))
+	    (values (* #c(0 -1) (/ s c))
+		    (/ c)
+		    (/ d c))))
+	(descending-landen-duplication u m root-m1 n))))
 
 (defun sn (u m)
   (cond ((zerop m)
@@ -2369,8 +2492,9 @@ first kind:
 					(- 1 (* n (expt sin-phi 2)))))))))
     ;; FIXME: Reducing the arg by pi has significant round-off.
     ;; Consider doing something better.
-    (let* ((cycles (round (realpart phi) pi))
-	   (rem (- phi (* cycles pi))))
+    (let* ((float-pi (float pi 1d0))
+           (cycles (round (realpart phi) float-pi))
+	   (rem (- phi (* cycles float-pi))))
       (let ((complete (elliptic-pi-complete n m)))
 	(to (+ (* 2 cycles complete)
 	       (base n rem m)))))))

@@ -98,7 +98,9 @@
 (eval-when
     (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) %hypergeometric $complex))))
+      (meval '(($declare) %hypergeometric $complex))
+      ;; Let's remove built-in symbols from list for user-defined properties.
+      (setq $props (remove '%hypergeometric $props))))
 
 (setf (get '%hypergeometric 'conjugate-function) 'conjugate-hypergeometric)
 

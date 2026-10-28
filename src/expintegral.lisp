@@ -419,8 +419,9 @@
                         index (- n) -1 t))))))))))
       
       ((eq $expintrep '%gamma_incomplete)
-       ;; We transform to the Incomplete Gamma function.
-       (mul (power arg (sub order 1))
+       ;; We transform to the Incomplete Gamma function, with the power on
+       ;; its principal branch.
+       (mul (principal-power arg (sub order 1))
             (take '(%gamma_incomplete) (sub 1 order) arg)))
       ($hypergeometric_representation
        ;; See http://functions.wolfram.com/06.34.26.0002.01:
@@ -430,7 +431,7 @@
        ;;
        ;; But hypergeometric([1-v],[2-v],-z) gets simplified to
        ;; hypergeometric([1],[2-v],z)*exp(-z)
-       (sub (mul (power arg (sub order 1))
+       (sub (mul (principal-power arg (sub order 1))
 		 (ftake '%gamma (sub 1 order)))
 	    (div (ftake '%hypergeometric
 			 (make-mlist (sub 1 order))

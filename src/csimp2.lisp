@@ -483,6 +483,8 @@
 		(setq sign
 			  (cond ((eql sgn '$pos) '$pos)
 				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
+				    ((and *complexsign* (member sgn '($imaginary $complex)))
+				     '$complex)
 				    (t '$pnz)))))
 
 (putprop '%gamma 'gamma-sign 'sign-function)
