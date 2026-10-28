@@ -103,8 +103,51 @@
               (* (epsilon u)
                  (exp (* -2 (abs (imagpart u)))))))))
 
+(defun reduce-jacobi-arg-by-periods (u w1 w2)
+  ;; Return w, j, and k with u = w + j*w1 + k*w2, j and k integers, and
+  ;; w in the period parallelogram centered at 0.
+  (let* ((det (- (* (realpart w1) (imagpart w2))
+		 (* (realpart w2) (imagpart w1))))
+	 ;; u = a*w1 + b*w2 with a and b real.
+	 (a (/ (- (* (realpart u) (imagpart w2))
+		  (* (realpart w2) (imagpart u)))
+		det))
+	 (b (/ (- (* (realpart w1) (imagpart u))
+		  (* (realpart u) (imagpart w1)))
+		det))
+	 (j (round a))
+	 (k (round b)))
+    (values (- u (* j w1) (* k w2)) j k)))
+
+(defun reduce-jacobi-arg (u m)
+  ;; Return w, j, and k with u = w + j*2*K(m) + k*2*i*K(1-m) and j and k
+  ;; integers, for evaluating sn, cn, and dn at w instead of u.
+  ;;
+  ;; The descending Landen transformation ends with sin(v) and cos(v),
+  ;; where v = u/prod(1+sqrt(mu)) = pi*u/(2*K(m)), since K(m) =
+  ;; pi/2*prod(1+sqrt(mu)).  The next step squares sin(v), which is
+  ;; about exp(abs(imagpart(v)))/2, so with doubles it overflows when
+  ;; abs(imagpart(v)) exceeds about log(most-positive-double-float)/2.
+  ;; Until then the transformation is as accurate as with u reduced, so
+  ;; u is reduced, to the period parallelogram centered at 0, only when
+  ;; abs(imagpart(v)) exceeds half of that.  Otherwise w = u and j = k =
+  ;; 0.  For real u and real m, v is real.
+  ;;
+  ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
+  ;; never reduced.  The unreduced transformation is then more accurate,
+  ;; since reducing adds the rounding errors in K(m) and K(1-m).
+  (if (or (and (realp u) (realp m))
+	  (not (and (cl:numberp u) (cl:numberp m))))
+      (values u 0 0)
+      (let ((w1 (* 2 (bf-elliptic-k m))))
+	(if (<= (* (float pi 1d0) (abs (imagpart (/ u w1))))
+		(/ (cl:log most-positive-double-float) 4))
+	    (values u 0 0)
+	    (reduce-jacobi-arg-by-periods
+	     u w1 (* #c(0 2) (bf-elliptic-k (- 1 m))))))))
+
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-descending (u m root-m1)
+(defun descending-landen-sn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4)
@@ -115,12 +158,12 @@
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      (multiple-value-bind (v mu root-mu root-mu1)
 	 (descending-transform u m root-m1)
-       (let ((s (elliptic-sn-descending v mu root-mu1)))
+       (let ((s (descending-landen-sn v mu root-mu1)))
 	 (/ (* (1+ root-mu) s)
 	    (1+ (* root-mu s s))))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-cn-dn-descending (u m root-m1)
+(defun descending-landen-sn-cn-dn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4) to 16.13.3
@@ -148,7 +191,7 @@
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
-	    (elliptic-sn-cn-dn-descending v mu root-mu1)
+	    (descending-landen-sn-cn-dn v mu root-mu1)
 	  ;; A&S 16.12.2 to 16.12.4
 	  (let* ((p (* root-mu s s))
 		 (den (1+ p)))
@@ -165,6 +208,32 @@
 			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
 			      (* root-mu c c)))
 		       den))))))))
+
+;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  u is reduced by the
+;; periods first when it is large.
+(defun elliptic-sn-descending (u m root-m1)
+  ;; sn(u+2*K|m) = -sn(u|m), and sn(u+2*i*K'|m) = sn(u|m) (A&S 16.8.1,
+  ;; https://dlmf.nist.gov/22.4.iii).
+  (multiple-value-bind (w j)
+      (reduce-jacobi-arg u m)
+    (let ((s (descending-landen-sn w m root-m1)))
+      (if (evenp j) s (- s)))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  u
+;; is reduced by the periods first when it is large.
+(defun elliptic-sn-cn-dn-descending (u m root-m1)
+  ;; A&S 16.8.1 (https://dlmf.nist.gov/22.4.iii):
+  ;;
+  ;;   sn(u+2*K|m) = -sn(u|m),    sn(u+2*i*K'|m) = sn(u|m)
+  ;;   cn(u+2*K|m) = -cn(u|m),    cn(u+2*i*K'|m) = -cn(u|m)
+  ;;   dn(u+2*K|m) = dn(u|m),     dn(u+2*i*K'|m) = -dn(u|m)
+  (multiple-value-bind (w j k)
+      (reduce-jacobi-arg u m)
+    (multiple-value-bind (s c d)
+	(descending-landen-sn-cn-dn w m root-m1)
+      (values (if (evenp j) s (- s))
+	      (if (evenp (+ j k)) c (- c))
+	      (if (evenp k) d (- d))))))
 
 (defun sn (u m)
   (cond ((zerop m)
