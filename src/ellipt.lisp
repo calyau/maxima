@@ -4466,44 +4466,6 @@ first kind:
 ;; E(u + 2*i*K',m) = E(u,m) + 2*i*(K'(m) - E'(m))
 ;;
 ;; E(u+K,m) = E(u,m) + E(m) - m*sn(u,m)*cd(u,m)
-#+nil
-(defun elliptic-eu (u m)
-  (cond ((realp u)
-	 ;; E(u + 2*n*K) = E(u) + 2*n*E
-	 (let ((ell-k (bf-elliptic-k m))
-	       (ell-e (bf-elliptic-ec m)))
-	   (multiple-value-bind (n u-rem)
-	       (floor u (* 2 ell-k))
-	     ;; 0 <= u-rem < 2*K
-	     (+ (* 2 n ell-e)
-		(cond ((>= u-rem ell-k)
-		       ;; 0 <= u-rem < K so
-		       ;; E(u + K) = E(u) + E - m*sn(u)*cd(u)
-		       (let ((u-k (- u ell-k)))
-			 (- (+ (bf-elliptic-e (asin (sn u-k m)) m)
-			       ell-e)
-			    (/ (* m (sn u-k m) (cn u-k m))
-			       (dn u-k m)))))
-		      (t
-		       (bf-elliptic-e (asin (sn u m)) m)))))))
-	((complexp u)
-	 ;; From Lawden:
-	 ;;
-	 ;; E(u+i*v, m) = E(u,m) -i*E(v,m') + i*v + i*sc(v,m')*dn(v,m')
-	 ;;                -i*m*sn(u,m)*sc(v,m')*sn(u+i*v,m)
-	 ;;
-	 (let ((u-r (realpart u))
-	       (u-i (imagpart u))
-	       (m1 (- 1 m)))
-	   (+ (elliptic-eu u-r m)
-	      (* #c(0 1)
-		 (- (+ u-i
-		       (/ (* (sn u-i m1) (dn u-i m1))
-			  (cn u-i m1)))
-		    (+ (elliptic-eu u-i m1)
-		       (/ (* m (sn u-r m) (sn u-i m1) (sn u m))
-			  (cn u-i m1))))))))))
-
 (defun elliptic-eu (u m)
   (cond
     ((complexp m)
@@ -4746,8 +4708,6 @@ first kind:
 (def-simplifier elliptic_eu (u m)
   (let (args)
     (cond
-      ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
-      ;; so handle only floats and complex floats here.
       ((float-numerical-eval-p u m)
        (bigfloat::elliptic-eu ($float u) ($float m)))
       ((setf args (complex-float-numerical-eval-p u m))
