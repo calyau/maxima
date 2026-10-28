@@ -215,6 +215,17 @@
   ;;
   ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
   ;;
+  ;; Rounding errors that move s, c, and d off the curves s^2+c^2 = 1
+  ;; and m*s^2+d^2 = 1 are multiplied by about 1/abs(1-m*s^4) at each
+  ;; step.  For m near 1, s is near 1 or -1 for most of a period, so
+  ;; this can be 100 or more per step instead of 2.  After each step,
+  ;; s and c are therefore divided by sqrt(s^2+c^2), and d is corrected
+  ;; by one Newton step for m*s^2+d^2 = 1.
+  ;;
+  ;; This is done only when abs(s) <= 2.  Near a pole s and c are large,
+  ;; s^2+c^2 = 1 cancels, and the correction would destroy an accurate
+  ;; result.  There 1-m*s^4 is large and no correction is needed.
+  ;;
   ;; Use scale-float on the real and imaginary parts of u to compute
   ;; u/2^n accurately, taking care not to convert real numbers to
   ;; complex numbers.
@@ -233,7 +244,12 @@
 	       (den (- 1 (* m s2 s2))))
 	  (psetf s (/ (* 2 s c d) den)
 	         c (/ (- c2 (* s2 d2)) den)
-	         d (/ (- d2 (* m s2 c2)) den))))
+	         d (/ (- d2 (* m s2 c2)) den))
+	  (when (<= (abs s) 2)
+	    (let ((r (sqrt (+ (* s s) (* c c)))))
+	      (setf s (/ s r)
+		    c (/ c r)
+		    d (- d (/ (+ (* m s s) (* d d) -1) (* 2 d))))))))
       (values s c d))))
 
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
