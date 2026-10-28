@@ -205,11 +205,15 @@
   ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
   ;;
   ;; Use scale-float on the real and imaginary parts of u to compute
-  ;; u/2^n accurately.
-  (let ((scaled-u-r (scale-float (realpart u) (- n)))
-        (scaled-u-i (scale-float (imagpart u) (- n))))
+  ;; u/2^n accurately, taking care not to convert real numbers to
+  ;; complex numbers.
+  (let ((scaled-u
+          (if (complexp u)
+              (complex (scale-float (realpart u) (- n))
+                       (scale-float (imagpart u) (- n)))
+              (scale-float u (- n)))))
     (multiple-value-bind (s c d)
-        (descending-landen-sn-cn-dn (complex scaled-u-r scaled-u-i)
+        (descending-landen-sn-cn-dn scaled-u
                                     m root-m1)
       (dotimes (k n)
         (let* ((s2 (* s s))
