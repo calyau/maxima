@@ -4619,9 +4619,7 @@ first kind:
                             (+ (- (* 2 ell-e) e)
                                (lattice-e (round a2) (round b2))))))))))))))
     ((realp u)
-     (cond ((= m 1)
-            (tanh u))
-           ((> m 1)
+     (cond ((> m 1)
             ;; E(u|m) = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
             ;;
             ;; From A&S 16.11:
@@ -4724,14 +4722,6 @@ first kind:
 (def-simplifier jacobi_epsilon (u m)
   (let (args)
     (cond
-      ((zerop1 u)
-       0)
-      ((zerop1 m)
-       ;; dn(u|0) = 1, so E(u|0) = u
-       u)
-      ((onep1 m)
-       ;; dn(u|1) = sech(u), so E(u|1) = tanh(u)
-       (ftake '%tanh u))
       ((float-numerical-eval-p u m)
        (bigfloat::jacobi-epsilon ($float u) ($float m)))
       ((setf args (complex-float-numerical-eval-p u m))
@@ -4747,6 +4737,14 @@ first kind:
            args
          (to (bigfloat::jacobi-epsilon (bigfloat:to ($bfloat u))
                                        (bigfloat:to ($bfloat m))))))
+      ((zerop1 u)
+       0)
+      ((zerop1 m)
+       ;; dn(u|0) = 1, so E(u|0) = u
+       u)
+      ((onep1 m)
+       ;; dn(u|1) = sech(u), so E(u|1) = tanh(u)
+       (ftake '%tanh u))
       (t
        (give-up)))))
 
