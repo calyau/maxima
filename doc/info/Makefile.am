@@ -134,10 +134,12 @@ clean-info:
 	rm -f $(wildcard maxima.info* maxima-info.info* maxima-index.lisp maxima-index-html.lisp)
 	rm -f maxima.fns build-html-index.log
 	rm -f $(patsubst $(srcdir)/%.texi.m4,%.texi,$(wildcard $(srcdir)/*.texi.m4))
+	rm -f $(impl_notes_texi) $(impl_notes:=.info) $(impl_notes:=.pdf)
 
 clean-html:
 	rm -f $(wildcard *.html) \
 	      $(wildcard $(addprefix $(srcdir),*.html))
+	rm -f $(impl_notes:=.html) impl-notes/js_licenses.html
 
 EXTRA_DIST = manual.css texi2html.init maxima.texi dlmf-ref-macros.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
@@ -145,7 +147,8 @@ EXTRA_DIST = manual.css texi2html.init maxima.texi dlmf-ref-macros.texi \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
     maxima-init.lisp README.update_examples maxima-index-html.lisp build-html-index.lisp \
-    figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz
+    figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz \
+    $(impl_notes:=.texi.m4)
 
 check_texinfo:
 	@pattern=`printf "\t"` ; \
@@ -168,3 +171,40 @@ distclean-local:
 # Preprocess the files with m4 to handle math equations.
 %.texi : math.m4 %.texi.m4
 	m4 --prefix-builtins $^ > $@
+
+# Implementation notes in impl-notes/.  These are not part of the
+# manual; build them with "make impl-notes-docs" (or the html, info or
+# pdf variants).  The output goes in impl-notes/ so that the manual's
+# html install and html index never see it.
+impl_notes = impl-notes/jacobi-am
+impl_notes_texi = $(impl_notes:=.texi)
+
+# Use MathJax, syntax highlighting and style sheets the same way
+# build_html.sh does.  The html is one directory down, so the style
+# sheets are referenced from the parent directory.
+IMPL_NOTES_HTMLFLAGS = $(if $(NEED_MATHJAX),,-c HTML_MATH=mathjax) \
+    $(if $(USE_PYGMENTS),-c HIGHLIGHT_SYNTAX=pygments) \
+    $(if $(USE_CUSTOM_HILITE),-c HIGHLIGHT_SYNTAX='pygmentize -O classprefix=pyg- -f html -l %l') \
+    $(if $(CUSTOM_PYGMENTS_CSS),-c EXTRA_HEAD='$(subst href=",href="../,$(CUSTOM_PYGMENTS_CSS))') \
+    --css-ref=../manual.css
+
+impl-notes/%.texi : math.m4 impl-notes/%.texi.m4
+	$(MKDIR_P) impl-notes
+	m4 --prefix-builtins $^ > $@
+
+impl-notes/%.html : impl-notes/%.texi
+	$(MAKEINFO) --html --no-split -c OUTPUT_ENCODING_NAME=UTF-8 \
+	  $(IMPL_NOTES_HTMLFLAGS) -o $@ $<
+
+impl-notes/%.info : impl-notes/%.texi
+	$(MAKEINFO) -o $@ $<
+
+impl-notes/%.pdf : impl-notes/%.texi
+	$(TEXI2PDF) --clean -o $@ $<
+
+impl-notes-docs: impl-notes-html impl-notes-info impl-notes-pdf
+impl-notes-html: $(impl_notes:=.html)
+impl-notes-info: $(impl_notes:=.info)
+impl-notes-pdf: $(impl_notes:=.pdf)
+
+.PHONY: impl-notes-docs impl-notes-html impl-notes-info impl-notes-pdf
