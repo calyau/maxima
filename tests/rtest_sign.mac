@@ -943,15 +943,16 @@ forget(abs(x)<b);
 facts();
 [a>0,b>0,1>b];
 
+/* sin(abs(x)) < 1 does not imply sin(x) < 1: take x = -3*%pi/2 */
 assume(sin(abs(x)) < 1);
 [sin(abs(x))<1];
 
 sign(1-sin(x));
-pos;
+pz;
 sign(2-sin(x));
 pos;
 sign(sin(x)-1);
-neg;
+nz;
 sign(sin(x)-2);
 neg;
 
@@ -3308,6 +3309,33 @@ block([b, x, r],
   killcontext(c5119),
   [r, contexts]);
 [[true, true, true, true], [initial, global]]$
+
+
+/* Bug #5732: "assume(2 - abs(x) < 1) learns both x > 1 and x < -1" */
+
+block([ctx : supcontext(), r],
+  assume(2 - abs(x) < 1, 3 - 2*abs(y - 1) <= 1),
+  r : [is(x > 1), is(x < -1), is(y >= 2), is(y <= 0)],
+  forget(2 - abs(x) < 1, 3 - 2*abs(y - 1) <= 1),
+  r : endcons(facts(), r),
+  killcontext(ctx),
+  r);
+[unknown, unknown, unknown, unknown, []]$
+
+block([ctx : supcontext(), r],
+  assume(abs(x) > abs(y), abs(abs(z) - 1) < 1),
+  r : [is(x > abs(y)), is(x < -abs(y)), is(abs(x) > y), is(abs(x) > -y),
+       is(z > 0), is(z < 0), is(z < 2), is(z > -2)],
+  killcontext(ctx),
+  r);
+[unknown, unknown, true, true, unknown, unknown, true, true]$
+
+block([ctx : supcontext(), r],
+  assume(sqrt(abs(x)) < 2, y*abs(z) < 1),
+  r : [facts(), is(y*z < 1)],
+  killcontext(ctx),
+  r);
+[[2 > sqrt(abs(x)), 1 > y*abs(z)], unknown]$
 
 
 /**************************************/

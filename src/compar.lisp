@@ -643,23 +643,35 @@
 
 (defun learn-abs (pat flag)
   (let (tmp pats)
-    (when (and (setq tmp (isinop pat 'mabs))
+    (when (and (isinop pat 'mabs)
                ;; Check the sign of a only when learning: It may be unknown by
                ;; the time of unlearning, which removes only derived facts.
                (or (and (member (caar pat) '(mlessp mleqp))
-                        (isinop (cadr pat) 'mabs)
+                        (setq tmp (isinop (cadr pat) 'mabs))
                         (or (not flag)
                             (member ($sign (caddr pat)) '($pos $pz))))
                    (and (member (caar pat) '(mgreaterp mgeqp))
                         (or (not flag)
                             (member ($sign (cadr pat)) '($pos $pz)))
-                        (isinop (caddr pat) 'mabs)))
+                        (setq tmp (isinop (caddr pat) 'mabs))))
+               ;; The derived facts follow from the pattern if replacing
+               ;; abs(x) by -abs(x) does not increase the smaller side minus
+               ;; the larger side, as for abs(x) + c < a or k*abs(x) < a with
+               ;; k > 0, but not for 2 - abs(x) < 1, that is abs(x) > 1. Use
+               ;; CSIGN, as the replacement can make the difference complex.
+               ;; Test this only when learning, too.
+               (or (not flag)
+                   (let ((d (if (member (caar pat) '(mlessp mleqp))
+                                (sub (cadr pat) (caddr pat))
+                                (sub (caddr pat) (cadr pat)))))
+                     (member ($csign (sub d ($substitute (neg tmp) tmp d)))
+                             '($pos $pz $zero))))
                (setq pats (list ($substitute (cadr tmp) tmp pat)
                                 ($substitute (mul -1 (cadr tmp)) tmp pat)))
                ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
                ;; both. Always learn, and unlearn too, unless abs(x) < a is
                ;; known here but x < a or -x < a is not: Then this fact has no
-               ;; derived facts, as the sign of a was unknown when it was
+               ;; derived facts, as one of the tests above failed when it was
                ;; learned, and FDEL would remove those of another context.
                (or flag
                    (every #'(lambda (p)
