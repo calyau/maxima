@@ -1469,6 +1469,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                (if (and (eq sign '$pnz) (eq s '$pn))
                                    (setq sign s)
                                    (setq sign s odds o evens e minus m)))
+                           ;; The facts and the form of X can each rule out
+                           ;; a different sign, as 0 >= abs(x) and abs(x) >= 0
+                           ;; do. Then only the sign they share is left.
+                           (let ((meet (weak-sign-meet sign s)))
+                             (when meet
+                               (setq sign meet odds o evens e minus m)))
                            t)))))
 	 (sign exp))
      (return sign)))))
@@ -3386,6 +3392,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((eq '$pnz y))
 	((eq '$pnz x) nil)
 	((member y '($pz $nz $pn) :test #'eq))))
+
+(defun weak-sign-meet (x y)
+  "The sign that X and Y both allow, if they are two different ones of the
+  weak signs $PZ, $NZ and $PN, as $ZERO for $PZ and $NZ. Otherwise NIL."
+  (and (member x '($pz $nz $pn))
+       (member y '($pz $nz $pn))
+       (not (eq x y))
+       (sign-label-meet x y)))
 
 (defun munformat (form)
   (if (atom form)

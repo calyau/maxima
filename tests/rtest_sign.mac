@@ -3440,6 +3440,28 @@ block([r],
 [[y - x, unknown, unknown, pnz, false, []], true, true, [y > x, x > z]]$
 
 
+/* Bug #5736: "is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)" */
+
+block([a, b, c],
+  local(a, b, c),
+  [assume(abs(a) < 0, abs(a) <= 0, 2*abs(b) <= 0, abs(c - 1) <= 0),
+   [is(abs(a) <= 0), is(2*abs(b) <= 0), is(abs(c - 1) <= 0)],
+   [sign(abs(a)), sign(-abs(a)), is(abs(a) > 0), is(equal(abs(a), 0))],
+   forget(abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0),
+   facts()]);
+[[inconsistent, abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0], [true, true, true],
+ [zero, zero, false, true], [abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0], []]$
+
+block([a, b, c],
+  local(a, b, c),
+  [assume(a^2 + b^2 <= 0, notequal(abs(c), 0)),
+   [is(a^2 + b^2 <= 0), sign(a^2 + b^2), sign(abs(c)), is(abs(c) > 0)],
+   forget(a^2 + b^2 <= 0, notequal(abs(c), 0)),
+   facts()]);
+[[a^2 + b^2 <= 0, notequal(abs(c), 0)], [true, zero, pos, true],
+ [a^2 + b^2 <= 0, notequal(abs(c), 0)], []]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
