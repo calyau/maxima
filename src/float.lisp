@@ -1751,28 +1751,35 @@
 			       2))
 		     ((> exp 0)
 					; COMPUTE STICKY BIT
-		      (setq sticky (cond ((hipart-zerop (car b) (- 1 exp)) 0)
+		      (setq sticky (cond ((hipart-zerop (car b)
+							(min 0 (- 2 exp)))
+					  0)
 					 ;; the sign B enters the sum with
 					 ((if subtract
 					      (signp g (car b))
 					      (signp l (car b)))
 					  -1)
 					 (t 1)))
-					; MAKE ROOM FOR GUARD DIGIT & STICKY BIT
+					; MAKE ROOM FOR GUARD AND ROUND DIGITS
 		      (let ((ma (fpshift (car a) 2))
 			    (mb (fpshift (car b) (- 2 exp))))
 			(if subtract (- ma mb) (+ ma mb))))
-		     (t (setq sticky (cond ((hipart-zerop (car a) (1+ exp)) 0)
+		     (t (setq sticky (cond ((hipart-zerop (car a)
+							  (min 0 (+ 2 exp)))
+					    0)
 					   ((signp l (car a)) -1)
 					   (t 1)))
 			(let ((ma (fpshift (car a) (+ 2 exp)))
 			      (mb (fpshift (car b) 2)))
 			  (if subtract (- ma mb) (+ ma mb))))))
-     (unless (zerop sticky)
-     (setq man (+ man sticky)))
+     ;; The sticky bit goes below the guard and round digits, so that it can't
+     ;; carry into them.
+     (setq man (+ (fpshift man 1) sticky))
      (return (cond ((equal man 0) '(0 0))
 		   (t (setq man (fpround man))
-		      (setq exp (+ -2 *m (max (cadr a) (cadr b))))
+		      ;; *CANCELLED, read by FPSIN, leaves out the sticky bit.
+		      (setq *cancelled (abs (1- *m)))
+		      (setq exp (+ -3 *m (max (cadr a) (cadr b))))
 		      (list man exp))))))
 
 (defun fpdifference (a b)

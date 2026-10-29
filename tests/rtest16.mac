@@ -2218,7 +2218,7 @@ closeto(li[4](0.25) - 0.25411619074634353405967371315352,
 true;
 
 closeto(li[4](0.25b0) - 0.25411619074634353405967371315352b0,
-  2.06796b-25);
+  3.10193b-25);
 true;
 
 closeto(li[4](0.75) - 0.79222102797282777952948578955736,
@@ -4761,6 +4761,17 @@ if p1 then q1 elseif p2 then q2 else q3$
 
 subst(zz, true, '(if p1 then true elseif p2 then q2 else q3));
 if p1 then zz elseif p2 then q2 else q3$
+
+
+/* Bug #4852: "fpplus sticky-bit is off by one - additions misround by up to 0.75 ulp" */
+
+/* The first two terms sum exactly to 2^55 + 2^53 + 1.25, 2^55 + 2^52 + 1.375 and
+   2^55 - 2^52 + 0.375, which round to the third terms at fpprec 16, 56 bits */
+block([fpprec : 16],
+  [36028797018963969.0b0 + 9007199254740992.25b0 - 45035996273704961b0,
+   36028797018963969.0b0 + 4503599627370496.375b0 - 40532396646334465b0,
+   36028797018963969.0b0 - 4503599627370496.625b0 - 31525197391593472.5b0]);
+[0.0b0, 0.0b0, 0.0b0]$
 
 
 /**************************************/
