@@ -1,7 +1,12 @@
 \input texinfo
 @c -*- mode: texinfo -*-
-@c Generated from jacobi-am.md.  Process with
-@c   m4 --prefix-builtins math.m4 jacobi-am.texi.m4 > jacobi-am.texi
+@c Created by Claude to describe the Jacobi am implementation in Maxima.
+@c
+@c Generated from jacobi-am.md, shown at
+@c https://github.com/rtoy/maxima/wiki/Jacobi-am-Implementation#s2
+@c That will not be updated anymore.  This is the canonical documentation used
+@c to implement jacobi_am at the time of writing.
+@c
 @setfilename jacobi-am.info
 @settitle Computing the Jacobi Amplitude am(z|m) with Sala's Series
 @documentencoding UTF-8
