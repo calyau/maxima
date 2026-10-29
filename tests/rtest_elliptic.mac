@@ -541,7 +541,7 @@ true;
 /* list of functions here is everything that has a SIMP-[$%](ELLIPTIC|JACOBI)_FOO in sr/ellipt.lisp */
 /*
 elliptic_fcns :
-  [ elliptic_e, elliptic_ec, elliptic_eu, elliptic_f, elliptic_kc, elliptic_pi,
+  [ elliptic_e, elliptic_ec, jacobi_epsilon, elliptic_f, elliptic_kc, elliptic_pi,
     inverse_jacobi_cd, inverse_jacobi_cn, inverse_jacobi_cs, inverse_jacobi_dc,
     inverse_jacobi_dn, inverse_jacobi_ds, inverse_jacobi_nc, inverse_jacobi_nd,
     inverse_jacobi_ns, inverse_jacobi_sc, inverse_jacobi_sd, inverse_jacobi_sn,
@@ -595,7 +595,7 @@ true ;
 complex_floatp(elliptic_e(rectform(u1), k1)) ; 
 true ; 
  
-complex_floatp(elliptic_eu(rectform(u1), k1)) ; 
+complex_floatp(jacobi_epsilon(rectform(u1), k1)) ; 
 true ; 
  
 complex_floatp(elliptic_f(rectform(u1), k1)) ; 
@@ -717,7 +717,7 @@ true ;
 complex_bfloatp(elliptic_e(rectform(u1), k1)) ; 
 true ; 
  
-complex_bfloatp(elliptic_eu(rectform(u1), k1)) ; 
+complex_bfloatp(jacobi_epsilon(rectform(u1), k1)) ; 
 true ; 
  
 complex_bfloatp(elliptic_f(rectform(u1), k1)) ; 
@@ -1538,152 +1538,152 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
 [true, true, true];
 
 
-/* elliptic_eu: one test for each case in ELLIPTIC-EU.  Reference
+/* jacobi_epsilon: one test for each case in ELLIPTIC-EU.  Reference
  * values computed with mpmath as integrate(jacobi_dn(t,m)^2,t,0,u)
  * at 60 digits.  fpprec is 32 here.
  */
 
 /* Real u, m = 1: tanh(u). */
-[closeto(elliptic_eu(0.5, 1.0) - 4.6211715726000976e-1, 1.0262e-16),
- closeto(elliptic_eu(0.5b0, 1.0b0) - 4.621171572600097585023184836436725b-1, 4.6212b-33)];
+[closeto(jacobi_epsilon(0.5, 1.0) - 4.6211715726000976e-1, 1.0262e-16),
+ closeto(jacobi_epsilon(0.5b0, 1.0b0) - 4.621171572600097585023184836436725b-1, 4.6212b-33)];
 [true, true];
 
 /* Real u, m > 1: reciprocal-modulus transformation. */
-[closeto(elliptic_eu(1.0, 2.0) - 5.8904862888974309e-1, 1.3080e-16),
- closeto(elliptic_eu(1.0b0, 2.0b0) - 5.89048628889743088308388082799087b-1, 5.8905b-33)];
+[closeto(jacobi_epsilon(1.0, 2.0) - 5.8904862888974309e-1, 1.3080e-16),
+ closeto(jacobi_epsilon(1.0b0, 2.0b0) - 5.89048628889743088308388082799087b-1, 5.8905b-33)];
 [true, true];
 
 /* Real u, m = 0: E(u|0) = u. */
-[closeto(elliptic_eu(0.5, 0.0) - 5.0e-1, 1.1103e-16),
- closeto(elliptic_eu(0.5b0, 0.0b0) - 5.0b-1, 7.7038b-33)];
+[closeto(jacobi_epsilon(0.5, 0.0) - 5.0e-1, 1.1103e-16),
+ closeto(jacobi_epsilon(0.5b0, 0.0b0) - 5.0b-1, 7.7038b-33)];
 [true, true];
 
 /* Real u, 0 < m < 1, 0 <= u < K. */
-[closeto(elliptic_eu(0.5, 0.5) - 4.8062514580838265e-1, 1.0673e-16),
- closeto(elliptic_eu(0.5b0, 0.5b0) - 4.806251458083826523093253715379769b-1, 1.3867b-32)];
+[closeto(jacobi_epsilon(0.5, 0.5) - 4.8062514580838265e-1, 1.0673e-16),
+ closeto(jacobi_epsilon(0.5b0, 0.5b0) - 4.806251458083826523093253715379769b-1, 1.3867b-32)];
 [true, true];
 
 /* Real u, 0 < m < 1, K <= u < 2*K. */
-[closeto(elliptic_eu(2.5, 0.5) - 1.6959808018739937e0, 3.7659e-16),
- closeto(elliptic_eu(2.5b0, 0.5b0) - 1.695980801873993703151043515247746b0, 1.8489b-32)];
+[closeto(jacobi_epsilon(2.5, 0.5) - 1.6959808018739937e0, 3.7659e-16),
+ closeto(jacobi_epsilon(2.5b0, 0.5b0) - 1.695980801873993703151043515247746b0, 1.8489b-32)];
 [true, true];
 
 /* Real u, 0 < m < 1, 2*K <= u < 3*K (odd multiple of 2*K, u-rem < K). */
-[closeto(elliptic_eu(4.0, 0.5) - 2.9890986129297331e0, 6.6372e-16),
- closeto(elliptic_eu(4.0b0, 0.5b0) - 2.989098612929733115307043921340833b0, 2.9891b-32)];
+[closeto(jacobi_epsilon(4.0, 0.5) - 2.9890986129297331e0, 6.6372e-16),
+ closeto(jacobi_epsilon(4.0b0, 0.5b0) - 2.989098612929733115307043921340833b0, 2.9891b-32)];
 [true, true];
 
 /* Real u, 0 < m < 1, 3*K <= u < 4*K (odd multiple of 2*K, u-rem >= K). */
-[closeto(elliptic_eu(6.0, 0.5) - 4.2778056954811428e0, 9.4987e-16),
- closeto(elliptic_eu(6.0b0, 0.5b0) - 4.27780569548114276459923830655774b0, 4.2779b-32)];
+[closeto(jacobi_epsilon(6.0, 0.5) - 4.2778056954811428e0, 9.4987e-16),
+ closeto(jacobi_epsilon(6.0b0, 0.5b0) - 4.27780569548114276459923830655774b0, 4.2779b-32)];
 [true, true];
 
 /* Real u < 0, 0 < m < 1. */
-[closeto(elliptic_eu(-0.5, 0.5) + 4.8062514580838265e-1, 1.1103e-16),
- closeto(elliptic_eu(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 4.8063b-33)];
+[closeto(jacobi_epsilon(-0.5, 0.5) + 4.8062514580838265e-1, 1.1103e-16),
+ closeto(jacobi_epsilon(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 4.8063b-33)];
 [true, true];
 
 /* Real u, m < 0. */
-[closeto(elliptic_eu(4.0, -2.0) - 7.8251738134212039e0, 1.7376e-15),
- closeto(elliptic_eu(4.0b0, -2.0b0) - 7.825173813421203919230264249629685b0, 7.8252b-32)];
+[closeto(jacobi_epsilon(4.0, -2.0) - 7.8251738134212039e0, 1.7376e-15),
+ closeto(jacobi_epsilon(4.0b0, -2.0b0) - 7.825173813421203919230264249629685b0, 7.8252b-32)];
 [true, true];
 
 /* Real u, 0 < m < 1, u just below K = 1.854074677301372 (accuracy of am). */
-closeto(elliptic_eu(1.85407, 0.5) - 1.3506415423969896e0, 2.9991e-16);
+closeto(jacobi_epsilon(1.85407, 0.5) - 1.3506415423969896e0, 2.9991e-16);
 true;
 
 /* Complex u, 0 < m < 1, |Im u| <= K'/2: no reduction. */
-[closeto(elliptic_eu(0.5 + 0.5*%i, 0.5) - (5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 0.5b0) - (5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 1.4879b-32)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5) - (5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 0.5b0) - (5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 1.4879b-32)];
 [true, true];
 
 /* Complex u, Re u < 0, 0 < m < 1. */
-[closeto(elliptic_eu(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
- closeto(elliptic_eu(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 7.1025b-33)];
+[closeto(jacobi_epsilon(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
+ closeto(jacobi_epsilon(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 7.1025b-33)];
 [true, true];
 
 /* Complex u, 0 < m < 1, K'/2 < Im u < 3*K'/2: shift by i*K'. */
-[closeto(elliptic_eu(0.25 + 1.5*%i, 0.5) - (1.4570217380892199e0 + 2.2114506879791617e0*%i), 1.7764e-15),
- closeto(elliptic_eu(0.25b0 + 1.5b0*%i, 0.5b0) - (1.457021738089219863070485760586937b0 + 2.211450687979161698628875041771378b0*%i), 6.3527b-32)];
+[closeto(jacobi_epsilon(0.25 + 1.5*%i, 0.5) - (1.4570217380892199e0 + 2.2114506879791617e0*%i), 1.7764e-15),
+ closeto(jacobi_epsilon(0.25b0 + 1.5b0*%i, 0.5b0) - (1.457021738089219863070485760586937b0 + 2.211450687979161698628875041771378b0*%i), 6.3527b-32)];
 [true, true];
 
 /* Complex u, 0 < m < 1, -3*K'/2 < Im u < -K'/2: shift by -i*K'. */
-[closeto(elliptic_eu(0.25 - 1.5*%i, 0.5) - (1.4570217380892199e0 - 2.2114506879791617e0*%i), 8.8818e-16),
- closeto(elliptic_eu(0.25b0 - 1.5b0*%i, 0.5b0) - (1.457021738089219863070485760586937b0 - 2.211450687979161698628875041771378b0*%i), 5.8872b-32)];
+[closeto(jacobi_epsilon(0.25 - 1.5*%i, 0.5) - (1.4570217380892199e0 - 2.2114506879791617e0*%i), 8.8818e-16),
+ closeto(jacobi_epsilon(0.25b0 - 1.5b0*%i, 0.5b0) - (1.457021738089219863070485760586937b0 - 2.211450687979161698628875041771378b0*%i), 5.8872b-32)];
 [true, true];
 
 /* Complex u, 0 < m < 1, Im u near 2*K': reduction by 2*i*K'. */
-[closeto(elliptic_eu(0.25 + 4.0*%i, 0.5) - (2.5786271412342611e-1 + 1.2933541570967085e0*%i), 2.9284e-16),
- closeto(elliptic_eu(0.25b0 + 4.0b0*%i, 0.5b0) - (2.578627141234261090962251714359967b-1 + 1.293354157096708515289073762061578b0*%i), 1.3189b-32)];
+[closeto(jacobi_epsilon(0.25 + 4.0*%i, 0.5) - (2.5786271412342611e-1 + 1.2933541570967085e0*%i), 2.9284e-16),
+ closeto(jacobi_epsilon(0.25b0 + 4.0b0*%i, 0.5b0) - (2.578627141234261090962251714359967b-1 + 1.293354157096708515289073762061578b0*%i), 1.3189b-32)];
 [true, true];
 
 /* Complex u, 0 < m < 1, large Im u. */
-[closeto(elliptic_eu(0.25 + 50.0*%i, 0.5) - (3.9068210255750855e0 + 1.4470742446348623e1*%i), 1.2122e-14),
- closeto(elliptic_eu(0.25b0 + 50.0b0*%i, 0.5b0) - (3.906821025575085498401208478489594b0 + 1.447074244634862286274007106618073b1*%i), 2.6627b-30)];
+[closeto(jacobi_epsilon(0.25 + 50.0*%i, 0.5) - (3.9068210255750855e0 + 1.4470742446348623e1*%i), 1.2122e-14),
+ closeto(jacobi_epsilon(0.25b0 + 50.0b0*%i, 0.5b0) - (3.906821025575085498401208478489594b0 + 1.447074244634862286274007106618073b1*%i), 2.6627b-30)];
 [true, true];
 
 /* Complex u, 0 < m < 1, Im u near K' = 1.854074677301372 (cancellation). */
-closeto(elliptic_eu(1.0 + 1.85407467730137*%i, 0.5) - (1.483213699804794e0 + 5.0343079625369742e-1*%i), 3.4780e-16);
+closeto(jacobi_epsilon(1.0 + 1.85407467730137*%i, 0.5) - (1.483213699804794e0 + 5.0343079625369742e-1*%i), 3.4780e-16);
 true;
 
 /* Complex u, m = 1: tanh(u). */
-[closeto(elliptic_eu(0.5 + 0.5*%i, 1.0) - (5.640831412674985e-1 + 4.0389645531602574e-1*%i), 1.6654e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 1.0b0) - (5.640831412674984983013636044065706b-1 + 4.038964553160257398697735622506821b-1*%i), 8.6131b-33)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 1.0) - (5.640831412674985e-1 + 4.0389645531602574e-1*%i), 1.6654e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 1.0b0) - (5.640831412674984983013636044065706b-1 + 4.038964553160257398697735622506821b-1*%i), 8.6131b-33)];
 [true, true];
 
 /* Complex u, m > 1. */
-[closeto(elliptic_eu(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 7.7119e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 2.0b0) - (6.073401223382744473605404837251988b-1 + 3.003430990666717205676931089966581b-1*%i), 2.8211b-32)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 7.7119e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 2.0b0) - (6.073401223382744473605404837251988b-1 + 3.003430990666717205676931089966581b-1*%i), 2.8211b-32)];
 [true, true];
 
 /* Complex u, m = 0: E(u|0) = u. */
-[closeto(elliptic_eu(0.5 + 0.5*%i, 0.0) - (5.0e-1 + 5.0e-1*%i), 1.5701e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 0.0b0) - (5.0b-1 + 5.0b-1*%i), 7.7038b-33)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.0) - (5.0e-1 + 5.0e-1*%i), 1.5701e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 0.0b0) - (5.0b-1 + 5.0b-1*%i), 7.7038b-33)];
 [true, true];
 
 /* Complex u, m < 0: no reduction of Im u. */
-[closeto(elliptic_eu(0.5 + 0.5*%i, -2.0) - (3.0886948594152059e-1 + 6.553229735337568e-1*%i), 3.3767e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, -2.0b0) - (3.088694859415205913497502340483152b-1 + 6.553229735337567962145163766489119b-1*%i), 3.1359b-32)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, -2.0) - (3.0886948594152059e-1 + 6.553229735337568e-1*%i), 3.3767e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, -2.0b0) - (3.088694859415205913497502340483152b-1 + 6.553229735337567962145163766489119b-1*%i), 3.1359b-32)];
 [true, true];
 
-/* elliptic_eu with complex m.  Reference values computed with mpmath
+/* jacobi_epsilon with complex m.  Reference values computed with mpmath
  * as integrate(jacobi_dn(t,m)^2,t,0,u) at 45 digits along two paths.
  */
 
 /* Complex m, no reduction of u. */
-[closeto(elliptic_eu(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 1.6900e-16),
- closeto(elliptic_eu(0.5b0 + 0.5b0*%i, 0.5b0 + 0.5b0*%i) - (5.854975495077468611925941646139621b-1 + 4.86249469889204907874227251328901b-1*%i), 7.7038b-33)];
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 1.6900e-16),
+ closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 0.5b0 + 0.5b0*%i) - (5.854975495077468611925941646139621b-1 + 4.86249469889204907874227251328901b-1*%i), 7.7038b-33)];
 [true, true];
 
 /* Complex m, real u. */
-[closeto(elliptic_eu(0.5, 0.5 + 0.5*%i) - (4.8019172478354127e-1 - 1.8933592522499063e-2*%i), 1.0671e-16),
- closeto(elliptic_eu(0.5b0, 0.5b0 + 0.5b0*%i) - (4.801917247835412736277388676969698b-1 - 1.893359252249906312281436402245733b-2*%i), 4.8057b-33)];
+[closeto(jacobi_epsilon(0.5, 0.5 + 0.5*%i) - (4.8019172478354127e-1 - 1.8933592522499063e-2*%i), 1.0671e-16),
+ closeto(jacobi_epsilon(0.5b0, 0.5b0 + 0.5b0*%i) - (4.801917247835412736277388676969698b-1 - 1.893359252249906312281436402245733b-2*%i), 4.8057b-33)];
 [true, true];
 
 /* Complex m, Carlson's w' is congruent to 2*K - w. */
-[closeto(elliptic_eu(3.0 - 2.0*%i, 2.0 + 1.0*%i) - (1.6608742539419846e0 + 4.5199957139815433e-2*%i), 3.3559e-15),
- closeto(elliptic_eu(3.0b0 - 2.0b0*%i, 2.0b0 + 1.0b0*%i) - (1.660874253941984584514095359544316b0 + 4.519995713981543299473554269306193b-2*%i), 1.0081b-31)];
+[closeto(jacobi_epsilon(3.0 - 2.0*%i, 2.0 + 1.0*%i) - (1.6608742539419846e0 + 4.5199957139815433e-2*%i), 3.3559e-15),
+ closeto(jacobi_epsilon(3.0b0 - 2.0b0*%i, 2.0b0 + 1.0b0*%i) - (1.660874253941984584514095359544316b0 + 4.519995713981543299473554269306193b-2*%i), 1.0081b-31)];
 [true, true];
 
 /* Complex m, reduction by 2*i*K'. */
-[closeto(elliptic_eu(0.25 + 1.5*%i, -3.0 + 0.5*%i) - (3.0709709323478095e-1 + 6.2131516290181819e-1*%i), 1.1390e-15),
- closeto(elliptic_eu(0.25b0 + 1.5b0*%i, -3.0b0 + 0.5b0*%i) - (3.070970932347809507917094052129578b-1 + 6.213151629018181945532907674753579b-1*%i), 3.8116b-32)];
+[closeto(jacobi_epsilon(0.25 + 1.5*%i, -3.0 + 0.5*%i) - (3.0709709323478095e-1 + 6.2131516290181819e-1*%i), 1.1390e-15),
+ closeto(jacobi_epsilon(0.25b0 + 1.5b0*%i, -3.0b0 + 0.5b0*%i) - (3.070970932347809507917094052129578b-1 + 6.213151629018181945532907674753579b-1*%i), 3.8116b-32)];
 [true, true];
 
 /* Complex m, reduction by 2*K and 2*i*K', and shift by i*K'. */
-[closeto(elliptic_eu(7.0 + 3.0*%i, 0.5 - 0.5*%i) - (5.1757970146289175e0 + 2.1167820874187701e0*%i), 1.2417e-15),
- closeto(elliptic_eu(7.0b0 + 3.0b0*%i, 0.5b0 - 0.5b0*%i) - (5.175797014628917544324764006050075b0 + 2.116782087418770088201089690544096b0*%i), 5.5920b-32)];
+[closeto(jacobi_epsilon(7.0 + 3.0*%i, 0.5 - 0.5*%i) - (5.1757970146289175e0 + 2.1167820874187701e0*%i), 1.2417e-15),
+ closeto(jacobi_epsilon(7.0b0 + 3.0b0*%i, 0.5b0 - 0.5b0*%i) - (5.175797014628917544324764006050075b0 + 2.116782087418770088201089690544096b0*%i), 5.5920b-32)];
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(elliptic_eu(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 9.4206e-16),
- closeto(elliptic_eu(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 9.4206e-16),
+ closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
 /* Complex m and large real u.  This shows that arg reduction of u improves accuracy signficantly.
  * Without it, the answer has only about 4 correct digits.
 */
-closeto(elliptic_eu(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
+closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
 true;
 
 

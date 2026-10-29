@@ -4432,7 +4432,7 @@ first kind:
 
 (defun make-elliptic-e (e)
   (cond ((atom e) e)
-	((eq (caar e) '$elliptic_eu)
+	((eq (caar e) '$jacobi_epsilon)
 	 (destructuring-bind ((ffun &rest ops) u m) e
 	   (declare (ignore ffun ops))
 	   (ftake '%elliptic_e (ftake '%asin (ftake '%jacobi_sn u m)) m)))
@@ -4466,10 +4466,10 @@ first kind:
 ;; E(u + 2*i*K',m) = E(u,m) + 2*i*(K'(m) - E'(m))
 ;;
 ;; E(u+K,m) = E(u,m) + E(m) - m*sn(u,m)*cd(u,m)
-(defun elliptic-eu (u m)
+(defun jacobi-epsilon (u m)
   (cond
     ((complexp m)
-     ;; Notation: E(u|m) is elliptic_eu(u,m), E(m) is elliptic_ec(m), and
+     ;; Notation: E(u|m) is jacobi_epsilon(u,m), E(m) is elliptic_ec(m), and
      ;; K(m) is elliptic_kc(m).  K(m), E(m), K(1-m) and E(1-m) are ELL-K,
      ;; ELL-E, ELL-KP and ELL-EP below.
      ;;
@@ -4623,7 +4623,7 @@ first kind:
             ;;   E(u|m) = ((1-m)*sqrt(m)*u + m*E(sqrt(m)*u|1/m))/sqrt(m)
             ;;          = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
             (let ((root-m (sqrt m)))
-              (- (* root-m (elliptic-eu (* root-m u) (/ m)))
+              (- (* root-m (jacobi-epsilon (* root-m u) (/ m)))
                  (* (- m 1) u))))
            (t
             ;; DLMF https://dlmf.nist.gov/22.16.E28:
@@ -4682,7 +4682,7 @@ first kind:
                      (t 0)))
             (u-i (- v (* s ell-kp)))
             (w (complex u-r u-i)))
-       (+ (elliptic-eu u-r m)
+       (+ (jacobi-epsilon u-r m)
           (* #c(0 1) (+ (* 2 n) s) (- ell-kp ell-ep))
           (if (zerop s)
               0
@@ -4692,37 +4692,37 @@ first kind:
              (- (+ u-i
                    (/ (* (sn u-i m1) (dn u-i m1))
                       (cn u-i m1)))
-                (+ (elliptic-eu u-i m1)
+                (+ (jacobi-epsilon u-i m1)
                    (/ (* m (sn u-r m) (sn u-i m1) (sn w m))
                       (cn u-i m1))))))))))
 
 (in-package :maxima)
 
-(defgrad %elliptic_eu ($u $m)
+(defgrad %jacobi_epsilon ($u $m)
   ;; wrt u
   #$$ jacobi_dn(u,m)^2 $
   ;; wrt m
   nil
 )
 
-(def-simplifier elliptic_eu (u m)
+(def-simplifier jacobi_epsilon (u m)
   (let (args)
     (cond
       ((float-numerical-eval-p u m)
-       (bigfloat::elliptic-eu ($float u) ($float m)))
+       (bigfloat::jacobi-epsilon ($float u) ($float m)))
       ((setf args (complex-float-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat::elliptic-eu (bigfloat:to ($float u))
-                                    (bigfloat:to ($float m))))))
+         (to (bigfloat::jacobi-epsilon (bigfloat:to ($float u))
+                                       (bigfloat:to ($float m))))))
       ((bigfloat-numerical-eval-p u m)
-       (to (bigfloat::elliptic-eu (bigfloat:to ($bfloat u))
-                                  (bigfloat:to ($bfloat m)))))
+       (to (bigfloat::jacobi-epsilon (bigfloat:to ($bfloat u))
+                                     (bigfloat:to ($bfloat m)))))
       ((setf args (complex-bigfloat-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat::elliptic-eu (bigfloat:to ($bfloat u))
-                                    (bigfloat:to ($bfloat m))))))
+         (to (bigfloat::jacobi-epsilon (bigfloat:to ($bfloat u))
+                                       (bigfloat:to ($bfloat m))))))
       (t
        (give-up)))))
 
