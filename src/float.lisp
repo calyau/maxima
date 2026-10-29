@@ -921,10 +921,13 @@
 	    ;;
 	    ;; and A&S 4.4.8
 	    ;;    acot(z) = atan(1/z)
+	    ;;
+	    ;; Compute atan(|x|) this way and negate it for x < 0, so that
+	    ;; atan is exactly odd.
 	    (setq tmp (fpquotient (fppi) two))
-	    (setq ans (fpdifference tmp (fpatan (fpquotient one x))))
+	    (setq ans (fpdifference tmp (fpatan (fpquotient one (fpabs x)))))
 	    (return (cond ((fplessp x (intofp 0))
-			   (fpdifference ans (fppi)))
+			   (fpminus ans))
 			  (t ans))))
 	   ((fpgreaterp (fpabs x) (fpquotient one two))
 	    ;; |x| > 1/2
