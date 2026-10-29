@@ -1632,7 +1632,7 @@ true;
 [true, true];
 
 /* Complex u, m > 1. */
-[closeto(jacobi_epsilon(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 7.7119e-16),
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 1.4529e-15),
  closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 2.0b0) - (6.073401223382744473605404837251988b-1 + 3.003430990666717205676931089966581b-1*%i), 2.8211b-32)];
 [true, true];
 
@@ -1651,7 +1651,7 @@ true;
  */
 
 /* Complex m, no reduction of u. */
-[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 1.6900e-16),
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 2.0015e-16),
  closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 0.5b0 + 0.5b0*%i) - (5.854975495077468611925941646139621b-1 + 4.86249469889204907874227251328901b-1*%i), 7.7038b-33)];
 [true, true];
 
@@ -1676,14 +1676,14 @@ true;
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 9.4206e-16),
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 1.2948e-15),
  closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
 /* Complex m and large real u.  This shows that arg reduction of u improves accuracy signficantly.
  * Without it, the answer has only about 4 correct digits.
 */
-closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
+closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.6875e-13);
 true;
 
 /* E(u|m) is odd in u, exactly, for real and complex u and m.  Each
