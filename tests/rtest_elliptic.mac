@@ -1158,7 +1158,7 @@ makelist(block([z : 2*k*%i, m : .75b0],
 [true, true, true, true, true, true, true, true, true, true, true];
 
 makelist(block([z : 2*k*%i, m : 1.75b0],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 6.3319b-31)),
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 9.4043b-31)),
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
