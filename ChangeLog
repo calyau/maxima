@@ -309,6 +309,7 @@ Bug fixes for numbered bugs:
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
 * \#5739 Bigfloat atan() and acot() are off by several ulp, more at higher fpprec
 * \#5743 Bigfloat erf and erfc are slow and fail at high fpprec
+* \#5749 The antiderivative of %e^(-x^4) jumps at x = 0
 * \#5750 integrate() asks the same sign question twice
 * \#5751 sqrt(-1/w) is %i/sqrt(w) for w <= 0, and is(sqrt(-1/w) > 0) is false
 * \#5752 integrate() asks needless sign questions for some quotients with roots

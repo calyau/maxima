@@ -2703,29 +2703,35 @@
 ;; write %e^(log(z)/3) and the like. For an integer m, var^m is multiplied
 ;; into that power, so that its sign becomes part of the phase.
 ;;
-;; For z = k*var^n with n > 0 and an odd numerator and denominator, var^m*z^s
-;; is one constant for var > 0 and another for var < 0. For alpha > 0 the
-;; antiderivative then jumps at var = 0, by gamma(alpha) times the
-;; difference. Taking gamma(alpha) from gamma_incomplete makes it 0 at
-;; var = 0 from both sides. This is not needed if the sign of VAR is known.
+;; For z = k*var^n with k free of VAR and n > 0, var^m*z^s is one constant
+;; for var > 0 and another for var < 0, unless the two agree, as for
+;; x*%e^(-x^4). Where they differ, as for %e^(x^3), %e^(-x^4) or
+;; %e^(b*x^3), the antiderivative jumps at var = 0 for alpha > 0, by
+;; gamma(alpha) times the difference. Taking gamma(alpha) from
+;; gamma_incomplete makes it 0 at var = 0 from both sides. This is not
+;; needed if the sign of VAR is known.
+;;
 (defun gamma-incomplete-and-power (alpha z var m &optional (s (mul -1 alpha)))
   (let* ((gamma-part (ftake '%gamma_incomplete alpha z))
          (power-part (principal-power z s t))
-         (var-power-part (mul (power var m) power-part)))
-    (multiple-value-bind (k w n) (real-power-factors z t)
-      (when (and k
-                 (alike1 w var)
-                 ;; n > 0 with an odd numerator and denominator
-                 (oddp (num1 n))
-                 (oddp (denom1 n))
-                 (plusp (num1 n))
-                 ;; alpha > 0 with an odd denominator
-                 (ratnump alpha)
-                 (plusp (cadr alpha))
-                 (oddp (caddr alpha))
-                 ;; the sign of VAR is unknown
-                 (not (member ($sign var) '($pos $pz $neg $nz))))
-        (setq gamma-part (sub gamma-part (ftake '%gamma alpha)))))
+         (var-power-part (mul (power var m) power-part))
+         ;; z without its factors free of VAR, as var^n for z = k*var^n
+         (var-part (cdr (partition z var 1))))
+    (when (and (or (alike1 var-part var)
+                   (and (mexptp var-part)
+                        (alike1 (cadr var-part) var)
+                        (mnump (caddr var-part))
+                        (plusp (num1 (caddr var-part)))))
+               ;; alpha > 0, where gamma_incomplete(alpha, z) tends to
+               ;; gamma(alpha) as z tends to 0
+               (ratnump alpha)
+               (plusp (cadr alpha))
+               ;; var^m*z^s differs between var > 0 and var < 0
+               (not (eq t (meqp (maxima-substitute 1 var var-power-part)
+                                (maxima-substitute -1 var var-power-part))))
+               ;; the sign of VAR is unknown
+               (not (member ($sign var) '($pos $pz $neg $nz))))
+      (setq gamma-part (sub gamma-part (ftake '%gamma alpha))))
     (cond ((alike1 power-part (power z s))
            ;; PRINCIPAL-POWER kept z^s as it is.
            (mul gamma-part (power var m) power-part))
