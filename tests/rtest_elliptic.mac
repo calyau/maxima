@@ -1692,7 +1692,7 @@ block([bad : []],
   for u in [0.5, 3000.0, -1.5*%i, 2.75 - 2.25*%i, -7.0 + 3.0*%i] do
     for m in [0.5, 3.7, -2.0, 0.5 + 0.5*%i, 2.0 + %i, -3.0 + 0.5*%i] do
       block([s : rectform(jacobi_epsilon(u, m) + jacobi_epsilon(-u, m))],
-        if cabs(s) > 0 then bad : endcons([u, m, s], bad)),
+        if not numberp(cabs(s)) or cabs(s) > 0 then bad : endcons([u, m, s], bad)),
   bad);
 [];
 
