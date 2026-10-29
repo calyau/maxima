@@ -282,6 +282,7 @@ Bug fixes for numbered bugs:
 * \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
 * \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
 * \#5731 Bigfloat tanh(x) is not odd
+* \#5734 After fourier_elim(), assume() and is() use the context initial instead of the current one
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
 
 Bug fixes for unnumbered bugs:
