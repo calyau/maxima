@@ -4432,10 +4432,10 @@ first kind:
 
 (defun make-elliptic-e (e)
   (cond ((atom e) e)
-	((eq (caar e) '$jacobi_epsilon)
+	((eq (caar e) '%jacobi_epsilon)
 	 (destructuring-bind ((ffun &rest ops) u m) e
 	   (declare (ignore ffun ops))
-	   (ftake '%elliptic_e (ftake '%asin (ftake '%jacobi_sn u m)) m)))
+	   (ftake '%elliptic_e (ftake '%jacobi_am u m) m)))
 	(t
 	 (recur-apply #'make-elliptic-e e))))
 
