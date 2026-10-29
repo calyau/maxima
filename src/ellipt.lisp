@@ -4720,7 +4720,7 @@ first kind:
 )
 
 (def-simplifier jacobi_epsilon (u m)
-  (let (args)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (bigfloat::jacobi-epsilon ($float u) ($float m)))
@@ -4745,6 +4745,58 @@ first kind:
       ((onep1 m)
        ;; dn(u|1) = sech(u), so E(u|1) = tanh(u)
        (ftake '%tanh u))
+      ((setq coef (kc-arg2 u m))
+       ;; u = lin*K(m) + const.  The same cases as JACOBI_SN.  With
+       ;; E(u + 2*K(m)|m) = E(u|m) + 2*E(m) and
+       ;; E(u + K(m)|m) = E(u|m) + E(m) - m*sn(u|m)*cd(u|m)
+       ;; (https://dlmf.nist.gov/22.16.E28),
+       ;;
+       ;;   E(2*k*K(m) + u|m) = E(u|m) + 2*k*E(m)
+       ;;   E((2*k+1)*K(m) + u|m) = E(u|m) + (2*k+1)*E(m) - m*sn(u|m)*cd(u|m)
+       (destructuring-bind (lin const)
+           coef
+         (cond ((integerp lin)
+                ;; lin-e = lin*E(m), complete elliptic E
+                (let ((lin-e (mul lin (ftake '%elliptic_ec m))))
+                  (cond ((zerop1 const)
+                         ;; E(n*K(m)|m) = n*E(m)
+                         lin-e)
+                        ((evenp lin)
+                         ;; lin = 2*k:
+                         ;;   E(2*k*K(m) + u|m) = E(u|m) + 2*k*E(m)
+                          (add (ftake '%jacobi_epsilon const m) lin-e))
+                        (t
+                         ;; lin = 2*k+1:
+                         ;;   E((2*k+1)*K(m) + u|m)
+                         ;;     = E(u|m) + (2*k+1)*E(m) - m*sn(u|m)*cd(u|m)
+                         (add (ftake '%jacobi_epsilon const m)
+                              lin-e
+                              (neg (mul m
+                                        (ftake '%jacobi_sn const m)
+                                        (ftake '%jacobi_cd const m))))))))
+               ((and (alike1 lin 1//2)
+                     (zerop1 const))
+                ;; E(K(m)|m) = 2*E(K(m)/2|m) - m*sn(K(m)/2|m)^2 by the
+                ;; addition formula, and sn(K(m)/2|m)^2 = 1/(1+sqrt(1-m))
+                ;; (A&S 16.5.2), so
+                ;;
+                ;;   E(K(m)/2|m) = (E(m) + 1 - sqrt(1-m))/2
+                (div (add (ftake '%elliptic_ec m)
+                          1
+                          (neg (power (sub 1 m) 1//2)))
+                     2))
+               ((and (alike1 lin 3//2)
+                     (zerop1 const))
+                ;; From the odd case above with u = K(m)/2, since
+                ;; m*sn(K(m)/2|m)*cd(K(m)/2|m) = 1 - sqrt(1-m):
+                ;;
+                ;;   E(3*K(m)/2|m) = (3*E(m) - 1 + sqrt(1-m))/2
+                (div (add (mul 3 (ftake '%elliptic_ec m))
+                          -1
+                          (power (sub 1 m) 1//2))
+                     2))
+               (t
+                (give-up)))))
       (t
        (give-up)))))
 

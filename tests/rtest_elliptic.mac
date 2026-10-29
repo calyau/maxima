@@ -1696,6 +1696,32 @@ block([bad : []],
   bad);
 [];
 
+/* jacobi_epsilon at multiples of elliptic_kc(m): the same cases as
+ * jacobi_sn. */
+[jacobi_epsilon(elliptic_kc(m), m), jacobi_epsilon(2*elliptic_kc(m), m),
+ jacobi_epsilon(-3*elliptic_kc(m), m)];
+[elliptic_ec(m), 2*elliptic_ec(m), -3*elliptic_ec(m)];
+
+[jacobi_epsilon(x + 2*elliptic_kc(m), m), jacobi_epsilon(x - 4*elliptic_kc(m), m)];
+[jacobi_epsilon(x, m) + 2*elliptic_ec(m), jacobi_epsilon(x, m) - 4*elliptic_ec(m)];
+
+[jacobi_epsilon(x + elliptic_kc(m), m), jacobi_epsilon(x - 3*elliptic_kc(m), m)];
+[jacobi_epsilon(x, m) + elliptic_ec(m) - m*jacobi_sn(x, m)*jacobi_cd(x, m),
+ jacobi_epsilon(x, m) - 3*elliptic_ec(m) - m*jacobi_sn(x, m)*jacobi_cd(x, m)];
+
+[jacobi_epsilon(elliptic_kc(m)/2, m), jacobi_epsilon(3*elliptic_kc(m)/2, m)];
+[(elliptic_ec(m) + 1 - sqrt(1 - m))/2, (3*elliptic_ec(m) - 1 + sqrt(1 - m))/2];
+
+/* The same results evaluated numerically, against jacobi_epsilon at the
+ * numerical argument.  Each failure is listed as [u, difference]. */
+block([vals : [x = 0.3 + 0.2*%i, m = 0.5 + 0.5*%i], bad : []],
+  for u in [elliptic_kc(m), x + 2*elliptic_kc(m), x + elliptic_kc(m),
+            x - 3*elliptic_kc(m), elliptic_kc(m)/2, 3*elliptic_kc(m)/2] do
+    block([d : cabs(rectform(subst(vals, jacobi_epsilon(u, m))
+                             - jacobi_epsilon(subst(vals, u), subst(vals, m))))],
+      if not numberp(d) or d > 1e-14 then bad : endcons([u, d], bad)),
+  bad);
+[];
 
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
