@@ -475,43 +475,16 @@
         (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
         (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
 
-#+nil
-(defun jacobi-am-agm (u m tol)
-  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
-  uses the AGM method until a tolerance of TOL is reached for the
-  error."
-  (multiple-value-bind (n an bn cn)
-      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
-    (declare (ignore bn))
-    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
-    (let ((phi (* u (aref an n) (expt 2 n))))
-      (loop for k from n downto 1
-            do
-               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
-                                               (aref an k))
-                                            (sin phi))))
-                            2)))
-      phi)))
 
 ;; Compute Jacobi am for real or complex values of U and M.  The args
 ;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
 ;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
 ;; used.
-#+nil
-(defun bf-jacobi-am (u m tol)
-  (cond ((and (realp u) (realp m) (<= (abs m) 1))
-         ;; The case of real u and m with |m| <= 1.  We can use AGM to
-         ;; compute the result.
-         (jacobi-am-agm (to u)
-                        (to m)
-                        tol))
-        (t
-         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
-         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
-         ;; to be what functions.wolfram.com is using in this case.
-         (asin (sn (to u) (to m))))))
-
+;;
 ;; Reference:  https://kensala.com/publications/Sala_TransformationsOfTheJacobianAmplitudeFunctionAndItsCalculationViaTheArithmeticGeometricMean_SiamJMathsAnalysis_20_1989.pdf
+;;
+;; See also doc/info/impl-notes/jacobi-am.texi.m4 for a more detailed
+;; description of the algorithms used here.
 ;;
 ;; The main equation is 2.10:
 ;;
