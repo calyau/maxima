@@ -1,0 +1,36 @@
+fpprintprec: 4;
+
+speed_test (f, l, m) :=
+    for n in l
+        do (timer_reset (),
+            print (['m = m, 'n = n, 'f = f]),
+            for i thru m do f (n),
+            print ('timer_info = timer_info ()));
+
+timer (
+);
+
+L_short: [ 1, 10, 30, 100, 300, 1000, 3000, 10000, 30000 ];
+
+untimer ();
+
+timer (permute, array_permute, permute_via_array_permute);
+timer (random_perm, array_random_perm, random_perm_via_array_random_perm);
+timer (fillarray, make_array, makelist);
+
+speed_test (lambda ([n], permute (random_perm (n), makelist (i, i, 1, n))), L_short, 3);
+
+L_long: [ 1, 10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000, 300000, 1000000 ];
+
+speed_test (lambda ([n], array_permute (array_random_perm (n), fillarray (make_array (fixnum, n), makelist (i - 1, i, 1, n)))), L_long, 3);
+
+speed_test (lambda ([n], permute_via_array_permute (random_perm_via_array_random_perm (n), makelist (i, i, 1, n))), L_long, 3);
+
+/* further tests:
+
+untimer ();
+timer (permult, array_permult, permult_via_array_permult);
+
+untimer ();
+timer (perm_inverse, array_perm_inverse, perm_inverse_via_array_perm_inverse);
+ */
