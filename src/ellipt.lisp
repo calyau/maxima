@@ -4468,6 +4468,22 @@ first kind:
 ;; E(u+K,m) = E(u,m) + E(m) - m*sn(u,m)*cd(u,m)
 (defun jacobi-epsilon (u m)
   (cond
+    ((zerop m)
+     ;; dn(u|0) = 1 so E(u|m) = u
+     u)
+    ((= m 1)
+     ;; dn(u|1) = sech(u).  Then
+     ;;
+     ;;   E(u|1) = integrate(dn(t|1)^2, t, 0, u)
+     ;;          = integrate(sech(t)^2, t, 0, u)
+     ;;          = tanh(u)
+     (tanh u))
+    ((or (minusp (realpart u))
+         (and (zerop (realpart u)) (minusp (imagpart u))))
+     ;; E(u|m) is odd in u.  Evaluate it only for realpart(u) > 0, or
+     ;; for u on the nonnegative imaginary axis, so that E(-u|m) =
+     ;; -E(u|m) exactly.
+     (- (jacobi-epsilon (- u) m)))
     ((complexp m)
      ;; Notation: E(u|m) is jacobi_epsilon(u,m), E(m) is elliptic_ec(m), and
      ;; K(m) is elliptic_kc(m).  K(m), E(m), K(1-m) and E(1-m) are ELL-K,
@@ -4708,6 +4724,14 @@ first kind:
 (def-simplifier jacobi_epsilon (u m)
   (let (args)
     (cond
+      ((zerop1 u)
+       0)
+      ((zerop1 m)
+       ;; dn(u|0) = 1, so E(u|0) = u
+       u)
+      ((onep1 m)
+       ;; dn(u|1) = sech(u), so E(u|1) = tanh(u)
+       (ftake '%tanh u))
       ((float-numerical-eval-p u m)
        (bigfloat::jacobi-epsilon ($float u) ($float m)))
       ((setf args (complex-float-numerical-eval-p u m))

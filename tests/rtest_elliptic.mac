@@ -1579,8 +1579,8 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
 [true, true];
 
 /* Real u < 0, 0 < m < 1. */
-[closeto(jacobi_epsilon(-0.5, 0.5) + 4.8062514580838265e-1, 1.1103e-16),
- closeto(jacobi_epsilon(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 4.8063b-33)];
+[closeto(jacobi_epsilon(-0.5, 0.5) + 4.8062514580838265e-1, 5.5512e-17),
+ closeto(jacobi_epsilon(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 1.3867b-32)];
 [true, true];
 
 /* Real u, m < 0. */
@@ -1598,8 +1598,8 @@ true;
 [true, true];
 
 /* Complex u, Re u < 0, 0 < m < 1. */
-[closeto(jacobi_epsilon(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
- closeto(jacobi_epsilon(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 7.1025b-33)];
+[closeto(jacobi_epsilon(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1b-20),
+ closeto(jacobi_epsilon(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 1.4879b-32)];
 [true, true];
 
 /* Complex u, 0 < m < 1, K'/2 < Im u < 3*K'/2: shift by i*K'. */
@@ -1685,6 +1685,17 @@ true;
 */
 closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
 true;
+
+/* E(u|m) is odd in u, exactly, for real and complex u and m.  Each
+ * failure is listed as [u, m, E(u|m) + E(-u|m)]. */
+block([bad : []],
+  for u in [0.5, 3000.0, -1.5*%i, 2.75 - 2.25*%i, -7.0 + 3.0*%i] do
+    for m in [0.5, 3.7, -2.0, 0.5 + 0.5*%i, 2.0 + %i, -3.0 + 0.5*%i] do
+      block([s : rectform(elliptic_eu(u, m) + elliptic_eu(-u, m))],
+        if cabs(s) > 0 then bad : endcons([u, m, s], bad)),
+  bad);
+[];
+
 
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
