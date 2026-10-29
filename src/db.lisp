@@ -519,10 +519,12 @@
   "Can the datum DAT be removed from the current context? A datum with no CON
   is one of DINTNUM's chain edges, which is not a fact and must survive. A datum
   owned by $GLOBAL is a built-in assertion: It can only be removed from within
-  $GLOBAL itself (which the user cannot set as the current context)."
+  $GLOBAL itself (which the user cannot set as the current context). While
+  *DERIVED-FACT* is T, only derived datums can be removed, else only others."
   (let ((con (zl-get dat 'con)))
     (cond
       ((null con) nil)
+      ((not (eq (zl-get dat 'derived) *derived-fact*)) nil)
       ((not (eq con '$global)) t)
       ((eq context '$global) t)
       (t (setq *fact-protected* t) nil))))

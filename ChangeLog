@@ -41,6 +41,7 @@ Bug fixes for numbered bugs:
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
+* \#5119 assume(x <= %pi) silently creates a permanent learndata context whose facts leak into other contexts
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5169 GREAT says a[1] > a[1]

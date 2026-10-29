@@ -1940,4 +1940,7 @@
 (defvar *fact-protected* nil
   "Set by REMOVABLEP when it declines a datum that belongs to $GLOBAL.")
 
+(defvar *derived-fact* nil
+  "While T, MFACT marks new facts as derived, which $FACTS does not list.")
+
 ;;------------------------------------------------------------------------

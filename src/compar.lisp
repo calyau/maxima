@@ -150,16 +150,17 @@
 
 (defmfun $facts (&optional (ctxt $context))
   (if (member ctxt (cdr $contexts))
-      (facts1 ctxt)
+      (facts1 ctxt t)
       (facts2 ctxt)))
 
-(defun facts1 (con)
+(defun facts1 (con &optional hide-derived)
   (contextmark)
   (do ((l (zl-get con 'data) (cdr l))
        (nl)
        (u))
       ((null l) (cons '(mlist) nl))
-    (when (visiblep (car l))
+    (when (and (visiblep (car l))
+               (not (and hide-derived (zl-get (car l) 'derived))))
       (push (intext (caaar l) (cdaar l)) nl))))
 
 ;; Look up facts from the database which contain expr. expr can be a symbol or 
@@ -638,37 +639,41 @@
 	 pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
-;;; then learn x<a and -x<a too. The additional facts are put into the context
-;;; '$learndata, if the current context is user context 'initial
+;;; then learn x<a and -x<a too, as derived facts.
 
 (defun learn-abs (pat flag)
-  (let (tmp)
+  (let (tmp pats)
     (when (and (setq tmp (isinop pat 'mabs))
+               ;; Check the sign of a only when learning: It may be unknown by
+               ;; the time of unlearning, which removes only derived facts.
                (or (and (member (caar pat) '(mlessp mleqp))
                         (isinop (cadr pat) 'mabs)
-                        (member ($sign (caddr pat)) '($pos $pz)))
+                        (or (not flag)
+                            (member ($sign (caddr pat)) '($pos $pz))))
                    (and (member (caar pat) '(mgreaterp mgeqp))
-                        (member ($sign (cadr pat)) '($pos $pz))
+                        (or (not flag)
+                            (member ($sign (cadr pat)) '($pos $pz)))
                         (isinop (caddr pat) 'mabs)))
+               (setq pats (list ($substitute (cadr tmp) tmp pat)
+                                ($substitute (mul -1 (cadr tmp)) tmp pat)))
                ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
-               ;; both. Always learn, but unlearn only if the abs() relation is
-               ;; itself known, which is the same test: It holds exactly when
-               ;; both of the derived facts do.
+               ;; both. Always learn, and unlearn too, unless abs(x) < a is
+               ;; known here but x < a or -x < a is not: Then this fact has no
+               ;; derived facts, as the sign of a was unknown when it was
+               ;; learned, and FDEL would remove those of another context.
                (or flag
-                   (eq t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
-      (let ((oldcontext context))
-        (if (eq oldcontext '$initial)
-            (asscontext nil '$learndata)) ; switch to context '$learndata
-        ; learn additional facts
-        (learn ($substitute (cadr tmp) tmp pat) flag)
-        (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag)
-        (when (eq oldcontext '$initial)
-          (asscontext nil oldcontext)     ; switch back to context on entry
-          ($activate '$learndata))))      ; context '$learndata is active
+                   (every #'(lambda (p)
+                              (eq t (mevalp2 p (caar p) (cadr p) (caddr p))))
+                          pats)
+                   (not (eq t (mevalp2 pat (caar pat) (cadr pat)
+                                       (caddr pat))))))
+      (let ((*derived-fact* t))
+        (dolist (p pats)                ; learn additional facts
+          (learn p flag))))
     nil))
 
 ;;; The value of a constant expression which can be numerically evaluated is
-;;; put into the context '$learndata.
+;;; learned as a derived fact.
 
 (defun learn-numer (pat flag)
   (let (dum expr patnew)
@@ -704,13 +709,8 @@
     (when (and (not (alike (cdr pat) (cdr patnew)))
                (or (not (mnump (cadr patnew)))    ; not both sides of the
                    (not (mnump (caddr patnew))))) ; relation can be number
-      (let ((oldcontext $context))
-        (if (eq oldcontext '$initial)
-          (asscontext nil '$learndata)) ; switch to context '$learndata
-        (learn patnew flag)             ; learn additional fact
-        (when (eq oldcontext '$initial) 
-          (asscontext nil oldcontext)   ; switch back to context on entry
-          ($activate '$learndata))))    ; context '$learndata is active
+      (let ((*derived-fact* t))
+        (learn patnew flag)))           ; learn additional fact
     nil))
 
 (defmspec $forget (x)
@@ -3332,6 +3332,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun mfact (r x y)
   (let ((f (datum (list r x y))))
     (cntxt f context)
+    (when *derived-fact* (putprop f t 'derived))
     (addf f x)
     (addf f y)))
 

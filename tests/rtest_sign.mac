@@ -1819,7 +1819,7 @@ pz;
 sign(cos(y));
 nz;
 
-(forget(x > 0, x <= %pi, y > %pi/2, y <= 3*%pi/2), killcontext(learndata), 0);
+(forget(x > 0, x <= %pi, y > %pi/2, y <= 3*%pi/2), 0);
 0;
 
 
@@ -1879,8 +1879,8 @@ pos;
 second([assume(x > -%pi/2, x < %pi/2), sign(cos(x)), forget(facts(x))]);
 pos;
 
-killcontext(learndata);
-done;
+contexts;
+[initial, global];
 
 
 /* Bug #4873: "limit can destroy pre-existing facts" (actually not a limit bug, so the test is here) */
@@ -2355,8 +2355,8 @@ block([x],
 block([x],
  local(x),
  assume(abs(x) < 1),
- [is(abs(x) < 1), forget(abs(x) < 1), is(x < 1), is(x > -1), killcontext(learndata)]);
-[true, [abs(x) < 1], unknown, unknown, done];
+ [is(abs(x) < 1), forget(abs(x) < 1), is(x < 1), is(x > -1)]);
+[true, [abs(x) < 1], unknown, unknown];
 
 block([p, q],
  local(p, q),
@@ -3232,6 +3232,82 @@ block([b, c, p],
   is(abs(gamma(b)^2) = gamma(b)^2), is(cabs(gamma(%i)^2) = gamma(%i)^2),
   is(abs(float(expand(rectform(float(cabs(gamma(%i)^2))))) - cabs(float(gamma(%i)))^2) < 1e-12)]);
 [complex, complex, complex, complex, pos, pnz, false, false, true]$
+
+
+/* Bug #5119: "assume(x <= %pi) silently creates a permanent learndata context whose facts leak into other contexts" */
+
+block([x, y, z, w, r],
+  local(x, y, z, w),
+  assume(x <= %pi, abs(y) < %e, z > %pi, w > 2),
+  r : [facts(), contexts, sign(x - 4), sign(y - 3), sign(z + w - 5)],
+  forget(abs(y) < %e),
+  r);
+[[%pi >= x, %e > abs(y), z > %pi, w > 2], [initial, global], neg, neg, pos]$
+
+block([x, y, r],
+  local(x, y),
+  assume(x <= %pi, abs(y) < %e),
+  supcontext(c5119, global),
+  r : [facts(), assume(x > 4, y > 3), sign(x - 4), sign(y - 3)],
+  killcontext(c5119),
+  forget(abs(y) < %e),
+  r);
+[[], [x > 4, y > 3], pos, pos]$
+
+block([x, y, r],
+  local(x, y),
+  assume(x <= %pi, abs(y) < %e),
+  forget(x <= %pi, abs(y) < %e),
+  r : [sign(x - 4), sign(y - 3)],
+  newcontext(c5119),
+  assume(x <= %pi, abs(y) < %e),
+  forget(x <= %pi, abs(y) < %e),
+  r : append(r, [sign(x - 4), sign(y - 3)]),
+  assume(x <= %pi, abs(y) < %e),
+  killcontext(c5119),
+  append(r, [sign(x - 4), sign(y - 3), contexts]));
+[pnz, pnz, pnz, pnz, pnz, pnz, [initial, global]]$
+
+block([b],
+  local(b),
+  newcontext(c5119),
+  assume(equal(b, %pi)),
+  [facts(), is(equal(sin(b), 0)), killcontext(c5119)]);
+[[equal(b, %pi)], true, done]$
+
+block([a, x],
+  local(a, x),
+  assume(a > 0, abs(x) < a),
+  forget(a > 0, abs(x) < a),
+  [is(x < a), is(x > -a)]);
+[unknown, unknown]$
+
+block([x, y, z, r],
+  local(x, y, z),
+  assume(x < %pi, abs(x) < %pi, y < 1, y > -1, abs(z) < 1),
+  r : [forget(x < %pi), forget(abs(y) < 1), forget(z < 1), facts(),
+       is(x < %pi), is(y < 1), is(z < 1)],
+  forget(abs(x) < %pi, abs(z) < 1),
+  r);
+[[x < %pi], [redundant], [redundant], [%pi > abs(x), 1 > y, y > -1, 1 > abs(z)], true, true, true]$
+
+block([b, x, r],
+  local(b, x),
+  supcontext(c5119, global),
+  assume(b > 0, abs(x) < b),
+  context : initial,
+  assume(abs(x) < b),
+  forget(abs(x) < b),
+  context : c5119,
+  r : [is(x < b), is(-x < b)],
+  context : initial,
+  assume(abs(x) < b, b > 0),
+  forget(abs(x) < b),
+  context : c5119,
+  r : append(r, [is(x < b), is(-x < b)]),
+  killcontext(c5119),
+  [r, contexts]);
+[[true, true, true, true], [initial, global]]$
 
 
 /**************************************/
