@@ -1042,3 +1042,13 @@ map(lambda([f, z], block([u : apply(f, [z]), v : block([fpprec : 40], apply(f, [
 [subst([x = 0, y = %pi/2], rectform(coth(x + %i*y))),
  subst([x = %pi/2, y = 0], rectform(cot(x + %i*y)))];
 [0, 0]$
+
+
+/* Bug #5731: "Bigfloat tanh(x) is not odd" */
+
+tanh(2b0) + tanh(-2b0);
+0b0$
+
+sublist(makelist(bfloat(k/8), k, 1, 80),
+  lambda([x], tanh(x) + tanh(-x) # 0b0 or coth(x) + coth(-x) # 0b0));
+[]$

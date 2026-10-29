@@ -2453,10 +2453,14 @@
 (defun fptanh (x)
   ;; X is Maxima bigfloat
   ;; tanh(x) = D(2*x)/(2+D(2*x))
+  ;;
+  ;; Compute it for |x| and use tanh(x) = -tanh(-x) for negative x,
+  ;; so that the result is exactly odd.
   (let* ((two (intofp 2))
 	 (fp (cdr (bigfloatp x)))
-	 (d (fpexpm1 (fptimes* fp two))))
-    (bcons (fpquotient d (fpplus d two)))))
+	 (d (fpexpm1 (fptimes* (fpabs fp) two)))
+	 (r (fpquotient d (fpplus d two))))
+    (bcons (if (minusp (car fp)) (fpminus r) r))))
 
 ;; tanh(z), z = x + %i*y.  X, Y are bigfloats, and a maxima number is
 ;; returned.
