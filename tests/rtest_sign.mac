@@ -1930,13 +1930,14 @@ pos;
 
 /* Bug #4887: "Removed fact still listed by facts()" */
 
-(assume(x > 5),
- newcontext(other),
- forget(x > 5),
- context : initial,
- kill(other),
- facts());
-[];
+block([r],
+  assume(x > 5),
+  newcontext(other),
+  r : forget(x > 5),
+  context : initial,
+  kill(other),
+  [r, facts(), is(x > 5), forget(x > 5), facts(), is(x > 5)]);
+[[redundant], [x > 5], true, [x > 5], [], unknown]$
 
 
 /* Bug #4888: "Facts created in local block still listed by facts() afterwards" */
@@ -3336,6 +3337,95 @@ block([ctx : supcontext(), r],
   killcontext(ctx),
   r);
 [[2 > sqrt(abs(x)), 1 > y*abs(z)], unknown]$
+
+
+/* Bug #5733: "forget() removes facts of other contexts and leaves facts that survive kill(all)" */
+
+block([r],
+  local(x, c),
+  assume(x < %pi),
+  supcontext(c),
+  assume(abs(x) < %pi),
+  context : initial,
+  r : [forget(x < %pi), is(x < %pi), is(x < 4)],
+  killcontext(c),
+  [r, is(x < 4), facts(), contexts]);
+[[[x < %pi], unknown, unknown], unknown, [], [initial, global]]$
+
+block([r],
+  local(x, c1),
+  assume(x < 1),
+  supcontext(c1, global),
+  assume(abs(x) < 1),
+  context : initial,
+  r : forget(abs(x) < 1),
+  context : c1,
+  r : [r, facts(), is(abs(x) < 1)],
+  context : initial,
+  killcontext(c1),
+  [r, forget(x < 1), facts(), contexts]);
+[[[redundant], [1 > abs(x)], true], [x < 1], [], [initial, global]]$
+
+block([r],
+  local(x, a),
+  assume(x > 0),
+  newcontext(a),
+  assume(x > 0),
+  context : initial,
+  activate(a),
+  r : [forget(x > 0), facts(), facts(a), is(x > 0)],
+  killcontext(a),
+  [r, is(x > 0), contexts]);
+[[[x > 0], [], [x > 0], true], unknown, [initial, global]]$
+
+block([r],
+  local(x, c),
+  assume(x > 0),
+  supcontext(c),
+  r : forget(x > 0),
+  context : initial,
+  killcontext(c),
+  [r, is(x > 0), facts(), contexts]);
+[[x > 0], unknown, [], [initial, global]]$
+
+block([r],
+  local(x),
+  assume(x > 0),
+  r : block(local(x), forget(x > 0)),
+  [r, is(x > 0), facts(), forget(x > 0), is(x > 0)]);
+[[redundant], true, [x > 0], [x > 0], unknown]$
+
+block([r],
+  local(n, b),
+  newcontext(b),
+  declare(n, integer),
+  context : initial,
+  r : [featurep(n, integer), forget(kind(n, integer)), remove(n, integer)],
+  context : b,
+  r : [r, featurep(n, integer), facts()],
+  context : initial,
+  killcontext(b),
+  [r, contexts]);
+[[[false, [redundant], done], true, [kind(n, integer)]], [initial, global]]$
+
+(supcontext(c1, global), asksign(y)), ask_hide_prompt; pos;
+pos$
+
+(context : initial,
+  killcontext(c1),
+  newcontext(b),
+  assume(y > 0),
+  context : initial,
+  [is(y > 0), asksign(y), forget(y > 0)]), ask_hide_prompt; pos;
+[unknown, pos, [y > 0]]$
+
+block([r],
+  context : b,
+  r : [facts(), is(y > 0)],
+  context : initial,
+  killcontext(b),
+  [r, is(y > 0), contexts]);
+[[[y > 0], true], unknown, [initial, global]]$
 
 
 /**************************************/

@@ -1935,7 +1935,7 @@
 ;;------------------------------------------------------------------------
 
 (defvar *fact-removed* nil
-  "Set by FDEL when it unlinks a datum.")
+  "Set by KILL-DATUM when it removes a datum.")
 
 (defvar *fact-protected* nil
   "Set by REMOVABLEP when it declines a datum that belongs to $GLOBAL.")

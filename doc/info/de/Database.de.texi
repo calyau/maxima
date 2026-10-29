@@ -1509,6 +1509,13 @@ Entfernt Aussagen, die mit @code{assume} einem Kontext hinzugef@"ugt wurden.
 Die Aussagen k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt
 identisch zu vorherigen Fakten sind.
 
+@code{forget} ber@"ucksichtigt nur die Fakten, die im aktuellen Kontext aktiv
+sind: die des aktuellen Kontextes selbst, seiner Unterkontexte und der mit
+@mref{activate} aktivierten Kontexte. Fakten in anderen Kontexten werden nicht
+entfernt, und eine Aussage, die nur dort vorkommt, gilt als nicht in der
+Datenbank gefunden. Ist dieselbe Aussage in mehreren aktiven Kontexten
+gespeichert, wird zuerst die des aktuellen Kontextes entfernt.
+
 Aussagen im Kontext @code{global} sind fest in Maxima eingebaut und k@"onnen
 mit @code{forget} nicht entfernt werden.
 

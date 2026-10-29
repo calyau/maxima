@@ -669,16 +669,14 @@
                (setq pats (list ($substitute (cadr tmp) tmp pat)
                                 ($substitute (mul -1 (cadr tmp)) tmp pat)))
                ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
-               ;; both. Always learn, and unlearn too, unless abs(x) < a is
-               ;; known here but x < a or -x < a is not: Then this fact has no
-               ;; derived facts, as one of the tests above failed when it was
-               ;; learned, and FDEL would remove those of another context.
+               ;; both. Always learn, but unlearn only if both are known here.
+               ;; Otherwise this fact has no derived facts here, as one of the
+               ;; tests above failed when it was learned, and unlearning would
+               ;; remove those of another fact.
                (or flag
                    (every #'(lambda (p)
                               (eq t (mevalp2 p (caar p) (cadr p) (caddr p))))
-                          pats)
-                   (not (eq t (mevalp2 pat (caar pat) (cadr pat)
-                                       (caddr pat))))))
+                          pats)))
       (let ((*derived-fact* t))
         (dolist (p pats)                ; learn additional facts
           (learn p flag))))
@@ -3349,10 +3347,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (addf f y)))
 
 (defun mkill (r x y)
-  (let ((f (car (datum (list r x y)))))
-    (kcntxt f context)
-    (maxima-remf f x)
-    (maxima-remf f y)))
+  (kill-datum r x y))
 
 (defun mkind (x y)
   (kind (dintern x) (dintern y)))
