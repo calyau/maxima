@@ -2218,7 +2218,7 @@ closeto(li[4](0.25) - 0.25411619074634353405967371315352,
 true;
 
 closeto(li[4](0.25b0) - 0.25411619074634353405967371315352b0,
-  2.06796b-25);
+  3.10193b-25);
 true;
 
 closeto(li[4](0.75) - 0.79222102797282777952948578955736,
@@ -4011,7 +4011,7 @@ block([a, b, display_format_internal : true], string([a/b, b^(1/2), b^(-1/2)]));
 /* Bug #3082: "incorrect simplification of MTIMES expression containing MEXPT" */
 
 block([x], diff(%e^4*gamma_incomplete(-4/7, -x^7), x));
--7*%e^(x^7+4)/x^5;
+(7*%e^(x^7+4)*(((%e^((3*%i*%pi)/7)/2-1/2)*x)/abs(x)+%e^((3*%i*%pi)/7)/2+1/2))/(x^4*abs(x));
 
 block([x], 2*x*%e^x*%e^2);
 2*%e^(x+2)*x;
@@ -4657,6 +4657,133 @@ block([radexpand : false, e],
   e : ((-2)^(1/3)-1)/((-2)^(1/6)-1),
   [is(ratsimp(e) = e), block([domain : complex], is(ratsimp(e) = (-2)^(1/6) + 1))]);
 [true, true]$
+
+
+/* Bug #5613: "rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real" */
+
+[rectform(x^(1/3)), imagpart(x^(3/5)), carg(x^(1/3)), carg(x^(2/3)), carg(x^3),
+ polarform(x^(2/3)), conjugate(x^(1/3)), conjugate(x^(2/3)),
+ subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3)), polarform(x^(1/3)), polarform(x^3)])];
+[x^(1/3), 0, atan2(0, x), 0, atan2(0, x), x^(2/3), x^(1/3), x^(2/3), [-2, %pi, -2, -512]]$
+
+block([y],
+  local(y),
+  assume(y < 0),
+  [rectform(y^(1/3)), rectform(y^(-2/3)), realpart(y^(3/5)), imagpart(y^(3/5)),
+   rectform(y^(1/5)*%i + y^(2/5)), carg(y^(1/3)), conjugate(y^(1/3)),
+   rectform(conjugate(y^(1/3))),
+   rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3)),
+                           polarform(y^(-2/3)), polarform(2*y^(1/3))]))]);
+[y^(1/3), y^(-2/3), y^(3/5), 0, y^(2/5) + %i*y^(1/5), %pi, y^(1/3), y^(1/3),
+ [-2, -2, 1/4, -4]]$
+
+[imagpart((-2)^(1/3)), sign(rectform((-2)^(1/3))), carg((-2)^(1/3)),
+ rectform(polarform((-2)^(1/3))), is(conjugate((-2)^(1/3)) = (-2)^(1/3))], radexpand : false;
+[0, neg, %pi, -2^(1/3), true]$
+
+/* Even roots, domain : complex and symbolic exponents stay on the principal branch: */
+block([x, y],
+  local(y),
+  assume(y < 0),
+  [subst(x = -4, [rectform(x^(1/2)), carg(x^(1/2))]), op(conjugate(sqrt(x))),
+   subst([x = -8, a = 1/3], rectform(x^a)),
+   block([domain : complex],
+     [subst(x = -8, [rectform(x^(1/3)), carg(x^(1/3))]),
+      rectform(subst(y = -8, [rectform(y^(1/3)), polarform(y^(1/3))])),
+      op(conjugate(x^(1/3)))])]);
+[[2*%i, %pi/2], conjugate, sqrt(3)*%i + 1,
+ [[sqrt(3)*%i + 1, %pi/3], [sqrt(3)*%i + 1, sqrt(3)*%i + 1], conjugate]]$
+
+[imagpart(sqrt(1 - (sqrt(2)-2)^(1/3))), imagpart(sqrt(3 + (sqrt(2)-2)^(1/3))),
+ rectform(sqrt((sqrt(2)-2)^(1/3) - 1)), rectform(log((sqrt(2)-2)^(1/3) - 1))];
+[0, 0, sqrt(1-(sqrt(2)-2)^(1/3))*%i, log(1-(sqrt(2)-2)^(1/3))+%i*%pi]$
+
+/* Symbolic exponents whose denominator is odd: */
+block([n, m, y],
+  local(n, m, y),
+  declare(n, integer, m, integer),
+  assume(y < 0),
+  [rectform(y^(1/(2*n+1))), imagpart(y^(2/(2*n+1))), imagpart((-8)^(1/(2*n+1))),
+   carg(y^(1/(2*n+1))), carg(y^(2/(2*n+1))), carg(y^(m/(2*n+1))),
+   conjugate(y^(1/(2*n+1))), is(imagpart(y^(1/(2*n))) # 0),
+   is(imagpart(y^(a/(2*n+1))) # 0)]);
+[y^(1/(2*n+1)), 0, 0, %pi, 0, atan2(0, y^(m/(2*n+1))), y^(1/(2*n+1)), true, true]$
+
+
+/* Bug #5294: "diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v" */
+
+block([v, y], [diff(struve_h(v, y), y), diff(struve_l(v, y), y)]);
+[(y^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,y)+struve_h(v-1,y))/2,
+ (y^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,y)+struve_l(v-1,y))/2]$
+
+
+/* Follow-up to bug #5613: "rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real" */
+
+block([w],
+  local(w),
+  declare(w, complex),
+  [rectform((%e^(%i*x) + %e^(-%i*x) - 1)^(1/3)),
+   subst(realpart(w) = r, realpart((w + conjugate(w))^(1/3))),
+   rectform(block([domain : complex], (-8)^(1/3)))]);
+[(2*cos(x) - 1)^(1/3), (2*r)^(1/3), -2]$
+
+
+/* Bug #5716: "diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real" */
+
+block([y],
+  map(lambda([u], is(cabs(float(rectform(u))) < 1e-14)),
+      [subst(y = -2, diff(struve_h(1/3, y), y))
+       - (%e^(%i*%pi/3)/(sqrt(%pi)*gamma(11/6)) - struve_h(4/3, -2) + struve_h(-2/3, -2))/2,
+       subst(y = -2, diff(struve_l(1/3, y), y))
+       - (%e^(%i*%pi/3)/(sqrt(%pi)*gamma(11/6)) + struve_l(4/3, -2) + struve_l(-2/3, -2))/2]));
+[true, true]$
+
+
+/* Bug #5719: "bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root" */
+
+block([z],
+  map(lambda([f], is(cabs(float(rectform(
+        subst(z = -2, block([hypergeometric_representation : true], apply(f, [1/3, z])))
+        - apply(f, [1/3, -2.0])))) < 1e-10)),
+      [bessel_j, bessel_y, bessel_i, bessel_k]));
+[true, true, true, true]$
+
+map(lambda([u], is(cabs(float(rectform(u))) < 1e-10)),
+    [bessel_j(1/3, -2*%i) - bessel_j(1/3, -2.0*%i),
+     bessel_i(1/3, -2*%i) - bessel_i(1/3, -2.0*%i)]);
+[true, true]$
+
+
+/* Bug #5293: "subst(zz, true, if a then b elseif c then d else f) drops the else branch" */
+
+subst(zz, true, '(if p1 then q1 elseif p2 then q2 else q3));
+if p1 then q1 elseif p2 then q2 else q3$
+
+subst(zz, true, '(if p1 then true elseif p2 then q2 else q3));
+if p1 then zz elseif p2 then q2 else q3$
+
+
+/* Bug #4852: "fpplus sticky-bit is off by one - additions misround by up to 0.75 ulp" */
+
+/* The first two terms sum exactly to 2^55 + 2^53 + 1.25, 2^55 + 2^52 + 1.375 and
+   2^55 - 2^52 + 0.375, which round to the third terms at fpprec 16, 56 bits */
+block([fpprec : 16],
+  [36028797018963969.0b0 + 9007199254740992.25b0 - 45035996273704961b0,
+   36028797018963969.0b0 + 4503599627370496.375b0 - 40532396646334465b0,
+   36028797018963969.0b0 - 4503599627370496.625b0 - 31525197391593472.5b0]);
+[0.0b0, 0.0b0, 0.0b0]$
+
+
+/* Bug #4855: "fpquotient - missing sticky bit causes misrounded division" */
+
+block([fpprec : 16], is(bfloat(2)/bfloat(11) = bfloat(2/11)));
+true$
+
+/* Each k/d lies in [1/2, 1), where half an ulp is 2^-57 at fpprec 16 */
+block([fpprec : 16],
+  sublist(create_list(k/d, d, 3, 40, k, ceiling(d/2), d - 1),
+    lambda([q], abs(rationalize(bfloat(num(q))/bfloat(denom(q))) - q) > 2^-57)));
+[]$
 
 
 /**************************************/

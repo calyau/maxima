@@ -20,8 +20,6 @@
 
 (in-package :maxima)
 
-($put '$hstep 1 '$version)
-
 (setf (get '%hstep 'simplim%function) 'simplim%hstep)
 
 (setf (get '%hstep 'real-valued) t)

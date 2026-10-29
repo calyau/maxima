@@ -121,3 +121,102 @@ block([f, result],
 	kill(foo),
 	result);
 [[], [], [], [], []];
+
+/* SF bug #3002: "save() doesn't handle structs correctly" */
+
+(kill (foo, baz, quux),
+ defstruct (foo (a, b = 123, c = 456), baz (x = 4321, y), quux (z)),
+ save (sconcat (maxima_tempdir, "/tmp-save-structures-1.lisp"), foo, baz, quux),
+ kill (structures),
+ structures);
+[];
+
+[ errcatch (new (foo)), errcatch (new (baz)), errcatch (new (quux)) ];
+[ [], [], [] ];
+
+(load (sconcat (maxima_tempdir, "/tmp-save-structures-1.lisp")), 0);
+0;
+
+structures;
+[ foo (a, 123, 456), baz (4321, y), quux (z) ];
+
+[ A: new (foo), B: new (baz), C: new (quux) ];
+[ foo (a, 123, 456), baz (4321, y), quux (z) ];
+
+A@b: 777;
+777;
+
+A;
+foo (a, 777, 456);
+
+C@z: "blurf";
+"blurf";
+
+C;
+quux ("blurf");
+
+printf (false, "~m", A);
+"foo(a, b = 777, c = 456)
+";
+
+printf (false, "~m", B);
+"baz(x = 4321, y)
+";
+
+block ([stringdisp: true], printf (false, "~m", C));
+"quux(z = \"blurf\")
+";
+
+(save (sconcat (maxima_tempdir, "/tmp-save-structures-2.lisp"), structures),
+ kill (structures),
+ structures);
+[];
+
+(load (sconcat (maxima_tempdir, "/tmp-save-structures-2.lisp")), 0);
+0;
+
+structures;
+[ foo (a, 123, 456), baz (4321, y), quux (z) ];
+
+(save (sconcat (maxima_tempdir, "/tmp-save-structures-3.lisp"), all),
+ kill (structures),
+ structures);
+[];
+
+(load (sconcat (maxima_tempdir, "/tmp-save-structures-3.lisp")), 0);
+0;
+
+structures;
+[ foo (a, 123, 456), baz (4321, y), quux (z) ];
+
+(save (sconcat (maxima_tempdir, "/tmp-save-structures-4.lisp"), baz, quux),
+ kill (structures),
+ structures);
+[];
+
+(load (sconcat (maxima_tempdir, "/tmp-save-structures-4.lisp")), 0);
+0;
+
+structures;
+[ baz (4321, y), quux (z) ];
+
+errcatch (new (foo));
+[];
+
+[ new (baz), new (quux) ];
+[ baz (4321, y), quux (z) ];
+
+(save (sconcat (maxima_tempdir, "/tmp-save-structures-5.lisp"), values, functions),
+ kill (structures),
+ structures);
+[];
+
+(load (sconcat (maxima_tempdir, "/tmp-save-structures-5.lisp")), 0);
+0;
+
+structures;
+[];
+
+[ errcatch (new (foo)), errcatch (new (baz)), errcatch (new (quux)) ];
+[ [], [], [] ];
+

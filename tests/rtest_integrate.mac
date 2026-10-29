@@ -7308,6 +7308,17 @@ block([g, G],
 [true, 0, [true, true, true]]$
 
 
+/* Bug #5711: "integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))" */
+
+[integrate(sqrt(1+x)/sqrt(1-x)*(c-c*x), x),
+ integrate(sqrt(1+x)/sqrt(1-x)*(2-2*x), x)];
+[(c*asin(x))/2+(c*x*sqrt(1-x^2))/2, asin(x)+x*sqrt(1-x^2)]$
+
+[integrate((c-c*x)^3/((1-x)^3*sqrt(1-x^2)), x),
+ integrate((c-c*x)^2*sqrt(1-x^2)/(1-x)^2, x)];
+[c^3*asin(x), (c^2*asin(x))/2+(c^2*x*sqrt(1-x^2))/2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

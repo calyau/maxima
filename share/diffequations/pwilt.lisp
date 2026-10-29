@@ -22,8 +22,6 @@
 
 ($put '$pwilt 1 '$version)
 
-(if (not ($get '$hstep '$version)) ($load '$hstep))
-
 (defmvar $pwilt_hstep_all nil
   "If true, pwilt includes hstep in all terms of the result.")
 

@@ -579,7 +579,7 @@
      (when (zerop powfun)
        (setq poszpowlist
 	     (append poszpowlist
-		     (list (cons 0 (list (consterm (cdr expanfun) var2)))))))
+		     (list (cons 0 (list ($coeff expanfun var2 0)))))))
      (when (minusp powfun)
        (setq negpowlist (append negpowlist (list (cons (- powfun) (list coef))))))
      (when (= powfun maxpowfun)

@@ -264,7 +264,7 @@ to_poly_solve(x^3=8,x);
 
 nicedummies(to_poly_solve((sin(x)-8*cos(x)*sin(x))*(sin(x)^2+cos(x))-(2*cos(x)*sin(x)-sin(x))
     *(-2*sin(x)^2+2*cos(x)^2-cos(x)),x));
-%union([x=2*%pi*%z0+%pi],[x=2*%pi*%z1],[x=2*%pi*%z2-atan(2^(3/2))+%pi],[x=2*%pi*%z3+atan(2^(3/2))+%pi])$
+%union([x=2*%pi*%z0+%pi],[x=2*%pi*%z1],[x=2*%pi*%z2-atan(2^(3/2))+%pi],[x=2*%pi*%z3+atan(2^(3/2))-%pi])$
 
 nicedummies(to_poly_solve(sin(a*x)=1/2,x, simpfuncs = ['expand]));
 %union([x=(2*%pi*%z0)/a+(5*%pi)/(6*a)],[x=(2*%pi*%z1)/a+%pi/(6*a)])$

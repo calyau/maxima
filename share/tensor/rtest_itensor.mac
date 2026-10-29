@@ -149,3 +149,28 @@ ratsimp(rename(covdiff(v([-i],[]),j))-rename(covdiff(v([],[i]),j)));
 
 (a([i],[])*X[1])~b([j],[]);
 X[1]*(a([i],[])*b([j],[])-a([j],[])*b([i],[]))/2;
+
+
+/* idiff uses the derivative rules of a function as diff does: the arguments go
+   in for the placeholder names in parallel, and a rule given as a Lisp function
+   is called. */
+
+block([a, b, y, z],
+  local(b),
+  assume(b > 0),
+  [idiff(gamma_incomplete(z, a), a),
+   idiff(gamma_incomplete(b, y), b) - diff(gamma_incomplete(b, y), b)]);
+[-%e^-a*a^(z-1), 0]$
+
+block([b, y],
+  is(idiff(gamma_incomplete(b, y), b) = 'idiff(gamma_incomplete(b, y), b, 1)));
+true$
+
+/* A rule that is NIL for an argument that depends on the variable gives the
+   noun form, also for indexed objects and subscripted functions. */
+
+block([s, x],
+  [is(   idiff(struve_h(a([],[i]), b([],[j])), k)
+      = 'idiff(struve_h(a([],[i]), b([],[j])), k, 1)),
+   is(idiff(li[s](x), s) = 'idiff(li[s](x), s, 1))]);
+[true, true]$

@@ -921,10 +921,13 @@
 	    ;;
 	    ;; and A&S 4.4.8
 	    ;;    acot(z) = atan(1/z)
+	    ;;
+	    ;; Compute atan(|x|) this way and negate it for x < 0, so that
+	    ;; atan is exactly odd.
 	    (setq tmp (fpquotient (fppi) two))
-	    (setq ans (fpdifference tmp (fpatan (fpquotient one x))))
+	    (setq ans (fpdifference tmp (fpatan (fpquotient one (fpabs x)))))
 	    (return (cond ((fplessp x (intofp 0))
-			   (fpdifference ans (fppi)))
+			   (fpminus ans))
 			  (t ans))))
 	   ((fpgreaterp (fpabs x) (fpquotient one two))
 	    ;; |x| > 1/2
@@ -1225,8 +1228,14 @@
   (cond ((equal (car b) 0)
 	 (merror (intl:gettext "pquotient: attempted quotient by zero.")))
 	((equal (car a) 0) '(0 0))
-	(t (list (fpround (quotient (fpshift (car a) (+ 3 fpprec)) (car b)))
-		 (+ -3 (- (cadr a) (cadr b)) *m)))))
+	(t (multiple-value-bind (q r)
+	       (truncate (fpshift (car a) (+ 3 fpprec)) (car b))
+	     ;; A nonzero remainder sets the lowest bit of a binary Q, below its
+	     ;; round bit, so that FPROUND can't take Q for a tie.
+	     (unless (or *decfp (zerop r) (oddp q))
+	       (setq q (if (minusp q) (1- q) (1+ q))))
+	     (list (fpround q)
+		   (+ -3 (- (cadr a) (cadr b)) *m))))))
 
 (defun fpgreaterp (a b)
   (fpposp (fpdifference a b)))
@@ -1748,28 +1757,35 @@
 			       2))
 		     ((> exp 0)
 					; COMPUTE STICKY BIT
-		      (setq sticky (cond ((hipart-zerop (car b) (- 1 exp)) 0)
+		      (setq sticky (cond ((hipart-zerop (car b)
+							(min 0 (- 2 exp)))
+					  0)
 					 ;; the sign B enters the sum with
 					 ((if subtract
 					      (signp g (car b))
 					      (signp l (car b)))
 					  -1)
 					 (t 1)))
-					; MAKE ROOM FOR GUARD DIGIT & STICKY BIT
+					; MAKE ROOM FOR GUARD AND ROUND DIGITS
 		      (let ((ma (fpshift (car a) 2))
 			    (mb (fpshift (car b) (- 2 exp))))
 			(if subtract (- ma mb) (+ ma mb))))
-		     (t (setq sticky (cond ((hipart-zerop (car a) (1+ exp)) 0)
+		     (t (setq sticky (cond ((hipart-zerop (car a)
+							  (min 0 (+ 2 exp)))
+					    0)
 					   ((signp l (car a)) -1)
 					   (t 1)))
 			(let ((ma (fpshift (car a) (+ 2 exp)))
 			      (mb (fpshift (car b) 2)))
 			  (if subtract (- ma mb) (+ ma mb))))))
-     (unless (zerop sticky)
-     (setq man (+ man sticky)))
+     ;; The sticky bit goes below the guard and round digits, so that it can't
+     ;; carry into them.
+     (setq man (+ (fpshift man 1) sticky))
      (return (cond ((equal man 0) '(0 0))
 		   (t (setq man (fpround man))
-		      (setq exp (+ -2 *m (max (cadr a) (cadr b))))
+		      ;; *CANCELLED, read by FPSIN, leaves out the sticky bit.
+		      (setq *cancelled (abs (1- *m)))
+		      (setq exp (+ -3 *m (max (cadr a) (cadr b))))
 		      (list man exp))))))
 
 (defun fpdifference (a b)
@@ -2453,10 +2469,14 @@
 (defun fptanh (x)
   ;; X is Maxima bigfloat
   ;; tanh(x) = D(2*x)/(2+D(2*x))
+  ;;
+  ;; Compute it for |x| and use tanh(x) = -tanh(-x) for negative x,
+  ;; so that the result is exactly odd.
   (let* ((two (intofp 2))
 	 (fp (cdr (bigfloatp x)))
-	 (d (fpexpm1 (fptimes* fp two))))
-    (bcons (fpquotient d (fpplus d two)))))
+	 (d (fpexpm1 (fptimes* (fpabs fp) two)))
+	 (r (fpquotient d (fpplus d two))))
+    (bcons (if (minusp (car fp)) (fpminus r) r))))
 
 ;; tanh(z), z = x + %i*y.  X, Y are bigfloats, and a maxima number is
 ;; returned.

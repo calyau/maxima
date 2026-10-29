@@ -150,16 +150,17 @@
 
 (defmfun $facts (&optional (ctxt $context))
   (if (member ctxt (cdr $contexts))
-      (facts1 ctxt)
+      (facts1 ctxt t)
       (facts2 ctxt)))
 
-(defun facts1 (con)
+(defun facts1 (con &optional hide-derived)
   (contextmark)
   (do ((l (zl-get con 'data) (cdr l))
        (nl)
        (u))
       ((null l) (cons '(mlist) nl))
-    (when (visiblep (car l))
+    (when (and (visiblep (car l))
+               (not (and hide-derived (zl-get (car l) 'derived))))
       (push (intext (caaar l) (cdaar l)) nl))))
 
 ;; Look up facts from the database which contain expr. expr can be a symbol or 
@@ -638,37 +639,51 @@
 	 pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
-;;; then learn x<a and -x<a too. The additional facts are put into the context
-;;; '$learndata, if the current context is user context 'initial
+;;; then learn x<a and -x<a too, as derived facts.
 
 (defun learn-abs (pat flag)
-  (let (tmp)
-    (when (and (setq tmp (isinop pat 'mabs))
+  (let (tmp pats)
+    (when (and (isinop pat 'mabs)
+               ;; Check the sign of a only when learning: It may be unknown by
+               ;; the time of unlearning, which removes only derived facts.
                (or (and (member (caar pat) '(mlessp mleqp))
-                        (isinop (cadr pat) 'mabs)
-                        (member ($sign (caddr pat)) '($pos $pz)))
+                        (setq tmp (isinop (cadr pat) 'mabs))
+                        (or (not flag)
+                            (member ($sign (caddr pat)) '($pos $pz))))
                    (and (member (caar pat) '(mgreaterp mgeqp))
-                        (member ($sign (cadr pat)) '($pos $pz))
-                        (isinop (caddr pat) 'mabs)))
+                        (or (not flag)
+                            (member ($sign (cadr pat)) '($pos $pz)))
+                        (setq tmp (isinop (caddr pat) 'mabs))))
+               ;; The derived facts follow from the pattern if replacing
+               ;; abs(x) by -abs(x) does not increase the smaller side minus
+               ;; the larger side, as for abs(x) + c < a or k*abs(x) < a with
+               ;; k > 0, but not for 2 - abs(x) < 1, that is abs(x) > 1. Use
+               ;; CSIGN, as the replacement can make the difference complex.
+               ;; Test this only when learning, too.
+               (or (not flag)
+                   (let ((d (if (member (caar pat) '(mlessp mleqp))
+                                (sub (cadr pat) (caddr pat))
+                                (sub (caddr pat) (cadr pat)))))
+                     (member ($csign (sub d ($substitute (neg tmp) tmp d)))
+                             '($pos $pz $zero))))
+               (setq pats (list ($substitute (cadr tmp) tmp pat)
+                                ($substitute (mul -1 (cadr tmp)) tmp pat)))
                ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
-               ;; both. Always learn, but unlearn only if the abs() relation is
-               ;; itself known, which is the same test: It holds exactly when
-               ;; both of the derived facts do.
+               ;; both. Always learn, but unlearn only if both are known here.
+               ;; Otherwise this fact has no derived facts here, as one of the
+               ;; tests above failed when it was learned, and unlearning would
+               ;; remove those of another fact.
                (or flag
-                   (eq t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
-      (let ((oldcontext context))
-        (if (eq oldcontext '$initial)
-            (asscontext nil '$learndata)) ; switch to context '$learndata
-        ; learn additional facts
-        (learn ($substitute (cadr tmp) tmp pat) flag)
-        (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag)
-        (when (eq oldcontext '$initial)
-          (asscontext nil oldcontext)     ; switch back to context on entry
-          ($activate '$learndata))))      ; context '$learndata is active
+                   (every #'(lambda (p)
+                              (eq t (mevalp2 p (caar p) (cadr p) (caddr p))))
+                          pats)))
+      (let ((*derived-fact* t))
+        (dolist (p pats)                ; learn additional facts
+          (learn p flag))))
     nil))
 
 ;;; The value of a constant expression which can be numerically evaluated is
-;;; put into the context '$learndata.
+;;; learned as a derived fact.
 
 (defun learn-numer (pat flag)
   (let (dum expr patnew)
@@ -704,13 +719,8 @@
     (when (and (not (alike (cdr pat) (cdr patnew)))
                (or (not (mnump (cadr patnew)))    ; not both sides of the
                    (not (mnump (caddr patnew))))) ; relation can be number
-      (let ((oldcontext $context))
-        (if (eq oldcontext '$initial)
-          (asscontext nil '$learndata)) ; switch to context '$learndata
-        (learn patnew flag)             ; learn additional fact
-        (when (eq oldcontext '$initial) 
-          (asscontext nil oldcontext)   ; switch back to context on entry
-          ($activate '$learndata))))    ; context '$learndata is active
+      (let ((*derived-fact* t))
+        (learn patnew flag)))           ; learn additional fact
     nil))
 
 (defmspec $forget (x)
@@ -1412,6 +1422,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (t nil)))) ;x isn't a float or a complex float, return nil
 
 (defun sign1 (x)
+ ;; RISPLIT binds $DOMAIN to '$COMPLEX for its simplifications, but the signs
+ ;; asked for there are those of real values, under the domain outside of it.
+ (let (($domain (or *risplit-domain* $domain)))
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
 
@@ -1456,9 +1469,15 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                (if (and (eq sign '$pnz) (eq s '$pn))
                                    (setq sign s)
                                    (setq sign s odds o evens e minus m)))
+                           ;; The facts and the form of X can each rule out
+                           ;; a different sign, as 0 >= abs(x) and abs(x) >= 0
+                           ;; do. Then only the sign they share is left.
+                           (let ((meet (weak-sign-meet sign s)))
+                             (when meet
+                               (setq sign meet odds o evens e minus m)))
                            t)))))
 	 (sign exp))
-     (return sign))))
+     (return sign)))))
 
 (defun numer (x)
   (let (($numer t) ; currently, no effect on $float, but proposed to
@@ -1520,11 +1539,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
 
 ;; The REAL-RANGE property of a function that is real for every real
-;; argument: The bounds of its values as a list (LO HI), each end NIL for no
-;; bound, else (BOUND INCLUSIVE-P), where BOUND is in simplified form and
-;; INCLUSIVE-P indicates whether the bound can actually be attained.
+;; argument, and for carg for every argument: The bounds of its values as a
+;; list (LO HI), each end NIL for no bound, else (BOUND INCLUSIVE-P), where
+;; BOUND is in simplified form and INCLUSIVE-P indicates whether the bound can
+;; actually be attained.
 ;; A bound is not required to be tight, only true. SIGNDIFF-SPECIAL reads it to
-;; compare f(x)-c with zero, through SIGN-FROM-RANGE.
+;; compare f(x)-c with zero, through SIGN-FROM-RANGE, and SIGN-FROM-SUM-RANGE
+;; to bound a sum of such values.
 (mapc #'(lambda (s) (putprop (first s) (second s) 'real-range))
   '((%sin ((-1 t) (1 t)))
     (%cos ((-1 t) (1 t)))
@@ -1535,7 +1556,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (%erfc ((0 nil) (2 nil)))
     (%tanh ((-1 nil) (1 nil)))
     (%atan ((((mtimes simp) ((rat simp) -1 2) $%pi) nil)
-            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))))
+            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))
+    (%atan2 ((((mtimes simp) -1 $%pi) nil) ($%pi t)))
+    (%carg ((((mtimes simp) -1 $%pi) nil) ($%pi t)))))
 
 ;; The sign of f-C for a function f whose values lie in RANGE, see the
 ;; REAL-RANGE property, or NIL when the range does not decide it.
@@ -1549,6 +1572,49 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (case (sign* (sub c (car hi)))
                ($pos '$neg)
                (($zero $pz) (if (cadr hi) '$nz '$neg)))))))
+
+;; The REAL-RANGE of E when E calls a function with that property and the range
+;; applies: carg is real for every argument, the others for real arguments.
+(defun real-range-of (e)
+  (let ((range (and (not (atom e)) (get (caar e) 'real-range))))
+    (and range
+         (or (eq (caar e) '%carg)
+             (every #'(lambda (a) (zerop1 ($imagpart a))) (cdr e)))
+         range)))
+
+;; If each term of the sum X is a real constant or a number times a call with
+;; a REAL-RANGE, and the bounds these give the sum decide its sign, set SIGN
+;; and return T, as SIGNSUM does. Otherwise return NIL.
+(defun sign-from-sum-range (x)
+  (let ((lo 0) (lo-incl t) (hi 0) (hi-incl t) ranged)
+    (dolist (term (cdr x))
+      (let* ((k (if (and (mtimesp term) (mnump (cadr term)) (null (cdddr term)))
+                  (cadr term)
+                  1))
+             (range (real-range-of (if (eql k 1) term (caddr term)))))
+        (cond (range
+               ;; A negative factor swaps the ends of the range.
+               (destructuring-bind (tlo thi) (if (mnegp k) (reverse range) range)
+                 (setq ranged t
+                       lo (and lo tlo (add lo (mul k (car tlo))))
+                       lo-incl (and lo-incl (cadr tlo))
+                       hi (and hi thi (add hi (mul k (car thi))))
+                       hi-incl (and hi-incl (cadr thi)))))
+              ((and (constp term) (zerop1 ($imagpart term)))
+               (setq lo (and lo (add lo term))
+                     hi (and hi (add hi term))))
+              (t
+               (return-from sign-from-sum-range nil)))))
+    (let ((s (and ranged (or (and lo (case (sign* lo)
+                                       ($pos '$pos)
+                                       ($zero (if lo-incl '$pz '$pos))))
+                             (and hi (case (sign* hi)
+                                       ($neg '$neg)
+                                       ($zero (if hi-incl '$nz '$neg))))))))
+      (when s
+        (setq sign s minus nil odds (list x) evens nil)
+        t))))
+
 
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
@@ -1665,6 +1731,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((signdiff x))
 	((prog2 (setq s sign e evens o odds m minus) nil))
 	((signsum x))
+	((sign-from-sum-range x))
 	((prog2 (cond ((strongp s sign))
 		      (t (setq s sign e evens o odds m minus)))
 	     nil))
@@ -1794,9 +1861,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
     ;; sign(f(x) - c) for a function f whose REAL-RANGE property gives the
     ;; bounds of its values.
-    (when (and (null sgn) (not (atom xlhs)) (get (caar xlhs) 'real-range)
-               (zerop1 ($imagpart (cadr xlhs))))
-      (setq sgn (sign-from-range (get (caar xlhs) 'real-range) xrhs)))
+    (let ((range (and (null sgn) (real-range-of xlhs))))
+      (when range
+        (setq sgn (sign-from-range range xrhs))))
 
     ;; signum takes no value strictly between -1 and 1 but 0, so
     ;; signum(x) - c is nonzero for a c known to lie there and to be nonzero.
@@ -3281,14 +3348,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun mfact (r x y)
   (let ((f (datum (list r x y))))
     (cntxt f context)
+    (when *derived-fact* (putprop f t 'derived))
     (addf f x)
     (addf f y)))
 
 (defun mkill (r x y)
-  (let ((f (car (datum (list r x y)))))
-    (kcntxt f context)
-    (maxima-remf f x)
-    (maxima-remf f y)))
+  (kill-datum r x y))
 
 (defun mkind (x y)
   (kind (dintern x) (dintern y)))
@@ -3327,6 +3392,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((eq '$pnz y))
 	((eq '$pnz x) nil)
 	((member y '($pz $nz $pn) :test #'eq))))
+
+(defun weak-sign-meet (x y)
+  "The sign that X and Y both allow, if they are two different ones of the
+  weak signs $PZ, $NZ and $PN, as $ZERO for $PZ and $NZ. Otherwise NIL."
+  (and (member x '($pz $nz $pn))
+       (member y '($pz $nz $pn))
+       (not (eq x y))
+       (sign-label-meet x y)))
 
 (defun munformat (form)
   (if (atom form)

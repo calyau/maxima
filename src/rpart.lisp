@@ -23,6 +23,137 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
+;; The value of domain outside of RISPLIT, which binds $DOMAIN to '$COMPLEX.
+(defvar *risplit-domain* nil)
+
+;; T if a real base raised to POW is the real root: With domain : real, the
+;; simplifier and SIGN take the real root for a rational POW with an odd
+;; denominator, as in (-8)^(1/3) = -2. SIGN-MEXPT does so for a symbolic POW
+;; too, as 1/(2*n+1) for an integer n, if its numerator is an integer.
+(defun odd-root-exponent-p (pow)
+  (and (not (eq (or *risplit-domain* $domain) '$complex))
+       (cond ((ratnump pow) (oddp (caddr pow)))
+             ((mnump pow) nil)
+             (t
+              (multiple-value-bind (num denom)
+                  (with-default-quotient-dispflags (num-denom-split pow))
+                (and (not (eql denom 1))
+                     (eq (evod denom) '$odd)
+                     (or (evod num) (maxima-integerp num))))))))
+
+;; Z^S on the principal branch of the power, for a rational S with an odd
+;; denominator. With domain : real, the simplifier takes the real root of a
+;; negative base instead: (-8)^(1/3) is -2 and (-x^3)^(-1/3) is -1/x. A
+;; function on the principal branch, as gamma_incomplete(a,z), needs the
+;; principal z^s in its derivative, its expansions and the antiderivatives
+;; written with it. Where the simplifier does not take the real root, Z^S
+;; itself is returned.
+;;
+;; For z = k*w^n with a constant k and a real w the power is written as an
+;; expression in w and abs(w), which rectform, float and the integrator
+;; leave on the right branch. Any other z, as x, 1-x or x+%i, gets
+;; z^m*%e^((s-m)*log(z)) with the principal log(z) and the integer m
+;; nearest to s, so that powers of z whose exponents differ by an integer
+;; share the exponential and cancel.
+;;
+(defun principal-power (z s)
+  (let (sgn)
+    (cond ((or (not (eq $domain '$real))
+               (not (ratnump s))
+               (evenp (caddr s))
+               (member (setq sgn ($csign z)) '($pos $pz $zero)))
+           (power z s))
+          ((member sgn '($neg $nz))
+           (mul (power (neg z) s) (power '$%e (mul '$%i '$%pi s))))
+          (t
+           (multiple-value-bind (cnum re im) (complex-number-p z 'mnump)
+             (if cnum
+               (mul (power (add (power re 2) (power im 2)) (div s 2))
+                    (power '$%e (mul '$%i s (ftake '%atan2 im re))))
+               (multiple-value-bind (k w n) (real-power-factors z)
+                 (if k
+                   (principal-power-real-factors k w n s)
+                   (let* ((m (round (cadr s) (caddr s)))
+                          (r (sub s m)))
+                     (multiple-value-bind (l a) (principal-log z sgn)
+                       (mul (power z m)
+                            (power '$%e (mul r (add l (mul '$%i a)))))))))))))))
+
+;; Z as k*w^n for a constant k, a real w that is not constant and an
+;; integer n or a rational n with an odd denominator: (values k w n). NIL
+;; when Z is not of this form, or when n is 1 and k is positive, where z has
+;; the argument of w and is left to PRINCIPAL-LOG.
+(defun real-power-factors (z)
+  (let ((k 1) (w z) (n 1) const)
+    ;; Each factor of Z is tested with $CONSTANTP once. W is constant iff
+    ;; every factor of Z is, and so is the base of W if W is a power.
+    (if (mtimesp z)
+      (let (consts others)
+        (dolist (f (cdr z))
+          (if ($constantp f) (push f consts) (push f others)))
+        (setq const (null others))
+        (when consts
+          (setq k (muln consts t)
+                w (muln others t))))
+      (setq const ($constantp z)))
+    (when (and (mexptp w)
+               (or (integerp (caddr w))
+                   (and (ratnump (caddr w)) (oddp (caddr (caddr w))))))
+      (setq n (caddr w)
+            w (cadr w)))
+    (unless (or const
+                (and (eql n 1) (member ($csign k) '($pos $pz)))
+                (member ($csign w) '($complex $imaginary)))
+      (values k w n))))
+
+;; z^s for z = k*w^n from REAL-POWER-FACTORS. w^n is real, with the sign of
+;; w for an odd numerator of n and nonnegative otherwise, so the argument of
+;; z is that of k where w^n > 0 and that of -k where w^n < 0:
+;;
+;;   z^s = abs(k)^s * abs(w)^(n*s) * (alpha + beta*w/abs(w))
+;;
+;; with alpha + beta = %e^(%i*s*carg(k)) and alpha - beta =
+;; %e^(%i*s*carg(-k)). The sign w/abs(w) and the powers of abs(w) are
+;; rational in w and abs(w), so that the product of two such powers, as of
+;; an antiderivative and its derivative, reduces under expand, where an
+;; atan2(0,w) in an exponent would not. The constants are expanded to give
+;; them one form wherever they come from.
+;;
+(defun principal-power-real-factors (k w n s)
+  (destructuring-bind (re . im) (trisplit k)
+    (let ((plus (power '$%e (mul '$%i s (ftake '%atan2 im re)))))
+      (mul (power (cabs k) s)
+           (power (ftake 'mabs w) (mul n s))
+           (if (oddp (num1 n))
+             (let ((minus (power '$%e (mul '$%i s
+                                           (ftake '%atan2 (neg im) (neg re))))))
+               (add ($expand (div (add plus minus) 2))
+                    (mul ($expand (div (sub plus minus) 2))
+                         (div w (ftake 'mabs w)))))
+             ($expand plus))))))
+
+;; log(Z) on the principal branch as (values l a) with log(Z) = l + %i*a,
+;; for PRINCIPAL-POWER. SGN is the csign of Z. The simplifier keeps log(Z)
+;; for a sum or a product, but writes log(x^a) as a*log(x), which is off by
+;; a multiple of 2*%i*%pi where the argument of x^a is not a times that of
+;; x. Then l is log(abs(Z)) and a the argument of Z.
+;;
+;; TODO: If the log simplifier ever gets fixed, this may no longer be necessary.
+;;
+(defun principal-log (z sgn)
+  (let ((log (ftake '%log z)))
+    (if (and (mlogp log) (alike1 (cadr log) z))
+      (values log 0)
+      (values (if (and (mexptp z)
+                       (not (member ($csign (caddr z)) '($complex $imaginary))))
+                ;; abs(x^a) = abs(x)^a for a real a
+                (mul (caddr z) (ftake '%log (ftake 'mabs (cadr z))))
+                (ftake '%log (ftake 'mabs z)))
+              (if (member sgn '($complex $imaginary))
+                (let ((ri (trisplit z)))
+                  (ftake '%atan2 (cdr ri) (car ri)))
+                (ftake '%atan2 0 z))))))
+
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression
@@ -233,6 +364,14 @@
       ((fixnump pow)
        (risplit-expt-fixnum-pow sp pow))
 
+      ((and (=0 (cdr sp)) (odd-root-exponent-p pow))
+       ;; The real root of a real BASE, see ODD-ROOT-EXPONENT-P. Take it of
+       ;; the real part of BASE, as BASE itself can contain %i, and simplify
+       ;; it in the domain outside of RISPLIT.
+       (cons (let (($domain (or *risplit-domain* $domain)))
+               (power (car sp) pow))
+             0))
+
       ((and (ratnump pow)
             (fixnump (cadr pow))
             (not (< (cadr pow) (- $maxnegex)))
@@ -413,7 +552,8 @@
 ;;; (<Real part> . <imaginary part>).
 
 (defun risplit (l)
-  (let (($domain '$complex) ($m1pbranch t) $logarc op)
+  (let ((*risplit-domain* (or *risplit-domain* $domain))
+        ($domain '$complex) ($m1pbranch t) $logarc op)
     (cond ((atom l)
            ;; Symbols are assumed to represent real values, unless they have
            ;; been declared to be complex. If they have been declared to be both
@@ -760,6 +900,51 @@
 
 (defmacro half () ''((rat simp) 1 2))  ;1/2
 
+;; Return the argument of a product in (-%pi, %pi], given ARGS, the arguments
+;; of its factors. Multiples of %pi and the arguments atan2(0, u) of real
+;; factors u combine into c*%pi + s*atan2(0, u1*u2*...), with -1 < c <= 1, s = 1
+;; for c <= 0 and s = -1 otherwise, which is in range and keeps the atan2(0, u)
+;; of a single real factor as it is. With other arguments, the sum is reduced
+;; modulo 2*%pi unless $SIGN shows that it is in range, but not in the Risch
+;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous.
+(defun absarg-product-arg (args)
+  (let ((c 0) reals others)
+    (dolist (arg args)
+      (cond ((eq arg '$%pi)
+             (setq c (add c 1)))
+            ((and (not (atom arg))
+                  (eq (caar arg) 'mtimes)
+                  (mnump (cadr arg))
+                  (eq (caddr arg) '$%pi)
+                  (null (cdddr arg)))
+             (setq c (add c (cadr arg))))
+            ((and (not (atom arg))
+                  (eq (caar arg) '%atan2)
+                  (zerop1 (cadr arg)))
+             (push (caddr arg) reals))
+            ((not (zerop1 arg))
+             (push arg others))))
+    (let ((arg (2pistrip (mul c '$%pi))))
+      (when reals
+        (let ((u (muln reals t)))
+          (setq arg (if (eq ($sign arg) '$pos)
+                      (sub arg (ftake '%atan2 0 u))
+                      (add arg (ftake '%atan2 0 u))))))
+      (let ((sum (if (and others (null (cdr others)) (zerop1 arg)
+                          (not implicit-real))
+                     ;; The argument of the only factor that is not real, as
+                     ;; ABSARG gave it. 2PISTRIP would take atan(3)-%pi to
+                     ;; atan(3)+%pi.
+                     (car others)
+                     (2pistrip (addn (cons arg others) t)))))
+        (if (or implicit-real
+                (null others)
+                (and (null (cdr others)) (zerop1 arg))
+                (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
+                     (eq ($sign (add sum '$%pi)) '$pos)))
+          sum
+          (reduce-angle-mod-2pi sum))))))
+
 (defun absarg (l &optional (absflag nil))
 ;; Commenting out the the expansion of the expression l. It seems to be not
 ;; necessary, but can cause expression swelling (DK 01/2010).
@@ -801,14 +986,26 @@
 	      (absl () (rplacd abars absl)))
 	     (())
 	   (unless n
-	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
+	     (return (cons (muln absl t) (absarg-product-arg argl))))
 	   (setq abars (absarg (car n) absflag))))
         ((eq (caar l) 'mexpt)
          ;; An expression z^a
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
                (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))
                ($radexpand nil))
-           (cond ((and (zerop1 (cdr sp))
+           (cond ((and (or (integerp (caddr l)) (odd-root-exponent-p (caddr l)))
+                       (=0 (cdr (risplit (cadr l)))))
+                  ;; An integer power or real root of a real z, see
+                  ;; ODD-ROOT-EXPONENT-P. Its argument is that of z for an odd
+                  ;; numerator, 0 for an even one, and that of the real z^a
+                  ;; itself for an integer numerator of unknown parity.
+                  (cons (power (car aa) (caddr l))
+                        (case (evod (with-default-quotient-dispflags
+                                      (num-denom-split (caddr l))))
+                          ($odd (cdr aa))
+                          ($even 0)
+                          (t (ftake '%atan2 0 l)))))
+                 ((and (zerop1 (cdr sp))
                        (eq ($sign (sub 1 (take '(mabs) (car sp)))) '$pos))
                   ;; Special case: a is real and abs(a) < 1.
                   ;; This simplifies e.g. carg(sqrt(z)) -> carg(z)/2

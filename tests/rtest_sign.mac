@@ -943,15 +943,16 @@ forget(abs(x)<b);
 facts();
 [a>0,b>0,1>b];
 
+/* sin(abs(x)) < 1 does not imply sin(x) < 1: take x = -3*%pi/2 */
 assume(sin(abs(x)) < 1);
 [sin(abs(x))<1];
 
 sign(1-sin(x));
-pos;
+pz;
 sign(2-sin(x));
 pos;
 sign(sin(x)-1);
-neg;
+nz;
 sign(sin(x)-2);
 neg;
 
@@ -1819,7 +1820,7 @@ pz;
 sign(cos(y));
 nz;
 
-(forget(x > 0, x <= %pi, y > %pi/2, y <= 3*%pi/2), killcontext(learndata), 0);
+(forget(x > 0, x <= %pi, y > %pi/2, y <= 3*%pi/2), 0);
 0;
 
 
@@ -1879,8 +1880,8 @@ pos;
 second([assume(x > -%pi/2, x < %pi/2), sign(cos(x)), forget(facts(x))]);
 pos;
 
-killcontext(learndata);
-done;
+contexts;
+[initial, global];
 
 
 /* Bug #4873: "limit can destroy pre-existing facts" (actually not a limit bug, so the test is here) */
@@ -1929,13 +1930,14 @@ pos;
 
 /* Bug #4887: "Removed fact still listed by facts()" */
 
-(assume(x > 5),
- newcontext(other),
- forget(x > 5),
- context : initial,
- kill(other),
- facts());
-[];
+block([r],
+  assume(x > 5),
+  newcontext(other),
+  r : forget(x > 5),
+  context : initial,
+  kill(other),
+  [r, facts(), is(x > 5), forget(x > 5), facts(), is(x > 5)]);
+[[redundant], [x > 5], true, [x > 5], [], unknown]$
 
 
 /* Bug #4888: "Facts created in local block still listed by facts() afterwards" */
@@ -2355,8 +2357,8 @@ block([x],
 block([x],
  local(x),
  assume(abs(x) < 1),
- [is(abs(x) < 1), forget(abs(x) < 1), is(x < 1), is(x > -1), killcontext(learndata)]);
-[true, [abs(x) < 1], unknown, unknown, done];
+ [is(abs(x) < 1), forget(abs(x) < 1), is(x < 1), is(x > -1)]);
+[true, [abs(x) < 1], unknown, unknown];
 
 block([p, q],
  local(p, q),
@@ -3204,6 +3206,260 @@ block([radexpand : false],
   [sign(sqrt(2*y) - y), sign(sqrt(16*y) - y), sign((2*y)^(1/3) - y),
    is(sqrt(2*y) > y), sign(sqrt(sqrt(x) + 1) - 2)]);
 [pnz, pnz, pnz, unknown, pos]$
+
+
+/* Ranges of carg and atan2, and bounds of sums of terms with a known range.
+   Needed by the fix for bug #5217: "rectform(sqrt(x*y)) under domain : complex" */
+
+block([z1, z2],
+  local(z1, z2),
+  declare([z1, z2], complex),
+  [sign(carg(z1) - %pi), sign(carg(z1) + %pi), sign(carg(z1)/2 + carg(z2)/2 - %pi),
+   sign(carg(z1) + carg(z2)), sign(atan2(y, x) + %pi), sign(atan2(y, x)/2 - %pi/2),
+   sign(atan2(y, z1) - 4)]);
+[nz, pos, nz, pnz, pos, nz, pnz]$
+
+[sign(atan(x) + atan(y) + 4), sign(sin(x) + cos(y) - 3), sign(2 - sin(x) - cos(y))];
+[pos, neg, pz]$
+
+
+/* Bug #5607: "csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2" */
+
+block([b, c, p],
+ local(b, c, p),
+ declare(b, imaginary, c, complex),
+ assume(p > 0),
+ [csign(gamma(b)), csign(gamma(c)), csign(gamma(%i)),
+  csign(gamma(1 + %i)), csign(gamma(p)), sign(gamma(b)),
+  is(abs(gamma(b)^2) = gamma(b)^2), is(cabs(gamma(%i)^2) = gamma(%i)^2),
+  is(abs(float(expand(rectform(float(cabs(gamma(%i)^2))))) - cabs(float(gamma(%i)))^2) < 1e-12)]);
+[complex, complex, complex, complex, pos, pnz, false, false, true]$
+
+
+/* Bug #5119: "assume(x <= %pi) silently creates a permanent learndata context whose facts leak into other contexts" */
+
+block([x, y, z, w, r],
+  local(x, y, z, w),
+  assume(x <= %pi, abs(y) < %e, z > %pi, w > 2),
+  r : [facts(), contexts, sign(x - 4), sign(y - 3), sign(z + w - 5)],
+  forget(abs(y) < %e),
+  r);
+[[%pi >= x, %e > abs(y), z > %pi, w > 2], [initial, global], neg, neg, pos]$
+
+block([x, y, r],
+  local(x, y),
+  assume(x <= %pi, abs(y) < %e),
+  supcontext(c5119, global),
+  r : [facts(), assume(x > 4, y > 3), sign(x - 4), sign(y - 3)],
+  killcontext(c5119),
+  forget(abs(y) < %e),
+  r);
+[[], [x > 4, y > 3], pos, pos]$
+
+block([x, y, r],
+  local(x, y),
+  assume(x <= %pi, abs(y) < %e),
+  forget(x <= %pi, abs(y) < %e),
+  r : [sign(x - 4), sign(y - 3)],
+  newcontext(c5119),
+  assume(x <= %pi, abs(y) < %e),
+  forget(x <= %pi, abs(y) < %e),
+  r : append(r, [sign(x - 4), sign(y - 3)]),
+  assume(x <= %pi, abs(y) < %e),
+  killcontext(c5119),
+  append(r, [sign(x - 4), sign(y - 3), contexts]));
+[pnz, pnz, pnz, pnz, pnz, pnz, [initial, global]]$
+
+block([b],
+  local(b),
+  newcontext(c5119),
+  assume(equal(b, %pi)),
+  [facts(), is(equal(sin(b), 0)), killcontext(c5119)]);
+[[equal(b, %pi)], true, done]$
+
+block([a, x],
+  local(a, x),
+  assume(a > 0, abs(x) < a),
+  forget(a > 0, abs(x) < a),
+  [is(x < a), is(x > -a)]);
+[unknown, unknown]$
+
+block([x, y, z, r],
+  local(x, y, z),
+  assume(x < %pi, abs(x) < %pi, y < 1, y > -1, abs(z) < 1),
+  r : [forget(x < %pi), forget(abs(y) < 1), forget(z < 1), facts(),
+       is(x < %pi), is(y < 1), is(z < 1)],
+  forget(abs(x) < %pi, abs(z) < 1),
+  r);
+[[x < %pi], [redundant], [redundant], [%pi > abs(x), 1 > y, y > -1, 1 > abs(z)], true, true, true]$
+
+block([b, x, r],
+  local(b, x),
+  supcontext(c5119, global),
+  assume(b > 0, abs(x) < b),
+  context : initial,
+  assume(abs(x) < b),
+  forget(abs(x) < b),
+  context : c5119,
+  r : [is(x < b), is(-x < b)],
+  context : initial,
+  assume(abs(x) < b, b > 0),
+  forget(abs(x) < b),
+  context : c5119,
+  r : append(r, [is(x < b), is(-x < b)]),
+  killcontext(c5119),
+  [r, contexts]);
+[[true, true, true, true], [initial, global]]$
+
+
+/* Bug #5732: "assume(2 - abs(x) < 1) learns both x > 1 and x < -1" */
+
+block([ctx : supcontext(), r],
+  assume(2 - abs(x) < 1, 3 - 2*abs(y - 1) <= 1),
+  r : [is(x > 1), is(x < -1), is(y >= 2), is(y <= 0)],
+  forget(2 - abs(x) < 1, 3 - 2*abs(y - 1) <= 1),
+  r : endcons(facts(), r),
+  killcontext(ctx),
+  r);
+[unknown, unknown, unknown, unknown, []]$
+
+block([ctx : supcontext(), r],
+  assume(abs(x) > abs(y), abs(abs(z) - 1) < 1),
+  r : [is(x > abs(y)), is(x < -abs(y)), is(abs(x) > y), is(abs(x) > -y),
+       is(z > 0), is(z < 0), is(z < 2), is(z > -2)],
+  killcontext(ctx),
+  r);
+[unknown, unknown, true, true, unknown, unknown, true, true]$
+
+block([ctx : supcontext(), r],
+  assume(sqrt(abs(x)) < 2, y*abs(z) < 1),
+  r : [facts(), is(y*z < 1)],
+  killcontext(ctx),
+  r);
+[[2 > sqrt(abs(x)), 1 > y*abs(z)], unknown]$
+
+
+/* Bug #5733: "forget() removes facts of other contexts and leaves facts that survive kill(all)" */
+
+block([r],
+  local(x, c),
+  assume(x < %pi),
+  supcontext(c),
+  assume(abs(x) < %pi),
+  context : initial,
+  r : [forget(x < %pi), is(x < %pi), is(x < 4)],
+  killcontext(c),
+  [r, is(x < 4), facts(), contexts]);
+[[[x < %pi], unknown, unknown], unknown, [], [initial, global]]$
+
+block([r],
+  local(x, c1),
+  assume(x < 1),
+  supcontext(c1, global),
+  assume(abs(x) < 1),
+  context : initial,
+  r : forget(abs(x) < 1),
+  context : c1,
+  r : [r, facts(), is(abs(x) < 1)],
+  context : initial,
+  killcontext(c1),
+  [r, forget(x < 1), facts(), contexts]);
+[[[redundant], [1 > abs(x)], true], [x < 1], [], [initial, global]]$
+
+block([r],
+  local(x, a),
+  assume(x > 0),
+  newcontext(a),
+  assume(x > 0),
+  context : initial,
+  activate(a),
+  r : [forget(x > 0), facts(), facts(a), is(x > 0)],
+  killcontext(a),
+  [r, is(x > 0), contexts]);
+[[[x > 0], [], [x > 0], true], unknown, [initial, global]]$
+
+block([r],
+  local(x, c),
+  assume(x > 0),
+  supcontext(c),
+  r : forget(x > 0),
+  context : initial,
+  killcontext(c),
+  [r, is(x > 0), facts(), contexts]);
+[[x > 0], unknown, [], [initial, global]]$
+
+block([r],
+  local(x),
+  assume(x > 0),
+  r : block(local(x), forget(x > 0)),
+  [r, is(x > 0), facts(), forget(x > 0), is(x > 0)]);
+[[redundant], true, [x > 0], [x > 0], unknown]$
+
+block([r],
+  local(n, b),
+  newcontext(b),
+  declare(n, integer),
+  context : initial,
+  r : [featurep(n, integer), forget(kind(n, integer)), remove(n, integer)],
+  context : b,
+  r : [r, featurep(n, integer), facts()],
+  context : initial,
+  killcontext(b),
+  [r, contexts]);
+[[[false, [redundant], done], true, [kind(n, integer)]], [initial, global]]$
+
+(supcontext(c1, global), asksign(y)), ask_hide_prompt; pos;
+pos$
+
+(context : initial,
+  killcontext(c1),
+  newcontext(b),
+  assume(y > 0),
+  context : initial,
+  [is(y > 0), asksign(y), forget(y > 0)]), ask_hide_prompt; pos;
+[unknown, pos, [y > 0]]$
+
+block([r],
+  context : b,
+  r : [facts(), is(y > 0)],
+  context : initial,
+  killcontext(b),
+  [r, is(y > 0), contexts]);
+[[[y > 0], true], unknown, [initial, global]]$
+
+
+/* Bug #5735: "assume(y > x)$ block([], local(x), y - x) gives a Lisp error" */
+
+block([r],
+  local(x, y, z),
+  assume(y > x, x > z),
+  r : block([],
+    local(x),
+    [y - x, is(y > x), is(y > z), sign(y - x), featurep(y, integer), facts()]),
+  [r, is(y > x), is(y > z), facts()]);
+[[y - x, unknown, unknown, pnz, false, []], true, true, [y > x, x > z]]$
+
+
+/* Bug #5736: "is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)" */
+
+block([a, b, c],
+  local(a, b, c),
+  [assume(abs(a) < 0, abs(a) <= 0, 2*abs(b) <= 0, abs(c - 1) <= 0),
+   [is(abs(a) <= 0), is(2*abs(b) <= 0), is(abs(c - 1) <= 0)],
+   [sign(abs(a)), sign(-abs(a)), is(abs(a) > 0), is(equal(abs(a), 0))],
+   forget(abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0),
+   facts()]);
+[[inconsistent, abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0], [true, true, true],
+ [zero, zero, false, true], [abs(a) <= 0, abs(b) <= 0, abs(c - 1) <= 0], []]$
+
+block([a, b, c],
+  local(a, b, c),
+  [assume(a^2 + b^2 <= 0, notequal(abs(c), 0)),
+   [is(a^2 + b^2 <= 0), sign(a^2 + b^2), sign(abs(c)), is(abs(c) > 0)],
+   forget(a^2 + b^2 <= 0, notequal(abs(c), 0)),
+   facts()]);
+[[a^2 + b^2 <= 0, notequal(abs(c), 0)], [true, zero, pos, true],
+ [a^2 + b^2 <= 0, notequal(abs(c), 0)], []]$
 
 
 /**************************************/

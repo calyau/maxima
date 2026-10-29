@@ -11,6 +11,8 @@ Bug fixes for numbered bugs:
 * \#4714 lurkmathml does not co-operate with ordergreat/less
 * \#4822 Antiderivative of acoth is complex where acoth is real
 * \#4830 Non-total ordering between constant & scalar and scalar
+* \#4852 fpplus sticky-bit is off by one - additions misround by up to 0.75 ulp
+* \#4855 fpquotient - missing sticky bit causes misrounded division
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4931 airy_ai and airy_dai return nonsense at bigfloat precision
 * \#4933 asech is treated as an even function
@@ -41,6 +43,7 @@ Bug fixes for numbered bugs:
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
+* \#5119 assume(x <= %pi) silently creates a permanent learndata context whose facts leak into other contexts
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5169 GREAT says a[1] > a[1]
@@ -72,6 +75,7 @@ Bug fixes for numbered bugs:
 * \#5202 csign(negative^(1/odd)) under domain : complex
 * \#5203 trigreduce drops terms, causing wrong answers
 * \#5216 limit(%i*x + sqrt(x), x, inf) stays noun-form
+* \#5217 rectform(sqrt(x*y)) under domain : complex
 * \#5222 (enhancement) Let a derivative defined by a DEFGRAD lambda return a final expression
 * \#5223 The sign of x has two normal forms, x/abs(x) and abs(x)/x, and their difference does not simplify
 * \#5224 limit(abs(a+%i)*x, x, inf) gives infinity
@@ -116,6 +120,8 @@ Bug fixes for numbered bugs:
 * \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
+* \#5293 subst(zz, true, if a then b elseif c then d else f) drops the else branch
+* \#5294 diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5304 featurep(x, alphabetic) raises a Lisp error for a non-string argument
 * \#5305 facts(number) misses floats and bignums and matches parts of rationals and bigfloats
@@ -200,7 +206,9 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5607 csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2
 * \#5610 featurep(2*b, real) is true for an imaginary b
+* \#5613 rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
 * \#5617 limit(1/(exp(x)-1-x),x,0,plus) -> minf, should be inf
 * \#5619 limit(1/(sqrt(x)*log(x)),x,0,minus) -> inf, should be infinity
@@ -267,6 +275,23 @@ Bug fixes for numbered bugs:
 * \#5706 (-2*%i)^(1/3) simplifies to the wrong cube root
 * \#5707 ratsimp treats sqrt(x) and x^(1/4) as unrelated
 * \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
+* \#5710 ((-2)^(1/6))^2 simplifies to the real root (-2)^(1/3) with radexpand : false
+* \#5711 integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))
+* \#5713 %i^(2/3) simplifies to -1
+* \#5716 diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real
+* \#5717 limit() returns ind when the one-sided limits are different forms of the same number
+* \#5718 hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0
+* \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
+* \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
+* \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
+* \#5724 Lone colon causes a Lisp error
+* \#5731 Bigfloat tanh(x) is not odd
+* \#5732 assume(2 - abs(x) < 1) learns both x > 1 and x < -1
+* \#5733 forget() removes facts of other contexts and leaves facts that survive kill(all)
+* \#5734 After fourier_elim(), assume() and is() use the context initial instead of the current one
+* \#5735 assume(y > x)$ block([], local(x), y - x) gives a Lisp error
+* \#5736 is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)
+* \#5737 Bigfloat atan(x) and acot(x) are not odd
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -281,6 +306,7 @@ Bug fixes for unnumbered bugs:
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
 * zn_factor_generators could return different generators from identical calls
+* idiff() from itensor now uses derivative rules as diff() does
 
 Changes in the Windows installer:
 ---------------------------------

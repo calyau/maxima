@@ -2013,6 +2013,6 @@ integrate(x*sin(%pi/2*x), x,0,1 ), numer;
 (kill(values),0);
 0$
 
-(killcontext(learndata), contexts);
+contexts;
 [initial, global]$
 

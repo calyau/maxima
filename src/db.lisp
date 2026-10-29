@@ -505,9 +505,6 @@
 (defun addf (dat nd)
   (push+sto (sel nd data) (cons dat (sel nd data))))
 
-(defun maxima-remf (dat nd)
-  (push+sto (sel nd data) (fdel dat (sel nd data))))
-
 (defun uncntxt (dat)
   (let* ((ctxt (or (zl-get dat 'con) 'global))
          (l (zl-get ctxt 'data)))
@@ -519,37 +516,44 @@
   "Can the datum DAT be removed from the current context? A datum with no CON
   is one of DINTNUM's chain edges, which is not a fact and must survive. A datum
   owned by $GLOBAL is a built-in assertion: It can only be removed from within
-  $GLOBAL itself (which the user cannot set as the current context)."
+  $GLOBAL itself (which the user cannot set as the current context). While
+  *DERIVED-FACT* is T, only derived datums can be removed, else only others."
   (let ((con (zl-get dat 'con)))
     (cond
       ((null con) nil)
+      ((not (eq (zl-get dat 'derived) *derived-fact*)) nil)
       ((not (eq con '$global)) t)
       ((eq context '$global) t)
       (t (setq *fact-protected* t) nil))))
 
-(defun fdel (fact data)
-  (cond ((and (eq (car fact) (caaar data))
-	      (eq (cadr fact) (cadaar data))
-	      (eq (caddr fact) (caddar (car data)))
-	      (removablep (car data)))
-	 (let ((rest (cdr data)))
-	   (uncntxt (car data))
-	   (setq *fact-removed* t)
-	   rest))
-	(t
-	 (do ((ds data (cdr ds))
-	      (dat))
-	     ((null (cdr ds)))
-	   (setq dat (cadr ds))
-	   (cond ((and (eq (car fact) (caar dat))
-		       (eq (cadr fact) (cadar dat))
-		       (eq (caddr fact) (caddar dat))
-		       (removablep dat))
-		  (rplacd ds (cddr ds))
-		  (uncntxt dat)
-		  (setq *fact-removed* t)
-		  (return t))))
-	 data)))
+(defun kill-datum (r x y)
+  "Remove one datum for the fact (R X Y), as made by MFACT or KIND, from the
+  database. The candidates are the datums for the fact on the DATA of the node
+  X that are REMOVABLEP and VISIBLEP: owned by the current context, a context
+  it is built on or an activated one, and not hidden by LOCAL. One owned by the
+  current context itself is taken first, otherwise the most recent one.
+  CONTEXTMARK makes visibility follow CONTEXT, which CLEARSIGN binds to
+  $INITIAL. The datum comes off the DATA of its context and of every node it
+  is filed under at once, so that no node keeps a datum that no context owns
+  and KILLCONTEXT would never reach. Returns the datum, or NIL if there is no
+  candidate."
+  (contextmark)
+  (let ((dat nil))
+    (dolist (d (sel x data))
+      (when (and (eq r (caar d))
+                 (eq x (cadar d))
+                 (eq y (caddar d))
+                 (visiblep d)
+                 (removablep d))
+        (unless dat (setq dat d))
+        (when (eq (zl-get d 'con) context)
+          (setq dat d)
+          (return))))
+    (when dat
+      (uncntxt dat)
+      (remov dat)
+      (setq *fact-removed* t))
+    dat))
 
 (defun semantics (pat)
   (if (atom pat)
@@ -658,9 +662,7 @@
   (if (atom x) x (car x)))
 
 (defun unkind (x y)
-  (setq y (car (datum (list 'kind x y))))
-  (kcntxt y context)
-  (maxima-remf y x))
+  (kill-datum 'kind x y))
 
 (defun remov (fact)
   (mapc #'(lambda (arg) (remov4 fact arg)) (cdar fact)))
@@ -736,14 +738,6 @@
     (putprop dat con 'con))
   dat)
 
-(defun kcntxt (fact con)
-  (unless (atom con)
-    (setq con (cdr con)))
-  (putprop con (fdel fact (zl-get con 'data)) 'data)
-  (unless (eq 'global con)
-    (zl-remprop fact 'con))
-  fact)
-
 (defun cntp (f)
   (cond ((not (setq f (sel f con))))
 	((setq f (zl-get f 'cmark))
@@ -775,8 +769,7 @@
 ;;; DOBJECTS and *NOBJECTS* hold the nodes that give a Maxima object its place
 ;;; in the database. A node is worth keeping exactly as long as some fact names
 ;;; it, and the node itself answers that: ADDF puts every fact naming a node on
-;;; that node's own DATA property, and MAXIMA-REMF, KILL3 and REMOV4 take it off
-;;; again.
+;;; that node's own DATA property, and REMOV4 takes it off again.
 ;;;
 ;;; Number nodes carry the MGRP/MEQP edges that order them against their
 ;;; neighbors on top of that. Those are bookkeeping, not information: DINTNUM

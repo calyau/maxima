@@ -103,8 +103,46 @@
               (* (epsilon u)
                  (exp (* -2 (abs (imagpart u)))))))))
 
+(defun jacobi-arg-halvings (u m)
+  ;; Return the number of times, n, that u is halved before using the
+  ;; descending Landen transformation; sn, cn, and dn at u are then
+  ;; obtained by doubling the argument n times.
+  ;;
+  ;; The descending Landen transformation ends with sin(v) and cos(v),
+  ;; where v = u/prod(1+sqrt(mu)) = pi*u/(2*K(m)), since K(m) =
+  ;; pi/2*prod(1+sqrt(mu)).  The next step squares sin(v), which is
+  ;; about exp(abs(imagpart(v)))/2, so with doubles it overflows when
+  ;; abs(imagpart(v)) exceeds about log(most-positive-double-float)/2.
+  ;; Until then the transformation is accurate, so u is halved only
+  ;; when abs(imagpart(v)) exceeds half of that, and then just enough
+  ;; times to bring it below.  For real u and real m, v is real, so we
+  ;; don't need to do halvings either.
+  ;;
+  ;; Bigfloats have no exponent limit, so sin(v) cannot overflow and u is
+  ;; never halved.
+  ;;
+  ;; K(m) is expensive for complex m, so first use a cheap upper bound
+  ;; for abs(imagpart(v)).  K(m) = pi/(2*agm(1, sqrt(1-m))), and each
+  ;; step of the AGM is no larger in modulus than the larger of its
+  ;; arguments, so abs(agm(1, sqrt(1-m))) <= max(1, sqrt(abs(1-m))).
+  ;; Then
+  ;;
+  ;;   abs(imagpart(v)) <= abs(u)*max(1, sqrt(abs(1-m))).
+  ;;
+  ;; K(m) is computed only when this bound exceeds the limit.
+  (let ((limit (/ (cl:log most-positive-double-float) 4)))
+    (if (or (and (realp u) (realp m))
+	    (not (and (cl:numberp u) (cl:numberp m)))
+	    (<= (* (abs u) (max 1 (sqrt (abs (- 1 m))))) limit))
+	0
+	(let ((y (* (float pi 1d0)
+		    (abs (imagpart (/ u (* 2 (bf-elliptic-k m))))))))
+	  (if (<= y limit)
+	      0
+	      (values (ceiling (cl:log (/ y limit) 2))))))))
+
 ;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-descending (u m root-m1)
+(defun descending-landen-sn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4)
@@ -115,12 +153,12 @@
      ;;   sn(u|m) = (1+sqrt(mu))*sn(v|mu)/(1+sqrt(mu)*sn^2(v|mu)).
      (multiple-value-bind (v mu root-mu root-mu1)
 	 (descending-transform u m root-m1)
-       (let ((s (elliptic-sn-descending v mu root-mu1)))
+       (let ((s (descending-landen-sn v mu root-mu1)))
 	 (/ (* (1+ root-mu) s)
 	    (1+ (* root-mu s s))))))))
 
 ;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
-(defun elliptic-sn-cn-dn-descending (u m root-m1)
+(defun descending-landen-sn-cn-dn (u m root-m1)
   (cond
     ((descending-base-p u m)
      ;; A&S 16.13.1 (https://dlmf.nist.gov/22.10.E4) to 16.13.3
@@ -148,7 +186,7 @@
      (multiple-value-bind (v mu root-mu root-mu1)
 	  (descending-transform u m root-m1)
 	(multiple-value-bind (s c d)
-	    (elliptic-sn-cn-dn-descending v mu root-mu1)
+	    (descending-landen-sn-cn-dn v mu root-mu1)
 	  ;; A&S 16.12.2 to 16.12.4
 	  (let* ((p (* root-mu s s))
 		 (den (1+ p)))
@@ -165,6 +203,91 @@
 			   (+ (/ (* 2 root-m1) (+ 1 root-m1))
 			      (* root-mu c c)))
 		       den))))))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1, computed at u/2^n and
+;; doubled n times.  ROOT-M1 is sqrt(1-m).
+(defun descending-landen-duplication (u m root-m1 n)
+  ;; DLMF 22.8.1 to 22.8.3 with v = u:
+  ;;
+  ;;   sn(2*u|m) = 2*s*c*d/(1-m*s^4)
+  ;;   cn(2*u|m) = (c^2-s^2*d^2)/(1-m*s^4)
+  ;;   dn(2*u|m) = (d^2-m*s^2*c^2)/(1-m*s^4)
+  ;;
+  ;; where s = sn(u|m), c = cn(u|m), and d = dn(u|m).
+  ;;
+  ;; Rounding errors that move s, c, and d off the curves s^2+c^2 = 1
+  ;; and m*s^2+d^2 = 1 are multiplied by about 1/abs(1-m*s^4) at each
+  ;; step.  For m near 1, s is near 1 or -1 for most of a period, so
+  ;; this can be 100 or more per step instead of 2.  After each step,
+  ;; s and c are therefore divided by sqrt(s^2+c^2), and d is corrected
+  ;; by one Newton step for m*s^2+d^2 = 1.
+  ;;
+  ;; This is done only when abs(s) <= 2.  Near a pole s and c are large,
+  ;; s^2+c^2 = 1 cancels, and the correction would destroy an accurate
+  ;; result.  There 1-m*s^4 is large and no correction is needed.
+  ;; Likewise d is corrected only when abs(d) >= 1/1000: near a zero of
+  ;; dn, m*s^2+d^2-1 cancels and dividing by d would magnify the
+  ;; rounding error.
+  ;;
+  ;; Use scale-float on the real and imaginary parts of u to compute
+  ;; u/2^n accurately, taking care not to convert real numbers to
+  ;; complex numbers.
+  (let ((scaled-u
+          (if (complexp u)
+              (complex (scale-float (realpart u) (- n))
+                       (scale-float (imagpart u) (- n)))
+              (scale-float u (- n)))))
+    (multiple-value-bind (s c d)
+        (descending-landen-sn-cn-dn scaled-u
+                                    m root-m1)
+      (dotimes (k n)
+        (let* ((s2 (* s s))
+	       (c2 (* c c))
+	       (d2 (* d d))
+	       (den (- 1 (* m s2 s2))))
+	  (psetf s (/ (* 2 s c d) den)
+	         c (/ (- c2 (* s2 d2)) den)
+	         d (/ (- d2 (* m s2 c2)) den))
+	  (when (<= (abs s) 2)
+	    (let ((r (sqrt (+ (* s s) (* c c)))))
+	      (setf s (/ s r)
+		    c (/ c r))
+	      (when (>= (abs d) 1/1000)
+		(setf d (- d (/ (+ (* m s s) (* d d) -1) (* 2 d)))))))))
+      (values s c d))))
+
+;; sn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).  When u is large, u is
+;; halved first and the result doubled.
+(defun elliptic-sn-descending (u m root-m1)
+  (if (zerop (jacobi-arg-halvings u m))
+      (descending-landen-sn u m root-m1)
+      (values (elliptic-sn-cn-dn-descending u m root-m1))))
+
+;; sn(u|m), cn(u|m), and dn(u|m) for m /= 1.  ROOT-M1 is sqrt(1-m).
+;; When u is large, u is halved first and the results doubled.
+(defun elliptic-sn-cn-dn-descending (u m root-m1)
+  (let ((n (jacobi-arg-halvings u m)))
+    (if (and (plusp n) (> (realpart m) 1/2))
+	;; The doubling is unstable for m near 1, roughly when 3/4 <=
+	;; realpart(m) <= 9/4 and abs(imagpart(m)) <= 1, and correcting s,
+	;; c, and d after each step is not enough when m is very close to
+	;; 1.  So use Jacobi's imaginary transformation (A&S 16.20.1 to
+	;; 16.20.3, https://dlmf.nist.gov/22.6.T1):
+	;;
+	;;   sn(u|m) = -i*sc(i*u|1-m)
+	;;   cn(u|m) = nc(i*u|1-m)
+	;;   dn(u|m) = dc(i*u|1-m)
+	;;
+	;; realpart(1-m) < 1/2, where the doubling is stable.
+	(let ((iu (* #c(0 1) u))
+	      (m1 (- 1 m)))
+	  (multiple-value-bind (s c d)
+	      (descending-landen-duplication iu m1 (sqrt m)
+					     (jacobi-arg-halvings iu m1))
+	    (values (* #c(0 -1) (/ s c))
+		    (/ c)
+		    (/ d c))))
+	(descending-landen-duplication u m root-m1 n))))
 
 (defun sn (u m)
   (cond ((zerop m)
@@ -854,8 +977,11 @@
 		(and (zerop (imagpart yn)) (>= (realpart yn) 0))
 		(and (zerop (imagpart zn)) (>= (realpart zn) 0))
 		(and (zerop (imagpart qn)) (> (realpart qn) 0)))
+           ;; Gcl Version_2_7_2pre15 has a buggy sort function that
+           ;; doesn't actually sort the args here.  But 2.6.14 works.
+           ;; Use stable-sort which works fine everywhere.
 	   (destructuring-bind (xn yn zn)
-	       (sort (list xn yn zn) #'<)
+	       (stable-sort (list xn yn zn) #'<)
 	     (let* ((pn (+ yn (* (- zn yn) (/ (- yn xn) (+ yn qn)))))
 		    (s (- (* (- pn yn) (bf-rj1 xn yn zn pn))
 			  (* 3 (bf-rf xn yn zn)))))
@@ -964,9 +1090,7 @@
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
 		(* (/ nn 3) (expt sin-phi 3)
 		   (bf-rj (expt cos-phi 2) k2sin 1.0
@@ -979,6 +1103,74 @@
 	(let ((complete (bf-elliptic-pi-complete n m)))
 	  (+ (* 2 cycles complete)
 	     (base n rem m))))))
+
+;; For real n > 1, the integrand of elliptic_pi has simple poles at
+;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
+;; p < 0 and x, y, z >= 0 it returns the Cauchy principal value, so
+;; bf-elliptic-pi does too.
+;;
+;; Write the integral as h/g where
+;;
+;;   h(theta) = 1/sqrt(1-m*sin(theta)^2)
+;;   g(theta) = 1-n*sin(theta)^2
+;;
+;; For n > 1, g has simple zeroes at theta*, %pi-theta* and multiples
+;; of k*%pi.  For m < n, h is smooth near each of them.
+;;
+;; Replacing n by n - %i*eps,
+;;
+;;   1-(n-%i*eps)*sin(theta)^2 = g(theta) + %i*eps*sin(theta)^2
+;;
+;; Near the pole, 1-n*sin(theta)^2 ~= 0 so sin(theta)^2 ~= 1/n, n > 0.
+;;
+;; When we do this the pole moves to
+;;
+;;   theta = theta* + %i*eps*sin(theta*)^2/|g'(theta*)|
+;;
+;; which is just above the real axis.  Thus the integration path is
+;; just below the pole.  This is equivalent to indenting the path with
+;; a semicircle below the pole.  The path goes counter-clockwise so it
+;; contributes +%i*%pi times the residue at the pole:
+;;
+;;   Res(h/g, theta*) = h(theta*)/g'(theta*)
+;;
+;; At theta*, sin(theta*) = 1/sqrt(n) and therefore cos(theta*) = sqrt((n-1)/n).
+;;
+;;   g'(theta*) = -2*n*sin(theta*)*cos(theta*) = -2*sqrt(n-1)
+;;   h(theta*) = 1/sqrt(1-m/n) = sqrt(n/(n-m))
+;;
+;; Hence
+;;
+;;   Res(h/g, theta*) = -1/2*sqrt(n/(n-1)/(n-m))
+;;
+;; and the contribution is -%i*%pi*Res(h/g,theta*) for each pole.
+;;
+;; We need to count every pole between 0 and phi, accounting for the
+;; the sign of phi.  With phi = c*%pi + r, |r| <= %pi/2, that is 2*c
+;; poles plus sgn(r) if n*sin(r)^2 > 1.  For m > 1 the complete
+;; integral, and r past the branch point m*sin(r)^2 = 1, go through
+;; bf-rj1, which already includes the term.  The other cases go
+;; through bf-rj1, which already gives the n - i0 value.  This matches
+;; the branch used by Mathematica and mpmath.
+(defun bf-elliptic-pi-residue (n phi m)
+  (if (and (realp n) (realp phi) (realp m) (> n 1))
+      (let* ((bf-pi (%pi phi))
+	     (cycles (round phi bf-pi))
+	     (rem (- phi (* cycles bf-pi)))
+	     (s2 (expt (sin rem) 2))
+	     (crossings (+ (if (<= m 1)
+			       (* 2 cycles)
+			       0)
+			   (if (and (> (* n s2) 1) (<= (* m s2) 1))
+			       (signum rem)
+			       0))))
+	(if (zerop crossings)
+	    0
+	    (* (complex 0 -1)
+               crossings
+               (/ bf-pi 2)
+	       (sqrt (/ n (* (- n 1) (- n m)))))))
+      0))
 
 ;; Compute inverse_jacobi_sn, for float or bigfloat args.
 (defun bf-inverse-jacobi-sn (u m)
@@ -2379,7 +2571,8 @@ first kind:
     (cond
       ((float-numerical-eval-p n phi m)
        ;; Numerically evaluate it
-       (elliptic-pi ($float n) ($float phi) ($float m)))
+       (add (elliptic-pi ($float n) ($float phi) ($float m))
+	    (to (bigfloat::bf-elliptic-pi-residue ($float n) ($float phi) ($float m)))))
       ((setf args (complex-float-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2387,9 +2580,12 @@ first kind:
 		      (bigfloat:to ($float phi))
 		      (bigfloat:to ($float m)))))
       ((bigfloat-numerical-eval-p n phi m)
-       (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
-				     (bigfloat:to phi)
-				     (bigfloat:to m))))
+       (to (bigfloat:+ (bigfloat::bf-elliptic-pi (bigfloat:to n)
+						 (bigfloat:to phi)
+						 (bigfloat:to m))
+		       (bigfloat::bf-elliptic-pi-residue (bigfloat:to n)
+							 (bigfloat:to phi)
+							 (bigfloat:to m)))))
       ((setq args (complex-bigfloat-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
@@ -2475,7 +2671,7 @@ first kind:
   ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
   ;; is an odd function of phi.
   (when (minusp (realpart phi))
-    (return-from elliptic-pi (- (elliptic-pi n (- phi) m))))
+    (return-from elliptic-pi (neg (elliptic-pi n (- phi) m))))
 
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
@@ -2487,17 +2683,16 @@ first kind:
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
 		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
+		  (k2sin (- 1 (* m sin-phi sin-phi))))
 	     (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
 		    (* (/ nn 3) (expt sin-phi 3)
 		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
 					(- 1 (* n (expt sin-phi 2)))))))))
     ;; FIXME: Reducing the arg by pi has significant round-off.
     ;; Consider doing something better.
-    (let* ((cycles (round (realpart phi) pi))
-	   (rem (- phi (* cycles pi))))
+    (let* ((float-pi (float pi 1d0))
+           (cycles (round (realpart phi) float-pi))
+	   (rem (- phi (* cycles float-pi))))
       (let ((complete (elliptic-pi-complete n m)))
 	(to (+ (* 2 cycles complete)
 	       (base n rem m)))))))
@@ -4435,10 +4630,10 @@ first kind:
 
 (defun make-elliptic-e (e)
   (cond ((atom e) e)
-	((eq (caar e) '$elliptic_eu)
+	((eq (caar e) '%jacobi_epsilon)
 	 (destructuring-bind ((ffun &rest ops) u m) e
 	   (declare (ignore ffun ops))
-	   (ftake '%elliptic_e (ftake '%asin (ftake '%jacobi_sn u m)) m)))
+	   (ftake '%elliptic_e (ftake '%jacobi_am u m) m)))
 	(t
 	 (recur-apply #'make-elliptic-e e))))
 
@@ -4447,7 +4642,8 @@ first kind:
       e
       (simplify (make-elliptic-e e))))
   
-	 
+
+(in-package :bigfloat)
 ;; Eu(u,m) = integrate(jacobi_dn(v,m)^2,v,0,u)
 ;;         = integrate(sqrt((1-m*t^2)/(1-t^2)),t,0,jacobi_sn(u,m))
 ;;
@@ -4458,73 +4654,349 @@ first kind:
 ;; Checks.
 ;; Lawden gives the following relationships
 ;;
-;; E(u+v) = E(u) + E(v) - m*sn(u)*sn(v)*sn(u+v)
+;; E(u+v,m) = E(u,m) + E(v,m) - m*sn(u,m)*sn(v,m)*sn(u+v,m)
 ;; E(u,0) = u, E(u,1) = tanh u
 ;;
 ;; E(i*u,k) = i*sc(u,k')*dn(u,k') - i*E(u,k') + i*u
 ;;
-;; E(2*i*K') = 2*i*(K'-E')
+;; E(2*i*K',m) = 2*i*(K'(m)-E'(m))
 ;;
-;; E(u + 2*i*K') = E(u) + 2*i*(K' - E')
+;; E(u + 2*i*K',m) = E(u,m) + 2*i*(K'(m) - E'(m))
 ;;
-;; E(u+K) = E(u) + E - k^2*sn(u)*cd(u)
-(defun elliptic-eu (u m)
-  (cond ((realp u)
-	 ;; E(u + 2*n*K) = E(u) + 2*n*E
-	 (let ((ell-k (to (elliptic-k m)))
-	       (ell-e (elliptic-ec m)))
-	   (multiple-value-bind (n u-rem)
-	       (floor u (* 2 ell-k))
-	     ;; 0 <= u-rem < 2*K
-	     (+ (* 2 n ell-e)
-		(cond ((>= u-rem ell-k)
-		       ;; 0 <= u-rem < K so
-		       ;; E(u + K) = E(u) + E - m*sn(u)*cd(u)
-		       (let ((u-k (- u ell-k)))
-			 (- (+ (elliptic-e (cl:asin (bigfloat::sn u-k m)) m)
-			       ell-e)
-			    (/ (* m (bigfloat::sn u-k m) (bigfloat::cn u-k m))
-			       (bigfloat::dn u-k m)))))
-		      (t
-		       (elliptic-e (cl:asin (bigfloat::sn u m)) m)))))))
-	((complexp u)
-	 ;; From Lawden:
-	 ;;
-	 ;; E(u+i*v, m) = E(u,m) -i*E(v,m') + i*v + i*sc(v,m')*dn(v,m')
-	 ;;                -i*m*sn(u,m)*sc(v,m')*sn(u+i*v,m)
-	 ;;
-	 (let ((u-r (realpart u))
-	       (u-i (imagpart u))
-	       (m1 (- 1 m)))
-	   (+ (elliptic-eu u-r m)
-	      (* #c(0 1)
-		 (- (+ u-i
-		       (/ (* (bigfloat::sn u-i m1) (bigfloat::dn u-i m1))
-			  (bigfloat::cn u-i m1)))
-		    (+ (elliptic-eu u-i m1)
-		       (/ (* m (bigfloat::sn u-r m) (bigfloat::sn u-i m1) (bigfloat::sn u m))
-			  (bigfloat::cn u-i m1))))))))))
+;; E(u+K,m) = E(u,m) + E(m) - m*sn(u,m)*cd(u,m)
+(defun jacobi-epsilon (u m)
+  (cond
+    ((zerop m)
+     ;; dn(u|0) = 1 so E(u|m) = u
+     u)
+    ((= m 1)
+     ;; dn(u|1) = sech(u).  Then
+     ;;
+     ;;   E(u|1) = integrate(dn(t|1)^2, t, 0, u)
+     ;;          = integrate(sech(t)^2, t, 0, u)
+     ;;          = tanh(u)
+     (tanh u))
+    ((or (minusp (realpart u))
+         (and (zerop (realpart u)) (minusp (imagpart u))))
+     ;; E(u|m) is odd in u.  Evaluate it only for realpart(u) > 0, or
+     ;; for u on the nonnegative imaginary axis, so that E(-u|m) =
+     ;; -E(u|m) exactly.
+     (- (jacobi-epsilon (- u) m)))
+    ((complexp m)
+     ;; Notation: E(u|m) is jacobi_epsilon(u,m), E(m) is elliptic_ec(m), and
+     ;; K(m) is elliptic_kc(m).  K(m), E(m), K(1-m) and E(1-m) are ELL-K,
+     ;; ELL-E, ELL-KP and ELL-EP below.
+     ;;
+     ;; E(u|m) is quasi-periodic:
+     ;;
+     ;;   E(z + 2*K(m)|m) = E(z|m) + 2*E(m)
+     ;;   E(z + 2*i*K(1-m)|m) = E(z|m) + 2*i*(K(1-m) - E(1-m))
+     ;;
+     ;; Write u = a*2*K(m) + b*2*i*K(1-m) with a and b real, and reduce u
+     ;; to w = u - j*2*K(m) - k*2*i*K(1-m) with j = round(a), k = round(b),
+     ;; so E(u|m) = E(w|m) + 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m)).  For
+     ;; complex m, the descending Landen transformation in sn, cn and dn
+     ;; scales the argument by a complex factor, so a large argument gives
+     ;; sin an argument with a large imaginary part and sn, cn and dn
+     ;; overflow or lose all accuracy.
+     ;;
+     ;; Carlson's idea: with s = sn(w|m), c = cn(w|m), d = dn(w|m),
+     ;;
+     ;;   w' = s*rf(c^2, d^2, 1)
+     ;;      = integrate(1/sqrt((1-t^2)*(1-m*t^2)), t, 0, s)
+     ;;
+     ;;   e  = s*rf(c^2, d^2, 1) - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;      = w' - (m/3)*s^3*rd(c^2, d^2, 1)
+     ;;      = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, s)
+     ;;
+     ;; The integrals above are along the same path.  See (Carlson,
+     ;; Numer. Algorithms 10 (1995), eqs. (59)-(60)).
+     ;;
+     ;; Substituting t = sn(v|m), dt = cn(v|m)*dn(v|m)*dv, turns the
+     ;; first into integrate(1, v, 0, w') and the second into
+     ;; integrate(dn(v|m)^2, v, 0, w'), so e = E(w'|m) with sn(w'|m) =
+     ;; s.
+     ;;
+     ;; w' is a principal inverse of sn and need not be w.  sn(w|m) has
+     ;; periods 4*K(m) and 2*i*K(1-m), so sn(w'|m) = sn(w|m) means that,
+     ;; for some integers p and q, either
+     ;;
+     ;;   w = w' + 2*p*K(m) + 2*i*q*K(1-m)
+     ;;
+     ;; or
+     ;;
+     ;;   w = 2*K(m) - w' + 2*p*K(m) + 2*i*q*K(1-m).
+     ;;
+     ;; With the quasi-periodicity and E(2*K(m) - z|m) = 2*E(m) - E(z|m),
+     ;; the two cases give
+     ;;
+     ;;   E(w|m) = e + 2*p*E(m) + 2*i*q*(K(1-m) - E(1-m))
+     ;;   E(w|m) = 2*E(m) - e + 2*p*E(m) + 2*i*q*(K(1-m) - E(1-m))
+     ;;
+     ;; p and q are the lattice coordinates of w - w' or of
+     ;; w + w' - 2*K(m); the case that holds is the one whose coordinates
+     ;; are integers.
+     (let* ((ell-k (bf-elliptic-k m))
+            (ell-e (bf-elliptic-ec m))
+            (ell-kp (bf-elliptic-k (- 1 m)))
+            (ell-ep (bf-elliptic-ec (- 1 m)))
+            ;; w1 = 2*K(m)
+            (w1 (* 2 ell-k))
+            ;; w2 = 2*%i*K'(m) = 2*%i*K(1-m)
+            (w2 (* #c(0 2) ell-kp))
+            (det (- (* (realpart w1) (imagpart w2))
+                    (* (realpart w2) (imagpart w1)))))
+       (flet ((lattice-coords (z)
+                ;; Real a and b such that z = a*w1 + b*w2.
+                ;; Write this in real and imaginary parts:
+                ;;
+                ;;   a*Re(w1) + b*Re(w2) = Re(z)
+                ;;   a*Im(w1) + b*Im(w2) = Im(z)
+                ;;
+                ;; Solve for a and b and return these values. DET is
+                ;; the determinant of the above matrix.
+                (values (/ (- (* (realpart z) (imagpart w2))
+                              (* (realpart w2) (imagpart z)))
+                           det)
+                        (/ (- (* (realpart w1) (imagpart z))
+                              (* (realpart z) (imagpart w1)))
+                           det)))
+              (lattice-e (j k)
+                ;; E(z + j*w1 + k*w2|m) - E(z|m)
+                ;;   = 2*j*E(m) + 2*i*k*(K(1-m) - E(1-m))
+                (+ (* 2 j ell-e)
+                   (* #c(0 2) k (- ell-kp ell-ep))))
+              (off-lattice (a b)
+                ;; How far a*w1 + b*w2 is from a period: 0 when a and
+                ;; b are integers.
+                (+ (abs (nth-value 1 (round a)))
+                   (abs (nth-value 1 (round b))))))
+         (multiple-value-bind (a b)
+             (lattice-coords u)
+           ;; Reduce u to w = u - j*w1 - k*w2, near the origin, so sn,
+           ;; cn and dn are evaluated at a small argument.  Then
+           ;; E(u|m) = E(w|m) + LATTICE-E(j, k).
+           (let* ((j (round a))
+                  (k (round b))
+                  (w (- u (* j w1) (* k w2))))
+             ;; Compute sn(w|m), cn(w|m), and dn(w|m)
+             (multiple-value-bind (s c d)
+                 (elliptic-sn-cn-dn-descending w m (sqrt (- 1 m)))
+               ;; Use Carlson's idea to compute w' (W-PRIME) and e (E).
+               (let* ((c2 (* c c))
+                      (d2 (* d d))
+                      (rf (bf-rf c2 d2 1))
+                      (w-prime (* s rf))
+                      (e (- w-prime
+                            (* (/ m 3) s s s (bf-rd c2 d2 1)))))
+                 ;; Since w' = s*rf, e = s*rf - (m/3)*s^3*rd(c^2, d^2, 1)
+                 ;; is Carlson's form of E, and e = E(w'|m).  Either
+                 ;; w - w' or w + w' - 2*K(m) is a period.  A1 and B1
+                 ;; are the lattice coordinates of w - w', and A2 and B2
+                 ;; those of w + w' - 2*K(m).
+                 (multiple-value-bind (a1 b1)
+                     (lattice-coords (- w w-prime))
+                   (multiple-value-bind (a2 b2)
+                       (lattice-coords (- (+ w w-prime) w1))
+                     ;; In exact arithmetic one pair of coordinates is
+                     ;; integers.  With rounding, neither is exactly, so
+                     ;; OFF-LATTICE measures how far each pair is from
+                     ;; the nearest integers, |a - round(a)| +
+                     ;; |b - round(b)|, and the case with the smaller
+                     ;; distance is the one that holds:
+                     ;;
+                     ;;   If w - w' = a1*w1 + b1*w2,
+                     ;;   E(w|m) = e + LATTICE-E(round(a1), round(b1)).
+                     ;;
+                     ;;   If w + w' - 2*K(m) = a2*w1 + b2*w2,
+                     ;;   E(w|m) = 2*E(m) - e + LATTICE-E(round(a2), round(b2)).
+                     (+ (lattice-e j k)
+                        (if (<= (off-lattice a1 b1)
+                                (off-lattice a2 b2))
+                            (+ e (lattice-e (round a1) (round b1)))
+                            (+ (- (* 2 ell-e) e)
+                               (lattice-e (round a2) (round b2))))))))))))))
+    ((realp u)
+     (cond ((> m 1)
+            ;; E(u|m) = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
+            ;;
+            ;; From A&S 16.11:
+            ;;
+            ;;   dn(u,m) = cn(sqrt(m)*u,1/m)
+            ;;
+            ;; So, let s = sqrt(m)*t:
+            ;;
+            ;;   E(u|m) = integrate(dn^2(t,m), t, 0, u)
+            ;;          = integrate(cn^2(s,1/m), s, 0, sqrt(m)*u)/sqrt(m)
+            ;;
+            ;; But A&S 16.9.1 gives cn^2(z,mu) = 1 - 1/mu + dn^2(z,mu)/mu,
+            ;; so with mu = 1/m, cn^2(s,1/m) = (1 - m) + m*dn^2(s,1/m) and
+            ;;
+            ;;   E(u|m) = ((1-m)*sqrt(m)*u + m*E(sqrt(m)*u|1/m))/sqrt(m)
+            ;;          = sqrt(m)*E(sqrt(m)*u|1/m) - (m-1)*u
+            (let ((root-m (sqrt m)))
+              (- (* root-m (jacobi-epsilon (* root-m u) (/ m)))
+                 (* (- m 1) u))))
+           (t
+            ;; DLMF https://dlmf.nist.gov/22.16.E28:
+            ;;
+            ;; E(u + 2*n*K|m) = E(u|m) + 2*n*E(m)
+            (let ((ell-k (bf-elliptic-k m))
+                  (ell-e (bf-elliptic-ec m)))
+              (multiple-value-bind (n u-rem)
+                  (floor u (* 2 ell-k))
+                ;; 0 <= u-rem < 2*K
+                (+ (* 2 n ell-e)
+                   (cond ((>= u-rem ell-k)
+                          ;; 0 <= u-rem - K < K so
+                          ;; E(u + K|m) = E(u|m) + E(m) - m*sn(u|m)*cd(u|m)
+                          ;;
+                          ;; See https://dlmf.nist.gov/22.16.E28
+                          (let ((u-k (- u-rem ell-k)))
+                            (- (+ (bf-elliptic-e (atan (sn u-k m) (cn u-k m)) m)
+                                  ell-e)
+                               (/ (* m (sn u-k m) (cn u-k m))
+                                  (dn u-k m)))))
+                         (t
+                          ;; Eu(u|m) = E(am(w,m)|m).  But using
+                          ;; am(w,m) = asin(sn(w,m)) is
+                          ;; ill-conditioned as sn -> 1.  Instead,
+                          ;; note that sn(w,m) = sin(am(w,m)) and
+                          ;; cn(w,m) = cos(am(w,m)).  Then
+                          ;; sn(w,m)/cn(w,m) = tan(am(w,m)) so
+                          ;; atan(sn(w,m)/cn(w,m)) = am(w,m).  But
+                          ;; use atan2 to get the desired angle.
+                          (bf-elliptic-e (atan (sn u-rem m) (cn u-rem m))
+                                         m)))))))))
+    ((complexp u)
+     ;; From Lawden:
+     ;;
+     ;; E(u+i*v, m) = E(u,m) -i*E(v,m') + i*v + i*sc(v,m')*dn(v,m')
+     ;;                -i*m*sn(u,m)*sc(v,m')*sn(u+i*v,m)
+     ;;
+     ;; This cancels badly near cn(v,m') = 0.  For m > 0, reduce v to
+     ;; |v| <= K'/2 with
+     ;;
+     ;; E(u + 2*i*K') = E(u) + 2*i*(K' - E')
+     ;; E(u + s*i*K') = E(u) + cs(u)*dn(u) + s*i*(K' - E'), s = 1 or -1
+     ;;
+     ;; For m <= 0, cn(v,m') = dn(sqrt(m')*v,1/m') > 0.
+     (let* ((u-r (realpart u))
+            (m1 (- 1 m))
+            (reducep (< m1 1))
+            (ell-kp (if reducep (bf-elliptic-k m1) 0))
+            (ell-ep (if reducep (bf-elliptic-ec m1) 0))
+            (n (if reducep (round (imagpart u) (* 2 ell-kp)) 0))
+            (v (- (imagpart u) (* 2 n ell-kp)))
+            (s (cond ((not reducep) 0)
+                     ((> v (/ ell-kp 2)) 1)
+                     ((< v (- (/ ell-kp 2))) -1)
+                     (t 0)))
+            (u-i (- v (* s ell-kp)))
+            (w (complex u-r u-i)))
+       (+ (jacobi-epsilon u-r m)
+          (* #c(0 1) (+ (* 2 n) s) (- ell-kp ell-ep))
+          (if (zerop s)
+              0
+              (/ (* (cn w m) (dn w m))
+                 (sn w m)))
+          (* #c(0 1)
+             (- (+ u-i
+                   (/ (* (sn u-i m1) (dn u-i m1))
+                      (cn u-i m1)))
+                (+ (jacobi-epsilon u-i m1)
+                   (/ (* m (sn u-r m) (sn u-i m1) (sn w m))
+                      (cn u-i m1))))))))))
 
-(defgrad %elliptic_eu ($u $m)
+(in-package :maxima)
+
+(defgrad %jacobi_epsilon ($u $m)
   ;; wrt u
   #$$ jacobi_dn(u,m)^2 $
   ;; wrt m
   nil
 )
 
-(def-simplifier elliptic_eu (u m)
-  (cond
-    ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
-    ;; so handle only floats and complex floats here.
-    ((float-numerical-eval-p u m)
-     (elliptic-eu ($float u) ($float m)))
-    ((complex-float-numerical-eval-p u m)
-     (let ((u-r ($realpart u))
-	   (u-i ($imagpart u))
-	   (m ($float m)))
-       (complexify (elliptic-eu (complex u-r u-i) m))))
-    (t
-     (give-up))))
+(def-simplifier jacobi_epsilon (u m)
+  (let (coef args)
+    (cond
+      ((float-numerical-eval-p u m)
+       (bigfloat::jacobi-epsilon ($float u) ($float m)))
+      ((setf args (complex-float-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::jacobi-epsilon (bigfloat:to ($float u))
+                                       (bigfloat:to ($float m))))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::jacobi-epsilon (bigfloat:to ($bfloat u))
+                                     (bigfloat:to ($bfloat m)))))
+      ((setf args (complex-bigfloat-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::jacobi-epsilon (bigfloat:to ($bfloat u))
+                                       (bigfloat:to ($bfloat m))))))
+      ((zerop1 u)
+       0)
+      ((zerop1 m)
+       ;; dn(u|0) = 1, so E(u|0) = u
+       u)
+      ((onep1 m)
+       ;; dn(u|1) = sech(u), so E(u|1) = tanh(u)
+       (ftake '%tanh u))
+      ((setq coef (kc-arg2 u m))
+       ;; u = lin*K(m) + const.  The same cases as JACOBI_SN.  With
+       ;; E(u + 2*K(m)|m) = E(u|m) + 2*E(m) and
+       ;; E(u + K(m)|m) = E(u|m) + E(m) - m*sn(u|m)*cd(u|m)
+       ;; (https://dlmf.nist.gov/22.16.E28),
+       ;;
+       ;;   E(2*k*K(m) + u|m) = E(u|m) + 2*k*E(m)
+       ;;   E((2*k+1)*K(m) + u|m) = E(u|m) + (2*k+1)*E(m) - m*sn(u|m)*cd(u|m)
+       (destructuring-bind (lin const)
+           coef
+         (cond ((integerp lin)
+                ;; lin-e = lin*E(m), complete elliptic E
+                (let ((lin-e (mul lin (ftake '%elliptic_ec m))))
+                  (cond ((zerop1 const)
+                         ;; E(n*K(m)|m) = n*E(m)
+                         lin-e)
+                        ((evenp lin)
+                         ;; lin = 2*k:
+                         ;;   E(2*k*K(m) + u|m) = E(u|m) + 2*k*E(m)
+                          (add (ftake '%jacobi_epsilon const m) lin-e))
+                        (t
+                         ;; lin = 2*k+1:
+                         ;;   E((2*k+1)*K(m) + u|m)
+                         ;;     = E(u|m) + (2*k+1)*E(m) - m*sn(u|m)*cd(u|m)
+                         (add (ftake '%jacobi_epsilon const m)
+                              lin-e
+                              (neg (mul m
+                                        (ftake '%jacobi_sn const m)
+                                        (ftake '%jacobi_cd const m))))))))
+               ((and (alike1 lin 1//2)
+                     (zerop1 const))
+                ;; E(K(m)|m) = 2*E(K(m)/2|m) - m*sn(K(m)/2|m)^2 by the
+                ;; addition formula, and sn(K(m)/2|m)^2 = 1/(1+sqrt(1-m))
+                ;; (A&S 16.5.2), so
+                ;;
+                ;;   E(K(m)/2|m) = (E(m) + 1 - sqrt(1-m))/2
+                (div (add (ftake '%elliptic_ec m)
+                          1
+                          (neg (power (sub 1 m) 1//2)))
+                     2))
+               ((and (alike1 lin 3//2)
+                     (zerop1 const))
+                ;; From the odd case above with u = K(m)/2, since
+                ;; m*sn(K(m)/2|m)*cd(K(m)/2|m) = 1 - sqrt(1-m):
+                ;;
+                ;;   E(3*K(m)/2|m) = (3*E(m) - 1 + sqrt(1-m))/2
+                (div (add (mul 3 (ftake '%elliptic_ec m))
+                          -1
+                          (power (sub 1 m) 1//2))
+                     2))
+               (t
+                (give-up)))))
+      (t
+       (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.

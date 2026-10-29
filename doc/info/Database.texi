@@ -1687,8 +1687,11 @@ Removes predicates established by @mrefdot{assume}
 The predicates may be expressions equivalent to (but not necessarily identical
 to) those previously assumed.
 
-Assertions in the context @code{global} are built into Maxima and are not
-removed by @code{forget}.
+@code{forget} only sees the facts that are active in the current context: those
+in the current context itself, in its subcontexts and in the contexts activated
+by @mrefdot{activate}  Facts in other contexts are not removed, and a predicate
+found only there counts as not in the database. If the same fact is stored in
+several active contexts, the one in the current context is removed first.
 
 @code{forget} returns the facts it removed, @code{redundant} for facts not in
 the database, and @code{not_done} for built-in assertions in the context
