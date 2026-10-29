@@ -3428,6 +3428,18 @@ block([r],
 [[[y > 0], true], unknown, [initial, global]]$
 
 
+/* Bug #5735: "assume(y > x)$ block([], local(x), y - x) gives a Lisp error" */
+
+block([r],
+  local(x, y, z),
+  assume(y > x, x > z),
+  r : block([],
+    local(x),
+    [y - x, is(y > x), is(y > z), sign(y - x), featurep(y, integer), facts()]),
+  [r, is(y > x), is(y > z), facts()]);
+[[y - x, unknown, unknown, pnz, false, []], true, true, [y > x, x > z]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -286,6 +286,7 @@ Bug fixes for numbered bugs:
 * \#5732 assume(2 - abs(x) < 1) learns both x > 1 and x < -1
 * \#5733 forget() removes facts of other contexts and leaves facts that survive kill(all)
 * \#5734 After fourier_elim(), assume() and is() use the context initial instead of the current one
+* \#5735 assume(y > x)$ block([], local(x), y - x) gives a Lisp error
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
 
 Bug fixes for unnumbered bugs:
