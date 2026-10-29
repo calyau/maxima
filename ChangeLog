@@ -282,6 +282,7 @@ Bug fixes for numbered bugs:
 * \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
 * \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
 * \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
+* \#5724 Lone colon causes a Lisp error
 * \#5731 Bigfloat tanh(x) is not odd
 * \#5732 assume(2 - abs(x) < 1) learns both x > 1 and x < -1
 * \#5733 forget() removes facts of other contexts and leaves facts that survive kill(all)
