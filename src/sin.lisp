@@ -110,6 +110,31 @@
           (ftake 'mexpt ($expand (second e) 1 0) (third e)))
         (t (recur-apply #'(lambda (q) (expand-base-of-exp q x)) e))))
 
+;; T if E has a power u^r of a U that depends on VAR2, which domain : real
+;; may take for the real root: R is neither an integer nor a rational with
+;; an even denominator.
+(defun real-root-power-p (e var2)
+  (cond ((atom e) nil)
+        ((and (mexptp e)
+              (not (freevar2 (cadr e) var2))
+              (not (integerp (caddr e)))
+              (not (and (ratnump (caddr e)) (evenp (caddr (caddr e))))))
+         t)
+        (t (some #'(lambda (a) (real-root-power-p a var2)) (cdr e)))))
+
+;; E with each power (k*u)^r of a positive number k written as k^r*u^r,
+;; which holds for principal powers too.
+(defun split-positive-factors (e)
+  (cond ((atom e) e)
+        ((and (mexptp e)
+              (mtimesp (cadr e))
+              (mnump (cadr (cadr e)))
+              (eq ($sign (cadr (cadr e))) '$pos))
+         (mul (power (cadr (cadr e)) (caddr e))
+              (power (split-positive-factors (div (cadr e) (cadr (cadr e))))
+                     (caddr e))))
+        (t (recur-apply #'split-positive-factors e))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Stage II of the Integrator
@@ -236,11 +261,21 @@
                  ((intform (caddr expres) var2))
                  ((and (eq '$%e (cadr expres))
                        (isinop (caddr expres) '%log))
-                  ;; Found something like exp(r*log(x))
-                  (let* (($%e_to_numlog t)
+                  ;; Found something like exp(r*log(x)). Where x^r would be
+                  ;; the real root, see ODD-ROOT-LOG-TERM-P, integrate x^r as
+                  ;; the principal root, with domain : complex, and take only
+                  ;; an answer that is free of such roots.
+                  (let* ((odd (odd-root-log-term-p (caddr expres)))
+                         ($domain (if odd '$complex $domain))
+                         ($%e_to_numlog t)
                          ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
                          (nexp (resimplify *exp*)))
                     (cond ((alike1 *exp* nexp) nil)
+                          (odd (let ((ans (split-positive-factors
+                                           (integrator nexp var2))))
+                                 (and (not (isinop ans '%integrate))
+                                      (not (real-root-power-p ans var2))
+                                      ans)))
                           (t (integrator (setq *exp* nexp) var2)))))
                  (t nil)))
         
@@ -2657,6 +2692,46 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; The product gamma_incomplete(alpha, z)*z^s*var^m, with s = -alpha unless
+;; given, that the antiderivatives below are made of.
+;;
+;; gamma_incomplete is on the principal branch, but with domain : real and an
+;; odd denominator of alpha the simplifier takes the real root of z^s, as
+;; (-x^3)^(-1/3) becomes -1/x. So z^s is the principal power from
+;; PRINCIPAL-POWER instead. As the antiderivatives are for a real VAR, that
+;; uses var/abs(var) also for z = k*var with k > 0, where it would otherwise
+;; write %e^(log(z)/3) and the like. For an integer m, var^m is multiplied
+;; into that power, so that its sign becomes part of the phase.
+;;
+;; For z = k*var^n with n > 0 and an odd numerator and denominator, var^m*z^s
+;; is one constant for var > 0 and another for var < 0. For alpha > 0 the
+;; antiderivative then jumps at var = 0, by gamma(alpha) times the
+;; difference. Taking gamma(alpha) from gamma_incomplete makes it 0 at
+;; var = 0 from both sides. This is not needed if the sign of VAR is known.
+(defun gamma-incomplete-and-power (alpha z var m &optional (s (mul -1 alpha)))
+  (let* ((gamma-part (ftake '%gamma_incomplete alpha z))
+         (power-part (principal-power z s t))
+         (var-power-part (mul (power var m) power-part)))
+    (multiple-value-bind (k w n) (real-power-factors z t)
+      (when (and k
+                 (alike1 w var)
+                 ;; n > 0 with an odd numerator and denominator
+                 (oddp (num1 n))
+                 (oddp (denom1 n))
+                 (plusp (num1 n))
+                 ;; alpha > 0 with an odd denominator
+                 (ratnump alpha)
+                 (plusp (cadr alpha))
+                 (oddp (caddr alpha))
+                 ;; the sign of VAR is unknown
+                 (not (member ($sign var) '($pos $pz $neg $nz))))
+        (setq gamma-part (sub gamma-part (ftake '%gamma alpha)))))
+    (cond ((alike1 power-part (power z s))
+           ;; PRINCIPAL-POWER kept z^s as it is.
+           (mul gamma-part (power var m) power-part))
+          ((integerp m) (mul gamma-part ($multthru var-power-part)))
+          (t (mul gamma-part var-power-part)))))
+
 (defun integrate-exp-special (expr var2 &aux w const fe)
 
   ;; First factor the expression.
@@ -2679,16 +2754,14 @@
 	  const
 	  ;; 1/(p*r*(a^(c*v*(var2^r)^p)))
 	  (inv (mul p r (power a (mul c v (power (power var2 r) p)))))
-	  var2
 	  ;; (a^(d+c*(var2^r)^p))^v
 	  (power (power a (add d (mul c (power (power var2 r) p)))) v)
-	  ;; gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a))
-	  (take '(%gamma_incomplete)
+	  ;; var2*gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a))
+	  ;; *(-c*v*(var2^r)^p*log(a))^(-1/(p*r))
+	  (gamma-incomplete-and-power
 		(inv (mul p r))
-		(mul -1 c v (power (power var2 r) p) (take '(%log) a)))
-	  ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r))
-	  (power (mul -1 c v (power (power var2 r) p) (take '(%log) a))
-		 (div -1 (mul p r)))))
+		(mul -1 c v (power (power var2 r) p) (take '(%log) a))
+		var2 1)))
 
     ((m2-exp-type-2 fe var2)
      (a b d v r)
@@ -2700,13 +2773,10 @@
       const
       (div -1 r)
       (power a d)
-      (power var2 (add v 1))
-      ($gamma_incomplete
+      (gamma-incomplete-and-power
        (div (add v 1) r)
-       (mul -1 b (power var2 r) ($log a)))
-      (power
        (mul -1 b (power var2 r) ($log a))
-       (mul -1 (div (add v 1) r)))))
+       var2 (add v 1))))
 
     ((m2-exp-type-2-1 fe var2)
      (a b v r u)
@@ -2718,11 +2788,11 @@
           (inv r)
           (power '$%e (mul -1 a u (power var2 r)))
           (power (power '$%e (add (mul a (power var2 r)) b)) u)
-          (power var2 (add v 1))
-          (power (mul -1 a u (power var2 r)) (div (mul -1 (add v 1)) r))
-          (take '(%gamma_incomplete)
+          (gamma-incomplete-and-power
                 (div (add v 1) r)
-                (mul -1 a u (power var2 r)))))
+                (mul -1 a u (power var2 r))
+                var2 (add v 1)
+                (div (mul -1 (add v 1)) r))))
     
     ((m2-exp-type-3 (expand-base-of-exp fe var2) var2)
       (a b c d p)

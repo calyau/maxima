@@ -2994,6 +2994,20 @@
 	  (neg-principal-power -1 e)
 	  (power -1 e)))))
 
+;; T if the exponent E has a term c*log(u) with a rational c of odd
+;; denominator and a u that may be negative. With domain : real,
+;; %e^(c*log(u)) is the principal value of u^c, but u^c is the real root.
+(defun odd-root-log-term-p (e)
+  (and (eq $domain '$real)
+       (some #'(lambda (term)
+                 (and (mtimesp term)
+                      (ratnump (cadr term))
+                      (oddp (caddr (cadr term)))
+                      (null (cdddr term))
+                      (mlogp (caddr term))
+                      (not (member ($csign (cadr (caddr term))) '($pos $pz)))))
+             (if (mplusp e) (cdr e) (list e)))))
+
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
 	((and (eq (caar pot) 'mtimes)

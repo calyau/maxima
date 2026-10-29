@@ -46,17 +46,20 @@
 ;; negative base instead: (-8)^(1/3) is -2 and (-x^3)^(-1/3) is -1/x. A
 ;; function on the principal branch, as gamma_incomplete(a,z), needs the
 ;; principal z^s in its derivative, its expansions and the antiderivatives
-;; written with it. Where the simplifier does not take the real root, Z^S
-;; itself is returned.
+;; written with it. Where the simplifier does not take the real root, as
+;; with domain : complex, Z^S itself is returned.
 ;;
 ;; For z = k*w^n with a constant k and a real w the power is written as an
 ;; expression in w and abs(w), which rectform, float and the integrator
-;; leave on the right branch. Any other z, as x, 1-x or x+%i, gets
-;; z^m*%e^((s-m)*log(z)) with the principal log(z) and the integer m
-;; nearest to s, so that powers of z whose exponents differ by an integer
-;; share the exponential and cancel.
+;; leave on the right branch. For z = k*w with k > 0, as x or 1-x, this is
+;; done only if REAL-VAR is T, as for the antiderivatives of the
+;; integrator, which are for a real variable. Any other z, as x+%i, and
+;; such a z otherwise, gets z^m*%e^((s-m)*log(z)) with the principal log(z)
+;; and the integer m nearest to s, which holds for a complex value put in
+;; for z too, and powers of z whose exponents differ by an integer share
+;; the exponential and cancel.
 ;;
-(defun principal-power (z s)
+(defun principal-power (z s &optional real-var)
   (let (sgn)
     (cond ((or (not (eq $domain '$real))
                (not (ratnump s))
@@ -70,7 +73,7 @@
              (if cnum
                (mul (power (add (power re 2) (power im 2)) (div s 2))
                     (power '$%e (mul '$%i s (ftake '%atan2 im re))))
-               (multiple-value-bind (k w n) (real-power-factors z)
+               (multiple-value-bind (k w n) (real-power-factors z real-var)
                  (if k
                    (principal-power-real-factors k w n s)
                    (let* ((m (round (cadr s) (caddr s)))
@@ -82,8 +85,8 @@
 ;; Z as k*w^n for a constant k, a real w that is not constant and an
 ;; integer n or a rational n with an odd denominator: (values k w n). NIL
 ;; when Z is not of this form, or when n is 1 and k is positive, where z has
-;; the argument of w and is left to PRINCIPAL-LOG.
-(defun real-power-factors (z)
+;; the argument of w and is left to PRINCIPAL-LOG, unless REAL-VAR is T.
+(defun real-power-factors (z &optional real-var)
   (let ((k 1) (w z) (n 1) const)
     ;; Each factor of Z is tested with $CONSTANTP once. W is constant iff
     ;; every factor of Z is, and so is the base of W if W is a power.
@@ -102,7 +105,7 @@
       (setq n (caddr w)
             w (cadr w)))
     (unless (or const
-                (and (eql n 1) (member ($csign k) '($pos $pz)))
+                (and (not real-var) (eql n 1) (member ($csign k) '($pos $pz)))
                 (member ($csign w) '($complex $imaginary)))
       (values k w n))))
 
@@ -136,7 +139,7 @@
 ;; for PRINCIPAL-POWER. SGN is the csign of Z. The simplifier keeps log(Z)
 ;; for a sum or a product, but writes log(x^a) as a*log(x), which is off by
 ;; a multiple of 2*%i*%pi where the argument of x^a is not a times that of
-;; x. Then l is log(abs(Z)) and a the argument of Z.
+;; x. Then l is log(abs(Z)) and a the argument of Z, as carg gives it.
 ;;
 ;; TODO: If the log simplifier ever gets fixed, this may no longer be necessary.
 ;;
@@ -150,8 +153,7 @@
                 (mul (caddr z) (ftake '%log (ftake 'mabs (cadr z))))
                 (ftake '%log (ftake 'mabs z)))
               (if (member sgn '($complex $imaginary))
-                (let ((ri (trisplit z)))
-                  (ftake '%atan2 (cdr ri) (car ri)))
+                (ftake '%carg z)
                 (ftake '%atan2 0 z))))))
 
 ;;; Realpart gives the real part of an expr.

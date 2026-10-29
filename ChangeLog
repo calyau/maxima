@@ -4,6 +4,7 @@ Maxima 5.50-post change log
 Bug fixes for numbered bugs:
 ----------------------------
 * \#2596 error in matrix exponentiation
+* \#3091 Antiderivative of sin(x^3) is wrong by a factor of -1/2
 * \#3994 limits of some gamma_incomplete expressions
 * \#4020 various limit bugs with exp(%i*x)
 * \#4055 ratsimp/algebraic doesn't simplify expand(p^2)/p where p=x+sqrt(2)
@@ -296,6 +297,7 @@ Bug fixes for numbered bugs:
 * \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
 * \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
 * \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
+* \#5723 integrate(sin(x^3),x) and integrate(%e^(x^3),x,-1,1) are wrong
 * \#5724 Lone colon causes a Lisp error
 * \#5725 noncommutative times operator changed by reloading saved data
 * \#5731 Bigfloat tanh(x) is not odd
