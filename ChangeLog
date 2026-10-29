@@ -12,6 +12,7 @@ Bug fixes for numbered bugs:
 * \#4822 Antiderivative of acoth is complex where acoth is real
 * \#4830 Non-total ordering between constant & scalar and scalar
 * \#4852 fpplus sticky-bit is off by one - additions misround by up to 0.75 ulp
+* \#4855 fpquotient - missing sticky bit causes misrounded division
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4931 airy_ai and airy_dai return nonsense at bigfloat precision
 * \#4933 asech is treated as an even function

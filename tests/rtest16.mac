@@ -4774,6 +4774,18 @@ block([fpprec : 16],
 [0.0b0, 0.0b0, 0.0b0]$
 
 
+/* Bug #4855: "fpquotient - missing sticky bit causes misrounded division" */
+
+block([fpprec : 16], is(bfloat(2)/bfloat(11) = bfloat(2/11)));
+true$
+
+/* Each k/d lies in [1/2, 1), where half an ulp is 2^-57 at fpprec 16 */
+block([fpprec : 16],
+  sublist(create_list(k/d, d, 3, 40, k, ceiling(d/2), d - 1),
+    lambda([q], abs(rationalize(bfloat(num(q))/bfloat(denom(q))) - q) > 2^-57)));
+[]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -1228,8 +1228,14 @@
   (cond ((equal (car b) 0)
 	 (merror (intl:gettext "pquotient: attempted quotient by zero.")))
 	((equal (car a) 0) '(0 0))
-	(t (list (fpround (quotient (fpshift (car a) (+ 3 fpprec)) (car b)))
-		 (+ -3 (- (cadr a) (cadr b)) *m)))))
+	(t (multiple-value-bind (q r)
+	       (truncate (fpshift (car a) (+ 3 fpprec)) (car b))
+	     ;; A nonzero remainder sets the lowest bit of a binary Q, below its
+	     ;; round bit, so that FPROUND can't take Q for a tie.
+	     (unless (or *decfp (zerop r) (oddp q))
+	       (setq q (if (minusp q) (1- q) (1+ q))))
+	     (list (fpround q)
+		   (+ -3 (- (cadr a) (cadr b)) *m))))))
 
 (defun fpgreaterp (a b)
   (fpposp (fpdifference a b)))
