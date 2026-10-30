@@ -1537,6 +1537,76 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
    closeto(jacobi_dn(u, m) - (0.00014529847765475596 - 0.0010089526533319345*%i), 2.9049e-14)]);
 [true, true, true];
 
+/* inverse_jacobi_sn with u near 1 and m near 1. */
+[closeto(inverse_jacobi_sn(1 - 2.0^-30, 1 - 2.0^-40) - 10.743659250482002, 1.7764e-15),
+ closeto(inverse_jacobi_sn(1 - 2b0^-30, 1 - 2b0^-40) - 1.07436592504820016796375174632976b1, 2.4652b-32)];
+[true, true];
+
+/* inverse_jacobi_cn with small u and m near 1. */
+[closeto(inverse_jacobi_cn(2.0^-30, 1 - 2.0^-52) - 19.345661674422928, 3.5528e-15),
+ closeto(inverse_jacobi_cn(2b0^-30, 1 - 2b0^-52) - 1.934566167442292937671725429190278b1, 1b-40)];
+[true, true];
+
+/* inverse_jacobi_cn with u near 1 and m < 0. */
+[closeto(inverse_jacobi_cn(1 - 2.0^-50, -2.0) - 4.214684851089401e-8, 6.6175e-24),
+ closeto(inverse_jacobi_cn(1 - 2b0^-50, -2b0) - 4.21468485108940099505148730213287b-8, 1b-40)];
+[true, true];
+
+/* inverse_jacobi_cn with u near -1, using acn(u,m) = 2*K(m) - acn(-u,m). */
+[closeto(inverse_jacobi_cn(-1 + 2.0^-30, 1 - 2.0^-40) - 30.49843278627118, 7.1055e-15),
+ closeto(inverse_jacobi_cn(-1 + 2b0^-30, 1 - 2b0^-40) - 3.049843278627118151443682687344332b1, 4.9304b-32)];
+[true, true];
+
+/* inverse_jacobi_dn with u near sqrt(1-m) and m near 1. */
+[closeto(inverse_jacobi_dn(2.0^-20 + 2.0^-30, 1 - 2.0^-40) - 15.205047394238907, 3.5528e-15),
+ closeto(inverse_jacobi_dn(2b0^-20 + 2b0^-30, 1 - 2b0^-40) - 1.520504739423890650572483821732772b1, 7.3956b-32)];
+[true, true];
+
+/* inverse_jacobi_dn with u near 1 and m < 1/2. */
+[closeto(inverse_jacobi_dn(1 - 2.0^-12, 2.0^-10) - 0.7854068065491936, 2.2205e-16),
+ closeto(inverse_jacobi_dn(1 - 2b0^-12, 2b0^-10) - 7.854068065491935840804874067170238b-1, 3.0815b-33)];
+[true, true];
+
+/* inverse_jacobi_cn with complex u and m, small u and m near 1. */
+[closeto(inverse_jacobi_cn(2.0^-30 + 2.0^-31*%i, 1 + 2.0^-40*%i) - (15.248892705157619 + 0.7843623623217276*%i), 1.7764e-15),
+ closeto(inverse_jacobi_cn(2b0^-30 + 2b0^-31*%i, 1 + 2b0^-40*%i) - (1.524889270515761822160767218173288b1 + 7.843623623217275854492855814380053b-1*%i), 5.1217b-32)];
+[true, true];
+
+/* inverse_jacobi_cn with complex u and m, Re(u) < 0, small u and m near 1. */
+[closeto(inverse_jacobi_cn(-2.0^-30 + 2.0^-31*%i, 1 - 2.0^-40*%i) - (15.249583239480332 - 0.7864339644666892*%i), 1.0806e-14),
+ closeto(inverse_jacobi_cn(-2b0^-30 + 2b0^-31*%i, 1 - 2b0^-40*%i) - (1.524958323948033255048473397009997b1 - 7.864339644666892305619731430949452b-1*%i), 6.1630b-33)];
+[true, true];
+
+/* inverse_jacobi_dn with complex u and m, u near sqrt(1-m) and m near 1. */
+[closeto(inverse_jacobi_dn(2.0^-20 + 2.0^-30 + 2.0^-20*%i, 1 - 2.0^-39*%i) - (14.8683313219928 - 0.7711785806674218*%i), 8.9510e-15),
+ closeto(inverse_jacobi_dn(2b0^-20 + 2b0^-30 + 2b0^-20*%i, 1 - 2b0^-39*%i) - (1.486833132199279911137479377646307b1 - 7.711785806674217901112320847375016b-1*%i), 7.4532b-32)];
+[true, true];
+
+/* inverse_jacobi_dn with complex u and m, Re(u) < 0, u near -sqrt(1-m) and m near 1. */
+[closeto(inverse_jacobi_dn(-2.0^-20 - 2.0^-30 - 2.0^-20*%i, 1 - 2.0^-39*%i) - (14.936997442084134 + 2.3419749074749627*%i), 7.2293e-15),
+ closeto(inverse_jacobi_dn(-2b0^-20 - 2b0^-30 - 2b0^-20*%i, 1 - 2b0^-39*%i) - (1.493699744208413487809778249600563b1 + 2.341974907474962808938544557528929b0*%i), 9.8801b-32)];
+[true, true];
+
+/* inverse_jacobi_sn with u^2 too large for a double. */
+[closeto(inverse_jacobi_sn(2.0^600, 0.5) - (3.4081413574608386e-181 - 1.8540746773013719*%i), 2.2205e-16),
+ closeto(inverse_jacobi_sn(2b0^600, 0.5b0) - (3.408141357460838414302093156091263b-181 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32)];
+[true, true];
+
+/* inverse_jacobi_cn with u^2 too large for a double. */
+[closeto(inverse_jacobi_cn(2.0^600*%i, 0.5) - (3.4081413574608386e-181 - 1.8540746773013719*%i), 2.2205e-16),
+ closeto(inverse_jacobi_cn(2b0^600*%i, 0.5b0) - (3.408141357460838414302093156091263b-181 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32)];
+[true, true];
+
+/* inverse_jacobi_dn with very small m. */
+[closeto(inverse_jacobi_dn(2.0^27, 2.0^-1000) - 347.959884633642*%i, 1.1369e-13),
+ closeto(inverse_jacobi_dn(2b0^27, 2b0^-1000) - 3.479598846336419647305266967091412b2*%i, 1b-40)];
+[true, true];
+
+/* inverse_jacobi_dn with small u and very small m. */
+[closeto(inverse_jacobi_dn(2.0^-27*%i, 2.0^-1000) - (1.570796319344316 - 347.9598846410926*%i), 5.6846e-14),
+ closeto(inverse_jacobi_dn(2b0^-27*%i, 2b0^-1000) - (1.570796319344316022307493704503187b0 - 3.479598846410925453274505249720046b2*%i), 7.8887b-31)];
+[true, true];
+
 
 /* jacobi_epsilon: one test for each case in ELLIPTIC-EU.  Reference
  * values computed with mpmath as integrate(jacobi_dn(t,m)^2,t,0,u)
