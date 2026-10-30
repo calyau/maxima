@@ -107,29 +107,6 @@
 ;;; Check if the problem can be transformed or solved by special methods.
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
-;; T if the exponent E has a term c*log(u) with a rational c of odd
-;; denominator and a u that may be negative. With domain : real,
-;; %e^(c*log(u)) is the principal value of u^c, but u^c is the real root.
-(defun odd-root-log-term-p (e)
-  (and (eq $domain '$real)
-       (some #'(lambda (term)
-                 (and (mtimesp term)
-                      (ratnump (cadr term))
-                      (oddp (caddr (cadr term)))
-                      (null (cdddr term))
-                      (not (atom (caddr term)))
-                      (eq (caar (caddr term)) '%log)
-                      (not (member ($csign (cadr (caddr term))) '($pos $pz)))))
-             (if (mplusp e) (cdr e) (list e)))))
-
-;; T if E has a power %e^y for which ODD-ROOT-LOG-TERM-P of y is true.
-(defun odd-root-log-power-p (e)
-  (cond ((atom e) nil)
-        ((specrepp e) (odd-root-log-power-p (specdisrep e)))
-        ((and (mexptp e) (eq (cadr e) '$%e) (odd-root-log-term-p (caddr e)))
-         t)
-        (t (some #'odd-root-log-power-p (cdr e)))))
-
 (let (powerl)
   ;; POWERL is initialized in INTEGRATOR to NIL and can be modified in
   ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
@@ -318,7 +295,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result skipexp
+    (prog (y const w arcpart coef integrand result expanded
            *risch-use-triginv-all*)
        (declare (special *integrator-level*))
        (setq powerl nil)
@@ -380,48 +357,43 @@
        (progn
          (format t "car y =~%")
          (maxima-display (car y)))
-       (cond ((or (rat8 (car y) var2)
-		  (and skipexp (exponentialp (car y) var2)))
+       (cond ((rat8 (car y) var2)
 	      #+nil
 	      (format t "In loop, go skip~%")
 	      (go skip))
-	     ((and (setq w (if skipexp
-			       ;; A clue after a failed exponential leaves
-			       ;; *EXP*, POWERL and *INTEGRATOR-LEVEL* as
-			       ;; they were.
-			       (let ((*exp* *exp*) (p powerl)
-				     (*integrator-level* *integrator-level*))
-				 (declare (special *exp* *integrator-level*))
-				 (prog1 (intform (car y) var2)
-				   (setq powerl p)))
-			       (intform (car y) var2)))
+	     ((and (setq w (intform (car y) var2))
 		   ;; Do not return a noun form as result at this point, because
 		   ;; we would like to check for further special integrals.
 		   ;; We store the result for later use.
-		   (or skipexp (setq result w))
+		   (setq result w)
 		   (not (isinop w '%integrate)))
 	      #+nil
 	      (format t "In loop, case intform~%")
 	      (return (mul2* const w)))
-	     ((and (not *in-risch-p*) (exponentialp (car y) var2))
-	      ;; INTFORM failed on the exponential. Take the next factor that
-	      ;; is not an exponential as the clue, if there is one. Not for
-	      ;; the integrals RISCHINT leaves, whose radicals it may have
-	      ;; split on a wrong branch.
-	      (setq skipexp t)
-	      (go skip))
+	     ((and (not *in-risch-p*) (exponentialp (car y) var2)
+		   ;; INTFORM failed on the exponential. Try the next factor
+		   ;; that is not an exponential as the clue, leaving *EXP*,
+		   ;; POWERL and *INTEGRATOR-LEVEL* as they were. Not for the
+		   ;; integrals RISCHINT leaves, whose radicals it may have
+		   ;; split on a wrong branch. An error there is a failure.
+		   (setq w (find-if-not #'(lambda (f)
+					    (or (rat8 f var2)
+						(exponentialp f var2)))
+					(cdr y)))
+		   (setq w (let ((*exp* *exp*) (p powerl) ($errormsg nil)
+				 (*integrator-level* *integrator-level*))
+			     (declare (special *exp* *integrator-level*))
+			     (prog1 (car (errcatch (intform w var2)))
+			       (setq powerl p))))
+		   (not (isinop w '%integrate)))
+	      (return (mul2* const w)))
 	     (t
 	      #+nil
 	      (format t "In loop, go special~%")
-	      ;; Store a possible partial result
-	      (unless skipexp
-		(setq result w))
 	      (go special)))
      skip
        (setq y (cdr y))
-       (cond ((and (null y) skipexp)
-	      (go special))
-	     ((null y)
+       (cond ((null y)
               ;; Method 8: Rational functions
 	      (return (mul2* const (cond ((setq y (powerlist *exp* var2)) y)
 				         (t (ratint *exp* var2)))))))
@@ -489,7 +461,7 @@
 				  (setq y (integrator y var2 stack))
 				  ;; Keep it for later if it holds an integral,
 				  ;; and try the methods below.
-				  (setq result y)
+				  (setq result y expanded t)
 				  (not (isinop y '%integrate)))
 			     y)
 			    ((and (not powerl)
@@ -501,10 +473,15 @@
 			          (setq y
                         ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
                         ;; '$ALL if we earlier remembered to do so.
+                        ;; After an expansion that left an integral, an
+                        ;; error counts as a failure.
                         (let (($triginverses (if *risch-use-triginv-all*
                                                 '$all
-                                                $triginverses)))
-                          (rischint *exp* var2)))
+                                                $triginverses))
+                              ($errormsg (and (not expanded) $errormsg)))
+                          (if expanded
+                              (car (errcatch (rischint *exp* var2)))
+                              (rischint *exp* var2))))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -912,9 +889,9 @@
   "Generates and prepares a symbol to be used as the new variable when performing
   a substitution for the expression EXPR. Preparation includes:
   - giving it EXPR as its ALIAS-EXPRESSION property, if EXPR is non-NIL, so that
-    signs, facts and questions involving the new variable are those of EXPR (see
-    SUBST-ALIASES), and if EXPR is a symbol, the declarations of EXPR apply.
-    It sets *ALIAS-EXPRESSIONS*, which callers bind, as SININT and RISCHINT do,
+    signs, facts and questions involving the new variable are those of EXPR
+    (see SUBST-ALIASES), and the declarations of EXPR if it is a symbol.
+    It sets *ALIAS-EXPRESSIONS*, which SININT and RISCHINT bind,
   - else adding the 'INTERNAL property (so no questions are asked about it),
   - adding a declaration that the new variable is '$COMPLEX/'$IMAGINARY if EXPR's
     sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY."
@@ -923,13 +900,11 @@
     (cond (expr
            (setq *alias-expressions* t)
            (putprop new-var expr 'alias-expression)
-           (when (symbolp expr)
-             (kind new-var expr))
+           (when (symbolp expr) (kind new-var expr))
            (let ((expr-sign ($csign expr)))
              (when (member expr-sign '($complex $imaginary))
                (declare1 (list new-var) t expr-sign 'kind))))
-          (t
-           (putprop new-var t 'internal)))
+          (t (putprop new-var t 'internal)))
     new-var))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1944,10 +1919,12 @@
              (mapcar #'(lambda (y) (sinint y var2)) (cdr expr))))
 
       ;; The symbolic integration code doesn't really deal very well with
-      ;; subscripted variables, so if we have one then replace occurrences of var2
-      ;; with an atomic gensym and recurse.
+      ;; non-atomic variables like r[1] or r(x), so if we have one then replace
+      ;; occurrences of var2 with an atomic gensym and recurse. Sums, products
+      ;; and powers are left alone, since their parts can occur elsewhere in the
+      ;; integrand (x in x^2).
       ((and (not (atom var2))
-            (member 'array (cdar var2)))
+            (not (member (caar var2) '(mplus mtimes mexpt))))
        (let ((dummy-var2 (make-new-var "sinint" var2)))
          (maxima-substitute var2 dummy-var2
                             (sinint (maxima-substitute dummy-var2 var2 expr) dummy-var2))))
@@ -2703,16 +2680,17 @@
                    (t (recur-apply #'rewrite e)))))
     (let ((e (rewrite expr)))
       (unless (alike1 e expr)
-        (let ((y (integrator e var2 stack)))
+        (let ((y (let (($errormsg nil))
+                   (car (errcatch (integrator e var2 stack))))))
           (unless (isinop y '%integrate) y))))))
 
 ;; gamma_incomplete(alpha,z), z^s and var^m, with s = -alpha, of the
-;; antiderivatives below, as (values g pw vp). With domain : real and an odd
+;; antiderivatives below, as their product. With domain : real and an odd
 ;; denominator of alpha the simplifier takes the real root of z^s, as
 ;; (-x^3)^(-1/3) becomes -1/x, while gamma_incomplete is on the principal
-;; branch. Then PW is the principal power of PRINCIPAL-POWER, with var^m
+;; branch. So z^s is the principal power of PRINCIPAL-POWER, with var^m
 ;; multiplied into it for an integer m, so that the sign of var^m folds into
-;; its phase, and VP is 1. As the antiderivatives are for a real var, PW is
+;; its phase. As the antiderivatives are for a real var, the power is
 ;; written with var/abs(var) also for z = k*var with k > 0, where
 ;; PRINCIPAL-POWER would otherwise take %e^(log(z)/3) and the like.
 ;;
@@ -2724,26 +2702,22 @@
 ;; antiderivative 0 at var = 0 from both sides, unless the sign of var is
 ;; known.
 (defun gamma-incomplete-and-power (alpha s z var m)
-  (let ((g (take '(%gamma_incomplete) alpha z))
-        (pw (power z s))
-        (vp (power var m))
-        (ppw (principal-power z s t)))
-    (multiple-value-bind (k w n) (real-power-factors z)
+  (let* ((g (take '(%gamma_incomplete) alpha z))
+         (pw (principal-power z s t))
+         (c (mul (power var m) pw)))
+    (multiple-value-bind (k w n) (real-power-factors z t)
       (when (and k
                  (alike1 w var)
                  (plusp (num1 n))
                  (ratnump alpha)
                  (plusp (cadr alpha))
                  (not (member ($sign var) '($pos $pz $neg $nz)))
-                 (let ((c (mul vp ppw)))
-                   (not (eq t (meqp (maxima-substitute 1 var c)
-                                    (maxima-substitute -1 var c))))))
+                 (not (eq t (meqp (maxima-substitute 1 var c)
+                                  (maxima-substitute -1 var c)))))
         (setq g (sub g (take '(%gamma) alpha)))))
-    (if (alike1 ppw pw)
-        (values g pw vp)
-        (values g
-                (if (integerp m) ($multthru (mul vp ppw)) (mul vp ppw))
-                1))))
+    (cond ((alike1 pw (power z s)) (mul g (power var m) pw))
+          ((integerp m) (mul g ($multthru c)))
+          (t (mul g c)))))
 
 (defun integrate-exp-special (expr var2 &aux w const)
 
@@ -2761,23 +2735,19 @@
      (when *debug-integrate*
        (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
 
-     (multiple-value-bind (g pw vp)
-	 ;; gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a)),
-	 ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r)) and var2
-	 (gamma-incomplete-and-power
-	  (inv (mul p r))
-	  (div -1 (mul p r))
-	  (mul -1 c v (power (power var2 r) p) (take '(%log) a))
-	  var2 1)
-       (mul -1
-	    const
-	    ;; 1/(p*r*(a^(c*v*(var2^r)^p)))
-	    (inv (mul p r (power a (mul c v (power (power var2 r) p)))))
-	    vp
-	    ;; (a^(d+c*(var2^r)^p))^v
-	    (power (power a (add d (mul c (power (power var2 r) p)))) v)
-	    g
-	    pw)))
+     (mul -1
+	  const
+	  ;; 1/(p*r*(a^(c*v*(var2^r)^p)))
+	  (inv (mul p r (power a (mul c v (power (power var2 r) p)))))
+	  ;; (a^(d+c*(var2^r)^p))^v
+	  (power (power a (add d (mul c (power (power var2 r) p)))) v)
+	  ;; var2*gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a))
+	  ;; *(-c*v*(var2^r)^p*log(a))^(-1/(p*r))
+	  (gamma-incomplete-and-power
+		(inv (mul p r))
+		(div -1 (mul p r))
+		(mul -1 c v (power (power var2 r) p) (take '(%log) a))
+		var2 1)))
 
     ((m2-exp-type-2 (facsum-exponent expr var2) var2)
      (a b d v r)
@@ -2785,29 +2755,31 @@
      (when *debug-integrate*
        (format t "~&Type 2: z^v*a^(b*z^r+d) : w = ~A~%" w))
 
-     (multiple-value-bind (g pw vp)
-         (gamma-incomplete-and-power (div (add v 1) r)
-                                     (mul -1 (div (add v 1) r))
-                                     (mul -1 b (power var2 r) ($log a))
-                                     var2 (add v 1))
-       (mul const (div -1 r) (power a d) vp g pw)))
+     (mul
+      const
+      (div -1 r)
+      (power a d)
+      (gamma-incomplete-and-power
+       (div (add v 1) r)
+       (mul -1 (div (add v 1) r))
+       (mul -1 b (power var2 r) ($log a))
+       var2 (add v 1))))
 
     ((m2-exp-type-2-1 (facsum-exponent expr var2) var2)
      (a b v r u)
      (when *debug-integrate*
        (format t "~&Type 2-1: z^v*(%e^(a*z^r+b))^u : w = ~A~%" w))
 
-     (multiple-value-bind (g pw vp)
-         (gamma-incomplete-and-power (div (add v 1) r)
-                                     (div (mul -1 (add v 1)) r)
-                                     (mul -1 a u (power var2 r))
-                                     var2 (add v 1))
-       (mul const
-            -1
-            (inv r)
-            (power '$%e (mul -1 a u (power var2 r)))
-            (power (power '$%e (add (mul a (power var2 r)) b)) u)
-            vp pw g)))
+     (mul const
+          -1
+          (inv r)
+          (power '$%e (mul -1 a u (power var2 r)))
+          (power (power '$%e (add (mul a (power var2 r)) b)) u)
+          (gamma-incomplete-and-power
+                (div (add v 1) r)
+                (div (mul -1 (add v 1)) r)
+                (mul -1 a u (power var2 r))
+                var2 (add v 1))))
     
     ((m2-exp-type-3 (expand-base-of-exp (facsum-exponent expr var2) var2) var2)
       (a b c d p)

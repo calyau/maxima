@@ -935,10 +935,9 @@
 ;; A gensym from MAKE-NEW-VAR has the expression it stands for as its
 ;; ALIAS-EXPRESSION property. Signs, facts, features and questions involving
 ;; the gensym are those of the expression, since the entry points of that code
-;; replace the gensym by the expression with SUBST-ALIASES.
+;; replace the gensym by the expression with SUBST-ALIASES, which
+;; resimplifies the parts of E that change.
 (defun subst-aliases (e)
-  "Replace each symbol in E that has an ALIAS-EXPRESSION property by that
-  expression, and resimplify the parts of E that change."
   (cond ((not *alias-expressions*) e)
         ((atom e)
          (let ((alias (alias-of e)))
@@ -2846,10 +2845,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   * 'EVOD: '$EVEN/'$ODD iff we can prove equality of X to an even/odd integer.
   When negative facts are encountered, e.g. equal(x, some_noninteger) in 'INTEGER
   or 'EVOD mode, returns NIL."
-  (dolist (fact (let ((facts (cdr (facts1 x)))
-                      (alias (alias-of x)))
+  (dolist (fact (let ((alias (alias-of x)))
                   ;; A gensym from MAKE-NEW-VAR equals its ALIAS-EXPRESSION.
-                  (if alias (cons `(($equal) ,x ,alias) facts) facts)))
+                  (append (and alias `((($equal) ,x ,alias)))
+                          (cdr (facts1 x)))))
     (when (and (not (atom fact)) (eq (caar fact) '$equal))
       (let ((e (cond ((eq (cadr fact)  x) (caddr fact))   ; equal(x, e)
                      ((eq (caddr fact) x) (cadr fact))))) ; equal(e, x) -> normalize

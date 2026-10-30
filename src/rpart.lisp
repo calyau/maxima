@@ -73,11 +73,8 @@
              (if cnum
                (mul (power (add (power re 2) (power im 2)) (div s 2))
                     (power '$%e (mul '$%i s (ftake '%atan2 im re))))
-               (multiple-value-bind (k w n) (real-power-factors z)
-                 (if (and k
-                          (or real-var
-                              (not (and (eql n 1)
-                                        (member ($csign k) '($pos $pz))))))
+               (multiple-value-bind (k w n) (real-power-factors z real-var)
+                 (if k
                    (principal-power-real-factors k w n s)
                    (let* ((m (round (cadr s) (caddr s)))
                           (r (sub s m)))
@@ -86,10 +83,10 @@
                             (power '$%e (mul r (add l (mul '$%i a)))))))))))))))
 
 ;; Z as k*w^n for a constant k, a real w that is not constant and an
-;; integer n or a rational n with an odd denominator: (values k w n), or NIL
-;; when Z is not of this form. PRINCIPAL-POWER leaves z = k*w with k > 0 to
-;; PRINCIPAL-LOG, as z has the argument of w, unless its REAL-VAR is true.
-(defun real-power-factors (z)
+;; integer n or a rational n with an odd denominator: (values k w n). NIL
+;; when Z is not of this form, or when n is 1 and k is positive, where z has
+;; the argument of w and is left to PRINCIPAL-LOG, unless REAL-VAR is true.
+(defun real-power-factors (z &optional real-var)
   (let ((k 1) (w z) (n 1) const)
     ;; Each factor of Z is tested with $CONSTANTP once. W is constant iff
     ;; every factor of Z is, and so is the base of W if W is a power.
@@ -108,6 +105,7 @@
       (setq n (caddr w)
             w (cadr w)))
     (unless (or const
+                (and (not real-var) (eql n 1) (member ($csign k) '($pos $pz)))
                 (member ($csign w) '($complex $imaginary)))
       (values k w n))))
 

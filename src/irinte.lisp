@@ -71,19 +71,14 @@
 	res
 	(intirfactoroot funct x))))
 
-;; True if JMAUG matches P*R0^E0 times a power of a linear factor, directly
-;; or after factoring as INTIRFACTOROOT does. INTIR2 can integrate the pieces
-;; into which INTIR3-REF splits EXP, after asking for the sign of a
-;; discriminant, only then.
+;; True if JMAUG matches P*R0^E0 times a power of a linear factor. INTIR2
+;; can integrate the pieces into which INTIR3-REF splits EXP, after asking
+;; for the sign of a discriminant, only then.
 (defun intir3-pieces-p (assoclist x)
-  (let ((e (mul (cdras 'p assoclist)
-                (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
-                (inv (add x (gensym))))))
-    (or (jmaug e x)
-        (jmaug (distrfactor (timestest e) x) x)
-        (let ((*globalcareflag* t))
-          (declare (special *globalcareflag*))
-          (jmaug (distrfactor (timestest e) x) x)))))
+  (jmaug (mul (cdras 'p assoclist)
+              (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
+              (inv (add x (gensym))))
+         x))
 
 (defun intir3 (exp x)
   (prog ((assoclist (elliptquad exp x)) e f g r0)

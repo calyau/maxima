@@ -159,14 +159,16 @@
               k))))
 
 ;; T if E has a power %e^u with a log in U and U depending on VAR, such as
-;; the %e^(log(x)/3) that INTSETUP writes for x^(1/3).
-(defun exp-log-power-p (e var)
-  (and (not (atom e))
-       (or (and (eq (caar e) 'mexpt)
-                (eq (cadr e) '$%e)
-                (isinop (caddr e) '%log)
-                (not (freeof var (caddr e))))
-           (some #'(lambda (a) (exp-log-power-p a var)) (cdr e)))))
+;; the %e^(log(x)/3) that INTSETUP writes for x^(1/3), or if ODD, one for
+;; which ODD-ROOT-LOG-TERM-P of u is true.
+(defun exp-log-power-p (e var &optional odd)
+  (cond ((atom e) nil)
+        ((specrepp e) (exp-log-power-p (specdisrep e) var odd))
+        ((and (mexptp e) (eq (cadr e) '$%e)
+              (if odd
+                  (odd-root-log-term-p (caddr e))
+                  (and (isinop (caddr e) '%log) (not (freeof var e))))))
+        (t (some #'(lambda (a) (exp-log-power-p a var odd)) (cdr e)))))
 
 (defun rischint (exp risch-intvar &optional trig
                      &aux ($logarc nil) ($exponentialize nil)
@@ -187,6 +189,14 @@
 	 (setq risch-intvar (specdisrep risch-intvar)))
      (if (mnump risch-intvar)
 	 (merror (intl:gettext "risch: attempt to integrate wrt a number: ~:M") risch-intvar))
+     ;; As in SININT, integrate with respect to an atomic gensym instead of a
+     ;; non-atomic variable like r[1] or r(x).
+     (when (and (not (atom risch-intvar))
+                (not (member (caar risch-intvar) '(mplus mtimes mexpt))))
+       (let ((dummy-intvar (make-new-var "rischint" risch-intvar)))
+         (return (maxima-substitute risch-intvar dummy-intvar
+                   (rischint (maxima-substitute dummy-intvar risch-intvar exp)
+                             dummy-intvar)))))
      (if (and (atom risch-intvar)
 	      (isinop exp risch-intvar))
 	 (go noun))
@@ -233,7 +243,7 @@
 		    ;; integrand has such a power on the principal branch, see
 		    ;; ODD-ROOT-LOG-TERM-P, which must stay as it is.
 		    (let* (($logsimp t)
-			   ($%e_to_numlog (not (odd-root-log-power-p exp)))
+			   ($%e_to_numlog (not (exp-log-power-p exp nil t)))
 			   (ans (list* '(mplus)
 				       (disrep (car z) risch-ratform)
 				       (cdr z))))

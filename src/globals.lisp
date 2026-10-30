@@ -535,8 +535,7 @@
   "If T, COMPAR works in a complex mode.")
 
 (defvar *alias-expressions* nil
-  "If T, gensyms from MAKE-NEW-VAR, which stand for an expression, may occur,
-  and SUBST-ALIASES replaces them by that expression.")
+  "If T, SUBST-ALIASES replaces the gensyms of MAKE-NEW-VAR by their aliases.")
 
 (defmvar $prederror nil
   "When true, an error message is displayed whenever the predicate of an

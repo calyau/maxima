@@ -794,7 +794,7 @@
      :depends-on (globals defmfun compatibility-macros declarations
                   errset fundamental-macros other-macros
                   prerequisites utility-macros taylor-series
-                  m2-pattern-matcher)
+                  m2-pattern-matcher simplification)
      ;; Compile-time deps form a DAG.  Runtime cycle trigi <->
      ;; trigo is structural (trigi calls trigo:trigexpand for
      ;; forward simplification, trigo calls trigi for shared

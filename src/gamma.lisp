@@ -507,19 +507,18 @@
   (cond ((atom e) e)
         ((and (mexptp e) (eq (cadr e) zz) (not ($freeof ord (caddr e))))
          (mul (power z (sub (caddr e) ord)) pp))
-        (t (simplifya (cons (remove 'simp (car e))
-                            (mapcar #'(lambda (x)
-                                        (subst-power-order pp ord z zz x))
-                                    (cdr e)))
-                      nil))))
+        (t (recur-apply #'(lambda (x) (subst-power-order pp ord z zz x)) e))))
 
-;; The expansion G of a function of the order ORD+n and the argument ZZ,
-;; for the order ORDER+n and the argument Z.
-(defun subst-rational-order (order ord z zz g)
-  ($substitute order ord
-               ($substitute z zz
-                            (subst-power-order (principal-power z order)
-                                               ord z zz g))))
+;; The expansion of the function OP of the order ORDER+n and the argument Z,
+;; for an integer n.
+(defun expand-rational-order (op order n z)
+  (let* ((ord (gensym))
+         (zz (gensym))
+         (g (simplify (list (list op) (add ord n) zz))))
+    ($substitute order ord
+                 ($substitute z zz
+                              (subst-power-order (principal-power z order)
+                                                 ord z zz g)))))
 
 ;;
 ;; Handles some special cases for the order a and simplifies it to an
@@ -642,10 +641,7 @@
 	       (t
 		;; Use gamma_incomplete(a+n,z) above. and then substitute
 		;; a=order.  This works for n positive or negative.
-		(let* ((ord (gensym))
-		       (zz (gensym))
-		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) zz))))
-		  (subst-rational-order rat-order ord z zz g)))))))
+		(expand-rational-order '%gamma_incomplete_lower rat-order n z))))))
 	(t
 	 ;; No expansion so return nil to indicate that
 	 nil)))
@@ -946,10 +942,7 @@
 	     (t
 	      ;; Use gamma_incomplete(a+n,z) above. and then substitute
 	      ;; a=order.  This works for n positive or negative.
-	      (let* ((ord (gensym))
-		     (zz (gensym))
-		     (g (simplify (list '(%gamma_incomplete) (add ord n) zz))))
-		(subst-rational-order rat-order ord z zz g)))))))
+	      (expand-rational-order '%gamma_incomplete rat-order n z))))))
 
       ($hypergeometric_representation
        ;; See http://functions.wolfram.com/06.06.26.0002.01
@@ -1818,10 +1811,7 @@
 	      ;; Use gamma_incomplete_regularized(a+n,z) above. and
 	      ;; then substitute a=order.  This works for n positive or
 	      ;; negative.
-	      (let* ((ord (gensym))
-		     (zz (gensym))
-		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) zz))))
-		(subst-rational-order rat-order ord z zz g)))))))
+	      (expand-rational-order '%gamma_incomplete_regularized rat-order n z))))))
 
       ($hypergeometric_representation
        ;; gamma_incomplete_regularized(a,z)
