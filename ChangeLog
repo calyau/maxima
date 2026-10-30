@@ -295,6 +295,7 @@ Bug fixes for numbered bugs:
 * \#5736 is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
 * \#5739 Bigfloat atan() and acot() are off by several ulp, more at higher fpprec
+* \#5750 integrate() asks the same sign question twice
 
 Bug fixes for unnumbered bugs:
 ------------------------------
