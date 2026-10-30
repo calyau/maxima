@@ -294,6 +294,7 @@ Bug fixes for numbered bugs:
 * \#5735 assume(y > x)$ block([], local(x), y - x) gives a Lisp error
 * \#5736 is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
+* \#5739 Bigfloat atan() and acot() are off by several ulp, more at higher fpprec
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -364,10 +364,17 @@
   #'(lambda (x &optional y)
       (unless (and (zerop1 x) (or (null y) (zerop1 y)))
         (let ((ans (ignore-errors
-                     (if y
-                       (let ((d (add (mul x x) (mul y y))))
-                         (funcall bop (div x d) (div (neg y) d)))
-                       (funcall bop (div 1 x))))))
+                     ;; 1/z and BOP get guard digits, and the result is
+                     ;; rounded once. WITH-$ERROR lets IGNORE-ERRORS catch an
+                     ;; MERROR in BOP, which becomes a domain error of F.
+                     (let ((x (bigfloatp x)))
+                       (with-$error
+                         ($bfloat
+                          (bind-fpprec (fpprec-with-guard-digits)
+                            (if y
+                              (let ((d (add (mul x x) (mul y y))))
+                                (funcall bop (div x d) (div (neg y) d)))
+                              (funcall bop (invertbigfloat x))))))))))
           (if ans ans (domain-error (if y (add x (mul '$%i y)) x) f))))))
 
 ;; Return a *BIG-FLOAT-OP* function for F that computes 1/BOP(z). Used for cot,
