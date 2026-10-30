@@ -100,6 +100,31 @@
           (ftake 'mexpt ($expand (second e) 1 0) (third e)))
         (t (recur-apply #'(lambda (q) (expand-base-of-exp q x)) e))))
 
+;; T if E has a power u^r of a U that depends on VAR2, which domain : real
+;; may take for the real root: R is neither an integer nor a rational with
+;; an even denominator.
+(defun real-root-power-p (e var2)
+  (cond ((atom e) nil)
+        ((and (mexptp e)
+              (not (freevar2 (cadr e) var2))
+              (not (integerp (caddr e)))
+              (not (and (ratnump (caddr e)) (evenp (caddr (caddr e))))))
+         t)
+        (t (some #'(lambda (a) (real-root-power-p a var2)) (cdr e)))))
+
+;; E with each power (k*u)^r of a positive number k written as k^r*u^r,
+;; which holds for principal powers too.
+(defun split-positive-factors (e)
+  (cond ((atom e) e)
+        ((and (mexptp e)
+              (mtimesp (cadr e))
+              (mnump (cadr (cadr e)))
+              (eq ($sign (cadr (cadr e))) '$pos))
+         (mul (power (cadr (cadr e)) (caddr e))
+              (power (split-positive-factors (div (cadr e) (cadr (cadr e))))
+                     (caddr e))))
+        (t (recur-apply #'split-positive-factors e))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Stage II of the Integrator
@@ -223,14 +248,23 @@
                        ans))
                  ((intform (caddr expres) var2))
                  ((and (eq '$%e (cadr expres))
-                       (isinop (caddr expres) '%log)
-                       (not (odd-root-log-term-p (caddr expres))))
-                  ;; Found something like exp(r*log(x))
-                  (let* (($%e_to_numlog t)
+                       (isinop (caddr expres) '%log))
+                  ;; Found something like exp(r*log(x)). Where x^r would be
+                  ;; the real root, see ODD-ROOT-LOG-TERM-P, integrate x^r as
+                  ;; the principal root, with domain : complex, and take only
+                  ;; an answer that is free of such roots.
+                  (let* ((odd (odd-root-log-term-p (caddr expres)))
+                         ($domain (if odd '$complex $domain))
+                         ($%e_to_numlog t)
                          ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
                          (nexp (resimplify *exp*)))
                     (cond ((alike1 *exp* nexp) nil)
-                          (t (integrator (setq *exp* nexp) var2)))))
+                          ((not odd) (integrator (setq *exp* nexp) var2))
+                          (t (let ((ans (split-positive-factors
+                                         (integrator nexp var2))))
+                               (and (not (isinop ans '%integrate))
+                                    (not (real-root-power-p ans var2))
+                                    ans))))))
                  (t nil)))
         
           ;; The base is not a rational function. Try to get a clue for the base.

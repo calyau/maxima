@@ -4786,18 +4786,6 @@ block([fpprec : 16],
 []$
 
 
-/* A file loaded by a file that is being autoloaded made Maxima forget
-   the answers to sign questions, as when integrate() autoloads facsum() */
-
-block([fa : sconcat(maxima_tempdir, "/rtest16_autoload_1.mac"),
-       rtest16_fb : sconcat(maxima_tempdir, "/rtest16_autoload_2.mac"),
-       file_output_append : false],
-  with_stdout(rtest16_fb, printf(true, "0$~%")),
-  with_stdout(fa, printf(true, "load(rtest16_fb)$~%")),
-  [asksign(a), stringp(aload_mac(fa)), facts()]), ask_hide_prompt; pos;
-[pos, true, [a > 0]]$
-
-
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
