@@ -7319,6 +7319,52 @@ block([g, G],
 [c^3*asin(x), (c^2*asin(x))/2+(c^2*x*sqrt(1-x^2))/2]$
 
 
+/* Bug #4178: "Infinite loop in Risch integration" */
+
+block([f, r],
+  local(f, r),
+  [integrate(r(x)*sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+   integrate(f(x)^3*exp(f(x)^2), f(x)),
+   integrate(f(x)/(1+f(x)^4), f(x))]);
+[sqrt(r(x)^2+5)-2*atan(sqrt(r(x)^2+5)/2),
+ (%e^f(x)^2*(f(x)^2-1))/2,
+ atan(f(x)^2)/2]$
+
+block([r],
+  local(r),
+  [risch(r(x)*sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+   risch(sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+   integrate(sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+   risch(sqrt(r[1]^2+5)/(r[1]^2+9), r[1])]);
+['integrate(r(x)*sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+ 'integrate(sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+ 'integrate(sqrt(r(x)^2+5)/(r(x)^2+9), r(x)),
+ 'integrate(sqrt(r[1]^2+5)/(r[1]^2+9), r[1])]$
+
+block([r],
+  local(r),
+  [integrate(r(x)*exp(r(x)), r(x)),
+   integrate(r(x)*sin(r(x)), r(x)),
+   integrate(r(x)^2*cos(r(x)), r(x)),
+   ev(integrate(r(x)*exp(r(x)), r(x)), risch),
+   risch(sinh(r(x))*r(x), r(x)),
+   risch(exp(r(x))/(exp(2*r(x))+1), r(x))]);
+[%e^r(x)*(r(x)-1),
+ sin(r(x))-r(x)*cos(r(x)),
+ (r(x)^2-2)*sin(r(x))+2*r(x)*cos(r(x)),
+ %e^r(x)*(r(x)-1),
+ (%e^-r(x)*(r(x)+1)+%e^r(x)*(r(x)-1))/2,
+ atan(%e^r(x))]$
+
+block([r, ans],
+  local(r),
+  assume(r(x) > 1),
+  ans: integrate(1/sqrt(r(x)^2-2*r(x)+1), r(x)),
+  forget(r(x) > 1),
+  ans);
+log(r(x)-1)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

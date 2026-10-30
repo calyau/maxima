@@ -8,6 +8,7 @@ Bug fixes for numbered bugs:
 * \#4020 various limit bugs with exp(%i*x)
 * \#4137 simplimplus bugs
 * \#4162 limit(exp(x^2+%i*x),x,inf)
+* \#4178 Infinite loop in Risch integration
 * \#4714 lurkmathml does not co-operate with ordergreat/less
 * \#4822 Antiderivative of acoth is complex where acoth is real
 * \#4830 Non-total ordering between constant & scalar and scalar

@@ -1784,10 +1784,12 @@
              (mapcar #'(lambda (y) (sinint y var2)) (cdr expr))))
 
       ;; The symbolic integration code doesn't really deal very well with
-      ;; subscripted variables, so if we have one then replace occurrences of var2
-      ;; with an atomic gensym and recurse.
+      ;; non-atomic variables like r[1] or r(x), so if we have one then replace
+      ;; occurrences of var2 with an atomic gensym and recurse. Sums, products
+      ;; and powers are left alone, since their parts can occur elsewhere in the
+      ;; integrand (x in x^2).
       ((and (not (atom var2))
-            (member 'array (cdar var2)))
+            (not (member (caar var2) '(mplus mtimes mexpt))))
        (let ((dummy-var2 (make-new-var "sinint" var2)))
          (maxima-substitute var2 dummy-var2
                             (sinint (maxima-substitute dummy-var2 var2 expr) dummy-var2))))
