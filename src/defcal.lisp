@@ -80,7 +80,11 @@
   ;; which pushes READ-COMMAND-TOKEN-AUX out of its leaf case. It also keeps
   ;; SYMBOLS-DEFINED, and the trie rebuilt from it, from growing every time a
   ;; package that declares operators is loaded again.
-  (unless (member x symbols-defined :test #'equal)
+  ;; "." and "/" stay out of SYMBOLS-DEFINED, as in DEFINE-INITIAL-SYMBOLS:
+  ;; SCAN-ONE-TOKEN-G handles them itself, since "." may start a number
+  ;; such as .5 and "/" may start a comment.
+  (unless (or (member x '("." "/") :test #'equal)
+              (member x symbols-defined :test #'equal))
     (*define-initial-symbols (cons x symbols-defined)))
   (symbolconc '$ (maybe-invert-string-case x)))
 
