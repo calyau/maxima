@@ -8110,6 +8110,33 @@ block([],
   errcatch(integrate(x^2*(b*atan(c*x)+a)/(e*x^2+d)^2, x), true));
 [true]$
 
+/* When the expansion leaves an integral and the Risch integrator leaves
+   one too, the result is the one of the expansion, whose integrals the
+   later steps can still do, as for %e^acoth(x)*x/(x+1)^(3/2) */
+
+block([f : %e^acoth(x)*x/(x+1)^(3/2), F, G],
+  local(a),
+  F : integrate(f, x),
+  assume(notequal(a, 0)),
+  G : integrate((B*t+A)*sqrt(t^2+1)/(%i*a*t+a)^3, t),
+  [freeof('integrate, F),
+   map(lambda([p], is(cabs(float(rectform(subst(x = p, diff(F, x) - f))))
+                      < 1e-9)),
+       [1.3, 2.7, -1.4]),
+   freeof('integrate, diff(G, A))]);
+[true, [true, true, true], true]$
+
+/* After the expansion, INTEGRATE-SQRT-PAIR takes no result with false
+   in it, which INTIRA leaves for a part that it cannot do */
+
+block([r],
+  local(a),
+  assume(notequal(a, 0)),
+  r : integrate((B*tan(x)+A)*(c-%i*c*tan(x))^(3/2)/(%i*a*tan(x)+a)^(3/2),
+                x),
+  freeof(false, r));
+true$
+
 /* integrate() returned a noun form for (-log(x))^(3/2), and wrote the
    antiderivatives of %e^x*sqrt(x) and the like with gamma_incomplete(3/2,-x)
    and (-x)^(3/2), which are not real for x > 0. */

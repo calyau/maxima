@@ -939,9 +939,8 @@
 ;; resimplifies the parts of E that change.
 (defun subst-aliases (e)
   (cond ((not *alias-expressions*) e)
-        ((atom e)
-         (let ((alias (alias-of e)))
-           (if alias (subst-aliases alias) e)))
+        ((alias-of e) (subst-aliases (alias-of e)))
+        ((atom e) e)
         (t (recur-apply #'subst-aliases e))))
 
 ;; The limit of A as EPS, which is '$ZEROA or '$ZEROB, goes to 0 from direction
@@ -2845,10 +2844,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   * 'EVOD: '$EVEN/'$ODD iff we can prove equality of X to an even/odd integer.
   When negative facts are encountered, e.g. equal(x, some_noninteger) in 'INTEGER
   or 'EVOD mode, returns NIL."
-  (dolist (fact (let ((alias (alias-of x)))
-                  ;; A gensym from MAKE-NEW-VAR equals its ALIAS-EXPRESSION.
-                  (append (and alias `((($equal) ,x ,alias)))
-                          (cdr (facts1 x)))))
+  ;; A gensym from MAKE-NEW-VAR equals its ALIAS-EXPRESSION.
+  (dolist (fact (append (and (alias-of x) `((($equal) ,x ,(alias-of x))))
+                        (cdr (facts1 x))))
     (when (and (not (atom fact)) (eq (caar fact) '$equal))
       (let ((e (cond ((eq (cadr fact)  x) (caddr fact))   ; equal(x, e)
                      ((eq (caddr fact) x) (cadr fact))))) ; equal(e, x) -> normalize

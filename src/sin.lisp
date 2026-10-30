@@ -259,12 +259,12 @@
                          ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
                          (nexp (resimplify *exp*)))
                     (cond ((alike1 *exp* nexp) nil)
-                          ((not odd) (integrator (setq *exp* nexp) var2))
-                          (t (let ((ans (split-positive-factors
-                                         (integrator nexp var2))))
-                               (and (not (isinop ans '%integrate))
-                                    (not (real-root-power-p ans var2))
-                                    ans))))))
+                          (odd (let ((ans (split-positive-factors
+                                           (integrator nexp var2))))
+                                 (and (not (isinop ans '%integrate))
+                                      (not (real-root-power-p ans var2))
+                                      ans)))
+                          (t (integrator (setq *exp* nexp) var2)))))
                  (t nil)))
         
           ;; The base is not a rational function. Try to get a clue for the base.
@@ -497,6 +497,13 @@
 				  ;; and try the methods below.
 				  (setq result y expanded t)
 				  (not (isinop y '%integrate)))
+			     #+nil
+			     (progn
+			       (format t "*exp* = ~A~%" *exp*)
+			       (maxima-display *exp*)
+			       (format t "y   = ~A~%" y)
+			       (maxima-display y)
+			       (break))
 			     y)
 			    ((and (not powerl)
 				  (setq y (powerlist *exp* var2)))
@@ -511,16 +518,17 @@
                         ;; error counts as a failure.
                         (let (($triginverses (if *risch-use-triginv-all*
                                                 '$all
-                                                $triginverses))
-                              ($errormsg (and (not expanded) $errormsg)))
+                                                $triginverses)))
                           (if expanded
-                              (car (errcatch (rischint *exp* var2)))
+                              (let (($errormsg nil))
+                                (car (errcatch (rischint *exp* var2))))
                               (rischint *exp* var2))))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
-				  ;; store it for later use.
-				  (setq result y)
+				  ;; store it for later use, unless the
+				  ;; expansion above left a result.
+				  (or expanded (setq result y))
 				  (not (isinop y '%integrate)))
 			     y)
 			    ((setq y (integrate-exp-special *exp* var2))
@@ -606,6 +614,8 @@
                              (*in-risch-p* (or early *in-risch-p*))
                              ($errormsg nil) (e (maxima-substitute 1 y expr)))
                          (car (errcatch (integrator e var2 stack)))))
+             ;; INTIRA can leave a part it cannot do as NIL, that is false.
+             (freeof nil res)
              (not (isinop res '%integrate))
              (or (alg res) (not (eq *integrate-sqrt-pair* 'coef)))
              (if one res (mul (div (power r2 1//2) m) res)))))))
@@ -931,14 +941,14 @@
     sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY."
   (let ((expr (simplify expr))
         (new-var (gensym prefix)))
-    (cond (expr
-           (setq *alias-expressions* t)
-           (putprop new-var expr 'alias-expression)
-           (when (symbolp expr) (kind new-var expr))
-           (let ((expr-sign ($csign expr)))
-             (when (member expr-sign '($complex $imaginary))
-               (declare1 (list new-var) t expr-sign 'kind))))
-          (t (putprop new-var t 'internal)))
+    (unless expr (putprop new-var t 'internal))
+    (when expr
+      (setq *alias-expressions* t)
+      (putprop new-var expr 'alias-expression)
+      (when (symbolp expr) (kind new-var expr))
+      (let ((expr-sign ($csign expr)))
+        (if (member expr-sign '($complex $imaginary))
+          (declare1 (list new-var) t expr-sign 'kind))))
     new-var))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1174,9 +1184,9 @@
   (prog (r1 r2 d1 d2 n1 n2 w q)
      ;; Return NIL if the expression doesn't match, or matches without a
      ;; binomial factor, as x^-1 does.
-     (when (not (and (setq w (m2-chebyform expr var2))
-                     (assoc 'q w)))
+     (when (not (setq w (m2-chebyform expr var2)))
        (return nil))
+     (unless (assoc 'q w) (return nil))
      #+nil
      (format t "w = ~A~%" w)
      (when (zerop1 (cdr (assoc 'c1 w :test #'eq)))
@@ -1750,8 +1760,7 @@
       (setq res (muln (mapcar #'recip (if (mtimesp expr) (cdr expr) (list expr)))
                       t))
       (unless (eql k 1)
-        (setq res (let (($errormsg nil)) (errcatch (trigint res var2))))
-        (when res
+        (when (setq res (let (($errormsg nil)) (errcatch (trigint res var2))))
           (return-from trigint
             (if (isinop (car res) '%integrate) (car res) (mul k (car res))))))))
   (prog (y repl y1 y2 *yy* z m n *yz*)
@@ -2735,7 +2744,7 @@
 ;; there. So gamma(alpha) is taken from gamma_incomplete, which makes the
 ;; antiderivative 0 at var = 0 from both sides, unless the sign of var is
 ;; known.
-(defun gamma-incomplete-and-power (alpha s z var m)
+(defun gamma-incomplete-and-power (alpha z var m &optional (s (mul -1 alpha)))
   (let* ((g (take '(%gamma_incomplete) alpha z))
          (pw (principal-power z s t))
          (c (mul (power var m) pw)))
@@ -2745,9 +2754,9 @@
                  (plusp (num1 n))
                  (ratnump alpha)
                  (plusp (cadr alpha))
-                 (not (member ($sign var) '($pos $pz $neg $nz)))
                  (not (eq t (meqp (maxima-substitute 1 var c)
-                                  (maxima-substitute -1 var c)))))
+                                  (maxima-substitute -1 var c))))
+                 (not (member ($sign var) '($pos $pz $neg $nz))))
         (setq g (sub g (take '(%gamma) alpha)))))
     (cond ((alike1 pw (power z s)) (mul g (power var m) pw))
           ((integerp m) (mul g ($multthru c)))
@@ -2779,7 +2788,6 @@
 	  ;; *(-c*v*(var2^r)^p*log(a))^(-1/(p*r))
 	  (gamma-incomplete-and-power
 		(inv (mul p r))
-		(div -1 (mul p r))
 		(mul -1 c v (power (power var2 r) p) (take '(%log) a))
 		var2 1)))
 
@@ -2795,7 +2803,6 @@
       (power a d)
       (gamma-incomplete-and-power
        (div (add v 1) r)
-       (mul -1 (div (add v 1) r))
        (mul -1 b (power var2 r) ($log a))
        var2 (add v 1))))
 
@@ -2811,9 +2818,9 @@
           (power (power '$%e (add (mul a (power var2 r)) b)) u)
           (gamma-incomplete-and-power
                 (div (add v 1) r)
-                (div (mul -1 (add v 1)) r)
                 (mul -1 a u (power var2 r))
-                var2 (add v 1))))
+                var2 (add v 1)
+                (div (mul -1 (add v 1)) r))))
     
     ((m2-exp-type-3 (expand-base-of-exp (facsum-exponent expr var2) var2) var2)
       (a b c d p)

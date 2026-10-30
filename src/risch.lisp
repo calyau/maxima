@@ -323,12 +323,10 @@
 		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)
 	  (rp-polylogp t)
-	  (*risplit-noting* nil) (*risplit-assumed* nil) (*risplit-var-pos* nil)
-	  $logarc $exponentialize result parts)
-     ;; Split into real and imaginary part. This automatically converts back to
-     ;; trigonometric functions, which were converted to exponential form before.
-     ;; RISPLIT can ask sign() about an expression that is not real, which
-     ;; throws to SIGN-IMAG-ERR here.
+	  (*risplit-noting* nil) (*risplit-assumed* nil)
+	  (*risplit-var-pos* nil) parts
+	  $logarc $exponentialize result)
+     ;; Split YYY first, as the IF below needs *RISPLIT-VAR-POS*.
      (unless (decl-complexp risch-var)
        (setq parts (let (sign-imag-errp (*risplit-noting* t))
                      (catch 'sign-imag-err (risplit yyy)))))
@@ -345,7 +343,10 @@
       ;; for log(tan(x)): written with tan(x), it holds on one period only.
       (let ((d (cdr (partition (sratsimp ($demoivre yyy)) risch-var 0))))
         (setq result (if (freeof '$%i d) d (sratsimp yyy))))
-     ;; If RISPLIT threw to SIGN-IMAG-ERR, the integral is left unevaluated.
+     ;; Split into real and imaginary part. This automatically converts back to
+     ;; trigonometric functions, which were converted to exponential form before.
+     ;; RISPLIT can ask sign() about an expression that is not real, which
+     ;; throws to SIGN-IMAG-ERR above. The integral is then left unevaluated.
      (destructuring-let (((yyy-re . yyy-im)
                           (if (consp parts)
                               parts
