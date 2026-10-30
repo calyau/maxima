@@ -310,8 +310,14 @@
 		fun)
 	   (multiple-value-bind
 		 (keyword n)
-	       (read-from-string line)
-	     (setq fun (complete-prop keyword 'keyword 'break-command))
+	       (ignore-errors (read-from-string line))
+	     (if (keywordp keyword)
+		 (setq fun (complete-prop keyword 'keyword 'break-command))
+		 (progn
+		   (format *debug-io*
+			   (intl:gettext "~&Break command '~a' does not exist.")
+			   (string-trim '(#\space #\tab #\return) line))
+		   (finish-output *debug-io*)))
 	     (and (consp fun) (setq fun (car fun)))
 	     ;;(print (list 'line line))
 	     (setq *last-dbm-command*

@@ -629,8 +629,10 @@ wrapper for this."
     ;; everything processed so far even if a later argument turns out to
     ;; be invalid.
     (rplaca loclist (cons var (car loclist)))
+    ;; Hide the facts about VAR. ULABS is a label cell, and one with every
+    ;; bit set makes ONPU and VISIBLEP skip the fact whatever the label.
     (dolist (fact (car factlist))
-      (putprop fact -1 'ulabs))
+      (putprop fact (list -1) 'ulabs))
     (progn
       (mfunction-delete var $functions)
       (mfunction-delete var $macros)

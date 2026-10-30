@@ -691,7 +691,7 @@ m4_math(
 <<<{\cal E}(u, m)>>>,
 <<<E(u, m)>>>
 )
-is defined by (see @urldlmf{22.16.E16} and @urldlmf{22.16.E14})
+is defined by (see @urldlmf{22.16.E17} and @urldlmf{22.16.E14})
 
 m4_displaymath(
 <<<{\cal E}(u, m) = \int_0^u {\rm dn}^2(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt>>>
@@ -710,12 +710,56 @@ m4_mathdot(
 This is related to @mref{elliptic_e} by
 
 m4_displaymath(
-<<<{\cal E}(u,m) = E(\sin^{-1} {\rm sn}(u, m), m)>>>
+<<<{\cal E}(u,m) = E({\rm am}(u, m), m)>>>
 ,
-<<<@math{jacobi_epsilon(u, m) = elliptic_e(asin(sn(u,m)),m)}>>>
+<<<@math{jacobi_epsilon(u, m) = elliptic_e(jacobi_am(u,m),m)}>>>
 )
+@ifhtml
+where
+m4_math(
+<<<{\rm am}(u,m)>>>
+)
+is Jacobi's @math{am} function.
+@end ifhtml
 
-See also @ref{elliptic_e}.
+See also @ref{elliptic_e} and @ref{jacobi_am}.
+
+Some examples:
+@c ===beg===
+@c jacobi_epsilon(u, m);
+@c jacobi_epsilon(u, 0);
+@c jacobi_epsilon(u, 1);
+@c jacobi_epsilon(2*elliptic_kc(m),m);
+@c jacobi_epsilon(1/2+elliptic_kc(m), m);
+@c ===end===
+@example maxima
+@group
+(%i1) jacobi_epsilon(u, m);
+(%o1)                 jacobi_epsilon(u, m)
+@end group
+@group
+(%i2) jacobi_epsilon(u, 0);
+(%o2)                           u
+@end group
+@group
+(%i3) jacobi_epsilon(u, 1);
+(%o3)                        tanh(u)
+@end group
+@group
+(%i4) jacobi_epsilon(2*elliptic_kc(m),m);
+(%o4)                   2 elliptic_ec(m)
+@end group
+@group
+(%i5) jacobi_epsilon(1/2+elliptic_kc(m), m);
+                                 1               1
+(%o5) elliptic_ec(m) - jacobi_cd(-, m) jacobi_sn(-, m) m
+                                 2               2
+                                                            1
+                                           + jacobi_epsilon(-, m)
+                                                            2
+@end group
+@end example
+
 @opencatbox{Categories:}
 @category{Elliptic integrals}
 @closecatbox

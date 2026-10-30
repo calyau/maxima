@@ -172,6 +172,7 @@
                      &aux ($logarc nil) ($exponentialize nil)
                      ($gcd '$algebraic) ($algebraic t) (implicit-real t)
                      ($float nil) ($numer nil)
+                     (*alias-expressions* *alias-expressions*)
                      ;; The risch integrator expects $logexpand T. Otherwise,
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)

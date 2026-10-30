@@ -150,16 +150,17 @@
 
 (defmfun $facts (&optional (ctxt $context))
   (if (member ctxt (cdr $contexts))
-      (facts1 ctxt)
+      (facts1 ctxt t)
       (facts2 ctxt)))
 
-(defun facts1 (con)
+(defun facts1 (con &optional hide-derived)
   (contextmark)
   (do ((l (zl-get con 'data) (cdr l))
        (nl)
        (u))
       ((null l) (cons '(mlist) nl))
-    (when (visiblep (car l))
+    (when (and (visiblep (car l))
+               (not (and hide-derived (zl-get (car l) 'derived))))
       (push (intext (caaar l) (cdaar l)) nl))))
 
 ;; Look up facts from the database which contain expr. expr can be a symbol or 
@@ -616,6 +617,7 @@
 	   (zl-get (caar pat) 'unlearn))))
 
 (defun learn (pat flag)
+  (setq pat (subst-aliases pat))
   (cond ((atom pat))
         ;; Check for abs function in pattern.
         ((and (not limitp)
@@ -638,37 +640,51 @@
 	 pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
-;;; then learn x<a and -x<a too. The additional facts are put into the context
-;;; '$learndata, if the current context is user context 'initial
+;;; then learn x<a and -x<a too, as derived facts.
 
 (defun learn-abs (pat flag)
-  (let (tmp)
-    (when (and (setq tmp (isinop pat 'mabs))
+  (let (tmp pats)
+    (when (and (isinop pat 'mabs)
+               ;; Check the sign of a only when learning: It may be unknown by
+               ;; the time of unlearning, which removes only derived facts.
                (or (and (member (caar pat) '(mlessp mleqp))
-                        (isinop (cadr pat) 'mabs)
-                        (member ($sign (caddr pat)) '($pos $pz)))
+                        (setq tmp (isinop (cadr pat) 'mabs))
+                        (or (not flag)
+                            (member ($sign (caddr pat)) '($pos $pz))))
                    (and (member (caar pat) '(mgreaterp mgeqp))
-                        (member ($sign (cadr pat)) '($pos $pz))
-                        (isinop (caddr pat) 'mabs)))
+                        (or (not flag)
+                            (member ($sign (cadr pat)) '($pos $pz)))
+                        (setq tmp (isinop (caddr pat) 'mabs))))
+               ;; The derived facts follow from the pattern if replacing
+               ;; abs(x) by -abs(x) does not increase the smaller side minus
+               ;; the larger side, as for abs(x) + c < a or k*abs(x) < a with
+               ;; k > 0, but not for 2 - abs(x) < 1, that is abs(x) > 1. Use
+               ;; CSIGN, as the replacement can make the difference complex.
+               ;; Test this only when learning, too.
+               (or (not flag)
+                   (let ((d (if (member (caar pat) '(mlessp mleqp))
+                                (sub (cadr pat) (caddr pat))
+                                (sub (caddr pat) (cadr pat)))))
+                     (member ($csign (sub d ($substitute (neg tmp) tmp d)))
+                             '($pos $pz $zero))))
+               (setq pats (list ($substitute (cadr tmp) tmp pat)
+                                ($substitute (mul -1 (cadr tmp)) tmp pat)))
                ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
-               ;; both. Always learn, but unlearn only if the abs() relation is
-               ;; itself known, which is the same test: It holds exactly when
-               ;; both of the derived facts do.
+               ;; both. Always learn, but unlearn only if both are known here.
+               ;; Otherwise this fact has no derived facts here, as one of the
+               ;; tests above failed when it was learned, and unlearning would
+               ;; remove those of another fact.
                (or flag
-                   (eq t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
-      (let ((oldcontext context))
-        (if (eq oldcontext '$initial)
-            (asscontext nil '$learndata)) ; switch to context '$learndata
-        ; learn additional facts
-        (learn ($substitute (cadr tmp) tmp pat) flag)
-        (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag)
-        (when (eq oldcontext '$initial)
-          (asscontext nil oldcontext)     ; switch back to context on entry
-          ($activate '$learndata))))      ; context '$learndata is active
+                   (every #'(lambda (p)
+                              (eq t (mevalp2 p (caar p) (cadr p) (caddr p))))
+                          pats)))
+      (let ((*derived-fact* t))
+        (dolist (p pats)                ; learn additional facts
+          (learn p flag))))
     nil))
 
 ;;; The value of a constant expression which can be numerically evaluated is
-;;; put into the context '$learndata.
+;;; learned as a derived fact.
 
 (defun learn-numer (pat flag)
   (let (dum expr patnew)
@@ -704,13 +720,8 @@
     (when (and (not (alike (cdr pat) (cdr patnew)))
                (or (not (mnump (cadr patnew)))    ; not both sides of the
                    (not (mnump (caddr patnew))))) ; relation can be number
-      (let ((oldcontext $context))
-        (if (eq oldcontext '$initial)
-          (asscontext nil '$learndata)) ; switch to context '$learndata
-        (learn patnew flag)             ; learn additional fact
-        (when (eq oldcontext '$initial) 
-          (asscontext nil oldcontext)   ; switch back to context on entry
-          ($activate '$learndata))))    ; context '$learndata is active
+      (let ((*derived-fact* t))
+        (learn patnew flag)))           ; learn additional fact
     nil))
 
 (defmspec $forget (x)
@@ -812,6 +823,7 @@
 (setq limitp nil)
 
 (defmfun $askequal (a b)
+  (setq a (subst-aliases a) b (subst-aliases b))
   (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
     (cond ((eq answer t) '$yes)
 	  ((eq answer nil) '$no)
@@ -829,7 +841,7 @@
 		  ($askequal a b)))))))
 	   
 (defmfun $asksign (exp)
-  (let (sign minus odds evens factored)
+  (let ((exp (subst-aliases exp)) sign minus odds evens factored)
     (asksign01 (cond (limitp (restorelim exp))
 		     ((among '$%i exp) ($rectform exp))
 		     (t exp)))))
@@ -870,7 +882,7 @@
     ($sign z)))
 
 (defmfun $sign (x)
-  (let ((x (specrepcheck x))
+  (let ((x (subst-aliases (specrepcheck x)))
 	sign minus odds evens factored)
     (sign01 (cond (limitp (restorelim x))
 		  (*complexsign*
@@ -911,6 +923,27 @@
 	((atom e) nil)
 	(t (or (has-int-symbols (car e))
 	       (has-int-symbols (cdr e))))))
+
+;; The expression that the gensym E from MAKE-NEW-VAR stands for, or NIL. A
+;; gensym declared complex or imaginary stands for itself: IRINTE, CONJUGATE
+;; and RISPLIT treat it as a complex variable, and so do signs, facts and
+;; features. Then the declaration of a gensym made for an expression in it
+;; does not depend on the form that its alias simplifies to.
+(defun alias-of (e)
+  (and (symbolp e) (not (decl-complexp e)) (get e 'alias-expression)))
+
+;; A gensym from MAKE-NEW-VAR has the expression it stands for as its
+;; ALIAS-EXPRESSION property. Signs, facts, features and questions involving
+;; the gensym are those of the expression, since the entry points of that code
+;; replace the gensym by the expression with SUBST-ALIASES.
+(defun subst-aliases (e)
+  "Replace each symbol in E that has an ALIAS-EXPRESSION property by that
+  expression, and resimplify the parts of E that change."
+  (cond ((not *alias-expressions*) e)
+        ((atom e)
+         (let ((alias (alias-of e)))
+           (if alias (subst-aliases alias) e)))
+        (t (recur-apply #'subst-aliases e))))
 
 ;; The limit of A as EPS, which is '$ZEROA or '$ZEROB, goes to 0 from direction
 ;; DIR. limit() rejects '$ZEROA and '$ZEROB as its variable, since they're
@@ -1459,6 +1492,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                (if (and (eq sign '$pnz) (eq s '$pn))
                                    (setq sign s)
                                    (setq sign s odds o evens e minus m)))
+                           ;; The facts and the form of X can each rule out
+                           ;; a different sign, as 0 >= abs(x) and abs(x) >= 0
+                           ;; do. Then only the sign they share is left.
+                           (let ((meet (weak-sign-meet sign s)))
+                             (when meet
+                               (setq sign meet odds o evens e minus m)))
                            t)))))
 	 (sign exp))
      (return sign)))))
@@ -2698,7 +2737,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; been declared an integer.
 
 (defmfun $featurep (e ind)
-  (setq e ($ratdisrep e))
+  (setq e (subst-aliases ($ratdisrep e)))
   (when (and (atom e) (not (eq ind '$alphabetic)))
     ;; Match the behavior of declare: If declare("operatorname", ...) works,
     ;; then featurep("operatorname", ...) should work, too.
@@ -2807,7 +2846,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   * 'EVOD: '$EVEN/'$ODD iff we can prove equality of X to an even/odd integer.
   When negative facts are encountered, e.g. equal(x, some_noninteger) in 'INTEGER
   or 'EVOD mode, returns NIL."
-  (dolist (fact (cdr (facts1 x)))
+  (dolist (fact (let ((facts (cdr (facts1 x)))
+                      (alias (alias-of x)))
+                  ;; A gensym from MAKE-NEW-VAR equals its ALIAS-EXPRESSION.
+                  (if alias (cons `(($equal) ,x ,alias) facts) facts)))
     (when (and (not (atom fact)) (eq (caar fact) '$equal))
       (let ((e (cond ((eq (cadr fact)  x) (caddr fact))   ; equal(x, e)
                      ((eq (caddr fact) x) (cadr fact))))) ; equal(e, x) -> normalize
@@ -3332,14 +3374,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun mfact (r x y)
   (let ((f (datum (list r x y))))
     (cntxt f context)
+    (when *derived-fact* (putprop f t 'derived))
     (addf f x)
     (addf f y)))
 
 (defun mkill (r x y)
-  (let ((f (car (datum (list r x y)))))
-    (kcntxt f context)
-    (maxima-remf f x)
-    (maxima-remf f y)))
+  (kill-datum r x y))
 
 (defun mkind (x y)
   (kind (dintern x) (dintern y)))
@@ -3378,6 +3418,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((eq '$pnz y))
 	((eq '$pnz x) nil)
 	((member y '($pz $nz $pn) :test #'eq))))
+
+(defun weak-sign-meet (x y)
+  "The sign that X and Y both allow, if they are two different ones of the
+  weak signs $PZ, $NZ and $PN, as $ZERO for $PZ and $NZ. Otherwise NIL."
+  (and (member x '($pz $nz $pn))
+       (member y '($pz $nz $pn))
+       (not (eq x y))
+       (sign-label-meet x y)))
 
 (defun munformat (form)
   (if (atom form)

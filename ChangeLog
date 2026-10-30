@@ -12,6 +12,8 @@ Bug fixes for numbered bugs:
 * \#4714 lurkmathml does not co-operate with ordergreat/less
 * \#4822 Antiderivative of acoth is complex where acoth is real
 * \#4830 Non-total ordering between constant & scalar and scalar
+* \#4852 fpplus sticky-bit is off by one - additions misround by up to 0.75 ulp
+* \#4855 fpquotient - missing sticky bit causes misrounded division
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4931 airy_ai and airy_dai return nonsense at bigfloat precision
 * \#4933 asech is treated as an even function
@@ -43,6 +45,7 @@ Bug fixes for numbered bugs:
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
+* \#5119 assume(x <= %pi) silently creates a permanent learndata context whose facts leak into other contexts
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5169 GREAT says a[1] > a[1]
@@ -283,6 +286,14 @@ Bug fixes for numbered bugs:
 * \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
 * \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
 * \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
+* \#5724 Lone colon causes a Lisp error
+* \#5731 Bigfloat tanh(x) is not odd
+* \#5732 assume(2 - abs(x) < 1) learns both x > 1 and x < -1
+* \#5733 forget() removes facts of other contexts and leaves facts that survive kill(all)
+* \#5734 After fourier_elim(), assume() and is() use the context initial instead of the current one
+* \#5735 assume(y > x)$ block([], local(x), y - x) gives a Lisp error
+* \#5736 is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)
+* \#5737 Bigfloat atan(x) and acot(x) are not odd
 * \#NNNN integrate(sin(x^3),x) and integrate(%e^(x^3),x,-1,1) are wrong
 * \#NNNN The antiderivative of %e^(-x^4) jumps at x = 0
 * \#MMMM integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0

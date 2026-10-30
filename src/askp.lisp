@@ -38,7 +38,7 @@
       (improper-arg-err mode '$askinteger)))
 
 (defun ask-integer (x even-odd)
-  (setq x (sratsimp (sublis '((z** . 0) (*z* . 0)) x)))
+  (setq x (sratsimp (sublis '((z** . 0) (*z* . 0)) (subst-aliases x))))
   (cond ((ratnump x) '$no)
 	((eq even-odd '$integer) (ask-integerp x))
 	(t (ask-evod x even-odd))))

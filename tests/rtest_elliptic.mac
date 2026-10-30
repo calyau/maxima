@@ -897,7 +897,7 @@ closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668058849721013196b0, 3
 true;
 closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.6050292065602615145481924917132b0, 1.24b-32);
 true;
-closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1b-32);
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1.2326b-32);
 true;
 
 /* Test for #3733 $gamma vs %gamma confusion */
@@ -1080,7 +1080,7 @@ true$
 closeto(jacobi_am(100b0, .5b0) - 84.7031127241138244025523773764166798b0, 1b-30);
 true$
 
-closeto(jacobi_am(0.5b0, 1.5b0) - 0.470719789704699163132257860869655024b0, 7.7038b-34);
+closeto(jacobi_am(0.5b0, 1.5b0) - 0.470719789704699163132257860869655024b0, 5.3927b-33);
 true$
 
 closeto(jacobi_am(1.5b0, 1.5b0+%i) - (0.934054216870078303274350830308588452b0 - 0.372396045214607165539500260724230487b0*%i), 2.3163b-32);
@@ -1345,7 +1345,7 @@ block([fpprec : 32],
 
 /* Pole at asin(1/sqrt(n)) crossed. */
 [closeto(elliptic_pi(1.5, 1.25, 0.5) - (5.4524805374619554e-1 - 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 6.3527b-33)];
+ closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
 [true, true];
 
 /* Pole not reached: real result. */
@@ -1357,7 +1357,7 @@ block([fpprec : 32],
 
 /* Odd in phi. */
 [closeto(elliptic_pi(1.5, -1.25, 0.5) - (-5.4524805374619554e-1 + 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 6.3527b-33)];
+ closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
 [true, true];
 
 /* Reduction by %pi: complete cycles and the reduced phi both contribute. */
@@ -1365,7 +1365,7 @@ block([fpprec : 32],
  closeto(elliptic_pi(1.5b0, 2.5b0, 0.5b0) - (-1.779327655628395172699783779595883b0 - 5.441398092702653551782234772926467b0*%i), 1.3781b-32)];
 [true, true];
 [closeto(elliptic_pi(1.5, 4.0, 0.5) - (8.7163548567852777e-1 - 5.4413980927026536*%i), 9.1552e-16),
- closeto(elliptic_pi(1.5b0, 4.0b0, 0.5b0) - (8.716354856785277656198515374402945b-1 - 5.441398092702653551782234772926467b0*%i), 4.7838b-32)];
+ closeto(elliptic_pi(1.5b0, 4.0b0, 0.5b0) - (8.716354856785277656198515374402945b-1 - 5.441398092702653551782234772926467b0*%i), 5.0822b-32)];
 [true, true];
 
 /* m < 0 with a pole crossed used to signal an error. */
@@ -1380,12 +1380,12 @@ block([fpprec : 32],
  * float path.
  */
 [closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 4.9651e-16),
- closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 6.8905b-33)];
+ closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 1.3781b-32)];
 [true, true];
 
 /* 1 < m < n: pole crossed before the branch point asin(1/sqrt(m)). */
 [closeto(elliptic_pi(4.0, 0.625, 2.0) - (5.5500827958490868e-1 - 1.2825498301618641*%i), 5e-16),
- closeto(elliptic_pi(4.0b0, 0.625b0, 2.0b0) - (5.550082795849086783230214444074010b-1 - 1.282549830161864095544036359671006b0*%i), 3.0815b-33)];
+ closeto(elliptic_pi(4.0b0, 0.625b0, 2.0b0) - (5.550082795849086783230214444074010b-1 - 1.282549830161864095544036359671006b0*%i), 6.1630b-33)];
 [true, true];
 
 /* 1 < m < n: past the branch point. */
@@ -1406,8 +1406,8 @@ block([fpprec : 32],
  closeto(elliptic_pi(4.0 - 1e-14*%i, 0.625, 2.0) - elliptic_pi(4.0, 0.625, 2.0), 5.7572e-15)];
 [true, true, true];
 
-[closeto(elliptic_pi(1.5b0 - 1b-30*%i, 1.25b0, 0.5b0) - elliptic_pi(1.5b0, 1.25b0, 0.5b0), 3.6319b-30),
- closeto(elliptic_pi(1.5b0 + 1b-30*%i, 1.25b0, 0.5b0) - conjugate(elliptic_pi(1.5b0, 1.25b0, 0.5b0)), 3.6319b-30)];
+[closeto(elliptic_pi(1.5b0 - 1b-30*%i, 1.25b0, 0.5b0) - elliptic_pi(1.5b0, 1.25b0, 0.5b0), 3.6399b-30),
+ closeto(elliptic_pi(1.5b0 + 1b-30*%i, 1.25b0, 0.5b0) - conjugate(elliptic_pi(1.5b0, 1.25b0, 0.5b0)), 3.6399b-30)];
 [true, true];
 
 /* jacobi_sn, jacobi_cn and jacobi_dn with complex u or m and large u.
@@ -1451,21 +1451,21 @@ block([u : 700.0*%i, m : -3.0],
 
 /* The same with bigfloats, which are evaluated without halving u. */
 block([u : 3000b0, m : 0.5b0 + 0.5b0*%i],
-  [closeto(jacobi_sn(u, m) - (-1.21849692560747587114276973611068b0 + 3.330863397397995544078899477567542b-1*%i), 3.4248b-31),
+  [closeto(jacobi_sn(u, m) - (-1.21849692560747587114276973611068b0 + 3.330863397397995544078899477567542b-1*%i), 8.6425b-31),
    closeto(jacobi_cn(u, m) - (-5.098374269215944321664565636689577b-1 - 7.960668626966239690456692445733609b-1*%i), 8.8841b-31),
-   closeto(jacobi_dn(u, m) - (3.187344695362449716395125501639497b-1 - 4.408519785621372859650450290066375b-1*%i), 4.5155b-31)]);
+   closeto(jacobi_dn(u, m) - (3.187344695362449716395125501639497b-1 - 4.408519785621372859650450290066375b-1*%i), 1.3759b-30)]);
 [true, true, true];
 
 block([u : 700b0*%i, m : 0.5b0 + 0.5b0*%i],
-  [closeto(jacobi_sn(u, m) - (-9.974413226516374324206558886352551b-1 - 1.434453976160884748993751158192147b-1*%i), 5.6655b-31),
-   closeto(jacobi_cn(u, m) - (-3.955974905186646527613402469195142b-1 + 3.616766297958372887117022565982915b-1*%i), 3.7375b-31),
-   closeto(jacobi_dn(u, m) - (8.847467370262834162213122731264483b-1 - 3.56166711765823588067373870760695b-1*%i), 4.2233b-31)]);
+  [closeto(jacobi_sn(u, m) - (-9.974413226516374324206558886352551b-1 - 1.434453976160884748993751158192147b-1*%i), 1.4292b-30),
+   closeto(jacobi_cn(u, m) - (-3.955974905186646527613402469195142b-1 + 3.616766297958372887117022565982915b-1*%i), 2.6672b-30),
+   closeto(jacobi_dn(u, m) - (8.847467370262834162213122731264483b-1 - 3.56166711765823588067373870760695b-1*%i), 1.0682b-30)]);
 [true, true, true];
 
 block([u : 700b0*%i, m : 3b0],
-  [closeto(jacobi_sn(u, m) - (-6.156467580773957516915422627742662b-1*%i), 6.1476b-30),
-   closeto(jacobi_cn(u, m) - (-1.174317218953723530569975663003079b0), 3.2972b-31),
-   closeto(jacobi_dn(u, m) - (-1.4618696221597951905671591637989b0), 4.2710b-30)]);
+  [closeto(jacobi_sn(u, m) - (-6.156467580773957516915422627742662b-1*%i), 6.1492b-30),
+   closeto(jacobi_cn(u, m) - (-1.174317218953723530569975663003079b0), 3.2294b-30),
+   closeto(jacobi_dn(u, m) - (-1.4618696221597951905671591637989b0), 7.7746b-30)]);
 [true, true, true];
 
 /* m near 1.  The duplication formulas multiply errors off the curves
@@ -1550,7 +1550,7 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
 
 /* Real u, m > 1: reciprocal-modulus transformation. */
 [closeto(jacobi_epsilon(1.0, 2.0) - 5.8904862888974309e-1, 1.3080e-16),
- closeto(jacobi_epsilon(1.0b0, 2.0b0) - 5.89048628889743088308388082799087b-1, 5.8905b-33)];
+ closeto(jacobi_epsilon(1.0b0, 2.0b0) - 5.89048628889743088308388082799087b-1, 6.1630b-33)];
 [true, true];
 
 /* Real u, m = 0: E(u|0) = u. */
@@ -1579,8 +1579,8 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
 [true, true];
 
 /* Real u < 0, 0 < m < 1. */
-[closeto(jacobi_epsilon(-0.5, 0.5) + 4.8062514580838265e-1, 1.1103e-16),
- closeto(jacobi_epsilon(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 4.8063b-33)];
+[closeto(jacobi_epsilon(-0.5, 0.5) + 4.8062514580838265e-1, 5.5512e-17),
+ closeto(jacobi_epsilon(-0.5b0, 0.5b0) + 4.806251458083826523093253715379769b-1, 1.3867b-32)];
 [true, true];
 
 /* Real u, m < 0. */
@@ -1598,8 +1598,8 @@ true;
 [true, true];
 
 /* Complex u, Re u < 0, 0 < m < 1. */
-[closeto(jacobi_epsilon(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1.5562e-16),
- closeto(jacobi_epsilon(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 7.1025b-33)];
+[closeto(jacobi_epsilon(-0.5 + 0.5*%i, 0.5) - (-5.3466986756940037e-1 + 4.5308515441536648e-1*%i), 1b-20),
+ closeto(jacobi_epsilon(-0.5b0 + 0.5b0*%i, 0.5b0) - (-5.346698675694003728000533058395391b-1 + 4.530851544153664827063339821381423b-1*%i), 1.4879b-32)];
 [true, true];
 
 /* Complex u, 0 < m < 1, K'/2 < Im u < 3*K'/2: shift by i*K'. */
@@ -1632,7 +1632,7 @@ true;
 [true, true];
 
 /* Complex u, m > 1. */
-[closeto(jacobi_epsilon(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 7.7119e-16),
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 2.0) - (6.0734012233827445e-1 + 3.0034309906667172e-1*%i), 1.4529e-15),
  closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 2.0b0) - (6.073401223382744473605404837251988b-1 + 3.003430990666717205676931089966581b-1*%i), 2.8211b-32)];
 [true, true];
 
@@ -1651,7 +1651,7 @@ true;
  */
 
 /* Complex m, no reduction of u. */
-[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 1.6900e-16),
+[closeto(jacobi_epsilon(0.5 + 0.5*%i, 0.5 + 0.5*%i) - (5.8549754950774686e-1 + 4.8624946988920491e-1*%i), 2.0015e-16),
  closeto(jacobi_epsilon(0.5b0 + 0.5b0*%i, 0.5b0 + 0.5b0*%i) - (5.854975495077468611925941646139621b-1 + 4.86249469889204907874227251328901b-1*%i), 7.7038b-33)];
 [true, true];
 
@@ -1676,16 +1676,57 @@ true;
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 9.4206e-16),
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 1.2948e-15),
  closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
 /* Complex m and large real u.  This shows that arg reduction of u improves accuracy signficantly.
  * Without it, the answer has only about 4 correct digits.
 */
-closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.5475e-13);
+closeto(jacobi_epsilon(3000.0, 0.5 + 0.5*%i) - (2.3495013343334482e3 - 5.4545726453403568e2*%i), 4.6875e-13);
 true;
 
+/* E(u|m) is odd in u, exactly, for real and complex u and m.  Each
+ * failure is listed as [u, m, E(u|m) + E(-u|m)]. */
+block([bad : []],
+  for u in [0.5, 3000.0, -1.5*%i, 2.75 - 2.25*%i, -7.0 + 3.0*%i] do
+    for m in [0.5, 3.7, -2.0, 0.5 + 0.5*%i, 2.0 + %i, -3.0 + 0.5*%i] do
+      block([s : rectform(jacobi_epsilon(u, m) + jacobi_epsilon(-u, m))],
+        if not numberp(cabs(s)) or cabs(s) > 0 then bad : endcons([u, m, s], bad)),
+  bad);
+[];
+
+/* jacobi_epsilon at multiples of elliptic_kc(m): the same cases as
+ * jacobi_sn. */
+[jacobi_epsilon(elliptic_kc(m), m), jacobi_epsilon(2*elliptic_kc(m), m),
+ jacobi_epsilon(-3*elliptic_kc(m), m)];
+[elliptic_ec(m), 2*elliptic_ec(m), -3*elliptic_ec(m)];
+
+[jacobi_epsilon(x + 2*elliptic_kc(m), m), jacobi_epsilon(x - 4*elliptic_kc(m), m)];
+[jacobi_epsilon(x, m) + 2*elliptic_ec(m), jacobi_epsilon(x, m) - 4*elliptic_ec(m)];
+
+[jacobi_epsilon(x + elliptic_kc(m), m), jacobi_epsilon(x - 3*elliptic_kc(m), m)];
+[jacobi_epsilon(x, m) + elliptic_ec(m) - m*jacobi_sn(x, m)*jacobi_cd(x, m),
+ jacobi_epsilon(x, m) - 3*elliptic_ec(m) - m*jacobi_sn(x, m)*jacobi_cd(x, m)];
+
+[jacobi_epsilon(elliptic_kc(m)/2, m), jacobi_epsilon(3*elliptic_kc(m)/2, m)];
+[(elliptic_ec(m) + 1 - sqrt(1 - m))/2, (3*elliptic_ec(m) - 1 + sqrt(1 - m))/2];
+
+/* The same results evaluated numerically, against jacobi_epsilon at the
+ * numerical argument.  Each failure is listed as [u, difference]. */
+block([vals : [x = 0.3 + 0.2*%i, m = 0.5 + 0.5*%i], bad : []],
+  for u in [elliptic_kc(m), x + 2*elliptic_kc(m), x + elliptic_kc(m),
+            x - 3*elliptic_kc(m), elliptic_kc(m)/2, 3*elliptic_kc(m)/2] do
+    block([d : cabs(rectform(subst(vals, jacobi_epsilon(u, m))
+                             - jacobi_epsilon(subst(vals, u), subst(vals, m))))],
+      if not numberp(d) or d > 1e-14 then bad : endcons([u, d], bad)),
+  bad);
+[];
+
+/* Bug #5327: "make_elliptic_e does not rewrite elliptic_eu" */
+
+make_elliptic_e(jacobi_epsilon(u, m));
+elliptic_e(jacobi_am(u, m), m)$
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;

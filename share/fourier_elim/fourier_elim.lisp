@@ -465,7 +465,7 @@
 	    (delete-if #'(lambda (s) (equal t (standardize-inequality s))) pos)))
 	  
       (if ($member new-context $contexts) ($killcontext new-context))
-      (setq $context save-context))))
+      (setq $context save-context context save-context))))
 	    
 (defun fourier-elim (pos vars)
   (let ((vi) (acc nil) (w))
@@ -511,7 +511,7 @@
 		 (setq pos (apply-min pos))
 		 (if (op-equalp pos '$min) (margs pos) (list pos)))
 	     (if ($member new-context $contexts) ($killcontext new-context))
-	     (setq $context save-context))))))
+	     (setq $context save-context context save-context))))))
 
 (defun fourier-elim-one-variable (pos x &optional (need-simp t))
  
@@ -573,7 +573,7 @@
 	  (setq l (mapcar '$expand l))
 	  (opapply '$max l))
       (if ($member new-context $contexts) ($killcontext new-context))
-      (setq $context save-context))))
+      (setq $context save-context context save-context))))
 
 (defun apply-min (l)
   (let ((save-context $context) (new-context (gensym)))
@@ -583,7 +583,7 @@
 	(setq l (mapcar '$expand l))
 	(opapply '$min l))
       (if ($member new-context $contexts) ($killcontext new-context))
-      (setq $context save-context))))
+      (setq $context save-context context save-context))))
  
 (defun compare-using-empty-context (a b)
   (let ((save-context $context) (new-context (gensym)))
@@ -592,5 +592,5 @@
 	  ($newcontext new-context)
 	  ($compare a b))
       (if ($member new-context $contexts) ($killcontext new-context))
-      (setq $context save-context))))
+      (setq $context save-context context save-context))))
 

@@ -534,6 +534,10 @@
 (defvar *complexsign* nil
   "If T, COMPAR works in a complex mode.")
 
+(defvar *alias-expressions* nil
+  "If T, gensyms from MAKE-NEW-VAR, which stand for an expression, may occur,
+  and SUBST-ALIASES replaces them by that expression.")
+
 (defmvar $prederror nil
   "When true, an error message is displayed whenever the predicate of an
   'if' statement or an 'is' function fails to evaluate to either
@@ -1949,9 +1953,12 @@
 ;;------------------------------------------------------------------------
 
 (defvar *fact-removed* nil
-  "Set by FDEL when it unlinks a datum.")
+  "Set by KILL-DATUM when it removes a datum.")
 
 (defvar *fact-protected* nil
   "Set by REMOVABLEP when it declines a datum that belongs to $GLOBAL.")
+
+(defvar *derived-fact* nil
+  "While T, MFACT marks new facts as derived, which $FACTS does not list.")
 
 ;;------------------------------------------------------------------------
