@@ -38,6 +38,7 @@ Bug fixes for numbered bugs:
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
+* \#5075 Antiderivative of sin(x^3) does not differentiate back, and under domain: complex it is wrong for negative x
 * \#5078 carg() of tan() or tanh() of a complex number is off by %pi when the real part of the result is negative
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
@@ -118,6 +119,7 @@ Bug fixes for numbered bugs:
 * \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
+* \#5293 subst(zz, true, if a then b elseif c then d else f) drops the else branch
 * \#5294 diff(struve_h(v,t),t) and diff(struve_l(v,t),t) contain x^v instead of t^v
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5304 featurep(x, alphabetic) raises a Lisp error for a non-string argument
@@ -203,6 +205,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5606 cabs(erf(%i)^2) crashes Maxima with control stack exhausted
+* \#5607 csign(gamma(%i)) is pnz, so cabs(gamma(%i)^2) = gamma(%i)^2
 * \#5610 featurep(2*b, real) is true for an imaginary b
 * \#5613 rectform, polarform and carg disagree with (-8)^(1/3) = -2 under domain : real
 * \#5616 limit(1/(sinh(x)-x),x,0,plus) -> minf, should be inf
@@ -274,6 +277,16 @@ Bug fixes for numbered bugs:
 * \#5710 ((-2)^(1/6))^2 simplifies to the real root (-2)^(1/3) with radexpand : false
 * \#5711 integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))
 * \#5713 %i^(2/3) simplifies to -1
+* \#5716 diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real
+* \#5717 limit() returns ind when the one-sided limits are different forms of the same number
+* \#5718 hypergeometric_representation of gamma_incomplete_lower() is wrong for z < 0
+* \#5719 bessel_j(1/3,-2*%i) and the hypergeometric form of bessel_j(1/3,z) take the wrong root
+* \#5720 beta_incomplete(1/3,2,-8) gives -18 instead of 9+9*sqrt(3)*%i
+* \#5721 expintegral_e(v,z) with expintrep : gamma_incomplete is wrong for z < 0
+* \#NNNN integrate(sin(x^3),x) and integrate(%e^(x^3),x,-1,1) are wrong
+* \#NNNN The antiderivative of %e^(-x^4) jumps at x = 0
+* \#MMMM integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0
+* \#NNNN risch(%e^(log(x)/3),x) is wrong for x < 0
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -328,6 +341,7 @@ Bug fixes for unnumbered bugs:
   integrand was not found
 * integrate() gave answers with a constant imaginary part for some
   real integrands, such as %e^x*sqrt(x)
+* idiff() from itensor now uses derivative rules as diff() does
 
 Changes in the Windows installer:
 ---------------------------------
@@ -337,6 +351,8 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* New value safe of %e_to_numlog: %e^(r*log(x)) is simplified into x^r
+  only where x^r is the principal value
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as

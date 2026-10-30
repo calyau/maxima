@@ -7334,6 +7334,110 @@ block([g, G],
  integrate((c-c*x)^2*sqrt(1-x^2)/(1-x)^2, x)];
 [c^3*asin(x), (c^2*asin(x))/2+(c^2*x*sqrt(1-x^2))/2]$
 
+
+/* integrate took the real root of the power that comes with
+   gamma_incomplete in its formulas, as (-x^3)^(-1/3), where
+   gamma_incomplete is on the principal branch. So the antiderivatives of
+   %e^(x^3) and sin(x^3) were wrong for x > 0, and others for x < 0. The
+   power is now on the principal branch, written with x/abs(x), and
+   gamma(1/3) is taken from gamma_incomplete to make the antiderivative
+   continuous at 0. */
+
+[integrate(%e^(x^3), x), integrate(sin(x^3), x), integrate(x*%e^(x^3), x)];
+[-(((gamma_incomplete(1/3,-x^3)-gamma(1/3))*((-sqrt(3)*%i*x)/(4*abs(x))+(3*x)/(4*abs(x))-(sqrt(3)*%i)/4-1/4))/3),
+ -(((gamma_incomplete(1/3,%i*x^3)+gamma_incomplete(1/3,-%i*x^3)-2*gamma(1/3))*abs(x)+(sqrt(3)*%i*gamma_incomplete(1/3,%i*x^3)-sqrt(3)*%i*gamma_incomplete(1/3,-%i*x^3))*x)/(12*abs(x))),
+ -(((gamma_incomplete(2/3,-x^3)-gamma(2/3))*((((-sqrt(3)*%i)/4-3/4)*x)/abs(x)-(sqrt(3)*%i)/4+1/4))/3)]$
+
+/* where the variable is known to be positive, the phase is a constant */
+block([xp],
+  local(xp),
+  assume(xp > 0),
+  [integrate(%e^(xp^3), xp), integrate(sin(xp^3), xp),
+   integrate(%e^(-xp^3), xp)]);
+[-(((1/2-(sqrt(3)*%i)/2)*gamma_incomplete(1/3,-xp^3))/3),
+ -(((sqrt(3)*%i+1)*gamma_incomplete(1/3,%i*xp^3)+(1-sqrt(3)*%i)*gamma_incomplete(1/3,-%i*xp^3))/12),
+ -gamma_incomplete(1/3,xp^3)/3]$
+
+/* against quad_qags, on both sides of 0 and across it, with domain : real
+   and domain : complex, and definite integrals through 0 and with an even
+   root */
+block([nv, qc, chk],
+  local(nv, qc, chk),
+  nv(e) := float(rectform(expand(float(rectform(e))))),
+  qc(f, a, b) := quad_qags(realpart(f), x, a, b)[1]
+                 + %i*quad_qags(imagpart(f), x, a, b)[1],
+  chk(f) := block([r : integrate(f, x)],
+    map(lambda([ab], is(cabs(nv(subst(x = ab[2], r) - subst(x = ab[1], r))
+                             - qc(f, ab[1], ab[2])) < 1e-9)),
+        [[0.5, 1.5], [-1.5, -0.5], [-0.5, 0.6]])),
+  [map(chk, [%e^(x^3), %e^(-x^3), sin(x^3), cos(x^3), %e^(%i*x^3),
+             %e^(-%i*x^3), x*%e^(x^3), 2^(x^3), %e^(x^5), x^(-2/3)*%e^(-x),
+             x^(1/3)*%e^(-x)]),
+   block([domain : complex], map(chk, [%e^(x^3)])),
+   map(lambda([f, a, b], is(cabs(nv(integrate(f, x, a, b))
+                                 - quad_qags(f, x, a, b)[1]) < 1e-9)),
+       [%e^(x^3), x*%e^(x^3), exp(sqrt(x^3)), x^(1/3)*%e^(-x)],
+       [-1, -1, 0, -1], [1, 1, 1, 1])]);
+[[[true, true, true], [true, true, true], [true, true, true],
+  [true, true, true], [true, true, true], [true, true, true],
+  [true, true, true], [true, true, true], [true, true, true],
+  [true, true, true], [true, true, true]],
+ [[true, true, true]],
+ [true, true, true, true]]$
+
+/* The derivatives of the antiderivatives give the integrands back, under
+   expand, or trigrat for the trigonometric ones, also for a variable named
+   like a placeholder of the derivative rules */
+[expand(diff(integrate(%e^(x^3), x), x) - %e^(x^3)),
+ expand(diff(integrate(%e^(%i*x^3), x), x) - %e^(%i*x^3)),
+ expand(diff(integrate(%e^(-%i*x^3), x), x) - %e^(-%i*x^3)),
+ expand(diff(integrate(x*%e^(-x^3), x), x) - x*%e^(-x^3)),
+ expand(diff(integrate(%e^(-1/x^3), x), x) - %e^(-1/x^3)),
+ expand(diff(integrate(%e^(2*x^3), x), x) - %e^(2*x^3)),
+ trigrat(diff(integrate(sin(x^3), x), x) - sin(x^3)),
+ trigrat(diff(integrate(cos(2*x^3), x), x) - cos(2*x^3)),
+ expand(diff(integrate(%e^(z^3), z), z) - %e^(z^3)),
+ trigrat(diff(integrate(sin(a^3), a), a) - sin(a^3))];
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]$
+
+/* where the derivative has x^(1/3) as %e^(log(x)/3), the antiderivative of
+   x^(-2/3)*%e^(-x) has it with x/abs(x), so this is checked numerically */
+block([d : diff(integrate(x^(-2/3)*%e^(-x), x), x) - x^(-2/3)*%e^(-x)],
+  map(lambda([p], is(cabs(float(rectform(expand(float(rectform(subst(x = p, d)))))))
+                     < 1e-12)),
+      [-1.3, 0.4, 1.7]));
+[true, true, true]$
+
+/* infinite limits are as they were */
+[integrate(%e^(-x^3), x, 0, inf), integrate(x*%e^(-x^3), x, 0, inf)];
+[gamma(1/3)/3, gamma(2/3)/3]$
+
+/* %e^(log(2*x)/3) in the derivative of gamma_incomplete(1/3,2*x) is not
+   taken for the real root (2*x)^(1/3): the integral is left alone or right */
+block([r : integrate(diff(gamma_incomplete(1/3, 2*x), x), x, -2, -1)],
+  is(not freeof(nounify(integrate), r)
+     or cabs(float(rectform(r - (gamma_incomplete(1/3, -2.0)
+                                 - gamma_incomplete(1/3, -4.0))))) < 1e-9));
+true$
+
+
+/* The antiderivatives of %e^(-x^4), x^2*%e^(x^4) and others like them
+   jumped at x = 0 */
+
+block([nv, qc, chk],
+  local(nv, qc, chk),
+  nv(e) := float(rectform(expand(float(rectform(e))))),
+  qc(f, a, b) := quad_qags(realpart(f), x, a, b)[1]
+                 + %i*quad_qags(imagpart(f), x, a, b)[1],
+  chk(f) := block([r : integrate(f, x)],
+    is(cabs(nv(subst(x = 0.6, r) - subst(x = -0.5, r)) - qc(f, -0.5, 0.6))
+       < 1e-9)),
+  [integrate(%e^(-x^4), x),
+   map(chk, [%e^(-x^4), x^2*%e^(x^4), x^4*%e^(-x^6), 2^(-x^4),
+             x^2*%e^(-2*x^6)])]);
+[-((gamma_incomplete(1/4, x^4) - gamma(1/4))*x)/(4*abs(x)),
+ [true, true, true, true, true]]$
+
 /* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
    integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
    second integrand. The checks of H take c*x = 4/3 and c*x = 3/4, where
@@ -7913,6 +8017,46 @@ block([fs, ds, Fs],
            r)),
        Fs, ds)]);
 [[true, true, true, true, true], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]$
+
+/* Bug #5075: "Antiderivative of sin(x^3) does not differentiate back, and under domain: complex it is wrong for negative x" */
+
+block([fs, Fs],
+  fs : [sin(x^3), cos(x^3), x*sin(x^3)],
+  Fs : map(lambda([f], integrate(f, x)), fs),
+  map(lambda([F, f],
+        map(lambda([p],
+              radcan(exponentialize(rectform(subst(x = p, diff(F, x) - f))))),
+            [2, -2, %i, -%i])),
+      Fs, fs)), domain : complex;
+[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]$
+
+block([F : integrate(log(tan(x)), x)],
+  map(lambda([p],
+        is(cabs(float(rectform(subst(x = p, diff(F, x) - log(tan(x))))))
+           < 1e-10)),
+      [-43/20, 1/2, 7/2, 1 + %i, -43/20 + %i/5])), domain : complex;
+[true, true, true, true, true]$
+
+/* Bugs #MMMM: "integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0"
+   and #NNNN: "risch(%e^(log(x)/3),x) is wrong for x < 0" */
+
+block([f, F],
+  f : 8*(1/(x-1)+1)^(1/3)*(x-1)^(1/3)/(x-(1/(x-1)+1)*(x-1)^2-1),
+  F : integrate(f, x),
+  [freeof(log(x), F),
+   is(abs(float(rectform(subst(x = -8, diff(F, x) - f)))) < 1e-12)]);
+[true, true]$
+
+[freeof(log(x), risch(x^(1/3)/(x+1), x)), risch(sqrt(x)/(x+1), x),
+ freeof(log(x), risch(%e^(log(x)/3)/(x+1), x))];
+[true, 2*sqrt(x)-2*atan(sqrt(x)), false]$
+
+block([r : integrate(%e^(log(x)/3)*sin(x), x)],
+  [risch(%e^(log(x)/3), x), risch(%e^(log(x)/3)*log(x), x),
+   is(cabs(float(rectform(subst(x = -0.5,
+                                diff(r, x) - %e^(log(x)/3)*sin(x)))))
+      < 1e-9)]);
+[3*%e^(log(x)/3)*x/4, %e^(log(x)/3)*(12*x*log(x) - 9*x)/16, true]$
 
 
 /**************************************/

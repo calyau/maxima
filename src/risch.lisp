@@ -158,6 +158,16 @@
                                            (div (sdiff new var) new))))))
               k))))
 
+;; T if E has a power %e^u with a log in U and U depending on VAR, such as
+;; the %e^(log(x)/3) that INTSETUP writes for x^(1/3).
+(defun exp-log-power-p (e var)
+  (and (not (atom e))
+       (or (and (eq (caar e) 'mexpt)
+                (eq (cadr e) '$%e)
+                (isinop (caddr e) '%log)
+                (not (freeof var (caddr e))))
+           (some #'(lambda (a) (exp-log-power-p a var)) (cdr e)))))
+
 (defun rischint (exp risch-intvar &optional trig
                      &aux ($logarc nil) ($exponentialize nil)
                      ($gcd '$algebraic) ($algebraic t) (implicit-real t)
@@ -215,11 +225,20 @@
      (setq z (cond ((atom (cdr z))
 		    (disrep (car z) risch-ratform))
 		   (t
-		    (let (($logsimp t)
-			  ($%e_to_numlog t))
-		      (simplify (list* '(mplus)
+		    ;; INTSETUP writes a radical such as x^(1/3) as
+		    ;; %e^(log(x)/3), which %e_to_numlog turns back, but SIMPLIFY
+		    ;; does so only in the parts of the answer that are not
+		    ;; simplified yet. So resimplify all of it, unless the
+		    ;; integrand has such a power on the principal branch, see
+		    ;; ODD-ROOT-LOG-TERM-P, which must stay as it is.
+		    (let* (($logsimp t)
+			   ($%e_to_numlog (not (odd-root-log-power-p exp)))
+			   (ans (list* '(mplus)
 				       (disrep (car z) risch-ratform)
-				       (cdr z)))))))
+				       (cdr z))))
+		      (if (and $%e_to_numlog (exp-log-power-p ans risch-intvar))
+			  (resimplify ans)
+			  (simplify ans))))))
      ;; Multiply a result free of integrals by the factor by which INTSETUP
      ;; changed the integrand, if it is constant, but not for the exponential
      ;; form of a trigonometric integrand, where it makes the result very
@@ -293,26 +312,34 @@
 		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)
 	  (rp-polylogp t)
-	  (*risplit-noting* nil) (*risplit-assumed* nil)
-	  $logarc $exponentialize result)
-     (if (decl-complexp risch-var)
-      ;; RISPLIT's parts are the real and imaginary parts of YYY only for a
-      ;; real variable. For a variable declared complex or imaginary, rewrite
-      ;; the exponentials with demoivre instead, which holds for all complex
-      ;; values, and use that if it is free of %i up to a constant.
-      (let ((d (cdr (partition (sratsimp ($demoivre yyy)) risch-var 0))))
-        (setq result (if (freeof '$%i d) d (sratsimp yyy))))
+	  (*risplit-noting* nil) (*risplit-assumed* nil) (*risplit-var-pos* nil)
+	  $logarc $exponentialize result parts)
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
      ;; RISPLIT can ask sign() about an expression that is not real, which
-     ;; throws to SIGN-IMAG-ERR here. The integral is then left unevaluated.
+     ;; throws to SIGN-IMAG-ERR here.
+     (unless (decl-complexp risch-var)
+       (setq parts (let (sign-imag-errp (*risplit-noting* t))
+                     (catch 'sign-imag-err (risplit yyy)))))
+     (if (or (decl-complexp risch-var)
+             (and (eq $domain '$complex) *risplit-var-pos*
+                  (freeof '%integrate yyy) (freeof '$li yyy)))
+      ;; RISPLIT's parts are the real and imaginary parts of YYY only for a
+      ;; real variable, and only for a positive one if ABSARG takes it to be
+      ;; positive. For a variable declared complex or imaginary, or with
+      ;; domain complex if the split takes the variable to be positive and
+      ;; YYY holds no integral, rewrite the exponentials with demoivre
+      ;; instead, which holds for all complex values, and use that if it is
+      ;; free of %i up to a constant. Not if YYY has a polylogarithm, as
+      ;; for log(tan(x)): written with tan(x), it holds on one period only.
+      (let ((d (cdr (partition (sratsimp ($demoivre yyy)) risch-var 0))))
+        (setq result (if (freeof '$%i d) d (sratsimp yyy))))
+     ;; If RISPLIT threw to SIGN-IMAG-ERR, the integral is left unevaluated.
      (destructuring-let (((yyy-re . yyy-im)
-                          (let ((s (let (sign-imag-errp (*risplit-noting* t))
-                                     (catch 'sign-imag-err (risplit yyy)))))
-                            (if (consp s)
-                              s
+                          (if (consp parts)
+                              parts
                               (return-from trigin1
-                                (list '(%integrate) risch-*exp risch-var))))))
+                                (list '(%integrate) risch-*exp risch-var)))))
       (flet ((locally-const-p (e f)
         "E is locally constant iff its derivative vanishes."
         ;; If RISPLIT left a noun-form %REALPART or %IMAGPART, the result is

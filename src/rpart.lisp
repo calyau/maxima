@@ -41,6 +41,123 @@
                      (eq (evod denom) '$odd)
                      (or (evod num) (maxima-integerp num))))))))
 
+;; Z^S on the principal branch of the power, for a rational S with an odd
+;; denominator. With domain : real, the simplifier takes the real root of a
+;; negative base instead: (-8)^(1/3) is -2 and (-x^3)^(-1/3) is -1/x. A
+;; function on the principal branch, as gamma_incomplete(a,z), needs the
+;; principal z^s in its derivative, its expansions and the antiderivatives
+;; written with it. Where the simplifier does not take the real root, as
+;; with domain : complex, Z^S itself is returned.
+;;
+;; For z = k*w^n with a constant k and a real w the power is written as an
+;; expression in w and abs(w), which rectform, float and the integrator
+;; leave on the right branch. For z = k*w with k > 0, as x or 1-x, this is
+;; done only if REAL-VAR is true, as for the antiderivatives of the
+;; integrator, which are for a real variable. Any other z, as x+%i, and
+;; such a z otherwise, gets z^m*%e^((s-m)*log(z)) with the principal log(z)
+;; and the integer m nearest to s, which holds for a complex value put in
+;; for z too, and powers of z whose exponents differ by an integer share
+;; the exponential and cancel.
+;;
+(defun principal-power (z s &optional real-var)
+  (let (sgn)
+    (cond ((or (not (eq $domain '$real))
+               (not (ratnump s))
+               (evenp (caddr s))
+               (member (setq sgn ($csign z)) '($pos $pz $zero)))
+           (power z s))
+          ((member sgn '($neg $nz))
+           (mul (power (neg z) s) (power '$%e (mul '$%i '$%pi s))))
+          (t
+           (multiple-value-bind (cnum re im) (complex-number-p z 'mnump)
+             (if cnum
+               (mul (power (add (power re 2) (power im 2)) (div s 2))
+                    (power '$%e (mul '$%i s (ftake '%atan2 im re))))
+               (multiple-value-bind (k w n) (real-power-factors z)
+                 (if (and k
+                          (or real-var
+                              (not (and (eql n 1)
+                                        (member ($csign k) '($pos $pz))))))
+                   (principal-power-real-factors k w n s)
+                   (let* ((m (round (cadr s) (caddr s)))
+                          (r (sub s m)))
+                     (multiple-value-bind (l a) (principal-log z sgn)
+                       (mul (power z m)
+                            (power '$%e (mul r (add l (mul '$%i a)))))))))))))))
+
+;; Z as k*w^n for a constant k, a real w that is not constant and an
+;; integer n or a rational n with an odd denominator: (values k w n), or NIL
+;; when Z is not of this form. PRINCIPAL-POWER leaves z = k*w with k > 0 to
+;; PRINCIPAL-LOG, as z has the argument of w, unless its REAL-VAR is true.
+(defun real-power-factors (z)
+  (let ((k 1) (w z) (n 1) const)
+    ;; Each factor of Z is tested with $CONSTANTP once. W is constant iff
+    ;; every factor of Z is, and so is the base of W if W is a power.
+    (if (mtimesp z)
+      (let (consts others)
+        (dolist (f (cdr z))
+          (if ($constantp f) (push f consts) (push f others)))
+        (setq const (null others))
+        (when consts
+          (setq k (muln consts t)
+                w (muln others t))))
+      (setq const ($constantp z)))
+    (when (and (mexptp w)
+               (or (integerp (caddr w))
+                   (and (ratnump (caddr w)) (oddp (caddr (caddr w))))))
+      (setq n (caddr w)
+            w (cadr w)))
+    (unless (or const
+                (member ($csign w) '($complex $imaginary)))
+      (values k w n))))
+
+;; z^s for z = k*w^n from REAL-POWER-FACTORS. w^n is real, with the sign of
+;; w for an odd numerator of n and nonnegative otherwise, so the argument of
+;; z is that of k where w^n > 0 and that of -k where w^n < 0:
+;;
+;;   z^s = abs(k)^s * abs(w)^(n*s) * (alpha + beta*w/abs(w))
+;;
+;; with alpha + beta = %e^(%i*s*carg(k)) and alpha - beta =
+;; %e^(%i*s*carg(-k)). The sign w/abs(w) and the powers of abs(w) are
+;; rational in w and abs(w), so that the product of two such powers, as of
+;; an antiderivative and its derivative, reduces under expand, where an
+;; atan2(0,w) in an exponent would not. The constants are expanded to give
+;; them one form wherever they come from.
+;;
+(defun principal-power-real-factors (k w n s)
+  (destructuring-bind (re . im) (trisplit k)
+    (let ((plus (power '$%e (mul '$%i s (ftake '%atan2 im re)))))
+      (mul (power (cabs k) s)
+           (power (ftake 'mabs w) (mul n s))
+           (if (oddp (num1 n))
+             (let ((minus (power '$%e (mul '$%i s
+                                           (ftake '%atan2 (neg im) (neg re))))))
+               (add ($expand (div (add plus minus) 2))
+                    (mul ($expand (div (sub plus minus) 2))
+                         (div w (ftake 'mabs w)))))
+             ($expand plus))))))
+
+;; log(Z) on the principal branch as (values l a) with log(Z) = l + %i*a,
+;; for PRINCIPAL-POWER. SGN is the csign of Z. The simplifier keeps log(Z)
+;; for a sum or a product, but writes log(x^a) as a*log(x), which is off by
+;; a multiple of 2*%i*%pi where the argument of x^a is not a times that of
+;; x. Then l is log(abs(Z)) and a the argument of Z, as carg gives it.
+;;
+;; TODO: If the log simplifier ever gets fixed, this may no longer be necessary.
+;;
+(defun principal-log (z sgn)
+  (let ((log (ftake '%log z)))
+    (if (and (mlogp log) (alike1 (cadr log) z))
+      (values log 0)
+      (values (if (and (mexptp z)
+                       (not (member ($csign (caddr z)) '($complex $imaginary))))
+                ;; abs(x^a) = abs(x)^a for a real a
+                (mul (caddr z) (ftake '%log (ftake 'mabs (cadr z))))
+                (ftake '%log (ftake 'mabs z)))
+              (if (member sgn '($complex $imaginary))
+                (ftake '%carg z)
+                (ftake '%atan2 0 z))))))
+
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression
@@ -862,7 +979,9 @@
                 ;; At this point l is representing a real value. Try to 
                 ;; determine the sign and return a general form when the sign is
                 ;; unknown.
-		(let ((gs (if (eq rischp l) '$pos ($sign l))))
+		(let ((gs (if (eq rischp l)
+			      (progn (setq *risplit-var-pos* t) '$pos)
+			      ($sign l))))
 		  (cond ((member gs '($pos $pz)) (cons l 0))
 			((eq gs '$zero) (cons 0 0))
 			((eq gs '$neg)

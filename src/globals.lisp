@@ -1246,7 +1246,8 @@
   :properties ((evflag t)))
 (defmvar $%e_to_numlog nil
   "When 'true', 'r' some rational number, and 'x' some
-  expression,'%e^(r*log(x))' will be simplified into 'x^r'.")
+  expression,'%e^(r*log(x))' will be simplified into 'x^r'. When 'safe',
+  only where 'x^r' is the principal value, as '%e^(r*log(x))' is.")
 (defmvar $%emode t
   "When '%emode' is 'true', '%e^(%pi %i x)' is simplified. See the user
   manual for more details."
@@ -1282,6 +1283,9 @@
 ;; nonnegative, without proof.
 (defvar *risplit-noting* nil)
 (defvar *risplit-assumed* nil)
+;; ABSARG sets this to T when it takes RISCHP, the variable of integration,
+;; to be positive.
+(defvar *risplit-var-pos* nil)
 ;; T while INTEGRATE-SQRT-PAIR integrates the single root that it makes of a
 ;; product of roots, if RADCAN1 takes that root apart otherwise than the roots
 ;; it replaces. BRANCH-FACTOR then counts roots of expressions in the variable
@@ -1733,7 +1737,8 @@
 
 ;;------------------------------------------------------------------------
 ;; From nparse.lisp
-(defvar *alphabet* (list #\_ #\%))
+(defvar *alphabet-initial* (list #\_ #\%))
+(defvar *alphabet* (copy-list *alphabet-initial*))
 
 ;;------------------------------------------------------------------------
 ;; From ellipt.lisp

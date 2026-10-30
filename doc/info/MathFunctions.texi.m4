@@ -1808,6 +1808,39 @@ that the @code{radcan} command also does this transformation, and more
 complicated transformations of this ilk as well.  The @code{logcontract}
 command "contracts" expressions containing @code{log}.
 
+When @code{safe}, @code{%e^(r*log(x))} is simplified into @code{x^r} only
+where @code{x^r} is the principal value, as @code{%e^(r*log(x))} is. With
+@code{domain} set to @code{real}, the default, @code{x^r} for an @code{r}
+with an odd denominator is the real root of a negative @code{x}, as in
+@code{(-8)^(1/3) = -2}, so then @code{x} must be known to be nonnegative.
+
+@c ===beg===
+@c %e_to_numlog : safe$
+@c [%e^(log(x)/2), %e^(log(x)/3), %e^(log(x^2+1)/3)];
+@c assume(x > 0)$
+@c %e^(log(x)/3);
+@c ===end===
+@example maxima
+@group
+(%i1) %e_to_numlog : safe$
+@end group
+@group
+(%i2) [%e^(log(x)/2), %e^(log(x)/3), %e^(log(x^2+1)/3)];
+                                   log(x)
+                                   ------
+                                     3       2     1/3
+(%o2)                  [sqrt(x), %e      , (x  + 1)   ]
+@end group
+@group
+(%i3) assume(x > 0)$
+@end group
+@group
+(%i4) %e^(log(x)/3);
+                                      1/3
+(%o4)                                x
+@end group
+@end example
+
 @opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}

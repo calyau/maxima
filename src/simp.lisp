@@ -2982,13 +2982,26 @@
 	  (neg-principal-power -1 e)
 	  (power -1 e)))))
 
+;; T if Z^R is the principal value of the power, as %e^(r*log(z)) is. With
+;; domain : real, z^r for a rational r with an odd denominator is the real
+;; root of a negative z instead: (-8)^(1/3) is -2, %e^(log(-8)/3) is
+;; 1+sqrt(3)*%i. %e_to_numlog : safe rewrites %e^(r*log(z)) as z^r only where
+;; this holds.
+(defun principal-power-p (z r)
+  (or (not (eq $domain '$real))
+      (not (ratnump r))
+      (evenp (caddr r))
+      (member ($csign z) '($pos $pz $zero))))
+
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
 	((and (eq (caar pot) 'mtimes)
 	      (not (atom (caddr pot))) (eq (caar (caddr pot)) '%log)
 	      (null (cdddr pot))
 	      (or (maxima-integerp (cadr pot))
-	          (and $%e_to_numlog ($numberp (cadr pot)))))
+	          (and $%e_to_numlog ($numberp (cadr pot))
+		       (or (not (eq $%e_to_numlog '$safe))
+			   (principal-power-p (cadr (caddr pot)) (cadr pot))))))
 	 (power (cadr (caddr pot)) (cadr pot)))))
 
 (defun mnlog (pot)

@@ -237,9 +237,11 @@
       ((and $%iargs (multiplep arg '$%i))
        ;; bessel_j(v, %i*x) = (%i*x)^v/(x^v) * bessel_i(v, x)
        ;; (From http://functions.wolfram.com/03.01.27.0002.01)
-       (let ((x (coeff arg '$%i 1)))
-	 (mul (power (mul '$%i x) order)
-	      (inv (power x order))
+       (let* ((x (coeff arg '$%i 1))
+	      (c (mul (principal-power (mul '$%i x) order)
+		      (principal-power x (neg order)))))
+	 ;; For a number x, c is a number, as -%i
+	 (mul (if ($constantp c) ($expand c) c)
 	      (take '(%bessel_i) order x))))
 
       ($hypergeometric_representation
@@ -253,7 +255,7 @@
   ;; A&S 9.1.69 / http://functions.wolfram.com/03.01.26.0002.01
   ;; hypergeometric([],[v+1],-z^2/4)*(z/2)^v/gamma(v+1)
   (mul (inv (take '(%gamma) (add order 1)))
-       (power (div arg 2) order)
+       (principal-power (div arg 2) order)
        (take '(%hypergeometric)
              (list '(mlist))
              (list '(mlist) (add order 1))
@@ -545,7 +547,7 @@
   ;;   - hypergeometric([],[v+1],-z^2/4)*gamma(-v)*cos(%pi*v)*(z/2)^v/%pi
   (add (mul -1
             (power 2 order)
-            (inv (power arg order))
+            (principal-power arg (neg order))
             (take '(%gamma) order)
             (inv '$%pi)
             (take '(%hypergeometric)
@@ -554,7 +556,7 @@
                   (neg (div (mul arg arg) 4))))
        (mul -1
             (inv (power 2 order))
-            (power arg order)
+            (principal-power arg order)
             (take '(%cos) (mul order '$%pi))
             (take '(%gamma) (neg order))
             (inv '$%pi)
@@ -886,9 +888,11 @@
       ((and $%iargs (multiplep arg '$%i))
        ;; bessel_i(v, %i*x) = (%i*x)^v/(x^v) * bessel_j(v, x)
        ;; (From http://functions.wolfram.com/03.02.27.0002.01)
-       (let ((x (coeff arg '$%i 1)))
-	 (mul (power (mul '$%i x) order)
-	      (inv (power x order))
+       (let* ((x (coeff arg '$%i 1))
+	      (c (mul (principal-power (mul '$%i x) order)
+		      (principal-power x (neg order)))))
+	 ;; For a number x, c is a number, as -%i
+	 (mul (if ($constantp c) ($expand c) c)
 	      (take '(%bessel_j) order x))))
 
       ($hypergeometric_representation
@@ -902,7 +906,7 @@
   ;; A&S 9.6.47 / http://functions.wolfram.com/03.02.26.0002.01
   ;; hypergeometric([],[v+1],z^2/4)*(z/2)^v/gamma(v+1)
   (mul (inv (take '(%gamma) (add order 1)))
-       (power (div arg 2) order)
+       (principal-power (div arg 2) order)
        (take '(%hypergeometric)
              (list '(mlist))
              (list '(mlist) (add order 1))
@@ -1212,13 +1216,13 @@
   ;;   + hypergeometric([],[v+1],z^2/4)*2^(-v-1)*gamma(-v)*z^v
   (add (mul (power 2 (sub order 1))
             (take '(%gamma) order)
-            (inv (power arg order))
+            (principal-power arg (neg order))
             (take '(%hypergeometric)
                   (list '(mlist))
                   (list '(mlist) (sub 1 order))
                   (div (mul arg arg) 4)))
        (mul (inv (power 2 (add order 1)))
-            (power arg order)
+            (principal-power arg order)
             (take '(%gamma) (neg order))
             (take '(%hypergeometric)
                   (list '(mlist))
@@ -1793,11 +1797,20 @@
 (defprop %struve_h (mlist $matrix mequal) distribute_over)
 
 ; Derivatives of the Struve H function
-(defgrad %struve_h ($v $z)
+(defgrad %struve_h (v z)
   ;; wrt v
   nil
-  ;; Derivative wrt arg z.  A&S 12.1.10.
-  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))-struve_h(v+1,z)+struve_h(v-1,z))/2$
+  ;; Derivative wrt arg z.  A&S 12.1.10, with z^v on the principal branch
+  ;; of the function.
+  #'(lambda (v z)
+      (values (div (add (div (principal-power z v)
+                             (mul (power 2 v)
+                                  (power '$%pi 1//2)
+                                  (ftake '%gamma (add v 3//2))))
+                        (neg (ftake '%struve_h (add v 1) z))
+                        (ftake '%struve_h (add v -1) z))
+                   2)
+              t))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2021,11 +2034,20 @@
 (defprop %struve_l (mlist $matrix mequal) distribute_over)
 
 ; Derivatives of the Struve L function
-(defgrad %struve_l ($v $z)
+(defgrad %struve_l (v z)
   ;; wrt v
   nil
-  ;; Derivative wrt arg z.  A&S 12.2.5.
-  #$$ (z^v/(2^v*sqrt(%pi)*gamma(v+3/2))+struve_l(v+1,z)+struve_l(v-1,z))/2$
+  ;; Derivative wrt arg z.  A&S 12.2.5, with z^v on the principal branch
+  ;; of the function.
+  #'(lambda (v z)
+      (values (div (add (div (principal-power z v)
+                             (mul (power 2 v)
+                                  (power '$%pi 1//2)
+                                  (ftake '%gamma (add v 3//2))))
+                        (ftake '%struve_l (add v 1) z)
+                        (ftake '%struve_l (add v -1) z))
+                   2)
+              t))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

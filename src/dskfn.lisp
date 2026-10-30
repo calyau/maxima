@@ -81,6 +81,7 @@
     (setq list (ncons (car x))
 	  x (cdr x))
     (errset (dskstore x list))
+    (terpri savefile)
     (close savefile)
     (namestring (truename savefile))))
 
@@ -116,7 +117,8 @@
 		(prog2 (setq val (symbol-value item))
 		    (or (and (eq item '$dontfactor)
 			     (null (cdr val)))
-			(and (member item '(tellratlist *alphabet* *ratweights) :test #'eq) (null val))
+			(and (member item '(tellratlist *ratweights) :test #'eq) (null val))
+			(and (eq item '*alphabet*) (equal val *alphabet-initial*))
 			(and (eq item '$features) (alike (cdr val) featurel))
 			(and (eq item '$default_let_rule_package)
                              (eq item val)))))
@@ -134,7 +136,8 @@
            (setq val (symbol-value item))
 	   (if (eq item '$context) (setq x (list* nil val (cdr x))))
 	   (dskatom item rename val)
-	   (if (not (optionp rename)) (infostore item 'value rename)))
+	   ;; Ugh. Yet another special case. Oh well, this code is full of special cases!
+	   (if (not (or (optionp rename) (eq rename '$alphabet))) (infostore item 'value rename)))
 	 (when (setq val (and (member item (cdr $aliases) :test #'eq) (get item 'reversealias)))
 	   (dskdefprop rename val 'reversealias)
 	   (pradd2lnc rename '$aliases)
@@ -172,6 +175,8 @@
 	   (if (member item (cdr $props) :test #'eq) (pradd2lnc rename '$props))
 	   (setq val (mget item 'oldrules))
 	   (and val (setq x (cons nil (nconc (cdr (reverse val)) (cdr x))))))
+     (when (get item 'defstruct-template)
+       (dskstore-structure item))
 	 (if (member item (cdr $features) :test #'eq) (pradd2lnc rename '$features))
 	 (when (member (getop item) (cdr $props) :test #'eq)
 	   (dolist (ind indlist) (propschk item rename ind))
@@ -212,7 +217,7 @@
 	 (fasprin `(setq tellratlist (nconc (quote ,val) tellratlist)))
 	 (pradd2lnc 'tellratlist '$myoptions))
     ((eq item '*alphabet*)
-     (fasprin `(setq *alphabet* (nconc (quote ,val) *alphabet*))))
+     (fasprin `(setq *alphabet* (union (quote ,val) *alphabet*))))
 	((eq item '*ratweights)
 	 (fasprin `(apply (function $ratweight) (quote ,(dot2l val)))))
 	((eq item '$features)
@@ -238,6 +243,19 @@
 (defun list-hash-pairs (h)
   (loop for value being the hash-values of h using (hash-key key)
         collect (list key value)))
+
+(defun dskstore-structure (x)
+  (let
+    ((translate-property (get x 'translate))
+     (dimension-property (get x 'dimension))
+     (defstruct-default-property (get x 'defstruct-default))
+     (defstruct-template-property (get x 'defstruct-template)))
+    (dskdefprop x translate-property 'translate)
+    (dskdefprop x dimension-property 'dimension)
+    (dskdefprop x defstruct-default-property 'defstruct-default)
+    (dskdefprop x defstruct-template-property 'defstruct-template)
+    ;; Looks like the structures infolist has the default, not the template.
+    (pradd2lnc defstruct-default-property '$structures)))
 
 (defun mpropschk (item rename)
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))
@@ -283,7 +301,12 @@
 
 (defun extopchk (item val)
     (when (or (get item 'nud) (get item 'led) (get item 'lbp))
-      (fasprin `(define-symbol (quote ,val)))
+      ;; Emit call to DEFINE-SYMBOL, but exclude "." and "/";
+      ;; see comment on DEFINE-INITIAL-SYMBOLS over in src/nparse.lisp:
+      ;; exclude "." and "/" because they have other interpretations,
+      ;; as decimal point and part of comment, respectively.
+      (unless (or (equal val ".") (equal val "/"))
+        (fasprin `(define-symbol (quote ,val))))
       (if (member val *mopl* :test #'eq)
 	  (fasprin `(setq *mopl* (cons (quote ,val) *mopl*))))
       (when (setq val (get item 'dimension))

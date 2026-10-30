@@ -605,6 +605,23 @@ Default value: @code{real}
 When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @code{sqrt (x^2)} instead of returning @code{abs(x)}.
 
+When @code{domain} is set to @code{real}, a real quantity raised to a power
+with an integer numerator and an odd denominator, as in @code{x^(1/3)},
+@code{x^(2/3)} or @code{x^(1/n)} with @code{n} declared @code{odd}, is the
+real root: @code{(-8)^(1/3)} simplifies to @code{-2} and @code{(x^3)^(1/3)}
+to @code{x}. @mrefcomma{sign} @mrefcomma{csign} @mrefcomma{rectform}
+@mrefcomma{realpart} @mrefcomma{imagpart} @mref{polarform} and @mref{carg} treat
+such a power as real too. When @code{domain} is set to @code{complex}, the power
+is on the principal branch: @code{(-8)^(1/3)} simplifies to @code{2*(-1)^(1/3)},
+whose @code{rectform} is @code{sqrt(3)*%i+1}.
+
+Functions on the principal branch, as @mref{gamma_incomplete}, keep such
+powers on that branch in their derivatives, in their expansions and in
+the antiderivatives of @mref{integrate}. The power of @code{-x^3} in
+@code{integrate(%e^(x^3), x)} is written in terms of @code{x/abs(x)}, and
+the power of @code{z} in @code{diff(gamma_incomplete(1/3, z), z)} as
+@code{%e^(log(z)/3)}.
+
 @c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
 @c The notion of a "domain" of simplification is still in its infancy,
 @c and controls little more than this at the moment.

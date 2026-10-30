@@ -332,7 +332,12 @@
 		;; case. Instead of returning `ra`, we could return the expression with the 
 		;; smallest `conssize`.
 	    (cond 
-		   ((or (and (eq ra '$ind) (eq rb '$ind)) (eq t (meqp ra rb))) ra)
+		   ((or (and (eq ra '$ind) (eq rb '$ind))
+		        ;; The one-sided limits can come out as different
+		        ;; forms of the same number, as %e^(log(6)/2) and
+		        ;; sqrt(2)*sqrt(3).
+		        (eq t (meqp (extra-simp ra) (extra-simp rb))))
+		    ra)
        
 	        ((or (not (free la '%limit))
                  (not (free lb '%limit)))
@@ -4972,12 +4977,39 @@ ignoring dummy variables and array indices."
   (%jacobi_ds . %jacobi_sd)
   (%jacobi_dc . %jacobi_cd)))
    
+;; %e^X as u^c*%e^(X-c*log(u)) for each term c*log(u) of X with a number c
+;; and a u that is free of VAR and positive, or NIL if X has no such term.
+;; u^c is the same power as %e^(c*log(u)) for a positive u. LIMITP is bound
+;; to NIL, so that building u^c does not ask for signs.
+(defun exp-log-to-power (e)
+  (declare (special var))
+  (let* ((ex ($multthru (caddr e)))
+         (logs (remove-if-not #'(lambda (term)
+                                  (and (mtimesp term)
+                                       (mnump (cadr term))
+                                       (null (cdddr term))
+                                       (not (atom (caddr term)))
+                                       (eq (caar (caddr term)) '%log)
+                                       (freeof var (cadr (caddr term)))
+                                       (eq ($csign (cadr (caddr term))) '$pos)))
+                              (if (mplusp ex) (cdr ex) (list ex)))))
+    (when logs
+      (let (limitp)
+        (mul (muln (mapcar #'(lambda (term)
+                               (power (cadr (caddr term)) (cadr term)))
+                           logs)
+                   t)
+             (power '$%e (sub ex (addn logs t))))))))
+
 (defun extra-simp (e)
   (declare (special var))
-   (let ((var-present (not (freeof var e))))
+   (let ((var-present (not (freeof var e))) w)
    (cond ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
 		     (if (eq '$zero ($csign e)) 0 e))
+         ;; %e^(c*log(u)) --> u^c for a positive u free of var
+         ((and (mexptp e) (eq (cadr e) '$%e) (setq w (exp-log-to-power e)))
+          (extra-simp w))
          ;; dispatch radcan on (positive integer)^Y
          ((and (mexptp e) (integerp (cadr e)) (> (cadr e) 0))
 		     ($radcan (ftake 'mexpt (cadr e) (extra-simp (caddr e)))))

@@ -996,7 +996,7 @@ makelist (foo(float(1/7)), foo, F1);
 jacobi_cd, jacobi_cn,
   jacobi_cs, jacobi_dc, jacobi_dn, jacobi_ds, jacobi_nc, jacobi_nd,
   jacobi_ns, jacobi_sc, jacobi_sd, jacobi_sn, elliptic_e,
-  elliptic_eu, elliptic_f, beta],
+  jacobi_epsilon, elliptic_f, beta],
  Y2 : makelist (foo(1/7, 2/7), foo, F2),
  ev (Y2, nouns));
 [atan(1/2), 'bessel_i(1/7, 2/7), 'bessel_j(1/7, 2/7),
@@ -1005,7 +1005,7 @@ jacobi_cd, jacobi_cn,
  'jacobi_dc(1/7, 2/7), 'jacobi_dn(1/7, 2/7), 'jacobi_ds(1/7, 2/7),
  'jacobi_nc(1/7, 2/7), 'jacobi_nd(1/7, 2/7), 'jacobi_ns(1/7, 2/7),
  'jacobi_sc(1/7, 2/7), 'jacobi_sd(1/7, 2/7), 'jacobi_sn(1/7, 2/7),
- elliptic_e(1/7, 2/7), elliptic_eu(1/7, 2/7), elliptic_f(1/7, 2/7),
+ elliptic_e(1/7, 2/7), jacobi_epsilon(1/7, 2/7), elliptic_f(1/7, 2/7),
  beta(1/7, 2/7)];
 
 ev (Y2, numer);
