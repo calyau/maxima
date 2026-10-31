@@ -975,8 +975,10 @@
       0))
 
 ;; inverse_jacobi_sn, inverse_jacobi_cn and inverse_jacobi_dn are
-;; computed from Carlson's form of F (DLMF 19.25.5 with sin(phi) =
-;; sn(z)):
+;; computed from F(phi|m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2, 1),
+;; which follows from DLMF 19.25.5 and the homogeneity of rf.  With
+;; phi = am(z|m), sin(phi) = sn(z), cos(phi) = cn(z) and
+;; 1-m*sin(phi)^2 = dn(z)^2 (DLMF 22.16(i)), so
 ;;
 ;;   z = s*rf(c^2, d^2, 1)
 ;;
