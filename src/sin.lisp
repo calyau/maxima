@@ -27,6 +27,10 @@
 ;; integrator to avoid endless loops when calling the integrator from risch.
 (defvar *in-risch-p* nil)
 
+(defvar *integrate-sqrt-pair* nil
+  "T while INTEGRATE-SQRT-PAIR integrates, COEF while integration by parts
+  integrates its first factor.")
+
 (defvar *risch-use-triginv-all* nil
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
   $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
@@ -365,6 +369,7 @@
        (setq w (partition *exp* var2 1))
        (setq const (car w))
        (setq *exp* (cdr w))
+       (setq integrand *exp*) ; INTFORM may change *EXP*
        #+nil
        (progn
          (format t "w = ~A~%" w)
@@ -459,10 +464,14 @@
          (format t "arcpart = ~A~%" arcpart)
          (format t "coef =~%")
          (maxima-display coef))
+       (when (and arcpart (setq y (integrate-sqrt-pair integrand var2 t stack)))
+         (return (mul* const y)))
        (cond ((and (not (null arcpart))
 		   (not (on-integrator-stack-p coef var2 stack))
 		   (not (isinop (setq w (let ((*integrator-stack*
-					       (acons coef var2 stack)))
+					       (acons coef var2 stack))
+					      (*integrate-sqrt-pair*
+					       (or *integrate-sqrt-pair* 'coef)))
 					  (integrator coef var2
 						      *integrator-stack*)))
 			        '%integrate))
@@ -509,6 +518,8 @@
 			    ((and (not powerl)
 				  (setq y (powerlist *exp* var2)))
 			     y)
+			    ((unless arcpart
+			       (integrate-sqrt-pair integrand var2 nil stack)))
 			    ((and (not *in-risch-p*) ; Not called from rischint
 			          (setq y
                         ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
@@ -534,6 +545,100 @@
 			     (if result
 				 result
 				 (list '(%integrate) *exp* var2)))))))))))
+
+;; Integrate EXPR, whose square roots have radicands rational in VAR2, by writing the root of one
+;; radicand r2 with the roots of the others, so that fewer different roots remain. With another
+;; radicand r1 and an S chosen below,
+;;
+;;   sqrt(r2) = y*m, where m = s*sqrt(q)/sqrt(r1) and q = r1*r2/s^2.
+;;
+;; As m^2 = r2, y = sqrt(r2)/m is 1 or -1, and constant wherever the roots are continuous. S is
+;;
+;;   sqrt(r3), for a third radicand r3, if that makes q free of VAR2,
+;;   r1, if that makes q a polynomial, and then y = 1 if q > 0,
+;;   1 otherwise.
+;;
+;; Unless y = 1 is known, EXPR must be odd or even in y. Its integral is then that of EXPR with
+;; y = 1, times y if EXPR is odd in y. Return NIL if this does not apply or finds no integral.
+;;
+;; STACK is that of INTEGRATOR, which stops integration by parts that comes back to an integral it
+;; is doing. EARLY, before integration by parts, leaves s = 1 to it and avoids RISCHINT. For the
+;; factor that integration by parts integrates first, take only algebraic results, as others lead
+;; it to integrals it cannot do.
+;;
+;; Not within RISCHINT (IMPLICIT-REAL), which can split radicals wrongly, nor within its own
+;; integration (*INTEGRATE-SQRT-PAIR* is T), where merging again makes radicands such as
+;; (1-t^2)*(3+2*t-3*t^2), which RISCHINT splits wrongly too.
+;;
+(defun integrate-sqrt-pair (expr var2 early stack)
+  (labels ((half-power-p (e)
+             ;; Whether E is a power r^(k/2) with an odd k
+             (and (mexptp e) (ratnump (caddr e)) (eql (caddr (caddr e)) 2)))
+           (radicands (e)
+             ;; The radicands r of the powers r^(k/2) in E that depend on VAR2, with r rational
+             ;; in VAR2, each once, in the order found
+             (cond ((atom e) nil)
+                   ((and (half-power-p e) (rat8 (cadr e) var2) (not (freevar2 e var2)))
+                    (list (cadr e)))
+                   (t (remove-duplicates (mapcan #'radicands (cdr e)) :test #'alike1 :from-end t))))
+           (rewrite (e r m)
+             ;; E with each r^(k/2) written as m^k
+             (cond ((atom e) e)
+                   ((and (half-power-p e) (alike1 (cadr e) r)) (power m (mul 2 (caddr e))))
+                   (t (recur-apply (lambda (u) (rewrite u r m)) e))))
+           (algebraic-p (e)
+             ;; Whether E is built from VAR2 and constants by sums, products and powers with
+             ;; exponents free of VAR2
+             (cond ((or (atom e) (freevar2 e var2)))
+                   ((mexptp e) (and (freevar2 (caddr e) var2) (algebraic-p (cadr e))))
+                   (t (and (member (caar e) '(mplus mtimes)) (every #'algebraic-p (cdr e)))))))
+    (let* ((roots (radicands expr))
+           (r1 (first roots)) (r2 (second roots)) (r3 (third roots))
+           ;; S, with r1 and r2 set to the pair that it is for, or NIL if the method is not to run
+           (s (and r2 (not implicit-real) (not (eq *integrate-sqrt-pair* t))
+                   (or (and r3
+                            (loop for (a b c) in `((,r1 ,r2 ,r3) (,r2 ,r3 ,r1) (,r3 ,r1 ,r2))
+                                  when (freevar2 (sratsimp (div (mul a b) c)) var2)
+                                    return (progn (setq r1 a r2 b) (power c 1//2))))
+                       (loop for (a b) in `((,r1 ,r2) (,r2 ,r1))
+                             when (polyp-var (sratsimp (div b a)) var2)
+                               return (progn (setq r1 a r2 b) a))
+                       (unless early 1)))))
+      (when s
+        (let* ((q ($expand (sratsimp (div (mul r1 r2) (mul s s)))))
+               ;; The integration below sees a constant sqrt(q) as a new symbol SQ, as RISCHINT
+               ;; splits sqrt(d*f) into sqrt(d)*sqrt(f), which is wrong for d < 0 and f < 0. Signs
+               ;; and questions see sqrt(q) for SQ, which a complex declaration of SQ would prevent.
+               (root-q (power q 1//2))
+               (sq (if (or (mnump q) (not (freevar2 q var2))) root-q
+                       (make-new-var "sqrt-pair" root-q nil)))
+               (m (div (mul s sq) (power r1 1//2)))
+               ;; EXPR with y = 1, and its radicands
+               (e+ (rewrite expr r2 m))
+               (own (radicands e+))
+               ;; 1 if y = 1 is known or EXPR is even in y, y if EXPR is odd in y, and NIL if
+               ;; neither, or if E+ has no fewer roots than EXPR
+               (y (cond ((>= (length own) (length roots)) nil)
+                        ((and (alike1 s r1) (eq ($csign q) '$pos)) 1)
+                        (t (let ((e- (rewrite expr r2 (neg m)))) ; EXPR with y = -1
+                             (cond ((zerop1 (sratsimp (add e+ e-))) (div (power r2 1//2) m))
+                                   ((zerop1 (sratsimp (sub e+ e-))) 1))))))
+               (result (and y (let ((*integrate-sqrt-pair* t) (*in-risch-p* (or early *in-risch-p*))
+                                    $errormsg)
+                                (car (errcatch (integrator e+ var2 stack)))))))
+          (and result
+               (not (isinop result '%integrate))
+               (or (algebraic-p result) (not (eq *integrate-sqrt-pair* 'coef)))
+               ;; The integration can take a root apart wrongly, as RADCAN1 in RISCHINT takes
+               ;; sqrt((x-1)*(x+1)) apart into sqrt(x-1)*sqrt(x+1), wrong where both are negative.
+               ;; So each root sqrt(r) in RESULT must have r >= 0, or E+ a root sqrt(c*r) with a
+               ;; c > 0 free of VAR2, as sqrt(c*r) = sqrt(c)*sqrt(r) then.
+               (loop for r in (radicands result)
+                     always (or (member ($csign r) '($pos $pz))
+                                (loop for r0 in own
+                                      thereis (let ((c (sratsimp (div r0 r))))
+                                                (and (freevar2 c var2) (eq ($csign c) '$pos))))))
+               (maxima-substitute root-q sq (mul y result))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -904,7 +1009,7 @@
 	((not (floatp x)) 1)
 	(t (cdr (maxima-rationalize x)))))
 
-(defun make-new-var (prefix &optional expr)
+(defun make-new-var (prefix &optional expr (declare-complex t))
   "Generates and prepares a symbol to be used as the new variable when performing
   a substitution for the expression EXPR. Preparation includes:
   - giving it EXPR as its ALIAS-EXPRESSION property, if EXPR is non-NIL, so that
@@ -912,7 +1017,8 @@
     (see SUBST-ALIASES), and the declarations of EXPR if it is a symbol.
     It sets *ALIAS-EXPRESSIONS*, which SININT and RISCHINT bind,
   - adding a declaration that the new variable is '$COMPLEX/'$IMAGINARY if EXPR's
-    sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY."
+    sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY, unless
+    DECLARE-COMPLEX is NIL."
   (let ((expr (simplify expr))
         (new-var (gensym prefix)))
     (when expr
@@ -920,7 +1026,7 @@
       (putprop new-var expr 'alias-expression)
       (when (symbolp expr) (kind new-var expr))
       (let ((expr-sign ($csign expr)))
-        (if (member expr-sign '($complex $imaginary))
+        (if (and declare-complex (member expr-sign '($complex $imaginary)))
           (declare1 (list new-var) t expr-sign 'kind))))
     new-var))
 
@@ -1189,9 +1295,11 @@
 ;; I (rtoy) think that for this code to work, r1, r2, and q must be numbers.
 (defun chebyf (expr var2)
   (prog (r1 r2 d1 d2 n1 n2 w q)
-     ;; Return NIL if the expression doesn't match.
+     ;; Return NIL if the expression doesn't match, or matches without a
+     ;; binomial factor, as x^-1 does.
      (when (not (setq w (m2-chebyform expr var2)))
        (return nil))
+     (unless (assoc 'q w) (return nil))
      #+nil
      (format t "w = ~A~%" w)
      (when (zerop1 (cdr (assoc 'c1 w :test #'eq)))
