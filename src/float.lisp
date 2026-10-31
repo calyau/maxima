@@ -115,6 +115,22 @@
 	*bfmhalf* (list (car *bigfloatone*) (- (cadr *bigfloatone*)) 0))
   q)
 
+;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
+;; VAL is evaluated before FPPREC is rebound, so it may depend on FPPREC.
+(defmacro bind-fpprec (val &body exprs)
+  `(let (($fpprec ,val) fpprec *bigfloatzero* *bigfloatone* *bfhalf* *bfmhalf*)
+     (fpprec1 nil $fpprec)
+     ,@exprs))
+
+;; The precision in decimal digits, for BIND-FPPREC, of a computation whose
+;; result is then rounded once to FPPREC. The rounding errors of a series, as
+;; in FPATAN, add up over its terms, whose number grows with FPPREC, so this
+;; gives at least 8 + INTEGER-LENGTH(FPPREC) guard bits. FPPREC1 turns D digits
+;; into 3 + FLOOR(D*LOG2(10)) bits, and 30103/100000 > LOG10(2). FPPREC is read
+;; rather than $FPPREC, which is stale where FPPREC alone is bound higher.
+(defun fpprec-with-guard-digits ()
+  (ceiling (* (+ fpprec 5 (integer-length fpprec)) 30103) 100000))
+
 ;; FPSCAN is called by lexical scan when a
 ;; bigfloat is encountered.  For example, 12.01B-3
 ;; would be the result of (FPSCAN '(/1 /2) '(/0 /1) '(/- /3))
@@ -986,7 +1002,10 @@
            (sub v
                 (mul '$%i u))))
          (t
-         (bcons (fpatan (cdr (bigfloatp x)))))))
+         ;; FPATAN gets guard digits, and its result is rounded once.
+         (let ((x (bigfloatp x)))
+           (bigfloatp (bind-fpprec (fpprec-with-guard-digits)
+                        (bcons (fpatan (cdr (bigfloatp x))))))))))
       
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
 ;; arg(x+%i*y).)
@@ -2735,12 +2754,6 @@
 	(if (fplessp fp-x (intofp 0))
 	    (mul '$%i (bcons (fproot (bcons (fpminus fp-x)) 2)))
 	    (bcons (fproot x 2))))))
-
-;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
-(defmacro bind-fpprec (val &body exprs)
-  `(let (fpprec *bigfloatzero* *bigfloatone* *bfhalf* *bfmhalf*)
-     (let (($fpprec (fpprec1 nil ,val)))
-       ,@exprs)))
 
 (eval-when
     (:load-toplevel :execute)

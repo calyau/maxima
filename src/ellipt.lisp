@@ -475,39 +475,210 @@
         (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
         (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
 
-(defun jacobi-am-agm (u m tol)
-  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
-  uses the AGM method until a tolerance of TOL is reached for the
-  error."
-  (multiple-value-bind (n an bn cn)
-      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
-    (declare (ignore bn))
-    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
-    (let ((phi (* u (aref an n) (expt 2 n))))
-      (loop for k from n downto 1
-            do
-               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
-                                               (aref an k))
-                                            (sin phi))))
-                            2)))
-      phi)))
 
 ;; Compute Jacobi am for real or complex values of U and M.  The args
 ;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
 ;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
 ;; used.
-(defun bf-jacobi-am (u m tol)
-  (cond ((and (realp u) (realp m) (<= (abs m) 1))
-         ;; The case of real u and m with |m| <= 1.  We can use AGM to
-         ;; compute the result.
-         (jacobi-am-agm (to u)
-                        (to m)
-                        tol))
-        (t
-         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
-         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
-         ;; to be what functions.wolfram.com is using in this case.
-         (asin (sn (to u) (to m))))))
+;;
+;; Reference:  https://kensala.com/publications/Sala_TransformationsOfTheJacobianAmplitudeFunctionAndItsCalculationViaTheArithmeticGeometricMean_SiamJMathsAnalysis_20_1989.pdf
+;;
+;; See also doc/info/impl-notes/jacobi-am.texi.m4 for a more detailed
+;; description of the algorithms used here.
+;;
+;; The main equation is 2.10:
+;;
+;;   am(z,m) = gd(%pi*z/(2*K')) +
+;;     sum(gd(%pi*K/K'*(n + z/(2*K))) - gd(%pi*K/K'*(n - z/(2*K))), n, 1, inf)
+;;
+;; where gd(z) is the Gudermannian function.  This sum converges
+;; throughout the complex plane except at the logarithmic branch
+;; points z = 2*s*K + (2*t+1)*%i*K' where s and t are arbitrary
+;; integers.
+;;
+;; The Gudermannian function is
+;;
+;;   gd(z) = a + %i*b
+;;
+;; where (2.11)
+;;
+;;   a = gd(x) + atan(csch(x)) - atan(cos(y)*csch(x))
+;;   b = atanh(sin(y)*sech(x))
+;;
+;; and
+;;
+;;   gd(x) = 2*atan(tanh(x/2))
+;;
+;;
+;; Note that this definition isn't defined for x = 0 (because of
+;; csch(0)).  In this implementation, we use a different formulation.
+;;
+;; First 2*atan(tanh(x/2)) is identical to atan(sinh(x)).  This is
+;; true because the derivative of both are equal and they have the same
+;; value for x = 0.  Thus we have gd(x) + atan(csch(x)) =
+;; atan(sinh(x)) + atan(csch(x)) = atan(sinh(x) + atan(1/sinh(x)) =
+;; sign(sinh(x))*%pi/2 = sign(x)*%pi/2.
+;;
+;; Hence a = sign(x)*%pi/2 - atan(cos(y)*csch(x))
+;;
+;; But this is the same as atan2(sinh(x), cos(y)).
+;;
+;; This also makes the computation of a for small x more accurate.
+;;
+;; In Sala's formulation, we compute gd(A+w) - gd(A-w).  This loses
+;; precision when A is large and w is small.  To fix this, we use
+;;
+;;   D = gd(A+w) - gd(A-w) = 2·atan(sinh(w) / cosh(A))
+;;
+;; Note that tan(gd(u)/2) = tanh(u/2).  Let a = (A + w)/2, b = (A −
+;; w)/2, so that a − b = w and a + b = A.
+;;
+;; Let alpha = gd(A+w)/2 and beta = gd(A-w)/2.  Then
+;;
+;;   tan(alpha) = tanh(a), tan(beta) = tanh(b), D/2 = alpha-beta
+;;
+;; Then using the tan of differences formula:
+;;
+;;   tan(D/2) = (tanh(a) − tanh(b)) / (1 + tanh(a) · tanh(b)).
+;;
+;; Multiply top and bottom by cosh(a)*cosh(b):
+;;
+;;   tan(D/2) = (sinh(a)*cosh(b)-sinh(b)*cosh(a))/(sinh(a)*sinh(b)+cosh(a)*cosh(b))
+;;            = sinh(a-b)/cosh(a+b)
+;;            = sinh(w)/cosh(A)
+;;
+;; Thus D = 2*atan(sinh(w)/cosh(A)) for sinh(abs(w)) < cosh(abs(A)).
+;; This is the condition used below to choose this formula or the full
+;; difference formula.
+;;
+;; However, this proof is only for real m (real A).
+(defun bf-jacobi-am (z m tol)
+  "Compute Jacobi am(z,m) for real or complex values of Z and M.  TOL is
+  the relative tolerance for convergence of the series.  It should be
+  about (bigfloat:epsilon z) or so."
+  (labels
+      ((gd (z)
+         ;; Eqn 2.11, with the real part written as atan2(sinh x, cos y)
+         ;;
+         ;; gd(z) = gd(x) + atan(csch(x)) - atan(cos(y)*csch(y))
+         ;;          %i*(atanh(sin(y)*sech(y))
+         ;;
+         ;; See the derivation above for how the real part can be
+         ;; rewritten as atan2(sinh(x), cos(y)).
+         (let ((x (realpart z))
+               (y (imagpart z)))
+           (complex (atan (sinh x) (cos y))
+                    (atanh (/ (sin y) (cosh x))))))
+       (nome-series (tt q)
+         ;; Fourier series in the nome q with tt = %pi*z/K.  Stop on
+         ;; the bound 2*rho^n/n, since sin(n*tt) can be zero for some
+         ;; n when later terms are not.  rho =
+         ;; |q|*exp(abs(imagpart(tt))).  (See the derivation below for
+         ;; the general case where we choose between the nome or Sala
+         ;; series.)
+         ;;
+         ;; This should only be used for small m so q is small.
+         ;;
+         ;; See https://dlmf.nist.gov/22.16.E9:
+         ;;
+         ;;   am(x,k) = %pi/(2*K)*x + 2*sum(q^n*sin(2*n*zeta)/n/(1+q^(2*n)), n, 1, inf)
+         ;;
+         ;; where q = exp(-%pi*K'(m)/K(m)) and zeta = %pi*x/(2*K)
+         ;;
+         (if (zerop tt)
+             tt
+             (let ((rho (* (abs q) (exp (abs (imagpart tt))))))
+               (do ((n 1 (1+ n))
+                    (qn q (* qn q))
+                    (bound rho (* bound rho))
+                    (sum (/ tt 2)))
+                   ((<= (* 2 bound) (* n tol (abs sum)))
+                    sum)
+                 (incf sum (/ (* 2 qn (sin (* n tt)))
+                              (* n (+ 1 (* qn qn)))))))))
+       (sala-series (w c)
+         ;; Sala's series with w = c*z/(2*K), c = %pi*m*(K/K')
+         (let ((sinh-w (sinh w))
+               (abs-w (abs w)))
+           (flet ((gd-diff (n)
+                    (let ((a (* n c)))
+                      (if (< abs-w (realpart a))
+                          (* 2 (atan (/ sinh-w (cosh a))))
+                          (- (gd (+ a w))
+                             (gd (- a w)))))))
+             (do* ((sum (gd w))
+                   (n 1 (1+ n))
+                   (term (gd-diff n) (gd-diff n)))
+                  ((<= (abs term) (* (abs sum) tol))
+                   sum)
+               (incf sum term))))))
+    (cond
+      ((= m 1)
+       ;; am(z,1) = gd(z).  See https://dlmf.nist.gov/22.16.E5.
+       (gd z))
+      ((= (- 1 m) 1)
+       ;; If m is so close to 0 that 1-m = 1 due to round-off, we
+       ;; can't use Sala's method because K' = K(1-m) = K(1) is
+       ;; undefined.  Instead, use the nome series.
+       ;;
+       ;; From A&S 17.3.21:
+       ;;
+       ;;   q = exp(-%pi*K/K') = m/16 + 8*(m/16)^2 + 84*(m/16)^3 + 992*(m/16)^4 + ...
+       ;;
+       ;; Since m is very small, we ignore the high-order terms of the
+       ;; series so q = m/16.
+       (let* ((K (bf-elliptic-k m))
+              (r (truncate (realpart (/ z (* 2 K))))))
+         (+ (* r (%pi m))
+            (nome-series (* 2 (%pi m) (- (/ z (* 2 K)) r))
+                         (/ m 16)))))
+      (t
+       (let* ((K (bf-elliptic-k m))
+              (K-prime (bf-elliptic-k (- 1 m)))
+              (pi-K-ratio (* (%pi m) (/ K K-prime)))
+              (z/2K (/ z (* 2 K)))
+              (r (truncate (realpart (* pi-K-ratio z/2K))
+                           (realpart pi-K-ratio)))
+              (u (- z/2K r)))
+         (+ (* r (%pi m))
+            ;; For m small enough, use the nome series since it
+            ;; converges faster than the Sala series.  The condition
+            ;; here compares the asymptotic rate of convergence of the
+            ;; nome series and the Sala series.  Use the nome series
+            ;; if it converges faster.
+            ;;
+            ;; The nome series term is
+            ;;
+            ;;   2*q^n/n/(1+q^(2*n))*sin(n*t), t = %pi*z/K.
+            ;;
+            ;; Since |sin(n*t)| <= cosh(n*Im(t)) <= exp(n*Im(t)), the
+            ;; terms are bounded roughly by
+            ;;
+            ;;   2*rho^n/n
+            ;;
+            ;; with rho = |q|*exp(abs(imagpart(t)))
+            ;;
+            ;; For the Sala series, the term is
+            ;;
+            ;;   2*atan(sinh(w)/cosh(c*n))
+            ;;
+            ;; where w = c*z/(2*K), c = %pi*m*(K/K').
+            ;;
+            ;; Thus, the term is bounded by 4*|sinh w|* e^{−n* Re(c)}.
+            ;;
+            ;; Comparing these bounds by taking the log and simplifying, we have
+            ;;
+            ;;   abs(Im(z/K)) + Re(K/K') < Re(K'/K)
+            ;;
+            ;; If this is true, use the nome series.  Otherwise use
+            ;; the Sala series.
+            (if (< (+ (* 2 (abs (imagpart u)))
+                      (realpart (/ K K-prime)))
+                   (realpart (/ K-prime K)))
+                (nome-series (* 2 (%pi m) u)
+                             (exp (- (/ (* (%pi m) K-prime) K))))
+                (sala-series (* pi-K-ratio u) pi-K-ratio))))))))
+
 
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
 ;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.

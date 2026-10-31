@@ -1059,3 +1059,19 @@ sublist(makelist(bfloat(k/8), k, 1, 80),
 sublist(makelist(bfloat(k/10), k, 1, 80),
   lambda([x], block([y : -x], atan(x) + atan(y) # 0b0 or acot(x) + acot(y) # 0b0)));
 []$
+
+
+/* Bug #5739: "Bigfloat atan() and acot() are off by several ulp, more at higher fpprec" */
+
+/* atan(x) and acot(x) lie in [1/2, 1) here, so half an ulp is
+   2^-(?fpprec + 1), ?fpprec counting bits */
+map(lambda([p],
+  block([fpprec : p],
+    sublist(makelist(bfloat(k/100), k, 90, 115),
+      lambda([x],
+        block([u : [atan(x), acot(x)],
+               v : block([fpprec : p + 40], [atan(x), acot(x)]),
+               h : 2^-(?fpprec + 1)],
+          block([fpprec : p + 40], lmax(abs(u - v))) > h))))),
+  [16, 200]);
+[[], []]$

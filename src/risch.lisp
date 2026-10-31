@@ -115,6 +115,14 @@
 	 (setq risch-intvar (specdisrep risch-intvar)))
      (if (mnump risch-intvar)
 	 (merror (intl:gettext "risch: attempt to integrate wrt a number: ~:M") risch-intvar))
+     ;; As in SININT, integrate with respect to an atomic gensym instead of a
+     ;; non-atomic variable like r[1] or r(x).
+     (when (and (not (atom risch-intvar))
+                (not (member (caar risch-intvar) '(mplus mtimes mexpt))))
+       (let ((dummy-intvar (make-new-var "rischint" risch-intvar)))
+         (return (maxima-substitute risch-intvar dummy-intvar
+                   (rischint (maxima-substitute dummy-intvar risch-intvar exp)
+                             dummy-intvar)))))
      (if (and (atom risch-intvar)
 	      (isinop exp risch-intvar))
 	 (go noun))

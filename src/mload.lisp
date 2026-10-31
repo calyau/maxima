@@ -101,6 +101,9 @@
         (with-open-file (in-stream filename)
           (batchload-stream in-stream))))))
 
+;; T while BATCHLOAD-STREAM loads a file for autoloading.
+(defvar *autoloading* nil)
+
 (defun batchload-stream (in-stream &key autoloading-p truename)
   (let ($load_pathname)
     (let*
@@ -116,7 +119,9 @@
        ;; If we arrived here from autoloading, call MEVAL instead of MEVAL*
        ;; since MEVAL* is intended to be called from the interpreter top level;
        ;; MEVAL* modifies global state, resetting VARLIST and calling CLEARSIGN.
-       (meval-fcn (symbol-function (if autoloading-p 'meval 'meval*)))
+       ;; The same holds for the files that an autoloaded file loads.
+       (*autoloading* (or autoloading-p *autoloading*))
+       (meval-fcn (symbol-function (if *autoloading* 'meval 'meval*)))
        (expr nil))
       (declare (special *prompt-on-read-hang*))
       (when (and $loadprint (not *maxima-quiet*))
