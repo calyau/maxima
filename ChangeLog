@@ -299,6 +299,7 @@ Bug fixes for numbered bugs:
 * \#5751 sqrt(-1/w) is %i/sqrt(w) for w <= 0, and is(sqrt(-1/w) > 0) is false
 * \#5752 integrate() asks needless sign questions for some quotients with roots
 * \#5753 integrate(atan2(x,0), x) divides by zero
+* \#5754 integrate() divides by zero for rational functions with %i, as 1/((1+%i*t)*(1+t^2))
 
 Bug fixes for unnumbered bugs:
 ------------------------------

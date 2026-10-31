@@ -7383,6 +7383,16 @@ integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x);
 [x^3/3 + 'integrate(x*atan2(x, 0), x), x + 'integrate(atan2(x^2-1, 0), x)]$
 
 
+/* Bug #5754: "integrate() divides by zero for rational functions with %i, as 1/((1+%i*t)*(1+t^2))" */
+
+integrate(1/((1+%i*t)*(1+t^2)), t);
+(%i*log(%i*t-1))/4-(%i*log(t-%i))/4+1/(2*t-2*%i)$
+
+[integrate(1/(%i*a*tan(x)+a), x), integrate(tan(x)^2/(%i*tan(x)+1), x)];
+[(%i*log(%i*tan(x)-1))/(4*a)-(%i*log(tan(x)-%i))/(4*a)+1/(2*a*tan(x)-2*%i*a),
+ (-%i*log(%i*tan(x)-1))/4-(3*%i*log(tan(x)-%i))/4-1/(2*tan(x)-2*%i)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
