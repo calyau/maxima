@@ -139,12 +139,23 @@
                                     (eq (csign (cadr r)) '$pos))))))
               (roots new))))))
 
+;; T if E has a power of an abs or of a power, as abs(x)^2 or (%e^(x/2))^2.
+(defun kernel-power-p (e)
+  (and (not (atom e))
+       (or (and (mexptp e) (not (atom (cadr e)))
+                (member (caar (cadr e)) '(mabs mexpt)))
+           (some #'kernel-power-p (cdr e)))))
+
 ;; RADCAN1 in INTSETUP can take a power of a product apart, as
 ;; sqrt(c-c*x^2) into sqrt(c)*sqrt(1-x)*sqrt(x+1), which holds only up to a
 ;; factor such as -1 that is constant where the powers are continuous.
 ;; Return that factor EXP/NEW if it is constant and not 1, else NIL. It is
 ;; constant if its logarithmic derivative EXP'/EXP-NEW'/NEW is zero, which
-;; RATSIMP finds without taking powers apart.
+;; RATSIMP finds without taking powers apart. RATSIMP takes abs(u) and
+;; powers such as %e^(u/2) for variables of their own, as when it writes
+;; sqrt(x-1-1/x+1/x^2) as sqrt(x^3-x^2-x+1)/abs(x). If its result has a
+;; power of one, as abs(x)^2, which the simplifier writes as x^2, it needs
+;; a second pass.
 (defun branch-factor (exp new var)
   (and (not (zerop1 exp)) (not (zerop1 new)) (new-const-roots-p exp new var)
        (let* (($%e_to_numlog t) ($logsimp t) ($algebraic t)
@@ -154,8 +165,10 @@
               (k (sratsimp (resimplify (div exp new)))))
          (and (not (equal k 1))
               (car (errcatch
-                    (zerop1 (sratsimp (sub (div (sdiff exp var) exp)
-                                           (div (sdiff new var) new))))))
+                    (let* ((r ($ratsimp (sub (div (sdiff exp var) exp)
+                                             (div (sdiff new var) new))))
+                           (s (simplifya r nil)))
+                      (zerop1 (if (kernel-power-p r) (sratsimp s) s)))))
               k))))
 
 ;; T if E has a power %e^u with a log in U and U depending on VAR, such as
@@ -210,8 +223,10 @@
 	      ;; If that leaves an integral and RISCHEXPVAR could have used a
 	      ;; partial solution, try again with partial solutions, and take
 	      ;; that result if it leaves none. Otherwise the second try would
-	      ;; repeat the first.
-	      (when (and (isinop r '%integrate) (> *risch-partial-count* n))
+	      ;; repeat the first. Only if EXP has a hyperbolic function, for
+	      ;; which RISCHFORM sets $EXPONENTIALIZE, not only inverse ones.
+	      (when (and (isinop r '%integrate) (> *risch-partial-count* n)
+			 $exponentialize)
 		(setq p (let ((*risch-partial* t) ($errormsg nil))
 			  (car (errcatch
 				(hypertrigint1 exp risch-intvar t))))))

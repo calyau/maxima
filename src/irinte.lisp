@@ -85,6 +85,14 @@
      (cond ((and assoclist (intir3-pieces-p assoclist x))
 	    (setq e (cdras 'e assoclist) f (cdras 'f assoclist)
 		  g (cdras 'g assoclist) r0 (cdras 'r0 assoclist))
+	    ;; INTIR3-REF does nothing for a negative discriminant. After an
+	    ;; expansion that left an integral, do not ask for the sign of one
+	    ;; that is negative for positive parameters, or not real.
+	    (when (and *integrator-expanded*
+		       (member (let (($assume_pos t))
+				 (csign (sub (mul f f) (mul 4 e g))))
+			       '($neg t)))
+	      (return nil))
 	    (assume `(($notequal) ,e 0))
 	    (return (intir3-r0test assoclist x e f g r0))))
      (return nil)))

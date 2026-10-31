@@ -253,9 +253,9 @@ ratsimp(ic2([soln, [soln, soln]], x=0, y=0, 'diff(y,x,1)=2));
  */
 
 ode2(y*'diff(y,x,2)=a, y, x);
-[sqrt(%pi)*%i*%e^-%k1*erf(%i*sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
+[-sqrt(%pi)*%e^-%k1*erfi(sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
    = x+%k2,
- -sqrt(%pi)*%i*%e^-%k1*erf(%i*sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
+ sqrt(%pi)*%e^-%k1*erfi(sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
    = x+%k2];
 
 ic2(%,x=0,y=b,'diff(y,x)=0);

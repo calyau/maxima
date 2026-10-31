@@ -1294,6 +1294,10 @@
 ;; it replaces. BRANCH-FACTOR then counts roots of expressions in the variable
 ;; of integration too.
 (defvar *branch-var-roots* nil)
+;; T while INTEGRATOR tries the methods after an expansion that left an
+;; integral. INTIR3 then does not ask for the sign of a discriminant that is
+;; negative for positive parameters.
+(defvar *integrator-expanded* nil)
 (defvar wflag nil)
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)

@@ -2284,9 +2284,9 @@
                  ;; Do not simplify for a complex base.
                  (not (member ($csign gr) '($complex $imaginary)))
                  (and (eq $domain '$real) $radexpand))
-            ;; (-1/x)^a -> 1/(-x)^a for x negative
-            ;; For all other cases (-1)^a/x^a
-            (if (eq ($csign w) '$neg)
+            ;; (-1/x)^a -> 1/(-x)^a for x negative or nonpositive, as a
+            ;; denominator is not zero. For all other cases (-1)^a/x^a
+            (if (member ($csign w) '($neg $nz))
                 (return (inv (power (neg w) pot)))
                 (return (div (power -1 pot)
                              (power w pot)))))

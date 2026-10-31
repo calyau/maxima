@@ -7539,6 +7539,14 @@ block([r, x],
   [integrate(conjugate(r(x)), r(x)), integrate(r(x)*conjugate(r(x)), r(x))]);
 ['integrate(conjugate(r(x)), r(x)), 'integrate(r(x)*conjugate(r(x)), r(x))]$
 
+/* With u <= 1 known, as for a substitution for sin(x), sqrt(-1/(u-1)) is
+   1/sqrt(1-u), and integrate() answers without %i. */
+block([u],
+  local(u),
+  assume(u <= 1),
+  [sqrt(-1/(u-1)), integrate(tan(x)*sqrt(a*tan(x)^2+a), x)]);
+[1/sqrt(1-u), sqrt(a)/sqrt(1-sin(x)^2)]$
+
 /* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
    integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
    second integrand. The checks of H take c*x = 4/3 and c*x = 3/4, where
@@ -8032,6 +8040,18 @@ block([g, G],
        [[x = 2*atan(1/2)], [x = -2*atan(1/2)]])]);
 [true, [0, 0]]$
 
+/* RADCAN1 in the Risch integrator wrote the quotient of roots here as
+   a*x/((a*x-1)*sqrt(-c)), which is -1 times it for 0 < a*x < 1, so the
+   antiderivative was wrong there */
+
+block([g, G],
+  g : (c-c/(a^2*x^2))*sqrt(a*x+1)/sqrt(-a*c*x+c/(a*x)-c/(a^2*x^2)+c),
+  G : integrate(g, x),
+  map(lambda([p], radcan(rectform(subst(p, diff(G, x) - g)))),
+      [[a = 1, c = -1, x = 1/2], [a = 1, c = -1, x = 2],
+       [a = 1, c = -1, x = -1/2]]));
+[0, 0, 0]$
+
 /* integrate() returned noun forms here. The antiderivatives hold for
    x > 1, where acsc(x) is atan(1/sqrt(x^2-1)). */
 
@@ -8137,9 +8157,26 @@ block([r],
   freeof(false, r));
 true$
 
+/* After an expansion that left an integral, INTIR3 does not ask for the
+   sign of a discriminant that is negative for positive parameters, as it
+   then does nothing. For a*b < 0 it still asks, and integrates. */
+
+block([a, b, c, d], integrate(x/((b*x^4+a)*sqrt(d*x^4+c)), x));
+'integrate(x/((b*x^4+a)*sqrt(d*x^4+c)), x)$
+
+block([a, c, d, e, f, g],
+  integrate(sqrt(e*x+d)/(sqrt(g*x+f)*(c*x^2+a)), x));
+'integrate(sqrt(e*x+d)/(sqrt(g*x+f)*(c*x^2+a)), x)$
+
+block([a, b, c, d],
+  freeof('integrate, integrate(x/((b*x^4-a)*sqrt(d*x^4+c)), x))),
+  ask_hide_prompt; pos; pos; pos; pos;
+true$
+
 /* integrate() returned a noun form for (-log(x))^(3/2), and wrote the
    antiderivatives of %e^x*sqrt(x) and the like with gamma_incomplete(3/2,-x)
-   and (-x)^(3/2), which are not real for x > 0. */
+   and (-x)^(3/2), which are not real for x > 0. They are written with erfi,
+   free of %i. */
 
 block([fs, ds, Fs],
   fs : [%e^x*sqrt(x), %e^x*x^(3/2), %e^x/sqrt(x), sqrt(log(x)),
@@ -8154,8 +8191,10 @@ block([fs, ds, Fs],
            r : imagpart(ev(F, erf_representation : erfi)),
            apply(forget, d),
            r)),
-       Fs, ds)]);
-[[true, true, true, true, true], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]$
+       Fs, ds),
+   map(lambda([F], freeof(%i, F)), Fs)]);
+[[true, true, true, true, true], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
+ [true, true, true, true, true]]$
 
 /* An error for the clue after the exponential counts as a failure. For
    this integrand, that clue leads to a division by zero, and integrate()
