@@ -105,7 +105,7 @@
   (and (mqapplyp exp) (eq (subfunname exp) '$li)
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
-;; True if NEW, which RADCAN1 made of EXP, has %i or a power free of VAR with
+;; T if NEW, which RADCAN1 made of EXP, has %i or a power free of VAR with
 ;; an exponent other than an integer, whose base is not %e, not positive and
 ;; not the base of a power with such an exponent in EXP, as when
 ;; sqrt(c-c*x^2) becomes sqrt(c)*sqrt(1-x)*sqrt(x+1). Taking a positive
@@ -126,8 +126,8 @@
                             (pushnew e l :test #'alike1))
                           (unless (atom e) (mapc #'walk (cdr e)))))
                  (walk (if all
-                           (let (($%e_to_numlog t) ($logsimp t)) (resimplify e))
-                           e)))
+                         (let (($%e_to_numlog t) ($logsimp t)) (resimplify e))
+                         e)))
                l))
            (base (r) (if (atom r) r (cadr r))))
       (let ((bases (mapcar #'base (roots exp))))
@@ -173,14 +173,14 @@
 
 ;; T if E has a power %e^u with a log in U and U depending on VAR, such as
 ;; the %e^(log(x)/3) that INTSETUP writes for x^(1/3), or if ODD, one for
-;; which ODD-ROOT-LOG-TERM-P of u is true.
+;; which ODD-ROOT-LOG-TERM-P of u is T.
 (defun exp-log-power-p (e var &optional odd)
   (cond ((atom e) nil)
         ((specrepp e) (exp-log-power-p (specdisrep e) var odd))
         ((and (mexptp e) (eq (cadr e) '$%e)
               (if odd
-                  (odd-root-log-term-p (caddr e))
-                  (and (isinop (caddr e) '%log) (not (freeof var e))))))
+                (odd-root-log-term-p (caddr e))
+                (and (isinop (caddr e) '%log) (not (freeof var e))))))
         (t (some #'(lambda (a) (exp-log-power-p a var odd)) (cdr e)))))
 
 (defun rischint (exp risch-intvar &optional trig
@@ -263,16 +263,17 @@
 				       (disrep (car z) risch-ratform)
 				       (cdr z))))
 		      (if (and $%e_to_numlog (exp-log-power-p ans risch-intvar))
-			  (resimplify ans)
-			  (simplify ans))))))
+			(resimplify ans)
+			(simplify ans))))))
      ;; Multiply a result free of integrals by the factor by which INTSETUP
      ;; changed the integrand, if it is constant, but not for the exponential
      ;; form of a trigonometric integrand, where it makes the result very
-     ;; large.
+     ;; large. Keep powers on the principal branch as above.
      (when (and (not trig) (freeof '%integrate z)
                 (setq branch (let (varlist genvar ($gcd '$algebraic))
                                (branch-factor exp branch risch-intvar))))
-       (setq z (let (($%e_to_numlog t) ($logsimp t) ($algebraic nil))
+       (setq z (let (($%e_to_numlog (not (exp-log-power-p exp nil t)))
+                     ($logsimp t) ($algebraic nil))
                  (sratsimp (mul branch z)))))
      (return z)
    noun
@@ -391,9 +392,9 @@
               ;; powers of U first if the part holds an integral, which
               ;; would otherwise stay in the result.
               (zerop1 (radcan1 (if (freeof '%integrate e)
-                                   (sdiff e risch-var)
-                                   (let (($logsimp t) ($%e_to_numlog t))
-                                     (resimplify (sdiff e risch-var))))
+                                 (sdiff e risch-var)
+                                 (let (($logsimp t) ($%e_to_numlog t))
+                                   (resimplify (sdiff e risch-var))))
                                risch-var))))))
       ;; Strip locally constant parts (unsolved integrals survive this).
       ;; ERRCATCH: In case of an error (occurs during test suite, treat the part
@@ -403,30 +404,29 @@
                            (catch 'sign-imag-err (risplit risch-*exp)))))
                   (and (consp s) s)))
              (yyy-re (if (car (errcatch (locally-const-p yyy-re (car f))))
-                         0 yyy-re))
+                       0 yyy-re))
              (yyy-im (if (car (errcatch (locally-const-p yyy-im (cdr f))))
-                         0 yyy-im)))
+                       0 yyy-im)))
       ;; If YYY-RE contains a noun-form %REALPART or YYY-IM contains a noun-form
       ;; %IMAGPART, then just work with YYY instead of YYY-RE + %i * YYY-IM.
       (setq result (if (and (freeof '%realpart yyy-re)
                             (freeof '%imagpart yyy-im))
-                       ;; With both parts, the polynomials of the sum hold
-                       ;; %i, and RISCHINT's algebraic gcd then takes all
-                       ;; their gcds by the subresultant algorithm, which
-                       ;; can exhaust the heap. The default gcd does so only
-                       ;; for gcds without cofactors.
-                       (let (($gcd (if (or (zerop1 yyy-re) (zerop1 yyy-im))
-                                       $gcd
-                                       '$spmod)))
-                         (sratsimp (add yyy-re (mul '$%i yyy-im))))
-                       (sratsimp yyy)))))))
+                     ;; With both parts, the polynomials of the sum hold
+                     ;; %i, and RISCHINT's algebraic gcd then takes all
+                     ;; their gcds by the subresultant algorithm, which
+                     ;; can exhaust the heap. The default gcd does so only
+                     ;; for gcds without cofactors.
+                     (let (($gcd (if (or (zerop1 yyy-re) (zerop1 yyy-im))
+                                   $gcd
+                                   '$spmod)))
+                       (sratsimp (add yyy-re (mul '$%i yyy-im))))
+                     (sratsimp yyy)))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.
           ;; Set the flag *in-risch-p* to make sure that we do not call
           ;; rischint again from the integrator. This avoids endless loops.
-          ;; Simplify %e^(r*log(u)) to u^r, which RISCHINT's bindings prevent.
-          (let ((*in-risch-p* t) ($logsimp t) ($%e_to_numlog t))
+          (let ((*in-risch-p* t)) 
             (sratsimp (meval (list '($ev) result '$nouns))))
           result))))
 

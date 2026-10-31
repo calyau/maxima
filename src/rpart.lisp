@@ -52,7 +52,7 @@
 ;; For z = k*w^n with a constant k and a real w the power is written as an
 ;; expression in w and abs(w), which rectform, float and the integrator
 ;; leave on the right branch. For z = k*w with k > 0, as x or 1-x, this is
-;; done only if REAL-VAR is true, as for the antiderivatives of the
+;; done only if REAL-VAR is T, as for the antiderivatives of the
 ;; integrator, which are for a real variable. Any other z, as x+%i, and
 ;; such a z otherwise, gets z^m*%e^((s-m)*log(z)) with the principal log(z)
 ;; and the integer m nearest to s, which holds for a complex value put in
@@ -85,7 +85,7 @@
 ;; Z as k*w^n for a constant k, a real w that is not constant and an
 ;; integer n or a rational n with an odd denominator: (values k w n). NIL
 ;; when Z is not of this form, or when n is 1 and k is positive, where z has
-;; the argument of w and is left to PRINCIPAL-LOG, unless REAL-VAR is true.
+;; the argument of w and is left to PRINCIPAL-LOG, unless REAL-VAR is T.
 (defun real-power-factors (z &optional real-var)
   (let ((k 1) (w z) (n 1) const)
     ;; Each factor of Z is tested with $CONSTANTP once. W is constant iff
@@ -978,8 +978,8 @@
                 ;; determine the sign and return a general form when the sign is
                 ;; unknown.
 		(let ((gs (if (eq rischp l)
-			      (progn (setq *risplit-var-pos* t) '$pos)
-			      ($sign l))))
+			    (progn (setq *risplit-var-pos* t) '$pos)
+			    ($sign l))))
 		  (cond ((member gs '($pos $pz)) (cons l 0))
 			((eq gs '$zero) (cons 0 0))
 			((eq gs '$neg)

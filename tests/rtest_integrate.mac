@@ -7381,20 +7381,41 @@ block([r, ans],
 log(r(x)-1)$
 
 
-/* integrate took the real root of the power that comes with
-   gamma_incomplete in its formulas, as (-x^3)^(-1/3), where
-   gamma_incomplete is on the principal branch. So the antiderivatives of
-   %e^(x^3) and sin(x^3) were wrong for x > 0, and others for x < 0. The
-   power is now on the principal branch, written with x/abs(x), and
-   gamma(1/3) is taken from gamma_incomplete to make the antiderivative
-   continuous at 0. */
+/* Bug #5752: "integrate() asks needless sign questions for some quotients with roots" */
+
+integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x);
+'integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x)$
+
+integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x);
+'integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x)$
+
+
+/* Bug #5753: "integrate(atan2(x,0), x) divides by zero" */
+
+[integrate(atan2(x, 0), x), integrate(x*atan2(x^2-1, 0), x), integrate(sqrt(atan(a*x))/x, x)];
+[%pi*abs(x)/2, %pi*abs(x^2-1)/4, 'integrate(sqrt(atan(a*x))/x, x)]$
+
+[integrate(x*atan2(x, 0) + x^2, x), integrate(atan2(x^2-1, 0) + 1, x)];
+[x^3/3 + 'integrate(x*atan2(x, 0), x), x + 'integrate(atan2(x^2-1, 0), x)]$
+
+
+/* Bug #5754: "integrate() divides by zero for rational functions with %i, as 1/((1+%i*t)*(1+t^2))" */
+
+integrate(1/((1+%i*t)*(1+t^2)), t);
+(%i*log(%i*t-1))/4-(%i*log(t-%i))/4+1/(2*t-2*%i)$
+
+[integrate(1/(%i*a*tan(x)+a), x), integrate(tan(x)^2/(%i*tan(x)+1), x)];
+[(%i*log(%i*tan(x)-1))/(4*a)-(%i*log(tan(x)-%i))/(4*a)+1/(2*a*tan(x)-2*%i*a),
+ (-%i*log(%i*tan(x)-1))/4-(3*%i*log(tan(x)-%i))/4-1/(2*tan(x)-2*%i)]$
+
+
+/* Bug #NNNN: "integrate(sin(x^3),x) and integrate(%e^(x^3),x,-1,1) are wrong" */
 
 [integrate(%e^(x^3), x), integrate(sin(x^3), x), integrate(x*%e^(x^3), x)];
 [-(((gamma_incomplete(1/3,-x^3)-gamma(1/3))*((-sqrt(3)*%i*x)/(4*abs(x))+(3*x)/(4*abs(x))-(sqrt(3)*%i)/4-1/4))/3),
  -(((gamma_incomplete(1/3,%i*x^3)+gamma_incomplete(1/3,-%i*x^3)-2*gamma(1/3))*abs(x)+(sqrt(3)*%i*gamma_incomplete(1/3,%i*x^3)-sqrt(3)*%i*gamma_incomplete(1/3,-%i*x^3))*x)/(12*abs(x))),
  -(((gamma_incomplete(2/3,-x^3)-gamma(2/3))*((((-sqrt(3)*%i)/4-3/4)*x)/abs(x)-(sqrt(3)*%i)/4+1/4))/3)]$
 
-/* where the variable is known to be positive, the phase is a constant */
 block([xp],
   local(xp),
   assume(xp > 0),
@@ -7404,9 +7425,6 @@ block([xp],
  -(((sqrt(3)*%i+1)*gamma_incomplete(1/3,%i*xp^3)+(1-sqrt(3)*%i)*gamma_incomplete(1/3,-%i*xp^3))/12),
  -gamma_incomplete(1/3,xp^3)/3]$
 
-/* against quad_qags, on both sides of 0 and across it, with domain : real
-   and domain : complex, and definite integrals through 0 and with an even
-   root */
 block([nv, qc, chk],
   local(nv, qc, chk),
   nv(e) := float(rectform(expand(float(rectform(e))))),
@@ -7431,9 +7449,6 @@ block([nv, qc, chk],
  [[true, true, true]],
  [true, true, true, true]]$
 
-/* The derivatives of the antiderivatives give the integrands back, under
-   expand, or trigrat for the trigonometric ones, also for a variable named
-   like a placeholder of the derivative rules */
 [expand(diff(integrate(%e^(x^3), x), x) - %e^(x^3)),
  expand(diff(integrate(%e^(%i*x^3), x), x) - %e^(%i*x^3)),
  expand(diff(integrate(%e^(-%i*x^3), x), x) - %e^(-%i*x^3)),
@@ -7446,29 +7461,20 @@ block([nv, qc, chk],
  trigrat(diff(integrate(sin(a^3), a), a) - sin(a^3))];
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]$
 
-/* where the derivative has x^(1/3) as %e^(log(x)/3), the antiderivative of
-   x^(-2/3)*%e^(-x) has it with x/abs(x), so this is checked numerically */
 block([d : diff(integrate(x^(-2/3)*%e^(-x), x), x) - x^(-2/3)*%e^(-x)],
   map(lambda([p], is(cabs(float(rectform(expand(float(rectform(subst(x = p, d)))))))
                      < 1e-12)),
       [-1.3, 0.4, 1.7]));
 [true, true, true]$
 
-/* infinite limits are as they were */
 [integrate(%e^(-x^3), x, 0, inf), integrate(x*%e^(-x^3), x, 0, inf)];
 [gamma(1/3)/3, gamma(2/3)/3]$
 
-/* %e^(log(2*x)/3) in the derivative of gamma_incomplete(1/3,2*x) is not
-   taken for the real root (2*x)^(1/3): the integral is left alone or right */
 block([r : integrate(diff(gamma_incomplete(1/3, 2*x), x), x, -2, -1)],
   is(not freeof(nounify(integrate), r)
      or cabs(float(rectform(r - (gamma_incomplete(1/3, -2.0)
                                  - gamma_incomplete(1/3, -4.0))))) < 1e-9));
 true$
-
-/* With domain : real, x^(1/3) is the real root, so integrate() does not
-   write %e^(log(x)/3-x) as x^(1/3)*%e^(-x). It integrates the principal
-   root instead, as with domain : complex */
 
 block([fs : [%e^(log(x)/3-x), %e^(log(x)/5-2*x)], Fs],
   Fs : map(lambda([f], integrate(f, x)), fs),
@@ -7481,8 +7487,7 @@ block([fs : [%e^(log(x)/3-x), %e^(log(x)/5-2*x)], Fs],
 [true, [[true, true], [true, true]]]$
 
 
-/* The antiderivatives of %e^(-x^4), x^2*%e^(x^4) and others like them
-   jumped at x = 0 */
+/* Bug #NNNN: "The antiderivative of %e^(-x^4) jumps at x = 0" */
 
 block([nv, qc, chk],
   local(nv, qc, chk),
@@ -7498,8 +7503,24 @@ block([nv, qc, chk],
 [-((gamma_incomplete(1/4, x^4) - gamma(1/4))*x)/(4*abs(x)),
  [true, true, true, true, true]]$
 
+block([nv, qc, chk],
+  local(nv, qc, chk),
+  nv(e) := float(rectform(expand(float(rectform(e))))),
+  qc(f, a, b) := quad_qags(realpart(f), x, a, b)[1]
+                 + %i*quad_qags(imagpart(f), x, a, b)[1],
+  chk(f, v) := block([r : subst(b = v, integrate(f, x))],
+    is(cabs(nv(subst(x = 0.6, r) - subst(x = -0.5, r))
+            - qc(subst(b = v, f), -0.5, 0.6)) < 1e-9)),
+  [integrate(%e^(-b*x^4), x),
+   map(lambda([f], [chk(f, 2), chk(f, -2)]),
+       [%e^(b*x^3), %e^(-b*x^4), x*%e^(b*x^3), x^2*%e^(b*x^4),
+        %e^(1+b*x^3), x^(1/3)*%e^(-b*x), sqrt(x)*%e^(b*x^2)])]);
+[-((gamma_incomplete(1/4, b*x^4) - gamma(1/4))*x)/(4*b^(1/4)*abs(x)),
+ [[true, true], [true, true], [true, true], [true, true], [true, true],
+  [true, true], [true, true]]]$
 
-/* "integrate() ignores what is known about the expressions it substitutes" */
+
+/* Bug #5748: "integrate() ignores what is known about the expressions it substitutes" */
 
 block([x, f, g, F, G],
   f: sin(x)^3/sqrt(cos(x)^4-4*cos(x)^2+4),
@@ -7539,18 +7560,26 @@ block([r, x],
   [integrate(conjugate(r(x)), r(x)), integrate(r(x)*conjugate(r(x)), r(x))]);
 ['integrate(conjugate(r(x)), r(x)), 'integrate(r(x)*conjugate(r(x)), r(x))]$
 
-/* With u <= 1 known, as for a substitution for sin(x), sqrt(-1/(u-1)) is
-   1/sqrt(1-u), and integrate() answers without %i. */
-block([u],
-  local(u),
-  assume(u <= 1),
-  [sqrt(-1/(u-1)), integrate(tan(x)*sqrt(a*tan(x)^2+a), x)]);
-[1/sqrt(1-u), sqrt(a)/sqrt(1-sin(x)^2)]$
 
-/* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
-   integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
-   second integrand. The checks of H take c*x = 4/3 and c*x = 3/4, where
-   1+%i*c*x is a rational multiple of a square. */
+/* Bug #5712: "integrate(%e^atanh(x), x) returns a noun form" */
+
+[integrate(%e^atanh(x), x), integrate(x*%e^-atanh(x), x),
+  integrate(%e^(3*atanh(x)), x)];
+[asin(x)-sqrt(1-x^2), -asin(x)/2+(x*sqrt(1-x^2))/2-sqrt(1-x^2),
+  -3*asin(x)-(1-x^2)^(3/2)/(x^2-2*x+1)+(6*sqrt(1-x^2))/(1-x)]$
+
+integrate(%e^atanh(x)*(c-c*x), x);
+c*(asin(x)-sqrt(1-x^2))-c*(asin(x)/2-(x*sqrt(1-x^2))/2-sqrt(1-x^2))$
+
+block(
+  local(c),
+  assume(c > 0),
+  integrate(%e^(2*acoth(a*x))*sqrt(c-a*c*x)/x, x));
+-2*((sqrt(c)*log((2*sqrt(c-a*c*x)-2*sqrt(c))/(2*sqrt(c-a*c*x)+2*sqrt(c))))/2
+  -sqrt(c-a*c*x))$
+
+
+/* Bug #NNNN: "integrate(%e^(3*%i*atan(a*x)), x) does not finish" */
 
 block([G, H, halfangles : true],
   G : integrate(%e^(3*%i*atan(a*x)), x),
@@ -7569,9 +7598,6 @@ block([G, H, halfangles : true],
                                    *sqrt(k-%i*c*k*x)))))))),
        [8/3, 3/2, -8/3, -3/2])]);
 [true, true, [0, 0, 0, 0], [0, 0, 0, 0]]$
-
-/* The same with real linear radicands, and with sqrt(r1)*sqrt(r2) in the
-   denominator */
 
 block([gs, Gs, a, b, c, d, k, halfangles : true],
   local(d, k),
@@ -7592,21 +7618,8 @@ block([gs, Gs, a, b, c, d, k, halfangles : true],
         [a=1, b=2, c=-1/2, d=3/2, k=2/3, x=8/3]])]);
 [[true, true], [0, 0, 0], [0, 0, 0]]$
 
-/* INTIR3 asked for the signs of a and b, although it cannot integrate
-   the pieces into which the answers split the integrand */
 
-integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x);
-'integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x)$
-
-/* Here the discriminant is not real, and sign() stopped with an
-   error */
-
-integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x);
-'integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x)$
-
-/* Integrands with a product of two square roots of rational functions,
-   as left by integration by parts with the antiderivatives and derivatives
-   of acosh, asech, asin and products of square roots */
+/* Bugs #3906: "integration error 0 to negative exponent" and #NNNN: "integrate() returns noun forms or wrong results for products of square roots" */
 
 block([gs, Gs],
   gs : [x^3*(a+b*log(c*x^n))/(sqrt(d-e*x)*sqrt(d+e*x)), acosh(1/x),
@@ -7629,9 +7642,6 @@ block([gs, Gs],
 [[true, true, true, true, true], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],
  [0, 0, 0, 0], [0, 0, 0, 0, 0]]$
 
-/* The same for asech(sqrt(x)). At x = -9/16, 1/sqrt(x)+1 and 1/sqrt(x)-1
-   are rational multiples of squares. */
-
 block([g, G, halfangles : true],
   g : asech(sqrt(x))/x^2,
   G : integrate(g, x),
@@ -7640,11 +7650,6 @@ block([g, G, halfangles : true],
                      subst(x=p, diff(G, x) - g))))))),
        [1/3, 4/5, 2, -9/16])]);
 [true, [0, 0, 0, 0]]$
-
-/* Integrands odd in three square roots with r1*r2/r3 free of x, as left by
-   integrating asinh(c*x) and acosh(c*x) by parts. The checks of the second
-   take c*x = 4/3 and c*x = 3/4, where 1+%i*c*x is a rational multiple of a
-   square. */
 
 block([gs, Gs, a, b, c, d, f, halfangles : true],
   gs : [1/(sqrt(x-1)*sqrt(x+1)*sqrt(x^2-1)),
@@ -7675,10 +7680,6 @@ block([g, G, c, d],
         [c=4/5, d=-7/5, x=1/2], [c=4/5, d=7/5, x=2]])]);
 [true, [0, 0, 0, 0, 0]]$
 
-/* Integrands odd in sqrt(r1)*sqrt(r2) with a further root, as left by
-   integrating acosh by parts: an unrelated root, and a related one, for
-   which the result was wrong */
-
 block([gs, Gs],
   gs : [acosh(2*x)/(x^2+3)^(3/2), acosh(2*x)/(x^2*sqrt(3-12*x^2))],
   Gs : map(lambda([g], integrate(g, x)), gs),
@@ -7688,10 +7689,6 @@ block([gs, Gs],
                   [1/4, 2, -2, -1/4])),
        [1, 2])]);
 [[true, true], [[0, 0, 0, 0], [0, 0, 0, 0]]]$
-
-/* No antiderivative from the integrals that RISCHINT leaves here, with
-   radicals split on a wrong branch: a noun form, or a result that is right
-   also where cos(d*x+c) < 0 */
 
 block([g, G, a, c, d, halfangles : true],
   local(a),
@@ -7704,9 +7701,6 @@ block([g, G, a, c, d, halfangles : true],
            [1/2, 1/3, 2, 3])
   else [0, 0, 0, 0]);
 [0, 0, 0, 0]$
-
-/* sqrt(cos(x))*sqrt(b*cos(x)) is not sqrt(b)*cos(x) where b < 0 and
-   cos(x) < 0 */
 
 block([gs, Gs, halfangles : true],
   gs : [sqrt(cos(d*x+c))*sqrt(b*cos(d*x+c))*(C*cos(d*x+c)^2+A),
@@ -7723,8 +7717,6 @@ block([gs, Gs, halfangles : true],
        [1, 2])]);
 [[true, true], [[0, 0, 0, 0], [0, 0, 0, 0]]]$
 
-/* These must neither hang nor ask about the sign of 1/d or c */
-
 block([gs, f],
   gs : [(b*asin(c*x)+a)^2/((c*d*x+d)^(3/2)*(e-c*e*x)^(3/2)),
         x*(b*asin(c*x)+a)^2/((c*d*x+d)^(3/2)*(e-c*e*x)^(3/2)),
@@ -7733,9 +7725,6 @@ block([gs, f],
   map(lambda([g], (integrate(g, x), 0)), gs));
 [0, 0, 0, 0]$
 
-/* integrate() gave a noun form for x*asech(a*x)^2. The result must not
-   contain internal symbols */
-
 block([g, G],
   g : x*asech(a*x)^2,
   G : integrate(g, x),
@@ -7743,9 +7732,6 @@ block([g, G],
    map(lambda([p], radcan(ratsimp(rectform(subst(p, diff(G, x) - g))))),
        [[a=59/100, x=37/100], [a=59/100, x=3/2]])]);
 [true, [a, x], [0, 0]]$
-
-/* INTEGRATE-SQRT-PAIR must take an integrand only if it is odd or even in
-   the root that it replaces */
 
 block([g, G],
   g : sqrt(x)*sqrt(%i*x)*sin(x),
@@ -7761,38 +7747,16 @@ block([g, G],
   else 0);
 0$
 
-/* INTEGRATE-SQRT-PAIR must leave a product alone if the integrator fails
-   on the integrand that it makes */
-
 map(lambda([g], length(errcatch(integrate(g, x)))),
     [sqrt((2*c*x^2)/(b-sqrt(b^2-4*a*c))+1)/sqrt(1-(2*c*x^2)/(sqrt(b^2-4*a*c)+b)),
      1/(sqrt((sqrt(3)-3)*x^2+3)*sqrt(2*sqrt(3)*x^2-3^(3/2)+3))]);
 [1, 1]$
 
-/* integrate() exhausted the stack here: the integration of the single
-   root of a product of roots came back, by integration by parts, to an
-   integral that it was doing */
-
 (integrate(asin(x+1)^4/(x+1)^2, x), 0);
 0$
 
-/* TRIGIN1 simplifies %e^(log(x+1)+log(x-1)) and the like in the integrals
-   that the Risch integrator leaves, so that they can be evaluated.
-   The result is valid for x > 1, where asec(x) is
-   atan(sqrt(x-1)*sqrt(x+1)). */
 
-block([g, G],
-  g : asec(x)*sqrt(x^2-1)/x^4,
-  G : integrate(g, x),
-  [freeof('integrate, G),
-   map(lambda([p],
-              radcan(ratsimp(subst(x = p,
-                subst(asec(x) = atan(sqrt(x-1)*sqrt(x+1)), diff(G, x) - g))))),
-       [11/10, 2, 7/2, 10])]);
-[true, [0, 0, 0, 0]]$
-
-/* integrate() returned exponential forms for integrands such as
-   cos(sqrt(x)), whose substitution variable is declared complex */
+/* Bug #NNNN: "integrate(cos(sqrt(x)), x) returns an exponential form" */
 
 [integrate(cos(sqrt(x)), x),
  integrate(x*cos(sqrt(x)), x),
@@ -7800,8 +7764,6 @@ block([g, G],
 [2*(sin(sqrt(x))*sqrt(x)+cos(sqrt(x))),
  2*(sin(sqrt(x))*(x^(3/2)-6*sqrt(x))+cos(sqrt(x))*(3*x-6)),
  sin(log(x))-log(x)*cos(log(x))]$
-
-/* ... which are right where the variable is not real as well */
 
 block([g : x^2*cos(b*sqrt(d*x+c)+a)],
   local(tq),
@@ -7820,9 +7782,6 @@ block([g : sqrt(d*x+c)*sin(b*x+a)],
   ratsimp(exponentialize(diff(integrate(g, x), x) - g)));
 0$
 
-/* For a variable of integration declared imaginary, parts of the
-   antiderivative must not be dropped */
-
 [ratsimp(exponentialize(integrate(cos(sqrt(x))+1, x, -1, 0) - (3-2*%e^-1))),
  ratsimp(exponentialize(integrate(x+sin(sqrt(x)), x, -1, 0) - (2*%i*%e^-1-1/2)))];
 [0, 0]$
@@ -7839,28 +7798,16 @@ block([],
   integrate(zz*sin(zz)+1, zz));
 sin(zz)-zz*cos(zz)+zz$
 
-/* No realpart or imagpart nouns for a complex substitution variable */
-
 integrate(sin(sqrt(x))/x, x);
 %i*gamma_incomplete(0,-%i*sqrt(x))-%i*gamma_incomplete(0,%i*sqrt(x))$
-
-/* integrate() took more than 15 minutes here */
 
 block([f : exp(-x)*cos(sqrt(x)), G],
   G : integrate(f, x),
   map(lambda([p], ratsimp(rectform(subst(x = p, diff(G, x) - f)))), [1, 4]));
 [0, 0]$
 
-/* integrate() divided by zero for atan2(y,0), which it converted to
-   atan(y/0). Splitting sqrt(atan(a*x)) into real and imaginary parts
-   gives such an atan2(). */
 
-[integrate(atan2(x, 0), x), integrate(x*atan2(x^2-1, 0), x),
- integrate(sqrt(atan(a*x))/x, x)];
-[%pi*abs(x)/2, %pi*abs(x^2-1)/4, 'integrate(sqrt(atan(a*x))/x, x)]$
-
-/* integrate() divided by abs(z) for complex z in some cases of
-   1/(z*sqrt(c*z^2+b*z+a)) that the fix for bug #5662 did not cover */
+/* Bug #NNNN: "integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z" */
 
 block([],
   local(z),
@@ -7871,9 +7818,6 @@ block([],
     [1/(z*sqrt(z^2+z+1)), 1/(z*sqrt(z^2+2*z+1)), 1/(z*sqrt(z^2-1))]));
 [[true, 0], [true, 0], [true, 0]]$
 
-/* If c*z^2+b*z+a < 0 for all real z, the result takes its square root to
-   be %i*sqrt(-c*z^2-b*z-a), as for real z */
-
 block([],
   local(z),
   declare(z, complex),
@@ -7882,14 +7826,9 @@ block([],
     [freeof(abs, G), ratsimp(subst(z = 2, diff(G, z) - g))]));
 [true, 0]$
 
-/* Here the integrator substitutes a complex variable for %e^(%i*x) */
-
 block([g : 1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)],
   block([algebraic : true], ratsimp(diff(integrate(g, x), x) - g)));
 0$
-
-/* ... and here also a linear function of such a variable. Both results
-   are right where the integrands are real. */
 
 block([f : sqrt(cot(2*x)/cot(x)), G],
   G : integrate(f, x),
@@ -7902,9 +7841,6 @@ block([f : sqrt(tan(x)*tan(2*x)), G],
   radcan(ratsimp(rectform(subst(x = %pi/6, diff(G, x) - f)))));
 0$
 
-/* The integrator substitutes a complex variable for log(x), which is
-   real for x > 0 */
-
 block([f : 1/(x*log(x)*sqrt(log(x)^2-a^2)), G],
   local(a),
   assume(a > 0),
@@ -7912,8 +7848,8 @@ block([f : 1/(x*log(x)*sqrt(log(x)^2-a^2)), G],
   ratsimp(rectform(subst([a = 1, x = %e^-2], diff(G, x) - f))));
 0$
 
-/* For hyperbolic integrands, the Risch integrator solves the equations it
-   can when the top one of its linear system fails */
+
+/* Bug #NNNN: "integrate(atanh(tanh(a+b*x))^(1/2)/x^(3/2), x) returns a noun form" */
 
 block([G],
   local(a, b),
@@ -7925,9 +7861,6 @@ block([G],
        [1/10, 1/2, 1, 2])]);
 [true, [0, 0, 0, 0]]$
 
-/* Elsewhere it does not, as such a partial solution can leave an integral
-   that another method does not leave */
-
 block([g, G, a, halfangles : true],
   g : %e^(2*%i*atan(a*x))/sqrt(a^2*x^2+1),
   G : integrate(g, x),
@@ -7936,16 +7869,10 @@ block([g, G, a, halfangles : true],
        [[a=2, x=-3], [a=2, x=1/2], [a=-3/2, x=2]])]);
 [true, [0, 0, 0]]$
 
-/* An error in the second try with partial solutions must leave the
-   integral as it is. Here the partial solution leaves one with log(-1) */
-
 block(local(a, b),
   assume(a > 0, b > 0),
   length(errcatch(integrate(sqrt(atanh(coth(a+b*x)))/x^(3/2), x))));
 1$
-
-/* Partial solutions must not replace a closed form that the integrator
-   finds without them */
 
 block([g, G],
   g : %e^acsch(a*x^2)/x,
@@ -7955,10 +7882,8 @@ block([g, G],
        [[a=13/10, x=2/5], [a=4/5, x=3/2]])]);
 [true, [0, 0]]$
 
-/* RADCAN1 in the Risch integrator took sqrt(c-a^2*c*x^2) apart into
-   sqrt(c)*sqrt(1-a*x)*sqrt(a*x+1), and (12-3*e^2*x^2)^(1/4) likewise,
-   which holds only for some signs. The antiderivatives were wrong for
-   c < 0, and wherever the second integrand is real. */
+
+/* Bug #NNNN: "integrate(%e^acoth(a*x)*sqrt(c-a^2*c*x^2), x) is wrong for c < 0" */
 
 block([g, G],
   g : %e^acoth(a*x)*sqrt(c-a^2*c*x^2),
@@ -7982,15 +7907,9 @@ block([g, G],
       [[e = 1, x = 1], [e = -1, x = 1/2], [e = 1, x = -3/2]]));
 [0, 0, 0]$
 
-/* Testing the factor must not overflow the stack under the equal() facts
-   of a substitution */
-
 block([A, B, e],
   (integrate((B*x+A)/(sqrt(e*x+(A^2*e-B^2*e)/(2*A*B))*(x^2+1)), x), 0));
 0$
-
-/* integrate() took sqrt(1/t^2) to be 1/t for the variable t = 1/(c*x)
-   that it substitutes, so these antiderivatives were wrong for c*x < 0 */
 
 block([f1, f2, G1, G2],
   f1 : sqrt(csch(2*log(c*x)))/x^4,
@@ -8003,10 +7922,6 @@ block([f1, f2, G1, G2],
       [[c = 1, x = 2], [c = 1, x = -2], [c = -1, x = 3]]));
 [[0, 0], [0, 0], [0, 0]]$
 
-/* In the inner integration of this product of roots, RADCAN1 in the Risch
-   integrator took sqrt(d*f) apart. That d and f are bases of integer
-   powers in the integrand does not make this exact. */
-
 block([g, G, f],
   g : (b*asin(c*x)+a)/((c*d*x+d)^(5/2)*(f-c*f*x)^(5/2)),
   G : integrate(g, x),
@@ -8016,9 +7931,6 @@ block([g, G, f],
         [a = 0, b = 1, c = 1/2, d = -1, f = -1, x = 1/2]])]);
 [true, [0, 0]]$
 
-/* TRIGINT writes sec(x)^(-1/2) as cos(x)^(1/2), which differs by -1 where
-   cos(x) < 0, as at x = 2*atan(2) and x = 2*atan(5) */
-
 block([g, G, halfangles : true],
   g : sqrt(b*sec(x))/sqrt(sec(x)),
   G : integrate(g, x),
@@ -8026,11 +7938,6 @@ block([g, G, halfangles : true],
                     subst([b = 1, x = 2*atan(t)], diff(G, x) - g)))))),
       [1/2, 2, 5, -5]));
 [0, 0, 0, 0]$
-
-/* integrate() makes a single root of two roots here, and again in its
-   integration. RADCAN1 took the root of (1-t^2)*(3+2*t-3*t^2) apart into
-   sqrt(t-1)*sqrt(t+1)*sqrt(3*t^2-2*t-3), which is -1 times that root
-   where the integrand is real */
 
 block([g, G],
   g : 1/(cos(x)^(3/2)*sqrt(3*cos(x)+sin(x))),
@@ -8040,10 +7947,6 @@ block([g, G],
        [[x = 2*atan(1/2)], [x = -2*atan(1/2)]])]);
 [true, [0, 0]]$
 
-/* RADCAN1 in the Risch integrator wrote the quotient of roots here as
-   a*x/((a*x-1)*sqrt(-c)), which is -1 times it for 0 < a*x < 1, so the
-   antiderivative was wrong there */
-
 block([g, G],
   g : (c-c/(a^2*x^2))*sqrt(a*x+1)/sqrt(-a*c*x+c/(a*x)-c/(a^2*x^2)+c),
   G : integrate(g, x),
@@ -8052,8 +7955,8 @@ block([g, G],
        [a = 1, c = -1, x = -1/2]]));
 [0, 0, 0]$
 
-/* integrate() returned noun forms here. The antiderivatives hold for
-   x > 1, where acsc(x) is atan(1/sqrt(x^2-1)). */
+
+/* Bug #NNNN: "integrate(acsc(x)/(x^2*(x^2-1)^(5/2)), x) leaves integrals in the result" */
 
 block([gs, Gs],
   gs : [acsc(x)/(x^2*(x^2-1)^(5/2)), (x-1)^(5/2)*acsc(x)],
@@ -8068,10 +7971,8 @@ block([gs, Gs],
        [1, 2])]);
 [[true, true], [[0, 0], [0, 0]]]$
 
-/* The Risch integrator tested each of the real and the imaginary part of
-   its result for being constant by RADCAN1 of its derivative. That took
-   too long for the first integral and wrongly dropped a part of the
-   second. The same part of the integrand is that derivative. */
+
+/* Bug #NNNN: "integrate() hangs or gives wrong results for some trigonometric integrands" */
 
 block([gs, Gs, ps, f],
   gs : [(d*x+c)/(a*sin(f*x+e)+a)^2, sin(f*x+e)^3/sqrt(b*tan(f*x+e)^2+a)],
@@ -8097,10 +7998,6 @@ block([g, G],
        [[a = 0, b = 1, x = 1/2], [a = 1/3, b = 2, x = -3]])]);
 [true, [0, 0]]$
 
-/* For the Risch integrator, RISPLIT takes li[2] to be real, which is not
-   true for every argument. The parts of the integrand then do not show
-   which part of the result is constant. */
-
 block([g, G],
   g : x*sin(x)/(1+cos(x)),
   G : integrate(g, x),
@@ -8110,8 +8007,8 @@ block([g, G],
        [[x = 2*atan(1/2)], [x = 2*atan(3)]])]);
 [true, [0, 0]]$
 
-/* integrate() returned the noun form when the integral of the expanded
-   integrand was not found, without trying its other methods. */
+
+/* Bug #NNNN: "integrate(%e^acoth(x)/(x+1)^2, x) returns a noun form" */
 
 block([fs, Fs],
   fs : [%e^acoth(x)/(x+1)^2, %e^atanh(x)*x/(x+1)^2],
@@ -8120,19 +8017,11 @@ block([fs, Fs],
    map(lambda([F, f], radcan(diff(F, x) - logarc(f))), Fs, fs)]);
 [[true, true], [0, 0]]$
 
-/* An error of the Risch integrator after the expansion left an integral
-   counts as a failure. For this integrand, the Risch integrator stops
-   with an RQUOTIENT error, and integrate() returns a noun form. */
-
 block([],
   local(d, e),
   assume(d > 0, e > 0),
   errcatch(integrate(x^2*(b*atan(c*x)+a)/(e*x^2+d)^2, x), true));
 [true]$
-
-/* When the expansion leaves an integral and the Risch integrator leaves
-   one too, the result is the one of the expansion, whose integrals the
-   later steps can still do, as for %e^acoth(x)*x/(x+1)^(3/2) */
 
 block([f : %e^acoth(x)*x/(x+1)^(3/2), F, G],
   local(a),
@@ -8146,9 +8035,6 @@ block([f : %e^acoth(x)*x/(x+1)^(3/2), F, G],
    freeof('integrate, diff(G, A))]);
 [true, [true, true, true], true]$
 
-/* After the expansion, INTEGRATE-SQRT-PAIR takes no result with false
-   in it, which INTIRA leaves for a part that it cannot do */
-
 block([r],
   local(a),
   assume(notequal(a, 0)),
@@ -8156,10 +8042,6 @@ block([r],
                 x),
   freeof(false, r));
 true$
-
-/* After an expansion that left an integral, INTIR3 does not ask for the
-   sign of a discriminant that is negative for positive parameters, as it
-   then does nothing. For a*b < 0 it still asks, and integrates. */
 
 block([a, b, c, d], integrate(x/((b*x^4+a)*sqrt(d*x^4+c)), x));
 'integrate(x/((b*x^4+a)*sqrt(d*x^4+c)), x)$
@@ -8173,10 +8055,8 @@ block([a, b, c, d],
   ask_hide_prompt; pos; pos; pos; pos;
 true$
 
-/* integrate() returned a noun form for (-log(x))^(3/2), and wrote the
-   antiderivatives of %e^x*sqrt(x) and the like with gamma_incomplete(3/2,-x)
-   and (-x)^(3/2), which are not real for x > 0. They are written with erfi,
-   free of %i. */
+
+/* Bug #NNNN: "integrate(2^x*sqrt(x+1), x) returns a noun form" */
 
 block([fs, ds, Fs],
   fs : [%e^x*sqrt(x), %e^x*x^(3/2), %e^x/sqrt(x), sqrt(log(x)),
@@ -8196,12 +8076,9 @@ block([fs, ds, Fs],
 [[true, true, true, true, true], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
  [true, true, true, true, true]]$
 
-/* An error for the clue after the exponential counts as a failure. For
-   this integrand, that clue leads to a division by zero, and integrate()
-   returns a noun form. */
-
 errcatch(integrate(sinh(c+d*x)^3/(a+b*sinh(c+d*x)^2)^3, x), true);
 [true]$
+
 
 /* Bug #5075: "Antiderivative of sin(x^3) does not differentiate back, and under domain: complex it is wrong for negative x" */
 
@@ -8222,8 +8099,8 @@ block([F : integrate(log(tan(x)), x)],
       [-43/20, 1/2, 7/2, 1 + %i, -43/20 + %i/5])), domain : complex;
 [true, true, true, true, true]$
 
-/* Bugs #MMMM: "integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0"
-   and #NNNN: "risch(%e^(log(x)/3),x) is wrong for x < 0" */
+
+/* Bugs #MMMM: "integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0" and #NNNN: "risch(%e^(log(x)/3),x) is wrong for x < 0" */
 
 block([f, F],
   f : 8*(1/(x-1)+1)^(1/3)*(x-1)^(1/3)/(x-(1/(x-1)+1)*(x-1)^2-1),
@@ -8242,6 +8119,32 @@ block([r : integrate(%e^(log(x)/3)*sin(x), x)],
                                 diff(r, x) - %e^(log(x)/3)*sin(x)))))
       < 1e-9)]);
 [3*%e^(log(x)/3)*x/4, %e^(log(x)/3)*(12*x*log(x) - 9*x)/16, true]$
+
+[risch(%e^(log(x)/3)*sqrt(c*x+c)/sqrt(x+1), x),
+ freeof(x^(1/3), risch(%e^(log(x)/3)*cos(x)^2/x, x))];
+[3*%e^(log(x)/3)*x*sqrt(c*x+c)/(4*sqrt(x+1)), true]$
+
+block([fs : [sin(x)^2*%e^(log(x)/5), acsc(x)*%e^(log(x-1)/3)], Fs],
+  Fs : map(lambda([f], integrate(f, x)), fs),
+  map(lambda([F, f],
+        map(lambda([p],
+              is(cabs(float(rectform(subst(x = p, diff(F, x) - f)))) < 1e-9)),
+            [-2.3, -1.2, 1.3, 2.5])),
+      Fs, fs));
+[[true, true, true, true], [true, true, true, true]]$
+
+
+/* Bug #PPPP: "integrate(asec(x)*sqrt(x^2-1)/x^4, x) leaves integrals in the result" */
+
+block([g, G],
+  g : asec(x)*sqrt(x^2-1)/x^4,
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p],
+              radcan(ratsimp(subst(x = p,
+                subst(asec(x) = atan(sqrt(x-1)*sqrt(x+1)), diff(G, x) - g))))),
+       [11/10, 2, 7/2, 10])]);
+[true, [0, 0, 0, 0]]$
 
 
 /**************************************/

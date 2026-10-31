@@ -79,7 +79,7 @@
   (and (null (pzerop a))
        (free a var2)))
 
-;; True if EX is an exponential b^f whose base b is free of VAR2 or is an
+;; T if EX is an exponential b^f whose base b is free of VAR2 or is an
 ;; exponential itself, as in (%e^x)^v.
 (defun exponentialp (ex var2)
   (and (mexptp ex)
@@ -363,16 +363,21 @@
           (return (mul2* const (integrate1 (cdr *exp*) var2))))
            
          ;; Convert atan2(a,b) to atan(a/b), or for b = 0 to signum(a)*%pi/2,
-         ;; and try again.
+         ;; and try again. If that leaves an integral for b = 0, return the
+         ;; integral of the integrand as it was, without signum.
          ((setq w (isinop *exp* '%atan2))
-          (setq *exp*
-                (maxima-substitute
-                 (if (zerop1 (caddr w))
-                     (mul (take '(%signum) (cadr w)) '$%pi 1//2)
-                     (take '(%atan) (div (cadr w) (caddr w))))
-                 w *exp*))
-          (return (mul* const
-                        (integrator *exp* var2 stack))))
+          (let* ((e *exp*)
+                 (y (integrator
+                     (maxima-substitute
+                      (if (zerop1 (caddr w))
+                        (mul (ftake '%signum (cadr w)) '$%pi 1//2)
+                        (ftake '%atan (div (cadr w) (caddr w))))
+                      w e)
+                     var2 stack)))
+            (return (mul* const
+                          (if (and (zerop1 (caddr w)) (isinop y '%integrate))
+                            (list '(%integrate) e var2)
+                            y)))))
            
          ;; First stage, Method II: Integrate sums.
 	 ((and (not (atom *exp*))
@@ -535,9 +540,9 @@
                                                 '$all
                                                 $triginverses)))
                           (if expanded
-                              (let (($errormsg nil))
-                                (car (errcatch (rischint *exp* var2))))
-                              (rischint *exp* var2))))
+                            (let (($errormsg nil))
+                              (car (errcatch (rischint *exp* var2))))
+                            (rischint *exp* var2))))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -951,12 +956,10 @@
     signs, facts and questions involving the new variable are those of EXPR
     (see SUBST-ALIASES), and the declarations of EXPR if it is a symbol.
     It sets *ALIAS-EXPRESSIONS*, which SININT and RISCHINT bind,
-  - else adding the 'INTERNAL property (so no questions are asked about it),
   - adding a declaration that the new variable is '$COMPLEX/'$IMAGINARY if EXPR's
     sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY."
   (let ((expr (simplify expr))
         (new-var (gensym prefix)))
-    (unless expr (putprop new-var t 'internal))
     (when expr
       (setq *alias-expressions* t)
       (putprop new-var expr 'alias-expression)
@@ -1766,12 +1769,12 @@
                            (member (caar (cadr e)) '(%sec %csc %cot))
                            (get (caar (cadr e)) 'recip))))
                (if (null g)
-                   e
-                   (let* ((r (caddr e))
-                          (f (div (mod (cadr r) (caddr r)) (caddr r)))
-                          (h (ftake g (cadr (cadr e)))))
-                     (setq k (mul k (power (cadr e) f) (power h f)))
-                     (power h (neg r)))))))
+                 e
+                 (let* ((r (caddr e))
+                        (f (div (mod (cadr r) (caddr r)) (caddr r)))
+                        (h (ftake g (cadr (cadr e)))))
+                   (setq k (mul k (power (cadr e) f) (power h f)))
+                   (power h (neg r)))))))
       (setq res (muln (mapcar #'recip (if (mtimesp expr) (cdr expr) (list expr)))
                       t))
       (unless (eql k 1)
@@ -2729,12 +2732,12 @@
                            (f (if (mtimesp x) (find-if #'arc-p (cdr x)) x)))
                       (if (and (arc-p f) (not (freeof var2 f))
                                (freeof var2 (div x f)))
-                          (let ((w (if (eq (caar f) '%atanh)
-                                       (cadr f)
-                                       (inv (cadr f))))
-                                (c (div x (mul 2 f))))
-                            (div (power (add 1 w) c) (power (sub 1 w) c)))
-                          e)))
+                        (let ((w (if (eq (caar f) '%atanh)
+                                   (cadr f)
+                                   (inv (cadr f))))
+                              (c (div x (mul 2 f))))
+                          (div (power (add 1 w) c) (power (sub 1 w) c)))
+                        e)))
                    (t (recur-apply #'rewrite e)))))
     (let ((e (rewrite expr)))
       (unless (alike1 e expr)
@@ -2752,27 +2755,27 @@
 ;; written with var/abs(var) also for z = k*var with k > 0, where
 ;; PRINCIPAL-POWER would otherwise take %e^(log(z)/3) and the like.
 ;;
-;; For z = k*var^n with n > 0, var^m*z^s is one constant for var > 0 and
-;; another for var < 0, unless the two agree, as for x*%e^(-x^4). Where
-;; they differ, as for %e^(x^3) or %e^(-x^4), the antiderivative,
-;; gamma(alpha) times that constant at var = 0 where alpha > 0, would jump
-;; there. So gamma(alpha) is taken from gamma_incomplete, which makes the
-;; antiderivative 0 at var = 0 from both sides, unless the sign of var is
-;; known.
+;; For z = k*var^n with k free of var and n > 0, var^m*z^s is one constant
+;; for var > 0 and another for var < 0, unless the two agree, as for
+;; x*%e^(-x^4). Where they differ, as for %e^(x^3), %e^(-x^4) or
+;; %e^(b*x^3), the antiderivative, gamma(alpha) times that constant at
+;; var = 0 where alpha > 0, would jump there. So gamma(alpha) is taken from
+;; gamma_incomplete, which makes the antiderivative 0 at var = 0 from both
+;; sides, unless the sign of var is known.
 (defun gamma-incomplete-and-power (alpha z var m &optional (s (mul -1 alpha)))
-  (let* ((g (take '(%gamma_incomplete) alpha z))
+  (let* ((g (ftake '%gamma_incomplete alpha z))
          (pw (principal-power z s t))
          (c (mul (power var m) pw)))
-    (multiple-value-bind (k w n) (real-power-factors z t)
-      (when (and k
-                 (alike1 w var)
-                 (plusp (num1 n))
+    (let ((v (cdr (partition z var 1))))
+      (when (and (or (alike1 v var)
+                     (and (mexptp v) (alike1 (cadr v) var)
+                          (mnump (caddr v)) (plusp (num1 (caddr v)))))
                  (ratnump alpha)
                  (plusp (cadr alpha))
                  (not (eq t (meqp (maxima-substitute 1 var c)
                                   (maxima-substitute -1 var c))))
                  (not (member ($sign var) '($pos $pz $neg $nz))))
-        (setq g (sub g (take '(%gamma) alpha)))))
+        (setq g (sub g (ftake '%gamma alpha)))))
     (cond ((alike1 pw (power z s)) (mul g (power var m) pw))
           ((integerp m) (mul g ($multthru c)))
           (t (mul g c)))))

@@ -352,6 +352,18 @@ block([x],
  %e^((%i*%pi)/5), ((sqrt(3)*%i)/2 + 1/2)*x^(2/3), true]$
 
 
+/* Bug #5751: "sqrt(-1/w) is %i/sqrt(w) for w <= 0, and is(sqrt(-1/w) > 0) is false" */
+
+[sqrt(-1/(sin(x)-1)), sqrt(ratsimp(1/(1-cos(x)))), is(sqrt(-1/(sin(x)-1)) > 0)];
+[1/sqrt(1-sin(x)), 1/sqrt(1-cos(x)), true]$
+
+block([x],
+  local(x),
+  assume(x <= 0),
+  [sqrt(-1/x), (-1/x)^(3/2), is(sqrt(-1/x) > 0), integrate(sqrt(-1/x), x)]);
+[1/sqrt(-x), 1/(-x)^(3/2), true, -2*sqrt(-x)]$
+
+
 /* %e_to_numlog : safe simplifies %e^(r*log(x)) into x^r only where x^r is
    the principal value. With domain : real it is the real root of a
    negative x for an odd denominator. */

@@ -2016,29 +2016,3 @@ integrate(x*sin(%pi/2*x), x,0,1 ), numer;
 contexts;
 [initial, global]$
 
-/* integrate() returned noun forms for %e^(n*atanh(u)) and %e^(n*acoth(u)) */
-
-[integrate(%e^atanh(x), x), integrate(x*%e^-atanh(x), x),
-  integrate(%e^(3*atanh(x)), x)];
-[asin(x)-sqrt(1-x^2), -asin(x)/2+(x*sqrt(1-x^2))/2-sqrt(1-x^2),
-  -3*asin(x)-(1-x^2)^(3/2)/(x^2-2*x+1)+(6*sqrt(1-x^2))/(1-x)]$
-
-integrate(%e^atanh(x)*(c-c*x), x);
-c*(asin(x)-sqrt(1-x^2))-c*(asin(x)/2-(x*sqrt(1-x^2))/2-sqrt(1-x^2))$
-
-block(
-  local(c),
-  assume(c > 0),
-  integrate(%e^(2*acoth(a*x))*sqrt(c-a*c*x)/x, x));
--2*((sqrt(c)*log((2*sqrt(c-a*c*x)-2*sqrt(c))/(2*sqrt(c-a*c*x)+2*sqrt(c))))/2
-  -sqrt(c-a*c*x))$
-
-/* integrate() stopped with "expt: undefined: 0 to a negative exponent"
-   for rational functions with %i */
-
-integrate(1/((1+%i*t)*(1+t^2)), t);
-(%i*log(%i*t-1))/4-(%i*log(t-%i))/4+1/(2*t-2*%i)$
-
-[integrate(1/(%i*a*tan(x)+a), x), integrate(tan(x)^2/(%i*tan(x)+1), x)];
-[(%i*log(%i*tan(x)-1))/(4*a)-(%i*log(tan(x)-%i))/(4*a)+1/(2*a*tan(x)-2*%i*a),
-  (-%i*log(%i*tan(x)-1))/4-(3*%i*log(tan(x)-%i))/4-1/(2*tan(x)-2*%i)]$

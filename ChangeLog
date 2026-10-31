@@ -280,6 +280,7 @@ Bug fixes for numbered bugs:
 * \#5709 sign(sqrt(2*y)-y) exhausts the control stack with radexpand:false
 * \#5710 ((-2)^(1/6))^2 simplifies to the real root (-2)^(1/3) with radexpand : false
 * \#5711 integrate() reads c^3 as c+3 in (c-c*x)^3/((1-x)^3*sqrt(1-x^2))
+* \#5712 integrate(%e^atanh(x), x) returns a noun form
 * \#5713 %i^(2/3) simplifies to -1
 * \#5716 diff() of gamma_incomplete() and similar functions is wrong for z < 0 with domain : real
 * \#5717 limit() returns ind when the one-sided limits are different forms of the same number
@@ -297,21 +298,31 @@ Bug fixes for numbered bugs:
 * \#5736 is(abs(x) <= 0) is unknown after assume(abs(x) <= 0)
 * \#5737 Bigfloat atan(x) and acot(x) are not odd
 * \#5739 Bigfloat atan() and acot() are off by several ulp, more at higher fpprec
+* \#5748 integrate() ignores what is known about the expressions it substitutes
 * \#5750 integrate() asks the same sign question twice
+* \#5751 sqrt(-1/w) is %i/sqrt(w) for w <= 0, and is(sqrt(-1/w) > 0) is false
+* \#5752 integrate() asks needless sign questions for some quotients with roots
+* \#5753 integrate(atan2(x,0), x) divides by zero
+* \#5754 integrate() divides by zero for rational functions with %i, as 1/((1+%i*t)*(1+t^2))
+* \#5755 integrate() calls facsum on the same exponents up to 17 times in INTEGRATE-EXP-SPECIAL
 * \#NNNN integrate(sin(x^3),x) and integrate(%e^(x^3),x,-1,1) are wrong
 * \#NNNN The antiderivative of %e^(-x^4) jumps at x = 0
+* \#NNNN integrate(%e^(3*%i*atan(a*x)), x) does not finish
+* \#NNNN integrate() returns noun forms or wrong results for products of square roots
+* \#NNNN integrate(cos(sqrt(x)), x) returns an exponential form
+* \#NNNN integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z
+* \#NNNN integrate(atanh(tanh(a+b*x))^(1/2)/x^(3/2), x) returns a noun form
+* \#NNNN integrate(%e^acoth(a*x)*sqrt(c-a^2*c*x^2), x) is wrong for c < 0
+* \#NNNN integrate(acsc(x)/(x^2*(x^2-1)^(5/2)), x) leaves integrals in the result
+* \#NNNN integrate() hangs or gives wrong results for some trigonometric integrands
+* \#NNNN integrate(%e^acoth(x)/(x+1)^2, x) returns a noun form
+* \#NNNN integrate(2^x*sqrt(x+1), x) returns a noun form
 * \#MMMM integrate() turns x^(1/3) into %e^(log(x)/3), wrong for x < 0
 * \#NNNN risch(%e^(log(x)/3),x) is wrong for x < 0
+* \#PPPP integrate(asec(x)*sqrt(x^2-1)/x^4, x) leaves integrals in the result
 
 Bug fixes for unnumbered bugs:
 ------------------------------
-* integrate() took very long or gave wrong results for some integrands
-  with trigonometric functions, such as (d*x+c)/(a*sin(f*x+e)+a)^2 and
-  sin(f*x+e)^3/sqrt(b*tan(f*x+e)^2+a)
-* integrate() stopped with the error "0 to a negative exponent" for many
-  integrands with %i, such as 1/(a+%i*a*tan(x))
-* integrate() returned noun forms for %e^(n*atanh(u)) and %e^(n*acoth(u))
-  times algebraic functions, such as %e^atanh(x)
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
 * various merror calls were missing arguments
@@ -323,39 +334,6 @@ Bug fixes for unnumbered bugs:
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
 * zn_factor_generators could return different generators from identical calls
-* integrate() hung for %e^(3*%i*atan(a*x)) and returned noun forms for
-  some products of square roots of linear functions, such as
-  (b*asin(c*x)+a)/(sqrt(c*d*x+d)*sqrt(k-c*k*x))
-* integrate() asked needless sign questions, or stopped with an error
-  about a non-real argument of sign(), for some quotients with roots,
-  such as sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a)
-* integrate() gave wrong antiderivatives for some products of square
-  roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
-* integrate() left integrals in some antiderivatives with inverse
-  trigonometric functions and roots, such as asec(x)*sqrt(x^2-1)/x^4
-* integrate() returned exponential forms for some integrands with roots
-  or logarithms, such as cos(sqrt(x)), and took very long for some of
-  them, such as cos(b*x^(1/3)+a)/x^(7/2)
-* integrate() took very long for some integrands whose antiderivatives
-  hold erf() of complex arguments, such as exp(-x)*cos(sqrt(x))
-* integrate() stopped with a division by zero for atan2(y,0), as in
-  atan2(x,0) and sqrt(atan(a*x))/x
-* integrate() gave wrong antiderivatives for 1/(z*sqrt(z^2+z+1)) and
-  similar integrands when z is declared complex, and for
-  1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)
-* integrate() returned noun forms for some hyperbolic integrands, such
-  as atanh(tanh(a+b*x))^(1/2)/x^(3/2)
-* integrate() gave wrong antiderivatives for some roots of products,
-  such as %e^acoth(a*x)*sqrt(c-a^2*c*x^2) for c < 0
-* integrate() gave wrong antiderivatives for some integrands after a
-  substitution, such as sqrt(csch(2*log(c*x)))/x^4 for c*x < 0
-* integrate() returned noun forms for some integrands with acsc(x),
-  such as acsc(x)/(x^2*(x^2-1)^(5/2))
-* integrate() returned noun forms for some integrands it can integrate,
-  such as %e^acoth(x)/(x+1)^2, when the integral of the expanded
-  integrand was not found
-* integrate() returned noun forms for some integrands with an
-  exponential and a root, such as 2^x*sqrt(x+1) and (-log(x))^(3/2)
 * idiff() from itensor now uses derivative rules as diff() does
 
 Changes in the Windows installer:

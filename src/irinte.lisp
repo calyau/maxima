@@ -71,9 +71,9 @@
 	res
 	(intirfactoroot funct x))))
 
-;; True if JMAUG matches P*R0^E0 times a power of a linear factor. INTIR2
-;; can integrate the pieces into which INTIR3-REF splits EXP, after asking
-;; for the sign of a discriminant, only then.
+;; T if JMAUG matches P*R0^E0 times a power of a linear factor. INTIR2 can
+;; integrate the pieces into which INTIR3-REF splits EXP, after asking for
+;; the sign of a discriminant, only then.
 (defun intir3-pieces-p (assoclist x)
   (jmaug (mul (cdras 'p assoclist)
               (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
@@ -1165,9 +1165,9 @@
 	 ;; 1/sqrt(a)*log(x/(2*a+b*x))
 	 (return (mul*
 		       (if (decl-complexp x)
-			   (div exp2 (mul 2 (power a 1//2)
-					  (power (polfoo c b a x) 1//2)))
-			   (div (ftake 'mabs exp2) exp2))
+			 (div exp2 (mul 2 (power a 1//2)
+					(power (polfoo c b a x) 1//2)))
+			 (div (ftake 'mabs exp2) exp2))
 		       -1 exp1
 		       `((%log) ,(augmult (mul exp3 exp2))))))
        (when (or (eq signa '$positive)
