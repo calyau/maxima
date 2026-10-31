@@ -71,9 +71,18 @@
 	res
 	(intirfactoroot funct x))))
 
+;; T if JMAUG matches P*R0^E0 times a power of a linear factor. INTIR2 can
+;; integrate the pieces into which INTIR3-REF splits EXP, after asking for
+;; the sign of a discriminant, only then.
+(defun intir3-pieces-p (assoclist x)
+  (jmaug (mul (cdras 'p assoclist)
+              (power (cdras 'r0 assoclist) (cdras 'e0 assoclist))
+              (inv (add x (gensym))))
+         x))
+
 (defun intir3 (exp x)
   (prog ((assoclist (elliptquad exp x)) e f g r0)
-     (cond (assoclist
+     (cond ((and assoclist (intir3-pieces-p assoclist x))
 	    (setq e (cdras 'e assoclist) f (cdras 'f assoclist)
 		  g (cdras 'g assoclist) r0 (cdras 'r0 assoclist))
 	    (assume `(($notequal) ,e 0))

@@ -7365,6 +7365,15 @@ block([r, ans],
 log(r(x)-1)$
 
 
+/* Bug #5752: "integrate() asks needless sign questions for some quotients with roots" */
+
+integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x);
+'integrate(sqrt(b*d*x^4+(a*d+b*c)*x^2+a*c)/(b*x^2+a), x)$
+
+integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x);
+'integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

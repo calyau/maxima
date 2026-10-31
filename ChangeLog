@@ -297,6 +297,7 @@ Bug fixes for numbered bugs:
 * \#5739 Bigfloat atan() and acot() are off by several ulp, more at higher fpprec
 * \#5750 integrate() asks the same sign question twice
 * \#5751 sqrt(-1/w) is %i/sqrt(w) for w <= 0, and is(sqrt(-1/w) > 0) is false
+* \#5752 integrate() asks needless sign questions for some quotients with roots
 
 Bug fixes for unnumbered bugs:
 ------------------------------
