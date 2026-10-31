@@ -1237,6 +1237,10 @@
 	   (v2 (* v v))
 	   (mv2 (* m v2))
 	   (m1v2 (* (- 1 m) v2)))
+      ;; For m = 1, u = +/-1 is a pole, where rf(0, 0, 1) would not
+      ;; converge.
+      (when (and (= m 1) (zerop s2))
+	(bf-inverse-jacobi-pole "inverse_jacobi_sn" u m))
       ;; d^2 = 1-m*u^2 (scaled: t^2-m*v^2), computed as either
       ;;
       ;;   A: 1-m*u^2
@@ -1251,6 +1255,33 @@
 					    (+ (abs s2) (abs m1v2)) (+ s2 m1v2))
 		  t2)))))
 
+;; True if U is on the negative imaginary axis.  The formulas for
+;; inverse_jacobi_cn and inverse_jacobi_dn depend on u only through
+;; u^2, and use the sign of Re(u) to choose between u and -u.  When
+;; Re(u) = 0 that does not work, since u and -u have the same u^2 and
+;; neither has Re(u) < 0.  The formulas are right for Im(u) > 0, as the
+;; limit from Re(u) > 0, since then every argument of rf with a zero
+;; imaginary part is taken on the upper side of the branch cut
+;; (bf-inverse-jacobi-rf).  For Im(u) < 0, the callers instead use the
+;; reflection f(u|m) = conjugate(f(conjugate(u)|conjugate(m))).
+(defun bf-inverse-jacobi-lower-imaginary-p (u)
+  (and (not (realp u))
+       (zerop (realpart u))
+       (minusp (imagpart u))))
+
+;; Signal an error for an argument U where the inverse Jacobi function
+;; NAME with parameter M has a pole.
+(defun bf-inverse-jacobi-pole (name u m)
+  (maxima::merror (intl:gettext "~A: ~A(~:M, ~:M) is undefined.")
+		  name name (maxima::to u) (maxima::to m)))
+
+;; For m = 1, cn(z|1) = dn(z|1) = sech(z), so inverse_jacobi_cn(u,1)
+;; and inverse_jacobi_dn(u,1) are asech(u).  The formulas below for cn
+;; and dn would use K(1) or K(1/m), which are infinite, for Re(u) < 0,
+;; and rf(0, 0, 1), which does not converge, for u = 0.
+(defun bf-inverse-jacobi-asech (u)
+  (maxima::take '(maxima::%asech) (maxima::to u)))
+
 ;; inverse_jacobi_cn is F(acos(u),m).  With phi = acos(u), sin(phi) =
 ;; sqrt(1-u^2), so for Re(u) >= 0, where |Re(phi)| <= %pi/2,
 ;;
@@ -1259,6 +1290,12 @@
 ;; When Re(u) < 0, Re(phi) > %pi/2 and F(phi|m) = 2*K(m) +
 ;; F(phi-%pi|m), which is 2*K(m) minus the same expression.
 (defun bf-inverse-jacobi-cn (u m)
+  (when (= m 1)
+    (return-from bf-inverse-jacobi-cn
+      (bf-inverse-jacobi-asech u)))
+  (when (bf-inverse-jacobi-lower-imaginary-p u)
+    (return-from bf-inverse-jacobi-cn
+      (conjugate (bf-inverse-jacobi-cn (conjugate u) (conjugate m)))))
   (multiple-value-bind (v tt)
       (bf-inverse-jacobi-scale u m)
     (let* ((t2 (* tt tt))
@@ -1302,6 +1339,12 @@
 ;;
 ;;   z = sqrt(1-w^2)*rf(w^2-(1-m), m*w^2, m)
 (defun bf-inverse-jacobi-dn (w m)
+  (when (= m 1)
+    (return-from bf-inverse-jacobi-dn
+      (bf-inverse-jacobi-asech w)))
+  (when (bf-inverse-jacobi-lower-imaginary-p w)
+    (return-from bf-inverse-jacobi-dn
+      (conjugate (bf-inverse-jacobi-dn (conjugate w) (conjugate m)))))
   (multiple-value-bind (v tt)
       (bf-inverse-jacobi-scale w m)
     (let* ((t2 (* tt tt))
@@ -1326,9 +1369,6 @@
 					 (- (* m t2) s2))))
       (cond ((= w 1)
 	     (float 0 w))
-	    ((= m 1)
-	     ;; jacobi_dn(x,1) = sech(x) so the inverse is asech(x)
-	     (maxima::take '(maxima::%asech) (maxima::to w)))
 	    ((and (realp w) (realp m) (< 0 m 1) (<= 0 w 1) (>= c2 0))
 	     (* (sqrt s2)
 		(bf-inverse-jacobi-rf c2 (* m v2) (* m t2))))
@@ -1358,11 +1398,11 @@
 	       args
 	     (to (funcall fn (bigfloat:to ($float u)) (bigfloat:to ($float m))))))
 	  ((bigfloat-numerical-eval-p u m)
-	   (to (funcall fn (bigfloat:to u) (bigfloat:to m))))
+	   (to (funcall fn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
 	  ((setf args (complex-bigfloat-numerical-eval-p u m))
 	   (destructuring-bind (u m)
 	       args
-	     (to (funcall fn (bigfloat:to u) (bigfloat:to m))))))))
+	     (to (funcall fn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))))))
 
 ;; Tell maxima what the derivatives are.
 ;;
