@@ -18,16 +18,6 @@
 \gdef\frac#1#2{{#1\over #2}}
 @end tex
 
-@c Styles for the HTML output: table borders, and room for wide tables
-@c and code on narrow screens.
-@html
-<style>
-table.multitable { display: block; overflow-x: auto; border-collapse: collapse; }
-table.multitable th, table.multitable td { border: 1px solid #999; padding: 0.25em 0.75em; }
-pre.example-preformatted { overflow-x: auto; border: 1px solid #ccc; padding: 0.5em 1em; }
-</style>
-@end html
-
 @ifnottex
 @node Top
 @top Complex Values of @code{elliptic_pi} for @math{n > 1}
