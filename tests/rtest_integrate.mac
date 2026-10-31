@@ -7374,6 +7374,15 @@ integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x);
 'integrate(sqrt(cos(x+c))*(cos(x+c)+1)/sqrt(a*cos(x+c)+a), x)$
 
 
+/* Bug #5753: "integrate(atan2(x,0), x) divides by zero" */
+
+[integrate(atan2(x, 0), x), integrate(x*atan2(x^2-1, 0), x), integrate(sqrt(atan(a*x))/x, x)];
+[%pi*abs(x)/2, %pi*abs(x^2-1)/4, 'integrate(sqrt(atan(a*x))/x, x)]$
+
+[integrate(x*atan2(x, 0) + x^2, x), integrate(atan2(x^2-1, 0) + 1, x)];
+[x^3/3 + 'integrate(x*atan2(x, 0), x), x + 'integrate(atan2(x^2-1, 0), x)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

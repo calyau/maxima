@@ -307,14 +307,22 @@
          ((mplusp *exp*)
           (return (mul2* const (integrate1 (cdr *exp*) var2))))
            
-         ;; Convert atan2(a,b) to atan(a/b) and try again.
+         ;; Convert atan2(a,b) to atan(a/b), or for b = 0 to signum(a)*%pi/2,
+         ;; and try again. If that leaves an integral for b = 0, return the
+         ;; integral of the integrand as it was, without signum.
          ((setq w (isinop *exp* '%atan2))
-          (setq *exp*
-                (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
-                                   w
-                                   *exp*))
-          (return (mul* const
-                        (integrator *exp* var2 stack))))
+          (let* ((e *exp*)
+                 (y (integrator
+                     (maxima-substitute
+                      (if (zerop1 (caddr w))
+                        (mul (ftake '%signum (cadr w)) '$%pi 1//2)
+                        (ftake '%atan (div (cadr w) (caddr w))))
+                      w e)
+                     var2 stack)))
+            (return (mul* const
+                          (if (and (zerop1 (caddr w)) (isinop y '%integrate))
+                            (list '(%integrate) e var2)
+                            y)))))
            
          ;; First stage, Method II: Integrate sums.
 	 ((and (not (atom *exp*))
