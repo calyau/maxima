@@ -323,6 +323,7 @@ Changes in the Windows installer:
 ---------------------------------
 * Update MS WebView2
 * Update SBCL
+* Update WxMaxima
 * Correct link to TCL/TK Website
 
 Other changes:
