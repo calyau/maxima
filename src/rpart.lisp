@@ -906,7 +906,8 @@
 ;; for c <= 0 and s = -1 otherwise, which is in range and keeps the atan2(0, u)
 ;; of a single real factor as it is. With other arguments, the sum is reduced
 ;; modulo 2*%pi unless $SIGN shows that it is in range, but not in the Risch
-;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous.
+;; integrator (IMPLICIT-REAL), whose TRIGIN1 needs it continuous, and not when
+;; $SIGN fails on it, as it can on the log form of atan2 under logarc.
 (defun absarg-product-arg (args)
   (let ((c 0) reals others)
     (dolist (arg args)
@@ -940,8 +941,12 @@
         (if (or implicit-real
                 (null others)
                 (and (null (cdr others)) (zerop1 arg))
-                (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
-                     (eq ($sign (add sum '$%pi)) '$pos)))
+                ;; $SIGN in real mode, also under $CSIGN, whose SIGN-LOG would
+                ;; call back here through CABS without end.
+                (let ((*complexsign* nil) (sign-imag-errp nil))
+                  (catch 'sign-imag-err
+                    (and (member ($sign (sub sum '$%pi)) '($neg $nz $zero))
+                         (eq ($sign (add sum '$%pi)) '$pos)))))
           sum
           (reduce-angle-mod-2pi sum))))))
 

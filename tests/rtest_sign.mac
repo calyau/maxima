@@ -3462,6 +3462,15 @@ block([a, b, c],
  [a^2 + b^2 <= 0, notequal(abs(c), 0)], []]$
 
 
+/* Bug #5756: "carg() and cabs() give an error and csign() never returns under logarc" */
+
+csign(log(%e^(%i*x)/(%e^(2*%i*x) - 1))), logarc;
+complex;
+
+csign(log(csc(x))), logarc, exponentialize;
+complex;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -267,4 +267,14 @@ block([x],
  log(sqrt(10)/2) + %i*(atan(3) - %pi)]$
 
 
+/* Bug #5756: "carg() and cabs() give an error and csign() never returns under logarc" */
+
+block([r : carg(%e^(%i*x)/(%e^(2*%i*x) - 1))],
+  [cabs(%e^(%i*x)/(%e^(2*%i*x) - 1)), rectform(subst(x = %pi/4, r)), rectform(subst(x = -%pi/4, r))]), logarc;
+[1/sqrt(sin(2*x)^2 + (cos(2*x) - 1)^2), -%pi/2, %pi/2]$
+
+rectform(subst(x = -1, [carg(-x), carg(%i*x), carg((1 + %i)*x)])), logarc;
+[0, -%pi/2, -3*%pi/4]$
+
+
 /* ---------- End of file rtest_carg.mac ------------------------------------ */

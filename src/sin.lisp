@@ -31,6 +31,26 @@
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
   $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
 
+(defvar *integrator-stack* nil
+  "The integrals that the enclosing calls of INTEGRATOR are computing for an
+  integration by parts, each as a cons of the integrand and its variable. It
+  is the default of the STACK argument of INTEGRATOR, so that a call through
+  INTFORM, MONSTERTRIG or TRIGINT sees them too.")
+
+(defun on-integrator-stack-p (expr var2 stack)
+  "Is the integral of EXPR with respect to VAR2 on STACK, up to a constant
+  factor? A substitution can make a new variable of integration, so each
+  integral on STACK is compared after renaming its variable to VAR2."
+  (some #'(lambda (s)
+            (let ((e (maxima-substitute var2 (cdr s) (car s))))
+              (or (alike1 expr e)
+                  ;; The same integrand can come back in another form, or
+                  ;; times a constant.
+                  (and (not (zerop1 e))
+                       (freeof var2 (let ((varlist varlist) (genvar genvar))
+                                      ($ratsimp (div expr e))))))))
+        stack))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Predicate functions
@@ -282,7 +302,7 @@
   
   ;; This is the main integration routine.  It is called from sinint.
 
-  (defun integrator (*exp* var2 &optional stack)
+  (defun integrator (*exp* var2 &optional (stack *integrator-stack*))
     (declare (special *exp*))
     (prog (y const w arcpart coef integrand result *risch-use-triginv-all*)
        (declare (special *integrator-level*))
@@ -392,22 +412,19 @@
          (format t "coef =~%")
          (maxima-display coef))
        (cond ((and (not (null arcpart))
-		   (do  ((stacklist stack (cdr stacklist)))
-		        ((null stacklist) t)
-		     (cond ((alike1 (car stacklist) coef)
-			    (return nil))))
-		   (not (isinop (setq w (let ((stack (cons coef stack)))
-					  (integrator coef var2 stack)))
+		   (not (on-integrator-stack-p coef var2 stack))
+		   (not (isinop (setq w (let ((*integrator-stack*
+					       (acons coef var2 stack)))
+					  (integrator coef var2
+						      *integrator-stack*)))
 			        '%integrate))
 		   (setq integrand (mul2 w (sdiff arcpart var2)))
-		   (do ((stacklist stack (cdr stacklist)))
-		       ((null stacklist) t)
-		     (cond ((alike1 (car stacklist) integrand)
-			    (return nil))))
+		   (not (on-integrator-stack-p integrand var2 stack))
 		   (not (isinop
-		         (setq y (let ((stack (cons integrand stack))
+		         (setq y (let ((*integrator-stack*
+					(acons integrand var2 stack))
 				       (integ integrand))
-				   (integrator integ var2 stack)))
+				   (integrator integ var2 *integrator-stack*)))
 		         '%integrate)))
 	      (return (add* (list '(mtimes) const w arcpart)
 			    (list '(mtimes) -1 const y))))
@@ -1818,7 +1835,7 @@
        0)
       
       ((let ((ans (simplify
-                     (let ($opsubst varlist genvar)
+                     (let ($opsubst varlist genvar *integrator-stack*)
 		       (integrator expr var2 nil)))))
 	     (if (sum-of-intsp ans var2)
 		 (list '(%integrate) expr var2)
