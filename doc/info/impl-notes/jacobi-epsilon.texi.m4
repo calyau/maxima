@@ -1,7 +1,7 @@
 \input texinfo
 @c -*- mode: texinfo -*-
-@c Created by Claude to describe the complex-m case of jacobi_epsilon
-@c (formerly elliptic_eu) in Maxima.
+@c Created by Claude to describe how Maxima computes jacobi_epsilon
+@c (formerly elliptic_eu) numerically.
 @c
 @c Generated from elliptic-eu-complex-m.md, a Markdown note in the claude.ai
 @c project used while implementing it.  That note will not be updated
@@ -9,7 +9,7 @@
 @c the time of writing.
 @c
 @setfilename jacobi-epsilon.info
-@settitle Computing jacobi_epsilon(u, m) for Complex m
+@settitle Computing Jacobi's Epsilon Function
 @documentencoding UTF-8
 
 @c Definitions so that plain TeX accepts the same formulas as MathJax.
@@ -35,52 +35,36 @@ pre.example-preformatted { overflow-x: auto; border: 1px solid #ccc; padding: 0.
 
 @ifnottex
 @node Top
-@top Computing jacobi_epsilon(u, m) for Complex m
+@top Computing Jacobi's Epsilon Function
 @end ifnottex
 
 @iftex
 @titlepage
-@title Computing jacobi_epsilon(u, m) for Complex m
+@title Computing Jacobi's Epsilon Function
 @end titlepage
 @end iftex
-This note explains the case of complex
-m4_math(<<<m>>>, <<<m>>>)
-in @code{jacobi-epsilon} in @code{src/ellipt.lisp}. It computes
+This note describes how to compute Jacobi's epsilon function
 
 m4_displaymath(
 <<<\mathcal{E}(u \mid m) = \int_0^u \mathrm{dn}^2(t \mid m)\thinspace dt>>>,
 <<<ℰ(u|m) = ∫₀ᵘ dn²(t|m) dt>>>)
 
-for complex
-m4_math(<<<m>>>, <<<m>>>)
-and real or complex
-m4_mathcomma(<<<u>>>, <<<u>>>)
-in floats and bigfloats. Before this clause, @code{jacobi-epsilon}
-returns
+(@uref{https://dlmf.nist.gov/22.16.E17, DLMF 22.16.17}; A&S 16.26.3)
+numerically, in floating point or arbitrary precision, for real and
+complex
 m4_math(<<<u>>>, <<<u>>>)
-for
-m4_math(<<<m = 0>>>, <<<m = 0>>>)
 and
-m4_math(<<<\tanh u>>>, <<<tanh u>>>)
-for
-m4_mathcomma(<<<m = 1>>>, <<<m = 1>>>)
-and uses
-m4_math(<<<\mathcal{E}(-u \mid m) = -\mathcal{E}(u \mid m)>>>, <<<ℰ(−u|m) = −ℰ(u|m)>>>)
-so that the clause only sees
-m4_mathcomma(<<<\mathrm{Re}\thinspace u > 0>>>, <<<Re u > 0>>>)
-or
-m4_math(<<<u>>>, <<<u>>>)
-on the nonnegative imaginary axis. Real
-m4_math(<<<m>>>, <<<m>>>)
-is handled by the other two clauses of @code{jacobi-epsilon}.
+m4_mathdot(<<<m>>>, <<<m>>>)
 
 @menu
 * Notation::
-* Outline::
-* Reduction by the Periods::
+* Overview::
+* Real m and Real u::
+* Real m and Complex u::
+* Complex m - Reduction by the Periods::
 * Carlson's Idea::
 * From ℰ(w'|m) to ℰ(w|m)::
-* Things That Were Tried and Are Not Needed::
+* Alternatives That Are Not Used::
 * Round-Off::
 * Validation::
 * Limitations::
@@ -93,43 +77,355 @@ is handled by the other two clauses of @code{jacobi-epsilon}.
 @itemize @bullet
 @item
 m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
-is @code{jacobi_epsilon(u, m)}, Jacobi's epsilon function, formerly
-@code{elliptic_eu(u, m)}. DLMF writes it with the modulus
+is Maxima's @code{jacobi_epsilon(u, m)}. DLMF writes it with the modulus
 m4_math(<<<k>>>, <<<k>>>)
 as
 m4_math(<<<\mathcal{E}(x, k)>>>, <<<ℰ(x, k)>>>)
-(@uref{https://dlmf.nist.gov/22.16.E14, 22.16.14}); Mathematica calls it
-@code{JacobiEpsilon[u, m]}.
+(@uref{https://dlmf.nist.gov/22.16.E14, DLMF 22.16.14} and
+@uref{https://dlmf.nist.gov/22.16.E17, DLMF 22.16.17}); Mathematica
+calls it @code{JacobiEpsilon[u, m]}.
 @item
 m4_math(<<<E(\phi \mid m)>>>, <<<E(φ|m)>>>)
-is Legendre's incomplete integral of the second kind.
+is Legendre's incomplete integral of the second kind
+(@uref{https://dlmf.nist.gov/19.2.E5, DLMF 19.2.5}).
 @item
-m4_math(<<<E(m)>>>, <<<E(m)>>>)
-is @code{elliptic_ec(m)} and
 m4_math(<<<K(m)>>>, <<<K(m)>>>)
-is @code{elliptic_kc(m)}.
-@item
+and
+m4_math(<<<E(m)>>>, <<<E(m)>>>)
+are the complete integrals (@uref{https://dlmf.nist.gov/19.2.E8, DLMF
+19.2.8}). For complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
 m4_mathcomma(<<<K(m)>>>, <<<K(m)>>>)
 m4_mathcomma(<<<E(m)>>>, <<<E(m)>>>)
 m4_math(<<<K(1-m)>>>, <<<K(1−m)>>>)
 and
 m4_math(<<<E(1-m)>>>, <<<E(1−m)>>>)
-are @code{ell-k}, @code{ell-e}, @code{ell-kp} and @code{ell-ep} in the
-code: principal values from @code{bf-elliptic-k} and
-@code{bf-elliptic-ec} (Carlson's
+are principal values, computed from Carlson's
 m4_math(<<<R_F>>>, <<<R_F>>>)
 and
-m4_mathpunc(<<<).>>>, <<<R_D>>>, <<<R_D>>>)
+m4_mathdot(<<<R_D>>>, <<<R_D>>>)
 @item
 m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
 m4_mathcomma(<<<\mathrm{cn}>>>, <<<cn>>>)
 m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
 are taken at parameter
-m4_mathdot(<<<m>>>, <<<m>>>)
+m4_math(<<<m>>>, <<<m>>>)
+unless another parameter is shown.
 @end itemize
 
-@node Outline
-@chapter Outline
+@node Overview
+@chapter Overview
+
+The computation goes through these cases in order.
+
+@enumerate
+@item
+@strong{Exact values.}
+m4_mathdot(<<<\mathcal{E}(0 \mid m) = 0>>>, <<<ℰ(0|m) = 0>>>)
+For
+m4_mathcomma(<<<m = 0>>>, <<<m = 0>>>)
+m4_mathcomma(<<<\mathrm{dn}(u \mid 0) = 1>>>, <<<dn(u|0) = 1>>>)
+so
+m4_mathdot(<<<\mathcal{E}(u \mid 0) = u>>>, <<<ℰ(u|0) = u>>>)
+For
+m4_mathcomma(<<<m = 1>>>, <<<m = 1>>>)
+m4_math(<<<\mathrm{dn}(u \mid 1) = \mathrm{sech}\thinspace u>>>, <<<dn(u|1) = sech u>>>)
+(@uref{https://dlmf.nist.gov/22.5.T4, DLMF Table 22.5.4}; A&S Table
+16.6), so
+m4_mathdot(<<<\mathcal{E}(u \mid 1) = \tanh u>>>, <<<ℰ(u|1) = tanh u>>>)
+@item
+@strong{Oddness.}
+m4_math(<<<\mathrm{dn}^2>>>, <<<dn²>>>)
+is even, so
+m4_mathdot(<<<\mathcal{E}(-u \mid m) = -\mathcal{E}(u \mid m)>>>, <<<ℰ(−u|m) = −ℰ(u|m)>>>)
+The function is evaluated only for
+m4_mathcomma(<<<\mathrm{Re}\thinspace u > 0>>>, <<<Re u > 0>>>)
+or for
+m4_math(<<<u>>>, <<<u>>>)
+on the nonnegative imaginary axis, and negated otherwise. This makes the
+computed values exactly odd.
+@item
+If
+m4_math(<<<m>>>, <<<m>>>)
+and
+m4_math(<<<u>>>, <<<u>>>)
+are real: @inlinefmtifelse{tex, @ref{Real m and Real u, section 2, Real
+@math{m} and Real @math{u}}, @ref{Real m and Real u, section 2}}.
+@item
+If
+m4_math(<<<m>>>, <<<m>>>)
+is real and
+m4_math(<<<u>>>, <<<u>>>)
+is complex: @inlinefmtifelse{tex, @ref{Real m and Complex u, section 3,
+Real @math{m} and Complex @math{u}}, @ref{Real m and Complex u, section
+3}}.
+@item
+If
+m4_math(<<<m>>>, <<<m>>>)
+is complex, for real or complex
+m4_math(<<<u{:}>>>, <<<u:>>>)
+@inlinefmtifelse{tex, @ref{Complex m - Reduction by the Periods,
+sections 4 to 6, Complex @math{m}: Reduction by the Periods},
+@ref{Complex m - Reduction by the Periods, sections 4 to 6}}.
+@end enumerate
+
+For a symbolic
+m4_mathcomma(<<<m>>>, <<<m>>>)
+Maxima also simplifies
+m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
+at multiples of
+m4_math(<<<K(m){:}>>>, <<<K(m):>>>)
+m4_math(<<<\mathcal{E}(nK(m) \mid m) = nE(m)>>>, <<<ℰ(nK(m)|m) = nE(m)>>>)
+for integer
+m4_mathcomma(<<<n>>>, <<<n>>>)
+the translations of @inlinefmtifelse{tex, @ref{m < 1, section 2.1,
+@math{m < 1}}, @ref{m < 1, section 2.1}} by
+m4_mathcomma(<<<nK(m)>>>, <<<nK(m)>>>)
+and
+
+m4_displaymath(
+<<<\mathcal{E}(K(m)/2 \mid m) = \frac{E(m) + 1 - \sqrt{1-m}}{2}, \qquad
+\mathcal{E}(3K(m)/2 \mid m) = \frac{3E(m) - 1 + \sqrt{1-m}}{2}.>>>,
+<<<@example
+ℰ(K(m)/2|m) = (E(m) + 1 − √(1−m))/2,
+ℰ(3K(m)/2|m) = (3E(m) − 1 + √(1−m))/2.
+@end example>>>)
+
+The first follows from the duplication formula of @inlinefmtifelse{tex,
+@ref{Duplication Instead of the Reduction, section 7.4, Duplication
+Instead of the Reduction}, @ref{Duplication Instead of the Reduction,
+section 7.4}} with
+m4_math(<<<v = K(m)/2>>>, <<<v = K(m)/2>>>)
+and
+m4_mathpunc(<<<;>>>, <<<\mathrm{sn}^2(K(m)/2 \mid m) = 1/(1 + \sqrt{1-m})>>>, <<<sn²(K(m)/2|m) = 1/(1 + √(1−m))>>>)
+the second from the translation by
+m4_math(<<<K(m)>>>, <<<K(m)>>>)
+in @inlinefmtifelse{tex, @ref{m < 1, section 2.1, @math{m < 1}}, @ref{m
+< 1, section 2.1}}.
+
+@node Real m and Real u
+@ifinfo
+@chapter Real m and Real u
+@end ifinfo
+@ifhtml
+@chapter Real @math{m} and Real @math{u}
+@end ifhtml
+@iftex
+@chapter Real @math{m} and Real @math{u}
+@end iftex
+
+@menu
+* m < 1::
+* m > 1::
+@end menu
+
+@node m < 1
+@ifinfo
+@section m < 1
+@end ifinfo
+@ifhtml
+@section @math{m < 1}
+@end ifhtml
+@iftex
+@section @math{m < 1}
+@end iftex
+
+@w{}
+m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
+is quasi-periodic (@uref{https://dlmf.nist.gov/22.16.ii, DLMF
+§22.16(ii)}):
+
+m4_displaymath(
+<<<\mathcal{E}(u + 2K(m) \mid m) = \mathcal{E}(u \mid m) + 2E(m),>>>,
+<<<ℰ(u + 2K(m)|m) = ℰ(u|m) + 2E(m),>>>)
+
+m4_displaymath(
+<<<\mathcal{E}(u + K(m) \mid m) = \mathcal{E}(u \mid m) + E(m) - m\thinspace\mathrm{sn}(u \mid m)\thinspace\mathrm{cd}(u \mid m).>>>,
+<<<ℰ(u + K(m)|m) = ℰ(u|m) + E(m) − m sn(u|m) cd(u|m).>>>)
+
+Write
+m4_math(<<<u = 2nK(m) + r>>>, <<<u = 2nK(m) + r>>>)
+with
+m4_math(<<<n>>>, <<<n>>>)
+an integer and
+m4_mathdot(<<<0 \le r < 2K(m)>>>, <<<0 ≤ r < 2K(m)>>>)
+Then
+m4_mathdot(<<<\mathcal{E}(u \mid m) = 2nE(m) + \mathcal{E}(r \mid m)>>>, <<<ℰ(u|m) = 2nE(m) + ℰ(r|m)>>>)
+If
+m4_mathcomma(<<<r < K(m)>>>, <<<r < K(m)>>>)
+
+m4_displaymath(
+<<<\mathcal{E}(r \mid m) = E(\phi \mid m), \qquad \phi = \mathrm{am}(r \mid m),>>>,
+<<<ℰ(r|m) = E(φ|m), φ = am(r|m),>>>)
+
+(@uref{https://dlmf.nist.gov/22.16.ii, DLMF §22.16(ii)}). If
+m4_mathcomma(<<<r \ge K(m)>>>, <<<r ≥ K(m)>>>)
+the translation by
+m4_math(<<<K(m)>>>, <<<K(m)>>>)
+reduces this to the same case with
+m4_mathdot(<<<r - K(m)>>>, <<<r − K(m)>>>)
+
+Since
+m4_math(<<<\mathrm{sn} = \sin\phi>>>, <<<sn = sin φ>>>)
+and
+m4_math(<<<\mathrm{cn} = \cos\phi>>>, <<<cn = cos φ>>>)
+(@uref{https://dlmf.nist.gov/22.16.E12, DLMF 22.16.12} and
+@uref{https://dlmf.nist.gov/22.16.E13, DLMF 22.16.13}), and
+m4_math(<<<0 \le \phi < \pi/2>>>, <<<0 ≤ φ < π/2>>>)
+here,
+m4_mathdot(<<<\phi = \mathrm{atan2}(\mathrm{sn}(r \mid m), \mathrm{cn}(r \mid m))>>>, <<<φ = atan2(sn(r|m), cn(r|m))>>>)
+The simpler
+m4_math(<<<\phi = \sin^{-1}\mathrm{sn}(r \mid m)>>>, <<<φ = sin⁻¹sn(r|m)>>>)
+is ill-conditioned as
+m4_mathcomma(<<<\mathrm{sn} \to 1>>>, <<<sn → 1>>>)
+that is, as
+m4_mathdot(<<<r \to K(m)>>>, <<<r → K(m)>>>)
+
+This covers
+m4_math(<<<m < 0>>>, <<<m < 0>>>)
+as well, where
+m4_math(<<<K(m)>>>, <<<K(m)>>>)
+and
+m4_math(<<<E(m)>>>, <<<E(m)>>>)
+are real.
+
+@node m > 1
+@ifinfo
+@section m > 1
+@end ifinfo
+@ifhtml
+@section @math{m > 1}
+@end ifhtml
+@iftex
+@section @math{m > 1}
+@end iftex
+
+The reciprocal-modulus transformation
+(@uref{https://dlmf.nist.gov/22.17.E4, DLMF 22.17.4}; A&S 16.11.4) gives
+m4_mathdot(<<<\mathrm{dn}(u \mid m) = \mathrm{cn}(\sqrt{m}\thinspace u \mid 1/m)>>>, <<<dn(u|m) = cn(√m u|1/m)>>>)
+With
+m4_mathcomma(<<<s = \sqrt{m}\thinspace t>>>, <<<s = √m t>>>)
+
+m4_displaymath(
+<<<\mathcal{E}(u \mid m) = \frac{1}{\sqrt{m}} \int_0^{\sqrt{m}\thinspace u} \mathrm{cn}^2(s \mid 1/m)\thinspace ds .>>>,
+<<<ℰ(u|m) = 1/(√m) ∫₀^(√m u) cn²(s|1/m) ds.>>>)
+
+By @uref{https://dlmf.nist.gov/22.6.E1, DLMF 22.6.1} (A&S 16.9.1),
+m4_mathcomma(<<<\mathrm{cn}^2(s \mid 1/m) = (1 - m) + m\thinspace\mathrm{dn}^2(s \mid 1/m)>>>, <<<cn²(s|1/m) = (1 − m) + m dn²(s|1/m)>>>)
+so
+
+m4_displaymath(
+<<<\mathcal{E}(u \mid m) = \sqrt{m}\thinspace\mathcal{E}(\sqrt{m}\thinspace u \mid 1/m) - (m - 1)\thinspace u,>>>,
+<<<ℰ(u|m) = √m ℰ(√m u|1/m) − (m − 1) u,>>>)
+
+and
+m4_math(<<<0 < 1/m < 1>>>, <<<0 < 1/m < 1>>>)
+is the case of @inlinefmtifelse{tex, @ref{m < 1, section 2.1, @math{m <
+1}}, @ref{m < 1, section 2.1}}.
+
+@node Real m and Complex u
+@ifinfo
+@chapter Real m and Complex u
+@end ifinfo
+@ifhtml
+@chapter Real @math{m} and Complex @math{u}
+@end ifhtml
+@iftex
+@chapter Real @math{m} and Complex @math{u}
+@end iftex
+
+Write
+m4_math(<<<u = x + iv>>>, <<<u = x + iv>>>)
+with
+m4_math(<<<x>>>, <<<x>>>)
+and
+m4_math(<<<v>>>, <<<v>>>)
+real, and
+m4_mathdot(<<<m' = 1 - m>>>, <<<m' = 1 − m>>>)
+The quasi-addition formula (@uref{https://dlmf.nist.gov/22.16.ii, DLMF
+§22.16(ii)})
+
+m4_displaymath(
+<<<\mathcal{E}(a + b \mid m) = \mathcal{E}(a \mid m) + \mathcal{E}(b \mid m) - m\thinspace\mathrm{sn}(a \mid m)\thinspace\mathrm{sn}(b \mid m)\thinspace\mathrm{sn}(a + b \mid m),>>>,
+<<<ℰ(a + b|m) = ℰ(a|m) + ℰ(b|m) − m sn(a|m) sn(b|m) sn(a + b|m),>>>)
+
+Jacobi's imaginary transformation
+m4_math(<<<\mathrm{sn}(iv \mid m) = i\thinspace\mathrm{sc}(v \mid m')>>>, <<<sn(iv|m) = i sc(v|m')>>>)
+(@uref{https://dlmf.nist.gov/22.6.T1, DLMF Table 22.6.1}; A&S 16.20.1),
+and its counterpart for
+m4_mathcomma(<<<\mathcal{E}>>>, <<<ℰ>>>)
+
+m4_displaymath(
+<<<\mathcal{E}(iv \mid m) = i\bigl(v + \mathrm{sc}(v \mid m')\thinspace\mathrm{dn}(v \mid m') - \mathcal{E}(v \mid m')\bigr),>>>,
+<<<ℰ(iv|m) = i(v + sc(v|m') dn(v|m') − ℰ(v|m')),>>>)
+
+give Lawden's formula
+
+m4_displaymath(
+<<<\mathcal{E}(x + iv \mid m) = \mathcal{E}(x \mid m) - i\thinspace\mathcal{E}(v \mid m') + iv + i\thinspace\mathrm{sc}(v \mid m')\thinspace\mathrm{dn}(v \mid m') - im\thinspace\mathrm{sn}(x \mid m)\thinspace\mathrm{sc}(v \mid m')\thinspace\mathrm{sn}(x + iv \mid m).>>>,
+<<<ℰ(x + iv|m) = ℰ(x|m) − i ℰ(v|m') + iv + i sc(v|m') dn(v|m') − im sn(x|m) sc(v|m') sn(x + iv|m).>>>,
+<<<\eqalign{\mathcal{E}(x + iv \mid m) &= \mathcal{E}(x \mid m) - i\thinspace\mathcal{E}(v \mid m') + iv + i\thinspace\mathrm{sc}(v \mid m')\thinspace\mathrm{dn}(v \mid m') \cr &\qquad - im\thinspace\mathrm{sn}(x \mid m)\thinspace\mathrm{sc}(v \mid m')\thinspace\mathrm{sn}(x + iv \mid m).}>>>)
+
+@w{}
+m4_math(<<<\mathcal{E}(x \mid m)>>>, <<<ℰ(x|m)>>>)
+and
+m4_math(<<<\mathcal{E}(v \mid m')>>>, <<<ℰ(v|m')>>>)
+have real arguments and real parameters, so @inlinefmtifelse{tex,
+@ref{Real m and Real u, section 2, Real @math{m} and Real @math{u}},
+@ref{Real m and Real u, section 2}} computes them.
+
+The terms with
+m4_math(<<<\mathrm{sc}(v \mid m')>>>, <<<sc(v|m')>>>)
+are large near
+m4_math(<<<\mathrm{cn}(v \mid m') = 0>>>, <<<cn(v|m') = 0>>>)
+and cancel there. For
+m4_mathcomma(<<<m > 0>>>, <<<m > 0>>>)
+m4_math(<<<m' < 1>>>, <<<m' < 1>>>)
+and
+m4_math(<<<K' = K(m')>>>, <<<K' = K(m')>>>)
+is real. Then
+m4_math(<<<v>>>, <<<v>>>)
+is first reduced to
+m4_math(<<<|v| \le K'/2>>>, <<<|v| ≤ K'/2>>>)
+with
+
+m4_displaymath(
+<<<\mathcal{E}(u + 2iK' \mid m) = \mathcal{E}(u \mid m) + 2i(K' - E'),>>>,
+<<<ℰ(u + 2iK'|m) = ℰ(u|m) + 2i(K' − E'),>>>)
+
+m4_displaymath(
+<<<\mathcal{E}(u + s\thinspace iK' \mid m) = \mathcal{E}(u \mid m) + \frac{\mathrm{cn}(u \mid m)\thinspace\mathrm{dn}(u \mid m)}{\mathrm{sn}(u \mid m)} + s\thinspace i(K' - E'),
+\qquad s = \pm 1,>>>,
+<<<@example
+ℰ(u + s iK'|m) = ℰ(u|m) + (cn(u|m) dn(u|m))/(sn(u|m)) + s i(K' − E'),
+s = ±1,
+@end example>>>)
+
+where
+m4_math(<<<E' = E(m')>>>, <<<E' = E(m')>>>)
+(@uref{https://dlmf.nist.gov/22.16.ii, DLMF §22.16(ii)}). For
+m4_mathcomma(<<<m \le 0>>>, <<<m ≤ 0>>>)
+m4_math(<<<m' \ge 1>>>, <<<m' ≥ 1>>>)
+and
+m4_math(<<<\mathrm{cn}(v \mid m') = \mathrm{dn}(\sqrt{m'}\thinspace v \mid 1/m') > 0>>>, <<<cn(v|m') = dn(√m' v|1/m') > 0>>>)
+for real
+m4_math(<<<v>>>, <<<v>>>)
+(@uref{https://dlmf.nist.gov/22.17.E3, DLMF 22.17.3}; A&S 16.11.3), so
+there is no cancellation and no reduction is needed.
+
+@node Complex m - Reduction by the Periods
+@ifinfo
+@chapter Complex m: Reduction by the Periods
+@end ifinfo
+@ifhtml
+@chapter Complex @math{m}: Reduction by the Periods
+@end ifhtml
+@iftex
+@chapter Complex @math{m}: Reduction by the Periods
+@end iftex
+
+For complex
+m4_math(<<<m{:}>>>, <<<m:>>>)
 
 @enumerate
 @item
@@ -141,15 +437,13 @@ and
 m4_math(<<<2iK(1-m)>>>, <<<2iK(1−m)>>>)
 to a point
 m4_math(<<<w>>>, <<<w>>>)
-near the origin (@inlinefmtifelse{tex, @ref{Reduction by the Periods,
-section 2, Reduction by the Periods}, @ref{Reduction by the Periods,
-section 2}}).
+near the origin (below).
 @item
 Compute
 m4_mathcomma(<<<\mathrm{sn}(w \mid m)>>>, <<<sn(w|m)>>>)
-m4_mathcomma(<<<\mathrm{cn}(w \mid m)>>>, <<<cn(w|m)>>>)
-m4_math(<<<\mathrm{dn}(w \mid m)>>>, <<<dn(w|m)>>>)
-with one call to @code{elliptic-sn-cn-dn-descending}.
+m4_math(<<<\mathrm{cn}(w \mid m)>>>, <<<cn(w|m)>>>)
+and
+m4_mathdot(<<<\mathrm{dn}(w \mid m)>>>, <<<dn(w|m)>>>)
 @item
 Evaluate Carlson's forms. They give
 m4_math(<<<\mathcal{E}(w' \mid m)>>>, <<<ℰ(w'|m)>>>)
@@ -159,16 +453,16 @@ with
 m4_math(<<<\mathrm{sn}(w' \mid m) = \mathrm{sn}(w \mid m)>>>, <<<sn(w'|m) = sn(w|m)>>>)
 that need not be
 m4_math(<<<w>>>, <<<w>>>)
-(@inlinefmtifelse{tex, @ref{Carlson's Idea, section 3, Carlson's Idea},
-@ref{Carlson's Idea, section 3}}).
+(@inlinefmtifelse{tex, @ref{Carlson's Idea, section 5, Carlson's Idea},
+@ref{Carlson's Idea, section 5}}).
 @item
 Recover
 m4_math(<<<\mathcal{E}(w \mid m)>>>, <<<ℰ(w|m)>>>)
 from
 m4_math(<<<\mathcal{E}(w' \mid m)>>>, <<<ℰ(w'|m)>>>)
-(@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section 4, From
+(@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section 6, From
 @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to
-ℰ(w|m), section 4}}), and add back the reduction.
+ℰ(w|m), section 6}}), and add back the reduction.
 @end enumerate
 
 The parameter
@@ -177,18 +471,17 @@ is never changed; only
 m4_math(<<<u>>>, <<<u>>>)
 is reduced.
 
-@node Reduction by the Periods
-@chapter Reduction by the Periods
-
 @w{}
 m4_math(<<<\mathrm{dn}^2(u \mid m)>>>, <<<dn²(u|m)>>>)
 has periods
 m4_math(<<<2K(m)>>>, <<<2K(m)>>>)
 and
-m4_mathcomma(<<<2iK(1-m)>>>, <<<2iK(1−m)>>>)
-and
+m4_math(<<<2iK(1-m)>>>, <<<2iK(1−m)>>>)
+(@uref{https://dlmf.nist.gov/22.4.T1, DLMF Table 22.4.1}; A&S Table
+16.2), and
 m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
-is quasi-periodic:
+is quasi-periodic (@uref{https://dlmf.nist.gov/22.16.ii, DLMF
+§22.16(ii)}):
 
 m4_displaymath(
 <<<\mathcal{E}(z + 2K(m) \mid m) = \mathcal{E}(z \mid m) + 2E(m),>>>,
@@ -223,7 +516,7 @@ m4_math(<<<\omega_2 = 2iK(1-m)>>>, <<<ω₂ = 2iK(1−m)>>>)
 are complex, so the lattice they span is skewed relative to the real and
 imaginary axes.
 
-@code{lattice-coords} solves
+Solve
 m4_math(<<<z = a\thinspace\omega_1 + b\thinspace\omega_2>>>, <<<z = a ω₁ + b ω₂>>>)
 for real
 m4_mathcomma(<<<a>>>, <<<a>>>)
@@ -247,32 +540,31 @@ m4_mathdot(<<<w = u - j\thinspace\omega_1 - k\thinspace\omega_2>>>, <<<w = u −
 Then
 
 m4_displaymath(
-<<<\mathcal{E}(u \mid m) = \mathcal{E}(w \mid m) + 2jE(m) + 2ik\bigl(K(1-m) - E(1-m)\bigr),>>>,
-<<<ℰ(u|m) = ℰ(w|m) + 2jE(m) + 2ik(K(1−m) − E(1−m)),>>>)
-
-which is @code{lattice-e}.
+<<<\mathcal{E}(u \mid m) = \mathcal{E}(w \mid m) + 2jE(m) + 2ik\bigl(K(1-m) - E(1-m)\bigr).>>>,
+<<<ℰ(u|m) = ℰ(w|m) + 2jE(m) + 2ik(K(1−m) − E(1−m)).>>>)
 
 @menu
-* Why the Reduction Is Used::
+* Why Reduce::
 @end menu
 
-@node Why the Reduction Is Used
-@section Why the Reduction Is Used
+@node Why Reduce
+@section Why Reduce
 
-@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), Section 4, From
+@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), Section 6, From
 @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to
-ℰ(w|m), Section 4}} works for any
+ℰ(w|m), Section 6}} works for any
 m4_mathcomma(<<<w>>>, <<<w>>>)
-so the reduction is not needed for correctness. It was introduced
-because, before bug 5726 was fixed, Maxima's
+so the reduction is not needed for correctness. It keeps the arguments
+of
 m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
 m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
 and
 m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
-were not accurate for complex
+small. Without it, the usual way of computing them fails for complex
 m4_math(<<<m>>>, <<<m>>>)
-and large arguments. The descending Landen transformation in
-@code{elliptic-sn-cn-dn-descending} scales the argument by
+and large arguments. The descending Landen transformation
+(@uref{https://dlmf.nist.gov/22.7.i, DLMF 22.7.1–22.7.4}; A&S
+16.12.1–16.12.4) scales the argument by
 m4_mathcomma(<<<1/\prod_n (1 + \sqrt{\mu_n})>>>, <<<1/∏_n (1 + √μ_n)>>>)
 which is complex when
 m4_math(<<<m>>>, <<<m>>>)
@@ -280,9 +572,8 @@ is. For
 m4_math(<<<m = 0.5 + 0.5i>>>, <<<m = 0.5 + 0.5i>>>)
 the factor is
 m4_mathcomma(<<<0.894 - 0.170i>>>, <<<0.894 − 0.170i>>>)
-so the final call to
-m4_math(<<<\sin>>>, <<<sin>>>)
-gets an argument whose imaginary part is about
+so the sine at the end of the recursion gets an argument whose imaginary
+part is about
 m4_math(<<<0.17\thinspace u{:}>>>, <<<0.17 u:>>>)
 
 @raggedright
@@ -324,18 +615,25 @@ overflow
 At
 m4_mathcomma(<<<u = 3000>>>, <<<u = 3000>>>)
 m4_math(<<<\sin^2>>>, <<<sin²>>>)
-in the next Landen step overflows, and @code{jacobi_sn(3000.0,
-0.5+0.5*%i)} returns about
+in the next Landen step overflows, and
+m4_math(<<<\mathrm{sn}(3000 \mid 0.5 + 0.5i)>>>, <<<sn(3000|0.5 + 0.5i)>>>)
+comes out as about
 m4_math(<<<7.7\times10^{-60}>>>, <<<7.7×10⁻⁶⁰>>>)
 instead of
 m4_mathdot(<<<-1.2185 + 0.3331i>>>, <<<−1.2185 + 0.3331i>>>)
-Without the reduction:
+Computing
+m4_math(<<<\mathcal{E}(3000 \mid 0.5 + 0.5i)>>>, <<<ℰ(3000|0.5 + 0.5i)>>>)
+with such
+m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
+m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
+and
+m4_math(<<<\mathrm{dn}{:}>>>, <<<dn:>>>)
 
 @raggedright
 @multitable @columnfractions 0.34 0.66
 @headitem
 @tab
-@code{jacobi_epsilon(3000.0, 0.5+0.5*%i)}
+m4_math(<<<\mathcal{E}(3000 \mid 0.5 + 0.5i)>>>, <<<ℰ(3000|0.5 + 0.5i)>>>)
 @item
 reference (50 digits)
 @tab
@@ -355,27 +653,120 @@ The error without the reduction is about
 m4_math(<<<8\times10^{-4}>>>, <<<8×10⁻⁴>>>)
 relative; with it, about
 m4_mathdot(<<<2\times10^{-16}>>>, <<<2×10⁻¹⁶>>>)
-Along the real axis the unreduced code is accurate up to about
+Along the real axis the unreduced computation is accurate up to about
 m4_math(<<<u = 2000>>>, <<<u = 2000>>>)
 and wrong from about
 m4_mathdot(<<<2500>>>, <<<2500>>>)
 With a large imaginary part it fails sooner;
 m4_math(<<<u = 700i>>>, <<<u = 700i>>>)
-overflows. Bigfloats do not have this problem because of their exponent
-range. The fix for bug 5726 has since made @code{jacobi_sn} and friends
-accurate for large arguments; @inlinefmtifelse{tex, @ref{Duplication
-Instead of the Reduction, section 5.4, Duplication Instead of the
-Reduction}, @ref{Duplication Instead of the Reduction, section 5.4}}
-explains why @code{jacobi-epsilon} keeps the reduction anyway.
+overflows. Arbitrary precision does not have this problem because of its
+exponent range.
+m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
+m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
+and
+m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
+can be computed accurately for large arguments in other ways;
+@inlinefmtifelse{tex, @ref{Duplication Instead of the Reduction, section
+7.4, Duplication Instead of the Reduction}, @ref{Duplication Instead of
+the Reduction, section 7.4}} explains why the reduction is still
+preferred.
 
 @node Carlson's Idea
 @chapter Carlson's Idea
 
-With
-m4_mathcomma(<<<s = \mathrm{sn}(w \mid m)>>>, <<<s = sn(w|m)>>>)
-m4_mathcomma(<<<c = \mathrm{cn}(w \mid m)>>>, <<<c = cn(w|m)>>>)
-m4_mathcomma(<<<d = \mathrm{dn}(w \mid m)>>>, <<<d = dn(w|m)>>>)
-let
+After the reduction,
+m4_math(<<<w>>>, <<<w>>>)
+is near the origin, where
+m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
+m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
+and
+m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
+can be computed accurately. Let
+
+m4_displaymath(
+<<<s = \mathrm{sn}(w \mid m), \qquad c = \mathrm{cn}(w \mid m), \qquad d = \mathrm{dn}(w \mid m).>>>,
+<<<s = sn(w|m), c = cn(w|m), d = dn(w|m).>>>)
+
+The idea is to get
+m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
+from these three numbers. Substituting
+m4_mathcomma(<<<t = \mathrm{sn}(v \mid m)>>>, <<<t = sn(v|m)>>>)
+m4_math(<<<dt = \mathrm{cn}(v \mid m)\thinspace\mathrm{dn}(v \mid m)\thinspace dv>>>, <<<dt = cn(v|m) dn(v|m) dv>>>)
+in the definition, and using
+m4_math(<<<\mathrm{cn}^2 = 1 - \mathrm{sn}^2>>>, <<<cn² = 1 − sn²>>>)
+and
+m4_math(<<<\mathrm{dn}^2 = 1 - m\thinspace\mathrm{sn}^2>>>, <<<dn² = 1 − m sn²>>>)
+(@uref{https://dlmf.nist.gov/22.6.E1, DLMF 22.6.1}; A&S 16.9.1), gives
+
+m4_displaymath(
+<<<\mathcal{E}(w \mid m) = \int_0^{s} \frac{\sqrt{1-mt^2}}{\sqrt{1-t^2}}\thinspace dt>>>,
+<<<ℰ(w|m) = ∫₀ˢ (√(1−mt²))/(√(1−t²)) dt>>>)
+
+(@uref{https://dlmf.nist.gov/22.16.E14, DLMF 22.16.14}), where the
+integral is taken along the image under
+m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
+of a path from
+m4_math(<<<0>>>, <<<0>>>)
+to
+m4_mathdot(<<<w>>>, <<<w>>>)
+This is Legendre's integral
+m4_math(<<<E(\phi \mid m)>>>, <<<E(φ|m)>>>)
+with
+m4_math(<<<\sin\phi = s>>>, <<<sin φ = s>>>)
+(@uref{https://dlmf.nist.gov/19.2.E5, DLMF 19.2.5}). Carlson [1], eqs.@:
+(59) and (60), gives Legendre's integrals in terms of the symmetric
+integrals
+m4_math(<<<R_F>>>, <<<R_F>>>)
+and
+m4_math(<<<R_D>>>, <<<R_D>>>)
+(@uref{https://dlmf.nist.gov/19.25.E5, DLMF 19.25.5} and
+@uref{https://dlmf.nist.gov/19.25.E9, DLMF 19.25.9}):
+
+m4_displaymath(
+<<<F(\phi, k) = R_F(\gamma - 1, \gamma - k^2, \gamma),>>>,
+<<<F(φ, k) = R_F(γ − 1, γ − k², γ),>>>)
+
+m4_displaymath(
+<<<E(\phi, k) = R_F(\gamma - 1, \gamma - k^2, \gamma) - \frac{k^2}{3} R_D(\gamma - 1, \gamma - k^2, \gamma),
+\qquad \gamma = \csc^2\phi .>>>,
+<<<@example
+E(φ, k) = R_F(γ − 1, γ − k², γ) − k²/3 R_D(γ − 1, γ − k², γ),
+γ = csc²φ.
+@end example>>>)
+
+@w{}
+m4_math(<<<R_F>>>, <<<R_F>>>)
+is homogeneous of degree
+m4_math(<<<-1/2>>>, <<<−1/2>>>)
+and
+m4_math(<<<R_D>>>, <<<R_D>>>)
+of degree
+m4_mathcomma(<<<-3/2>>>, <<<−3/2>>>)
+and
+m4_mathcomma(<<<(\csc^2\phi - 1, \csc^2\phi - k^2, \csc^2\phi) = \csc^2\phi\thinspace(\cos^2\phi, 1 - k^2\sin^2\phi, 1)>>>, <<<(csc²φ − 1, csc²φ − k², csc²φ) = csc²φ (cos²φ, 1 − k²sin²φ, 1)>>>)
+so with
+m4_math(<<<k^2 = m>>>, <<<k² = m>>>)
+
+m4_displaymath(
+<<<F(\phi \mid m) = \sin\phi\thinspace R_F(\cos^2\phi, 1 - m\sin^2\phi, 1),>>>,
+<<<F(φ|m) = sin φ R_F(cos²φ, 1 − m sin²φ, 1),>>>)
+
+m4_displaymath(
+<<<E(\phi \mid m) = \sin\phi\thinspace R_F(\cos^2\phi, 1 - m\sin^2\phi, 1) - \frac{m}{3}\sin^3\phi\thinspace R_D(\cos^2\phi, 1 - m\sin^2\phi, 1).>>>,
+<<<E(φ|m) = sin φ R_F(cos²φ, 1 − m sin²φ, 1) − m/3 sin³φ R_D(cos²φ, 1 − m sin²φ, 1).>>>)
+
+Setting
+m4_math(<<<\sin\phi = s>>>, <<<sin φ = s>>>)
+gives
+m4_math(<<<\cos^2\phi = 1 - s^2 = c^2>>>, <<<cos²φ = 1 − s² = c²>>>)
+and
+m4_mathcomma(<<<1 - m\sin^2\phi = 1 - ms^2 = d^2>>>, <<<1 − m sin²φ = 1 − ms² = d²>>>)
+so neither
+m4_math(<<<\phi>>>, <<<φ>>>)
+nor
+m4_math(<<<1 - s^2>>>, <<<1 − s²>>>)
+has to be computed. This gives the two numbers that are actually
+evaluated:
 
 m4_displaymath(
 <<<w' = s\thinspace R_F(c^2, d^2, 1),>>>,
@@ -385,46 +776,33 @@ m4_displaymath(
 <<<e = s\thinspace R_F(c^2, d^2, 1) - \frac{m}{3}\thinspace s^3 R_D(c^2, d^2, 1).>>>,
 <<<e = s R_F(c², d², 1) − m/3 s³ R_D(c², d², 1).>>>)
 
-Since
-m4_math(<<<c^2 = 1 - s^2>>>, <<<c² = 1 − s²>>>)
+Using
+m4_math(<<<c^2>>>, <<<c²>>>)
 and
-m4_mathcomma(<<<d^2 = 1 - m s^2>>>, <<<d² = 1 − m s²>>>)
-these are Carlson's forms of
-m4_math(<<<F(\phi \mid m)>>>, <<<F(φ|m)>>>)
+m4_math(<<<d^2>>>, <<<d²>>>)
+rather than
+m4_math(<<<1 - s^2>>>, <<<1 − s²>>>)
 and
-m4_math(<<<E(\phi \mid m)>>>, <<<E(φ|m)>>>)
-with
-m4_mathdot(<<<\sin\phi = s>>>, <<<sin φ = s>>>)
-Carlson [1], eqs.@: (59) and (60), gives
+m4_math(<<<1 - ms^2>>>, <<<1 − ms²>>>)
+also avoids cancellation when
+m4_math(<<<s>>>, <<<s>>>)
+is near
+m4_math(<<<\pm 1>>>, <<<±1>>>)
+or
+m4_math(<<<ms^2>>>, <<<ms²>>>)
+is near
+m4_mathdot(<<<1>>>, <<<1>>>)
 
-m4_displaymath(
-<<<F(\phi, k) = \sin\phi\thinspace R_F(\cos^2\phi, 1 - k^2\sin^2\phi, 1) = R_F(c - 1, c - k^2, c),>>>,
-<<<F(φ, k) = sin φ R_F(cos²φ, 1 − k²sin²φ, 1) = R_F(c − 1, c − k², c),>>>)
-
-m4_displaymath(
-<<<E(\phi, k) = R_F(c - 1, c - k^2, c) - \frac{k^2}{3} R_D(c - 1, c - k^2, c),
-\qquad c = \csc^2\phi .>>>,
-<<<@example
-E(φ, k) = R_F(c − 1, c − k², c) − k²/3 R_D(c − 1, c − k², c),
-c = csc²φ.
-@end example>>>)
-
-The
-m4_math(<<<\sin\phi>>>, <<<sin φ>>>)
-form of
-m4_math(<<<E>>>, <<<E>>>)
-follows from homogeneity:
+What
+m4_math(<<<e>>>, <<<e>>>)
+and
+m4_math(<<<w'>>>, <<<w'>>>)
+are follows from the integrals they come from. With the principal
+branches that
 m4_math(<<<R_F>>>, <<<R_F>>>)
-has degree
-m4_mathcomma(<<<-1/2>>>, <<<−1/2>>>)
-m4_math(<<<R_D>>>, <<<R_D>>>)
-has degree
-m4_mathcomma(<<<-3/2>>>, <<<−3/2>>>)
 and
-m4_mathdot(<<<(c - 1, c - k^2, c) = \csc^2\phi\thinspace(\cos^2\phi, 1 - k^2\sin^2\phi, 1)>>>, <<<(c − 1, c − k², c) = csc²φ (cos²φ, 1 − k²sin²φ, 1)>>>)
-This is also the form in the comment above @code{bf-elliptic-e}.
-
-So
+m4_math(<<<R_D>>>, <<<R_D>>>)
+use,
 m4_math(<<<w'>>>, <<<w'>>>)
 and
 m4_math(<<<e>>>, <<<e>>>)
@@ -440,16 +818,21 @@ and
 ∫₀ˢ (√(1−mt²))/(√(1−t²)) dt
 @end example>>>)
 
-along the same path, with the branches that
-m4_math(<<<R_F>>>, <<<R_F>>>)
+along the same path from
+m4_math(<<<0>>>, <<<0>>>)
+to
+m4_mathdot(<<<s>>>, <<<s>>>)
+The substitution
+m4_math(<<<t = \mathrm{sn}(v \mid m)>>>, <<<t = sn(v|m)>>>)
+turns the first integral into
+m4_mathcomma(<<<\int_0^{w'} dv>>>, <<<∫₀^(w') dv>>>)
+so
+m4_math(<<<w'>>>, <<<w'>>>)
+is the point where that path ends in the plane of
+m4_mathcomma(<<<v>>>, <<<v>>>)
 and
-m4_math(<<<R_D>>>, <<<R_D>>>)
-use. Substitute
-m4_mathcomma(<<<t = \mathrm{sn}(v \mid m)>>>, <<<t = sn(v|m)>>>)
-m4_mathdot(<<<dt = \mathrm{cn}(v \mid m)\thinspace\mathrm{dn}(v \mid m)\thinspace dv>>>, <<<dt = cn(v|m) dn(v|m) dv>>>)
-The first integral becomes
-m4_math(<<<\int_0^{w'} dv>>>, <<<∫₀^(w') dv>>>)
-and the second
+m4_mathdot(<<<\mathrm{sn}(w' \mid m) = s>>>, <<<sn(w'|m) = s>>>)
+It turns the second into
 m4_mathcomma(<<<\int_0^{w'} \mathrm{dn}^2(v \mid m)\thinspace dv>>>, <<<∫₀^(w') dn²(v|m) dv>>>)
 so
 
@@ -457,13 +840,21 @@ m4_displaymath(
 <<<e = \mathcal{E}(w' \mid m), \qquad \mathrm{sn}(w' \mid m) = s .>>>,
 <<<e = ℰ(w'|m), sn(w'|m) = s.>>>)
 
-@w{}
+That is,
+m4_math(<<<e>>>, <<<e>>>)
+is
+m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
+at the principal inverse
 m4_math(<<<w'>>>, <<<w'>>>)
-is the principal inverse of
-m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
-and it need not be
-m4_mathdot(<<<w>>>, <<<w>>>)
-Example:
+of
+m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
+at
+m4_mathdot(<<<s>>>, <<<s>>>)
+It equals
+m4_math(<<<\mathcal{E}(w \mid m)>>>, <<<ℰ(w|m)>>>)
+only if
+m4_mathcomma(<<<w' = w>>>, <<<w' = w>>>)
+which need not hold. Example:
 m4_mathcomma(<<<u = 3 - 2i>>>, <<<u = 3 − 2i>>>)
 m4_math(<<<m = 2 + i>>>, <<<m = 2 + i>>>)
 reduces to
@@ -480,6 +871,14 @@ gives
 m4_math(<<<0.4805 - 0.6271i>>>, <<<0.4805 − 0.6271i>>>)
 instead of
 m4_mathdot(<<<1.5016 - 1.0105i>>>, <<<1.5016 − 1.0105i>>>)
+This is why
+m4_math(<<<w'>>>, <<<w'>>>)
+is computed: @inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section
+6, From @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From
+ℰ(w'|m) to ℰ(w|m), section 6}} uses it to get
+m4_math(<<<\mathcal{E}(w \mid m)>>>, <<<ℰ(w|m)>>>)
+from
+m4_mathdot(<<<e>>>, <<<e>>>)
 
 @node From ℰ(w'|m) to ℰ(w|m)
 @ifinfo
@@ -497,8 +896,8 @@ m4_math(<<<\mathrm{sn}(z \mid m)>>>, <<<sn(z|m)>>>)
 is elliptic of order 2 with periods
 m4_math(<<<4K(m)>>>, <<<4K(m)>>>)
 and
-m4_mathdot(<<<2iK(1-m)>>>, <<<2iK(1−m)>>>)
-So
+m4_math(<<<2iK(1-m)>>>, <<<2iK(1−m)>>>)
+(@uref{https://dlmf.nist.gov/22.4.T1, DLMF Table 22.4.1}). So
 m4_math(<<<\mathrm{sn}(w' \mid m) = \mathrm{sn}(w \mid m)>>>, <<<sn(w'|m) = sn(w|m)>>>)
 means that, for some integers
 m4_math(<<<p>>>, <<<p>>>)
@@ -516,9 +915,9 @@ m4_displaymath(
 <<<w = 2K(m) - w' + 2pK(m) + 2iqK(1-m).>>>,
 <<<w = 2K(m) − w' + 2pK(m) + 2iqK(1−m).>>>)
 
-With the quasi-periodicity of @inlinefmtifelse{tex, @ref{Reduction by
-the Periods, section 2, Reduction by the Periods}, @ref{Reduction by the
-Periods, section 2}} and
+With the quasi-periodicity of @inlinefmtifelse{tex, @ref{Complex m -
+Reduction by the Periods, section 4, Complex @math{m}: Reduction by the
+Periods}, @ref{Complex m - Reduction by the Periods, section 4}} and
 m4_mathcomma(<<<\mathcal{E}(2K(m) - z \mid m) = 2E(m) - \mathcal{E}(z \mid m)>>>, <<<ℰ(2K(m) − z|m) = 2E(m) − ℰ(z|m)>>>)
 which follows from the oddness of
 m4_mathcomma(<<<\mathcal{E}(z \mid m)>>>, <<<ℰ(z|m)>>>)
@@ -532,12 +931,12 @@ m4_displaymath(
 <<<\mathcal{E}(w \mid m) = 2E(m) - e + 2pE(m) + 2iq\bigl(K(1-m) - E(1-m)\bigr).>>>,
 <<<ℰ(w|m) = 2E(m) − e + 2pE(m) + 2iq(K(1−m) − E(1−m)).>>>)
 
-The code computes the lattice coordinates of
+Compute the lattice coordinates of
 m4_math(<<<w - w'>>>, <<<w − w'>>>)
 and of
-m4_math(<<<w + w' - 2K(m)>>>, <<<w + w' − 2K(m)>>>)
-and uses the case whose coordinates are integers (@code{off-lattice}
-picks the one closer to integers). The choice is clear-cut:
+m4_mathcomma(<<<w + w' - 2K(m)>>>, <<<w + w' − 2K(m)>>>)
+and use the case whose coordinates are integers, in practice the one
+whose coordinates are closer to integers. The choice is clear-cut:
 m4_math(<<<w'>>>, <<<w'>>>)
 is computed to a few ulps, while the two candidates differ by
 m4_mathcomma(<<<2w - 2K(m)>>>, <<<2w − 2K(m)>>>)
@@ -568,21 +967,19 @@ m4_mathcomma(<<<K(m)>>>, <<<K(m)>>>)
 m4_mathcomma(<<<E(m)>>>, <<<E(m)>>>)
 m4_mathcomma(<<<K(1-m)>>>, <<<K(1−m)>>>)
 m4_mathpunc(<<<;>>>, <<<E(1-m)>>>, <<<E(1−m)>>>)
-one call to @code{elliptic-sn-cn-dn-descending}; one each of
-m4_math(<<<R_F>>>, <<<R_F>>>)
-and
-m4_mathdot(<<<R_D>>>, <<<R_D>>>)
-The single call returns the same
+one evaluation of
 m4_mathcomma(<<<s>>>, <<<s>>>)
 m4_math(<<<c>>>, <<<c>>>)
 and
 m4_math(<<<d>>>, <<<d>>>)
-as @code{sn}, @code{cn} and @code{dn} (bit for bit), which for complex
-m4_math(<<<m>>>, <<<m>>>)
-would each run the descending recursion.
+together, which takes one descending Landen recursion rather than three;
+one each of
+m4_math(<<<R_F>>>, <<<R_F>>>)
+and
+m4_mathdot(<<<R_D>>>, <<<R_D>>>)
 
-@node Things That Were Tried and Are Not Needed
-@chapter Things That Were Tried and Are Not Needed
+@node Alternatives That Are Not Used
+@chapter Alternatives That Are Not Used
 
 @menu
 * A Shift by ±iK(1−m) Away from the Poles::
@@ -605,11 +1002,18 @@ would each run the descending recursion.
 @w{}
 m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
 has simple poles at
-m4_mathdot(<<<iK(1-m) + 2pK(m) + 2iqK(1-m)>>>, <<<iK(1−m) + 2pK(m) + 2iqK(1−m)>>>)
-An earlier version also shifted
+m4_mathcomma(<<<iK(1-m) + 2pK(m) + 2iqK(1-m)>>>, <<<iK(1−m) + 2pK(m) + 2iqK(1−m)>>>)
+where
+m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
+has its poles (@uref{https://dlmf.nist.gov/22.4.i, DLMF §22.4(i)}). One
+could also shift
 m4_math(<<<w>>>, <<<w>>>)
 by
 m4_mathcomma(<<<\pm iK(1-m)>>>, <<<±iK(1−m)>>>)
+as @inlinefmtifelse{tex, @ref{Real m and Complex u, section 3, Real
+@math{m} and Complex @math{u}}, @ref{Real m and Complex u, section 3}}
+does for real
+m4_mathcomma(<<<m>>>, <<<m>>>)
 using
 
 m4_displaymath(
@@ -621,7 +1025,7 @@ s = ±1,
 @end example>>>,
 <<<\eqalign{\mathcal{E}(w + s\thinspace iK(1-m) \mid m) &= \mathcal{E}(w \mid m) + \frac{\mathrm{cn}(w \mid m)\thinspace\mathrm{dn}(w \mid m)}{\mathrm{sn}(w \mid m)} \cr &\qquad + s\thinspace i\bigl(K(1-m) - E(1-m)\bigr), \qquad s = \pm 1,}>>>)
 
-to keep
+(@uref{https://dlmf.nist.gov/22.16.ii, DLMF §22.16(ii)}) to keep
 m4_math(<<<w>>>, <<<w>>>)
 away from them. It does not improve accuracy. At distance
 m4_math(<<<\delta>>>, <<<δ>>>)
@@ -632,13 +1036,13 @@ m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
 near a pole:
 
 @raggedright
-@multitable @columnfractions 0.20 0.32 0.48
+@multitable @columnfractions 0.22 0.36 0.42
 @headitem
 m4_math(<<<\delta>>>, <<<δ>>>)
 @tab
 with the shift
 @tab
-without (current code)
+without the shift
 @item
 m4_math(<<<10^{−2}>>>, <<<10⁻²>>>)
 @tab
@@ -693,10 +1097,11 @@ For real
 m4_math(<<<u>>>, <<<u>>>)
 and
 m4_mathcomma(<<<0 \le m < 1>>>, <<<0 ≤ m < 1>>>)
-m4_mathcomma(<<<\mathcal{E}(u \mid m) = E(\mathrm{am}(u \mid m) \mid m)>>>, <<<ℰ(u|m) = E(am(u|m)|m)>>>)
-and the code for real
-m4_math(<<<m>>>, <<<m>>>)
-uses this on its reduced argument. For complex
+m4_math(<<<\mathcal{E}(u \mid m) = E(\mathrm{am}(u \mid m) \mid m)>>>, <<<ℰ(u|m) = E(am(u|m)|m)>>>)
+(@uref{https://dlmf.nist.gov/22.16.ii, DLMF §22.16(ii)}), and
+@inlinefmtifelse{tex, @ref{Real m and Real u, section 2, Real @math{m}
+and Real @math{u}}, @ref{Real m and Real u, section 2}} uses this on the
+reduced argument. For complex
 m4_math(<<<u>>>, <<<u>>>)
 or
 m4_math(<<<m>>>, <<<m>>>)
@@ -723,21 +1128,15 @@ m4_math(<<<m>>>, <<<m>>>)
 and fail at the same points, so
 m4_math(<<<\mathrm{am}>>>, <<<am>>>)
 would not avoid @inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m),
-section 4, From @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}},
-@ref{From ℰ(w'|m) to ℰ(w|m), section 4}}.
+section 6, From @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}},
+@ref{From ℰ(w'|m) to ℰ(w|m), section 6}}.
 
 @node Lawden's Formula
 @section Lawden's Formula
 
-The clause for real
-m4_math(<<<m>>>, <<<m>>>)
-and complex
-m4_math(<<<u>>>, <<<u>>>)
-uses Lawden's formula, the addition theorem with
-m4_math(<<<\mathrm{sn}(iv \mid m) = i\thinspace\mathrm{sc}(v \mid 1-m)>>>, <<<sn(iv|m) = i sc(v|1−m)>>>)
-and Jacobi's imaginary transformation of
-m4_mathdot(<<<\mathcal{E}>>>, <<<ℰ>>>)
-It holds for complex
+Lawden's formula of @inlinefmtifelse{tex, @ref{Real m and Complex u,
+section 3, Real @math{m} and Complex @math{u}}, @ref{Real m and Complex
+u, section 3}} holds for complex
 m4_math(<<<m>>>, <<<m>>>)
 too (checked against quadrature to 25 digits), but it reduces complex
 m4_math(<<<u>>>, <<<u>>>)
@@ -751,28 +1150,29 @@ those still need a method for real
 m4_math(<<<u>>>, <<<u>>>)
 and complex
 m4_mathcomma(<<<m>>>, <<<m>>>)
-which the code for real
-m4_math(<<<m>>>, <<<m>>>)
-cannot provide: there is no real period to reduce by, and @code{(> m 1)}
-and @code{(< m1 1)} have no method for complex numbers. The clause for
-complex
-m4_math(<<<m>>>, <<<m>>>)
-handles real and complex
+and the method of @inlinefmtifelse{tex, @ref{Real m and Real u, section
+2, Real @math{m} and Real @math{u}}, @ref{Real m and Real u, section 2}}
+does not extend to that: there is no real period to reduce by.
+@inlinefmtifelse{tex, @ref{Complex m - Reduction by the Periods,
+Sections 4 to 6, Complex @math{m}: Reduction by the Periods},
+@ref{Complex m - Reduction by the Periods, Sections 4 to 6}} handle real
+and complex
 m4_math(<<<u>>>, <<<u>>>)
 directly.
 
 @node Duplication Instead of the Reduction
 @section Duplication Instead of the Reduction
 
-The fix for bug 5726 makes
+@w{}
 m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
 m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
 and
 m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
-accurate for large arguments. It halves
+can be computed accurately for large arguments by halving
 m4_mathcomma(<<<u>>>, <<<u>>>)
-applies the descending Landen transformation, and doubles the result
-back up with
+applying the descending Landen transformation, and doubling the result
+back up with (@uref{https://dlmf.nist.gov/22.6.ii, DLMF 22.6.5–22.6.7};
+A&S 16.18.1–16.18.3)
 
 m4_displaymath(
 <<<\mathrm{sn}(2v) = \frac{2scd}{1 - ms^4}, \qquad
@@ -790,13 +1190,15 @@ m4_mathcomma(<<<c>>>, <<<c>>>)
 m4_math(<<<d>>>, <<<d>>>)
 are taken at
 m4_mathdot(<<<v>>>, <<<v>>>)
-After each step it restores
+After each step, restore
 m4_math(<<<s^2 + c^2 = 1>>>, <<<s² + c² = 1>>>)
 and
-m4_mathdot(<<<ms^2 + d^2 = 1>>>, <<<ms² + d² = 1>>>)
-For
-m4_math(<<<\mathrm{Re}\thinspace m > 1/2>>>, <<<Re m > 1/2>>>)
-it uses Jacobi's imaginary transformation to work with
+m4_math(<<<ms^2 + d^2 = 1>>>, <<<ms² + d² = 1>>>)
+(@uref{https://dlmf.nist.gov/22.6.E1, DLMF 22.6.1}; A&S 16.9.1). For
+m4_mathcomma(<<<\mathrm{Re}\thinspace m > 1/2>>>, <<<Re m > 1/2>>>)
+use Jacobi's imaginary transformation
+(@uref{https://dlmf.nist.gov/22.6.T1, DLMF Table 22.6.1}; A&S
+16.20.1–16.20.3) to work with
 m4_math(<<<1 - m>>>, <<<1 − m>>>)
 instead.
 
@@ -804,8 +1206,9 @@ instead.
 m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
 could be computed the same way, without lattice coordinates or the
 correction of @inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section
-4, From @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From
-ℰ(w'|m) to ℰ(w|m), section 4}}. The addition formula
+6, From @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From
+ℰ(w'|m) to ℰ(w|m), section 6}}. The quasi-addition formula
+(@uref{https://dlmf.nist.gov/22.16.ii, DLMF §22.16(ii)})
 m4_math(<<<\mathcal{E}(a + b) = \mathcal{E}(a) + \mathcal{E}(b) - m\thinspace\mathrm{sn}(a)\thinspace\mathrm{sn}(b)\thinspace\mathrm{sn}(a + b)>>>, <<<ℰ(a + b) = ℰ(a) + ℰ(b) − m sn(a) sn(b) sn(a + b)>>>)
 with
 m4_math(<<<a = b = v>>>, <<<a = b = v>>>)
@@ -830,13 +1233,13 @@ This is exact in binary floating point.
 Compute
 m4_math(<<<\mathcal{E}(v \mid m)>>>, <<<ℰ(v|m)>>>)
 by Carlson's forms (@inlinefmtifelse{tex, @ref{Carlson's Idea, section
-3, Carlson's Idea}, @ref{Carlson's Idea, section 3}}). For
+5, Carlson's Idea}, @ref{Carlson's Idea, section 5}}). For
 m4_math(<<<v>>>, <<<v>>>)
 this small,
 m4_math(<<<w' = v>>>, <<<w' = v>>>)
 (exactly so in 2000 random trials), so @inlinefmtifelse{tex, @ref{From
-ℰ(w'|m) to ℰ(w|m), section 4, From @math{@scriptE(w'|m)} to
-@math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to ℰ(w|m), section 4}} is not
+ℰ(w'|m) to ℰ(w|m), section 6, From @math{@scriptE(w'|m)} to
+@math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to ℰ(w|m), section 6}} is not
 needed.
 @item
 Double
@@ -850,13 +1253,12 @@ and
 m4_mathdot(<<<d>>>, <<<d>>>)
 @end enumerate
 
-This was tested in double precision against 40-digit references. The
-tests used a Python model of the doubling loop as of commit d97d3e8430
-(with
+This was tested in double precision against 40-digit references, with a
+model of the doubling loop that corrects
 m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
-corrected only when
-m4_mathpunc(<<<),>>>, <<<|d| \ge 10^{-3}>>>, <<<|d| ≥ 10⁻³>>>)
-before the imaginary transformation was added.
+only when
+m4_math(<<<|d| \ge 10^{-3}>>>, <<<|d| ≥ 10⁻³>>>)
+and does not use the imaginary transformation.
 
 @strong{Accuracy.} Without the correction to
 m4_math(<<<s^2 + c^2 = 1>>>, <<<s² + c² = 1>>>)
@@ -950,9 +1352,9 @@ rounded
 m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
 values the errors were about
 m4_mathdot(<<<10^{-16}>>>, <<<10⁻¹⁶>>>)
-But the
+But
 m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
-of bug 5726 is accurate to its conditioning,
+computed this way is accurate to its conditioning,
 m4_mathcomma(<<<\varepsilon\thinspace|u\thinspace\mathrm{sn}'(u)|>>>, <<<ε |u sn'(u)|>>>)
 not correctly rounded. Both methods then give
 m4_math(<<<O(\varepsilon)>>>, <<<O(ε)>>>)
@@ -960,8 +1362,8 @@ relative error, because
 m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
 grows like
 m4_math(<<<u>>>, <<<u>>>)
-(@inlinefmtifelse{tex, @ref{Round-Off, section 6, Round-Off},
-@ref{Round-Off, section 6}}).
+(@inlinefmtifelse{tex, @ref{Round-Off, section 8, Round-Off},
+@ref{Round-Off, section 8}}).
 
 @strong{Poles on the path.}
 m4_math(<<<\mathcal{E}(z \mid m)>>>, <<<ℰ(z|m)>>>)
@@ -1038,9 +1440,9 @@ m4_math(<<<d>>>, <<<d>>>)
 are all of order
 m4_mathcomma(<<<1/\delta>>>, <<<1/δ>>>)
 and one term dominates in each numerator and denominator of the doubling
-formulas, so nothing cancels. With the
+formulas, so nothing cancels. With
 m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
-of bug 5726, the error stays within about 13 times
+computed this way, the error stays within about 13 times
 m4_math(<<<\varepsilon\thinspace|u\thinspace\mathrm{sn}'(u)|>>>, <<<ε |u sn'(u)|>>>)
 even when an intermediate point is near a pole.
 
@@ -1063,11 +1465,8 @@ needs
 m4_mathdot(<<<K(1-m)>>>, <<<K(1−m)>>>)
 And
 m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
-would depend on the internals of the
-m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
-loop, through a variant of @code{descending-landen-duplication} that
-also returns
-m4_mathdot(<<<\mathcal{E}>>>, <<<ℰ>>>)
+would depend on the internals of the doubling loop for
+m4_mathdot(<<<\mathrm{sn}>>>, <<<sn>>>)
 
 @strong{Conclusion.} The reduction is kept:
 
@@ -1086,14 +1485,15 @@ halving path.
 @strong{Code:} removing that loss and handling
 m4_math(<<<\mathrm{Re}\thinspace m > 1/2>>>, <<<Re m > 1/2>>>)
 takes about as much code as the lattice coordinates and
-@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section 4, From
+@inlinefmtifelse{tex, @ref{From ℰ(w'|m) to ℰ(w|m), section 6, From
 @math{@scriptE(w'|m)} to @math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to
-ℰ(w|m), section 4}} do.
+ℰ(w|m), section 6}} do.
 @item
 @strong{Coupling:} the reduction calls
 m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
-only at small arguments, so it does not depend on the large-argument
-code of bug 5726.
+only at small arguments, so it does not depend on how
+m4_math(<<<\mathrm{sn}>>>, <<<sn>>>)
+handles large arguments.
 @end itemize
 
 Duplication with exact halving would be the way to a correctly rounded
@@ -1104,7 +1504,9 @@ m4_mathdot(<<<\mathrm{sn}>>>, <<<sn>>>)
 @node Round-Off
 @chapter Round-Off
 
-The reduction loses about
+For complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+the reduction loses about
 m4_math(<<<\lvert u\rvert\thinspace\varepsilon>>>, <<<|u| ε>>>)
 in absolute terms:
 m4_math(<<<K(m)>>>, <<<K(m)>>>)
@@ -1215,7 +1617,7 @@ by mpmath along two different pole-free paths, accepted only when they
 agree. This works because
 m4_math(<<<\mathrm{dn}^2>>>, <<<dn²>>>)
 has zero residues, so any two pole-free paths give the same integral.
-119 points, 12 values of
+119 points, 12 values of complex
 m4_math(<<<m>>>, <<<m>>>)
 (including
 m4_math(<<<3 + 10^{-3}i>>>, <<<3 + 10⁻³i>>>)
@@ -1229,17 +1631,55 @@ worst relative error
 m4_mathcomma(<<<1.3\times10^{-14}>>>, <<<1.3×10⁻¹⁴>>>)
 most a few ulps. The larger errors come with
 m4_math(<<<\lvert m\rvert>>>, <<<|m|>>>)
-from 5 to 7 and are probably from
-m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
-m4_mathcomma(<<<\mathrm{cn}>>>, <<<cn>>>)
-m4_mathdot(<<<\mathrm{dn}>>>, <<<dn>>>)
+from 5 to 7; @inlinefmtifelse{tex, @ref{Limitations, section 10,
+Limitations}, @ref{Limitations, section 10}} explains why.
 @item
 Large
 m4_math(<<<u{:}>>>, <<<u:>>>)
-the table in @inlinefmtifelse{tex, @ref{Round-Off, section 6,
-Round-Off}, @ref{Round-Off, section 6}}.
+the table in @inlinefmtifelse{tex, @ref{Round-Off, section 8,
+Round-Off}, @ref{Round-Off, section 8}}.
 @item
-Bigfloats at @code{fpprec:32}: relative errors
+Large
+m4_math(<<<\lvert m\rvert{:}>>>, <<<|m|:>>>)
+72 points with complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+m4_math(<<<\lvert m\rvert>>>, <<<|m|>>>)
+from 5 to
+m4_math(<<<10^4>>>, <<<10⁴>>>)
+in random directions, and
+m4_math(<<<\lvert u\rvert>>>, <<<|u|>>>)
+from 0.3 to 3, against 40-digit references: worst relative error
+m4_mathcomma(<<<1.5\times10^{-13}>>>, <<<1.5×10⁻¹³>>>)
+median a few ulps. 36 points with real
+m4_math(<<<m = \pm 10, \pm 100, \pm 10^4>>>, <<<m = ±10, ±100, ±10⁴>>>)
+and real or complex
+m4_math(<<<u{:}>>>, <<<u:>>>)
+worst
+m4_mathcomma(<<<5.0\times10^{-12}>>>, <<<5.0×10⁻¹²>>>)
+at
+m4_mathpunc(<<<;>>>, <<<m = 10^4>>>, <<<m = 10⁴>>>)
+see @inlinefmtifelse{tex, @ref{Limitations, section 10, Limitations},
+@ref{Limitations, section 10}}.
+@item
+Near the cuts: 18 points with
+m4_mathcomma(<<<m = 3 \pm 10^{-3}i>>>, <<<m = 3 ±10⁻³i>>>)
+m4_mathcomma(<<<3 + 10^{-10}i>>>, <<<3 + 10⁻¹⁰i>>>)
+m4_mathcomma(<<<-2 + 10^{-3}i>>>, <<<−2 + 10⁻³i>>>)
+m4_math(<<<-2 - 10^{-10}i>>>, <<<−2 − 10⁻¹⁰i>>>)
+and
+m4_math(<<<50 + 10^{-6}i{:}>>>, <<<50 + 10⁻⁶i:>>>)
+worst relative error
+m4_mathdot(<<<3.5\times10^{-14}>>>, <<<3.5×10⁻¹⁴>>>)
+m4_math(<<<K(m)>>>, <<<K(m)>>>)
+and
+m4_math(<<<K(1-m)>>>, <<<K(1−m)>>>)
+jump across the cuts, but each side gives a valid pair of periods, and
+m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
+is analytic in
+m4_math(<<<m>>>, <<<m>>>)
+there, so the method needs nothing special near them.
+@item
+Arbitrary precision, 32 digits: relative errors
 m4_math(<<<10^{-33}>>>, <<<10⁻³³>>>)
 to
 m4_math(<<<10^{-31}>>>, <<<10⁻³¹>>>)
@@ -1259,55 +1699,128 @@ for
 m4_mathdot(<<<\lvert h\rvert = 0.05>>>, <<<|h| = 0.05>>>)
 A wrong branch anywhere would show as a jump of a period constant. None
 found.
-@item
-@code{tests/rtest_elliptic.mac} has float and bigfloat tests for complex
-m4_math(<<<m{:}>>>, <<<m:>>>)
-m4_math(<<<u>>>, <<<u>>>)
-not reduced with
-m4_mathcomma(<<<w' = w>>>, <<<w' = w>>>)
-for complex and for real
-m4_mathpunc(<<<;>>>, <<<u>>>, <<<u>>>)
-m4_math(<<<u>>>, <<<u>>>)
-reduced with
-m4_mathpunc(<<<;>>>, <<<w + w' - 2K(m) = 0>>>, <<<w + w' − 2K(m) = 0>>>)
-m4_math(<<<u>>>, <<<u>>>)
-reduced with
-m4_mathpunc(<<<;>>>, <<<w' = w>>>, <<<w' = w>>>)
-and
-m4_mathcomma(<<<u = 3000>>>, <<<u = 3000>>>)
-which needs the reduction. Tolerances are the errors observed with SBCL.
 @end itemize
 
 @node Limitations
 @chapter Limitations
 
+In these tests
+m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
+m4_math(<<<\mathrm{cn}>>>, <<<cn>>>)
+and
+m4_math(<<<\mathrm{dn}>>>, <<<dn>>>)
+were within about 50 times their conditioning,
+m4_mathcomma(<<<\varepsilon\thinspace\lvert u\thinspace f'(u)/f(u)\rvert>>>, <<<ε |u f'(u)/f(u)|>>>)
+for
+m4_math(<<<\lvert m\rvert>>>, <<<|m|>>>)
+up to
+m4_mathcomma(<<<10^4>>>, <<<10⁴>>>)
+so they are not what limits the accuracy. Two other effects are.
+
 @itemize @bullet
 @item
-For
-m4_math(<<<m>>>, <<<m>>>)
-just off the cuts
-m4_math(<<<(m > 1>>>, <<<(m > 1>>>)
-or
-m4_math(<<<m < 0>>>, <<<m < 0>>>)
-with a tiny imaginary part),
-m4_math(<<<K(m)>>>, <<<K(m)>>>)
-and
-m4_math(<<<K(1-m)>>>, <<<K(1−m)>>>)
-jump across the cut, but each side gives a valid pair of periods, and
-m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
-is analytic in
-m4_math(<<<m>>>, <<<m>>>)
-there. Tested at
-m4_math(<<<3 + 10^{-3}i>>>, <<<3 + 10⁻³i>>>)
-and
-m4_mathdot(<<<-2 - 10^{-3}i>>>, <<<−2 − 10⁻³i>>>)
-@item
-Accuracy for large
+@strong{Large complex parameters.} For complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+the periods shrink as
 m4_math(<<<\lvert m\rvert>>>, <<<|m|>>>)
-is limited by
-m4_mathcomma(<<<\mathrm{sn}>>>, <<<sn>>>)
-m4_mathcomma(<<<\mathrm{cn}>>>, <<<cn>>>)
-m4_mathdot(<<<\mathrm{dn}>>>, <<<dn>>>)
+grows:
+m4_math(<<<\lvert K(m)\rvert>>>, <<<|K(m)|>>>)
+is about 0.6 for
+m4_mathdot(<<<\lvert m\rvert = 30>>>, <<<|m| = 30>>>)
+So even a small
+m4_math(<<<u>>>, <<<u>>>)
+can have
+m4_math(<<<w' \ne w>>>, <<<w' ≠ w>>>)
+in @inlinefmtifelse{tex, @ref{Carlson's Idea, section 5, Carlson's
+Idea}, @ref{Carlson's Idea, section 5}}, and @inlinefmtifelse{tex,
+@ref{From ℰ(w'|m) to ℰ(w|m), section 6, From @math{@scriptE(w'|m)} to
+@math{@scriptE(w|m)}}, @ref{From ℰ(w'|m) to ℰ(w|m), section 6}} adds
+multiples of
+m4_math(<<<E(m)>>>, <<<E(m)>>>)
+and
+m4_mathcomma(<<<K(1-m) - E(1-m)>>>, <<<K(1−m) − E(1−m)>>>)
+which grow like
+m4_math(<<<\sqrt{\lvert m\rvert}>>>, <<<√(|m|)>>>)
+(about 5 to 6 for
+m4_mathpunc(<<<).>>>, <<<\lvert m\rvert = 30>>>, <<<|m| = 30>>>)
+When
+m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
+is much smaller than these terms, their rounding errors dominate, and
+the relative error is a small multiple of
+m4_mathcomma(<<<\varepsilon\thinspace\lvert E(m)\rvert/\lvert\mathcal{E}(u \mid m)\rvert>>>, <<<ε |E(m)|/|ℰ(u|m)|>>>)
+more than the conditioning of
+m4_math(<<<\mathcal{E}>>>, <<<ℰ>>>)
+alone would give. Example:
+m4_mathcomma(<<<u = 0.2431 - 0.1757i>>>, <<<u = 0.2431 − 0.1757i>>>)
+m4_mathcomma(<<<m = -3.065 + 29.84i>>>, <<<m = −3.065 + 29.84i>>>)
+where
+m4_math(<<<w - w'>>>, <<<w − w'>>>)
+is a nonzero period.
+m4_mathcomma(<<<\mathcal{E}(u \mid m) \approx 0.0930 - 0.1080i>>>, <<<ℰ(u|m) ≈ 0.0930 − 0.1080i>>>)
+and
+m4_mathdot(<<<\lvert E(m)\rvert \approx 5.6>>>, <<<|E(m)| ≈ 5.6>>>)
+The relative error is
+m4_mathcomma(<<<4.1\times10^{-14}>>>, <<<4.1×10⁻¹⁴>>>)
+while
+m4_mathcomma(<<<s>>>, <<<s>>>)
+m4_mathcomma(<<<c>>>, <<<c>>>)
+m4_math(<<<d>>>, <<<d>>>)
+are accurate to
+m4_math(<<<3\times10^{-15}>>>, <<<3×10⁻¹⁵>>>)
+and
+m4_mathcomma(<<<R_F>>>, <<<R_F>>>)
+m4_math(<<<R_D>>>, <<<R_D>>>)
+to
+m4_mathdot(<<<2\times10^{-16}>>>, <<<2×10⁻¹⁶>>>)
+Over the 72 points of @inlinefmtifelse{tex, @ref{Validation, section 9,
+Validation}, @ref{Validation, section 9}} with large
+m4_mathcomma(<<<\lvert m\rvert>>>, <<<|m|>>>)
+the error was at most about 370 times
+m4_math(<<<\varepsilon>>>, <<<ε>>>)
+times the conditioning of
+m4_mathdot(<<<\mathcal{E}>>>, <<<ℰ>>>)
+@item
+@strong{Real parameters above 1 with real arguments.} For real
+m4_math(<<<m > 1>>>, <<<m > 1>>>)
+and real
+m4_mathcomma(<<<u>>>, <<<u>>>)
+the formula of @inlinefmtifelse{tex, @ref{m > 1, section 2.2, @math{m >
+1}}, @ref{m > 1, section 2.2}} subtracts
+m4_math(<<<(m - 1)\thinspace u>>>, <<<(m − 1) u>>>)
+from
+m4_mathdot(<<<\sqrt{m}\thinspace\mathcal{E}(\sqrt{m}\thinspace u \mid 1/m)>>>, <<<√m ℰ(√m u|1/m)>>>)
+Both are about
+m4_mathcomma(<<<m u>>>, <<<m u>>>)
+while
+m4_math(<<<\mathcal{E}(u \mid m)>>>, <<<ℰ(u|m)>>>)
+is of order
+m4_mathcomma(<<<u>>>, <<<u>>>)
+so the relative error is about
+m4_mathdot(<<<\varepsilon\thinspace m\lvert u\rvert/\lvert\mathcal{E}(u \mid m)\rvert>>>, <<<ε m|u|/|ℰ(u|m)|>>>)
+Example:
+m4_mathcomma(<<<m = 10^4>>>, <<<m = 10⁴>>>)
+m4_math(<<<u = 0.7{:}>>>, <<<u = 0.7:>>>)
+m4_mathcomma(<<<\mathcal{E}(u \mid m) \approx 0.352>>>, <<<ℰ(u|m) ≈ 0.352>>>)
+and the relative error is
+m4_mathcomma(<<<5.0\times10^{-12}>>>, <<<5.0×10⁻¹²>>>)
+about twice the estimate with
+m4_mathdot(<<<\varepsilon = 2^{-53}>>>, <<<ε = 2⁻⁵³>>>)
+For complex
+m4_math(<<<u>>>, <<<u>>>)
+the result is not small and there is no cancellation: at
+m4_mathcomma(<<<m = 10^4>>>, <<<m = 10⁴>>>)
+m4_math(<<<u = 2 - i>>>, <<<u = 2 − i>>>)
+the error is
+m4_mathdot(<<<9.5\times10^{-16}>>>, <<<9.5×10⁻¹⁶>>>)
+With
+m4_math(<<<s = \sqrt{m}\thinspace u>>>, <<<s = √m u>>>)
+and
+m4_mathcomma(<<<\mu = 1/m>>>, <<<μ = 1/m>>>)
+the formula is
+m4_mathcomma(<<<\sqrt{m}\thinspace\bigl(\mathcal{E}(s \mid \mu) - (1 - \mu)\thinspace s\bigr)>>>, <<<√m (ℰ(s|μ) − (1 − μ) s)>>>)
+and
+m4_mathdot(<<<\mathcal{E}(s \mid \mu) - (1 - \mu)\thinspace s = \mu\int_0^s \mathrm{cn}^2(t \mid \mu)\thinspace dt>>>, <<<ℰ(s|μ) − (1 − μ) s = μ∫₀ˢ cn²(t|μ) dt>>>)
+Computing that integral directly would avoid the cancellation.
 @end itemize
 
 @node References
@@ -1322,7 +1835,14 @@ preprint @uref{https://arxiv.org/abs/math/9409227, arXiv:math/9409227}.
 Eqs.@: (59), (60) (numbered as in the arXiv version).
 @item
 NIST Digital Library of Mathematical Functions,
-@uref{https://dlmf.nist.gov/19.25, §19.25(i)}, eq.@: 19.25.5.
+@uref{https://dlmf.nist.gov/19.25.i, §19.25(i)}, eqs.@: 19.25.5 and
+19.25.9; and @uref{https://dlmf.nist.gov/22, chapter 22}, Jacobian
+elliptic functions, in particular @uref{https://dlmf.nist.gov/22.16.ii,
+§22.16(ii)}, Jacobi's epsilon function.
+@item
+M. Abramowitz and I. A. Stegun, @emph{Handbook of Mathematical
+Functions}, chapter 16 (Jacobian elliptic functions). Equation numbers
+given as "A&S" above are from it.
 @end enumerate
 
 @bye
