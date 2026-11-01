@@ -1,16 +1,18 @@
 fpprintprec: 4;
 
+defstruct (speed_result (m, n, f, result));
+
 speed_test (f, l, m) :=
-    for n in l
-        do (timer_reset (),
-            print (['m = m, 'n = n, 'f = f]),
-            for i thru m do f (n),
-            print ('timer_info = timer_info ()));
+    makelist
+        (block ([result],
+                timer_reset (),
+                print (['m = m, 'n = n, 'f = f]),
+                for i thru m do f (n),
+                print ('timer_info = (result: timer_info ())),
+                speed_result (m, n, f, map (lambda ([r], r[1] = r[2]), result))),
+         n, l);
 
-timer (
-);
-
-L_short: [ 1, 10, 30, 100, 300, 1000, 3000, 10000, 30000 ];
+L_short: [ 10, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000, 2000, 3000, 5000, 8000, 10000, 20000, 30000 ];
 
 untimer ();
 
@@ -18,13 +20,93 @@ timer (permute, array_permute, permute_via_array_permute);
 timer (random_perm, array_random_perm, random_perm_via_array_random_perm);
 timer (fillarray, make_array, makelist);
 
-speed_test (lambda ([n], permute (random_perm (n), makelist (i, i, 1, n))), L_short, 3);
+results_1: speed_test (lambda ([n], permute (random_perm (n), makelist (i, i, 1, n))), L_short, 3);
 
-L_long: [ 1, 10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000, 300000, 1000000 ];
+info: build_info ();
 
-speed_test (lambda ([n], array_permute (array_random_perm (n), fillarray (make_array (fixnum, n), makelist (i - 1, i, 1, n)))), L_long, 3);
+plot2d (
+    [
+        [discrete, map (lambda ([x], [ x@n, first (assoc (makelist, x@result)) ]), results_1)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (random_perm, x@result)) ]), results_1)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (permute, x@result)) ]), results_1)]
+    ],
+    [title, printf (false, "List implementation of permute and friends\\n~a ~a, ~a", info@lisp_name, info@lisp_version, info@host)],
+    [legend, "makelist", "random_perm", "permute"],
+    [xlabel, "n"],
+    [ylabel, "seconds"],
+    [style, linespoints],
+    [gnuplot_preamble, "set key left top"],
+    [svg_file, "./list-implementation-permute-and-friends.svg"]);
 
-speed_test (lambda ([n], permute_via_array_permute (random_perm_via_array_random_perm (n), makelist (i, i, 1, n))), L_long, 3);
+L_long: append (L_short, [ 50000, 80000, 100000, 200000, 300000, 500000, 800000, 1000000 ]);
+
+results_2: speed_test (lambda ([n], array_permute (array_random_perm (n), fillarray (make_array (fixnum, n), makelist (i - 1, i, 1, n)))), L_long, 3);
+
+plot2d (
+    [
+        [discrete, map (lambda ([x], [ x@n, first (assoc (makelist, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (make_array, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (fillarray, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (array_random_perm, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (array_permute, x@result)) ]), results_2)]
+    ],
+    [title, printf (false, "Array implementation of permute and friends\\n~a ~a, ~a", info@lisp_name, info@lisp_version, info@host)],
+    [legend, "makelist", "make_array", "fillarray", "array_random_perm", "array_permute"],
+    [xlabel, "n"],
+    [xtics, 0, 200000, 1000000],
+    [ylabel, "seconds"],
+    [style, linespoints],
+    [gnuplot_preamble, "set key left top; set format x \"%.0e\""],
+    [svg_file, "./array-implementation-permute-and-friends.svg"]);
+
+results_3: speed_test (lambda ([n], permute_via_array_permute (random_perm_via_array_random_perm (n), makelist (i, i, 1, n))), L_long, 3);
+
+plot2d (
+    [
+        [discrete, map (lambda ([x], [ x@n, first (assoc (makelist, x@result)) ]), results_3)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (random_perm_via_array_random_perm, x@result)) ]), results_3)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (permute_via_array_permute, x@result)) ]), results_3)]
+    ],
+    [title, printf (false, "List permute via array implementation\\n~a ~a, ~a", info@lisp_name, info@lisp_version, info@host)],
+    [legend, "makelist", "random_perm_via_array_random_perm", "permute_via_array_permute"],
+    [xlabel, "n"],
+    [xtics, 0, 200000, 1000000],
+    [ylabel, "seconds"],
+    [style, linespoints],
+    [gnuplot_preamble, "set key left top; set format x \"%.0e\""],
+    [svg_file, "./list-permute-via-array-implementation.svg"]);
+
+/* now compare array implementation vs list implementation */
+
+plot2d (
+    [
+        [discrete, map (lambda ([x], [ x@n, first (assoc (permute, x@result)) ]), results_1)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (array_permute, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (permute_via_array_permute, x@result)) ]), results_3)]
+    ],
+    [title, printf (false, "Array and list implementations of permute\\n~a ~a, ~a", info@lisp_name, info@lisp_version, info@host)],
+    [legend, "permute", "array_permute", "permute_via_array_permute"],
+    [xlabel, "n"],
+    [xtics, 0, 200000, 1000000],
+    [ylabel, "seconds"],
+    [style, linespoints],
+    [gnuplot_preamble, "set key right top; set format x \"%.0e\""],
+    [svg_file, "./array-vs-list-impl-permute.svg"]);
+
+plot2d (
+    [
+        [discrete, map (lambda ([x], [ x@n, first (assoc (random_perm, x@result)) ]), results_1)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (array_random_perm, x@result)) ]), results_2)],
+        [discrete, map (lambda ([x], [ x@n, first (assoc (random_perm_via_array_random_perm, x@result)) ]), results_3)]
+    ],
+    [title, printf (false, "Array and list implementations of random_perm\\n~a ~a, ~a", info@lisp_name, info@lisp_version, info@host)],
+    [legend, "random_perm", "array_random_perm", "random_perm_via_array_random_perm"],
+    [xlabel, "n"],
+    [xtics, 0, 200000, 1000000],
+    [ylabel, "seconds"],
+    [style, linespoints],
+    [gnuplot_preamble, "set key right top"],
+    [svg_file, "./array-vs-list-impl-random_perm.svg"]);
 
 /* further tests:
 
