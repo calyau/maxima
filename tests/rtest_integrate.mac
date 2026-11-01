@@ -7393,6 +7393,19 @@ integrate(1/((1+%i*t)*(1+t^2)), t);
  (-%i*log(%i*tan(x)-1))/4-(3*%i*log(tan(x)-%i))/4-1/(2*tan(x)-2*%i)]$
 
 
+/* Bug #5757: "integrate(tan(x)*atan(sin(x)/(cos(x)+1)), x) exhausts the control stack" */
+
+block([fs : [tan(x)*atan(sin(x)/(cos(x)+1)), (sin(x)*atan(sin(x)/(cos(x)+1)))/(2*cos(x)+2)]],
+  map(lambda([f],
+    block([F : integrate(f, x)],
+      [freeof('integrate, F),
+       map(lambda([a, b],
+             is(abs(rectform(float(demoivre(subst(x = b, F) - subst(x = a, F)))) - quad_qags(f, x, a, b)[1]) < 1e-10)),
+           [-3, 1/10, 2], [-2, 1/2, 3])])),
+    fs));
+[[true, [true, true, true]], [true, [true, true, true]]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
