@@ -567,7 +567,19 @@
 			sinint-logptdx))
 	  nil)))
 
+;; RAT takes %i for a variable unless $ALGEBRAIC is T, so the partial
+;; fractions can miss a factor that two denominators share, as 1+%i*x and
+;; 1+x^2, and then divide by 1+%i^2. Do them again with $ALGEBRAIC if they
+;; fail, but only then, since $ALGEBRAIC changes other results.
 (defun ratint (sinint-exp sinint-var)
+  (if (or $algebraic (freeof '$%i sinint-exp))
+    (ratint1 sinint-exp sinint-var)
+    (or (car (let (($errormsg nil))
+               (errcatch (ratint1 sinint-exp sinint-var))))
+        (let (($algebraic t))
+          (ratint1 sinint-exp sinint-var)))))
+
+(defun ratint1 (sinint-exp sinint-var)
   (prog (genvar *checkfactors* varlist ratarg $keepfloat)
      (setq varlist (list sinint-var))
      (setq ratarg (ratf sinint-exp))
