@@ -301,6 +301,7 @@ Bug fixes for numbered bugs:
 * \#5753 integrate(atan2(x,0), x) divides by zero
 * \#5754 integrate() divides by zero for rational functions with %i, as 1/((1+%i*t)*(1+t^2))
 * \#5755 integrate() calls facsum on the same exponents up to 17 times in INTEGRATE-EXP-SPECIAL
+* \#5756 carg() and cabs() give an error and csign() never returns under logarc
 
 Bug fixes for unnumbered bugs:
 ------------------------------
