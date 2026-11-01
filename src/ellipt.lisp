@@ -1385,8 +1385,10 @@
   (when (bf-negative-imaginary-axis-p w)
     (return-from bf-inverse-jacobi-dn
       (conjugate (bf-inverse-jacobi-dn (conjugate w) (conjugate m)))))
+  ;; dn's R_F arguments, w^2, (w^2-(1-m))/m and 1, do not grow with m,
+  ;; so scale on w alone.
   (multiple-value-bind (v tt)
-      (bf-inverse-jacobi-scale w m)
+      (bf-inverse-jacobi-scale w 0)
     (let* ((t2 (* tt tt))
 	   (s2 (bf-diff-of-squares tt v))
 	   (v2 (* v v))
