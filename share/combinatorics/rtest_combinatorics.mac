@@ -260,3 +260,93 @@ permult (perm_inverse (R), R);
 
 permult (R, perm_inverse (R));
 ''(makelist (i, i, 1, 20));
+
+/* need tests for random_perm here */
+
+/* verify array versions of functions yield same results as list versions,
+ * except that array permutations have elements 0 through n - 1 instead of 1 through n.
+ *
+ * equivalent_perms compares an array permutation P to a list permutation Q.
+ */
+
+(equivalent_perms (P, Q) :=
+     block ([n0: ?length (P), n1: length (Q)],
+            n0 = n1 and (1 + listarray (P)) = Q),
+ array_perm_from_list_perm (Q) :=
+     block ([P: make_array (fixnum, length (Q))],
+            fillarray (P, Q - 1)),
+ array_from_list (L) :=
+     block ([A: make_array (fixnum, length (L))],
+            fillarray (A, L)),
+ verify_array_permute (L, Q) :=
+     block ([A: array_from_list (L), P: array_perm_from_list_perm (Q)],
+            if listarray (array_permute (P, A)) = permute (Q, L) then true
+                else FAILED ('listarray ('array_permute ('array_perm_from_list_perm (Q), 'array_from_list (L))) = 'permute (Q, L))),
+ verify_array_perm_inverse (Q) :=
+     block ([P1: array_perm_inverse (array_perm_from_list_perm (Q)), Q1: perm_inverse (Q)],
+            if equivalent_perms (P1, Q1) then true
+                else FAILED ('equivalent_perms ('array_perm_inverse ('array_perm_from_list_perm (Q)), 'perm_inverse (Q)))),
+ verify_array_permult ([QQ]) :=
+     block ([PP: map (array_perm_from_list_perm, QQ)],
+            if equivalent_perms (apply (array_permult, PP), apply (permult, QQ)) then true
+                else FAILED ('equivalent_perms ('apply (array_permult, 'map (array_perm_from_list_perm, QQ)), 'apply (permult, QQ)))),
+ verify_array_random_perm (S, n) :=
+     block ([P, Q],
+            P: (set_random_state (S), array_random_perm (n)),
+            Q: (set_random_state (S), random_perm (n)),
+            if equivalent_perms (P, Q) then true
+                else FAILED ('equivalent_perms ('array_random_perm (n), 'random_perm (n)))),
+ L1: [ 100 ],
+ R1: [ 1 ],
+ L10: makelist (100 + random (50), 10),
+ R10a: random_perm (10),
+ R10b: random_perm (10),
+ R10c: random_perm (10),
+ L100: makelist (100 + random (50), 100),
+ R100: random_perm (100),
+ S: make_random_state (1000),
+ 0);
+0;
+
+verify_array_permute (L1, R1);
+true;
+
+verify_array_permute (L10, R10a);
+true;
+
+verify_array_permute (L10, R10b);
+true;
+
+verify_array_permute (L10, R10c);
+true;
+
+verify_array_permute (L100, R100);
+true;
+
+verify_array_perm_inverse (R1);
+true;
+
+verify_array_perm_inverse (R10a);
+true;
+
+verify_array_perm_inverse (R10b);
+true;
+
+verify_array_perm_inverse (R10c);
+true;
+
+verify_array_perm_inverse (R100);
+true;
+
+verify_array_random_perm (S, 1);
+true;
+
+verify_array_random_perm (S, 10);
+true;
+
+verify_array_random_perm (S, 100);
+true;
+
+verify_array_permult (R10a, R10b, R10c);
+true;
+
