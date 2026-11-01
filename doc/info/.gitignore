@@ -56,3 +56,8 @@ extract_categories.sh
 tmpfile
 build-html-index.log
 maxima-index-html.lisp
+
+impl-notes/*.texi
+impl-notes/*.pdf
+impl-notes/*.css
+impl-notes/figures
