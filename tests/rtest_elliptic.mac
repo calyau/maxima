@@ -2003,13 +2003,13 @@ true;
  * scaled third argument of R_F, t^2, underflows.  It is the only
  * source of the tiny real part, which is checked on its own. */
 [closeto(inverse_jacobi_sn(2.0^1020, 0.5) - (1.258691851193087e-307 - 1.8540746773013719*%i), 4.4409e-16),
- closeto(realpart(inverse_jacobi_sn(2.0^1020, 0.5)) - 1.258691851193087e-307, 3.9525e-323),
+ closeto(realpart(inverse_jacobi_sn(2.0^1020, 0.5))/1.258691851193087e-307 - 1, 4.4409e-16),
  closeto(inverse_jacobi_sn(2b0^1020, 0.5b0) - (1.258691851193086924183388283942521b-307 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32),
  closeto(realpart(inverse_jacobi_sn(2b0^1020, 0.5b0)) - 1.258691851193086924183388283942521b-307, 1b-338)];
 [true, true, true, true];
 
 [closeto(inverse_jacobi_cn(2.0^1020*%i, 0.5) - (1.258691851193087e-307 - 1.8540746773013719*%i), 4.4409e-16),
- closeto(realpart(inverse_jacobi_cn(2.0^1020*%i, 0.5)) - 1.258691851193087e-307, 3.9525e-323),
+ closeto(realpart(inverse_jacobi_cn(2.0^1020*%i, 0.5))/1.258691851193087e-307 - 1, 4.4409e-16),
  closeto(inverse_jacobi_cn(2b0^1020*%i, 0.5b0) - (1.258691851193086924183388283942521b-307 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32),
  closeto(realpart(inverse_jacobi_cn(2b0^1020*%i, 0.5b0)) - 1.258691851193086924183388283942521b-307, 1b-338)];
 [true, true, true, true];
