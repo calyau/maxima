@@ -1212,6 +1212,13 @@
 	(complex (+ (* (- a x) (+ a x)) (* y y))
 		 (* -2 x y)))))
 
+;; Convert complex W to the equivalent real value if the imaginary part
+;; is exactly 0.
+(defun real-if-zero-imag (w)
+  (if (and (not (realp w)) (zerop (imagpart w)))
+      (realpart w)
+      w))
+
 ;; Carlson's Rf, with any argument whose imaginary part is exactly
 ;; zero is changed to be a real value.  For lisp's that support
 ;; signed-zeros, the sign of a zero imaginary part depends on how the
@@ -1222,15 +1229,37 @@
 ;; real, such an argument is always taken on the upper side, as it is
 ;; for bigfloats, which have no signed zero.
 (defun bf-inverse-jacobi-rf (x y z)
-  (flet ((real-if-zero-imag (w)
-           ;; Convert complex W to the equivalent real value if the
-           ;; imaginary part is exactly 0.
-	   (if (and (not (realp w)) (zerop (imagpart w)))
-	       (realpart w)
-	       w)))
-    (bf-rf (real-if-zero-imag x)
-	   (real-if-zero-imag y)
-	   (real-if-zero-imag z))))
+  (bf-rf (real-if-zero-imag x)
+	 (real-if-zero-imag y)
+	 (real-if-zero-imag z)))
+
+;; Compute f*rf(x,y,z), where SZ is sqrt(z).
+;;
+;; After scaling (bf-inverse-jacobi-scale), z = t^2 can be negligible
+;; next to x and y, and can even underflow.  It can still be the only
+;; source of a tiny real or imaginary part of the result.  For
+;; inverse_jacobi_sn(1e300, 0.5), x and y are negative reals and z is
+;; the only source of the real part, 1.414e-300.  So when z is
+;; negligible, use
+;;
+;;   rf(x,y,z) = rf(x,y,0) - sqrt(z)/(sqrt(x)*sqrt(y)) + O(z)
+;;
+;; which follows from d(rf)/dz = -1/(2*sqrt(x*y*z)) + O(1) as z -> 0.
+;; With |z| < 2^-120*min(|x|,|y|), the O(z) term is far below the
+;; rounding error.  The square roots are of the same arguments that
+;; bf-inverse-jacobi-rf gives bf-rf, so the correction is on the same
+;; branch.  F*sqrt(z) is formed before dividing, so the correction
+;; does not underflow unless the result itself does.  Bigfloats do not
+;; underflow, so they always use rf directly.
+(defun bf-inverse-jacobi-rf-small-z (f x y z sz)
+  (let ((x (real-if-zero-imag x))
+	(y (real-if-zero-imag y)))
+    (if (and (cl:numberp x) (cl:numberp y)
+	     (not (zerop x)) (not (zerop y))
+	     (< (abs z) (* (cl:scale-float 1d0 -120) (min (abs x) (abs y)))))
+	(- (* f (bf-rf x y 0))
+	   (/ (/ (* f sz) (sqrt x)) (sqrt y)))
+	(* f (bf-inverse-jacobi-rf x y z)))))
 
 ;; Choose between two ways, A and B, of computing the same value.
 ;; SIZE-A and SIZE-B are the magnitudes of the terms in A and B that
@@ -1269,10 +1298,12 @@
       ;; 1.  Then the terms of B are both small: 1-u^2 is accurate
       ;; because it is computed as (1-u)*(1+u), and 1-m is exact.  B
       ;; cancels when u is large and m is not near 1, where A is fine.
-      (* v (bf-inverse-jacobi-rf s2
-		  (bf-inverse-jacobi-choose (abs mv2) (- t2 mv2)
-					    (+ (abs s2) (abs m1v2)) (+ s2 m1v2))
-		  t2)))))
+      (bf-inverse-jacobi-rf-small-z
+       v
+       s2
+       (bf-inverse-jacobi-choose (abs mv2) (- t2 mv2)
+				 (+ (abs s2) (abs m1v2)) (+ s2 m1v2))
+       t2 tt))))
 
 ;; True if U is on the negative imaginary axis.  -0d0 is not included.
 ;;
@@ -1340,7 +1371,7 @@
 	   (d2 (bf-inverse-jacobi-choose (abs ms2) (- t2 ms2)
 					 (+ (abs (* (- 1 m) t2)) (abs (* m v2)))
 					 (+ (* (- 1 m) t2) (* m v2))))
-	   (z (* (sqrt s2) (bf-inverse-jacobi-rf v2 d2 t2))))
+	   (z (bf-inverse-jacobi-rf-small-z (sqrt s2) v2 d2 t2 tt)))
       (if (minusp (realpart u))
 	  (- (* 2 (bf-elliptic-k m)) z)
 	  z))))
@@ -1419,15 +1450,16 @@
       (cond ((= w 1)
 	     (float 0 w))
 	    ((and (realp w) (realp m) (< 0 m 1) (<= 0 w 1) (>= c2 0))
-	     (* (sqrt s2)
-		(bf-inverse-jacobi-rf c2 (* m v2) (* m t2))))
+	     (bf-inverse-jacobi-rf-small-z (sqrt s2) c2 (* m v2) (* m t2)
+					   (* (sqrt m) tt)))
 	    (t
 	     (let* ((am (if (and (cl:numberp m) (< (abs m) (expt 2d0 -500)))
 			    (expt 2d0 -600)
 			    1))
 		    (ph (/ (sqrt am) (sqrt m)))
-		    (z (* (sqrt s2) ph
-			  (bf-inverse-jacobi-rf (* am v2) (/ (* am c2) m) (* am t2)))))
+		    (z (bf-inverse-jacobi-rf-small-z (* (sqrt s2) ph)
+						     (* am v2) (/ (* am c2) m) (* am t2)
+						     (* (sqrt am) tt))))
 	       (if (minusp (realpart w))
 		   (- (* 2 ph (bf-inverse-jacobi-rf 0 (/ (* am (- m 1)) m) am))
 		      z)
