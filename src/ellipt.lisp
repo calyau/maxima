@@ -4799,7 +4799,7 @@ first kind:
 	      ;; A&S 17.4.46
 	      (ftake '%elliptic_f
 		     (ftake '%asin
-			    (power (mul (sub 1 (mul u u))
+			    (power (div (sub 1 (mul u u))
 					(sub 1 (mul m u u)))
 				   1//2))
 		     m))
@@ -4807,7 +4807,7 @@ first kind:
 	      ;; A&S 17.4.47
 	      (ftake '%elliptic_f
 		     (ftake '%asin
-			    (power (mul (sub (mul u u) 1)
+			    (power (div (sub (mul u u) 1)
 					(sub (mul u u) m))
 				   1//2))
 		     m))
@@ -4822,7 +4822,7 @@ first kind:
 	      (ftake '%elliptic_f
 		     (ftake '%asin
 			    (power (add m (mul u u))
-				   1//2))
+				   -1//2))
 		     m))
 	     (%inverse_jacobi_sd
 	      ;; A&S 17.4.51

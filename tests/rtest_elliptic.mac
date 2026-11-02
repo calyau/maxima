@@ -2014,6 +2014,17 @@ true;
  closeto(realpart(inverse_jacobi_cn(2b0^1020*%i, 0.5b0)) - 1.258691851193086924183388283942521b-307, 1b-338)];
 [true, true, true, true];
 
+/* make_elliptic_f used the wrong amplitude for inverse_jacobi_cd,
+ * inverse_jacobi_dc and inverse_jacobi_ds. */
+make_elliptic_f(inverse_jacobi_cd(u, m));
+elliptic_f(asin(sqrt((1-u^2)/(1-m*u^2))), m)$
+
+make_elliptic_f(inverse_jacobi_dc(u, m));
+elliptic_f(asin(sqrt((u^2-1)/(u^2-m))), m)$
+
+make_elliptic_f(inverse_jacobi_ds(u, m));
+elliptic_f(asin(1/sqrt(u^2+m)), m)$
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
