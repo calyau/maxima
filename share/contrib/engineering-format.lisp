@@ -1,6 +1,6 @@
 ;; copyright 2014 by Robert Dodier
 ;; I release this work under terms of the GNU GPL
-;; Small additions 2018 by Gunter Königsmann
+;; Small additions 2018 by Gunter Koenigsmann
 
 ;; Format floats for display with exponent which is a multiple of 3.
 ;; fpprintprec is honored. The global flag engineering_format_floats

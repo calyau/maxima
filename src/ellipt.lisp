@@ -528,10 +528,10 @@
 ;; In Sala's formulation, we compute gd(A+w) - gd(A-w).  This loses
 ;; precision when A is large and w is small.  To fix this, we use
 ;;
-;;   D = gd(A+w) - gd(A-w) = 2·atan(sinh(w) / cosh(A))
+;;   D = gd(A+w) - gd(A-w) = 2*atan(sinh(w) / cosh(A))
 ;;
-;; Note that tan(gd(u)/2) = tanh(u/2).  Let a = (A + w)/2, b = (A −
-;; w)/2, so that a − b = w and a + b = A.
+;; Note that tan(gd(u)/2) = tanh(u/2).  Let a = (A + w)/2, b = (A -
+;; w)/2, so that a - b = w and a + b = A.
 ;;
 ;; Let alpha = gd(A+w)/2 and beta = gd(A-w)/2.  Then
 ;;
@@ -539,7 +539,7 @@
 ;;
 ;; Then using the tan of differences formula:
 ;;
-;;   tan(D/2) = (tanh(a) − tanh(b)) / (1 + tanh(a) · tanh(b)).
+;;   tan(D/2) = (tanh(a) - tanh(b)) / (1 + tanh(a) * tanh(b)).
 ;;
 ;; Multiply top and bottom by cosh(a)*cosh(b):
 ;;
@@ -664,7 +664,7 @@
             ;;
             ;; where w = c*z/(2*K), c = %pi*m*(K/K').
             ;;
-            ;; Thus, the term is bounded by 4*|sinh w|* e^{−n* Re(c)}.
+            ;; Thus, the term is bounded by 4*|sinh w|* e^{-n* Re(c)}.
             ;;
             ;; Comparing these bounds by taking the log and simplifying, we have
             ;;

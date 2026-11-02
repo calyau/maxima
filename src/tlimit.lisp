@@ -20,7 +20,7 @@
 
 ;; The function `limit-by-methods` iterates over a list of limit methods and stops when a 
 ;; method is successful. A method is considered successful when it returns a value that is 
-;; neither a boolean (often produced by a non‑local exit) nor a limit nounform.
+;; neither a boolean (often produced by a non-local exit) nor a limit nounform.
 
 ;; To prevent unbounded recursion or repeated evaluation, `limit-by-methods`
 ;; uses two safeguards:
@@ -197,7 +197,7 @@
    and related methods."
   (declare (ignore flag))
 
-  ;; Establish recursion‑protection for limit-by-methods.  If these specials
+  ;; Establish recursion-protection for limit-by-methods.  If these specials
   ;; are already dynamically bound, preserve their bindings; otherwise start
   ;; with the default values. The function taylim is currently the only entry point that
   ;; invokes limit-by-methods, so we set up the guard context here.

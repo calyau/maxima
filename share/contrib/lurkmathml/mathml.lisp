@@ -513,7 +513,7 @@ else if $MATHML_UNDERSCORE_IS_SUBSCRIPT is at least one, then
       (t (setq l (mathml (cadr x) (append l '("<msup><mrow>")) nil lop (caar x))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
                     ;; the change in base-line makes parens unnecessary
-                    ;; exponents are wrapped in 〈〉 (= #x3008 #x3009)
+                    ;; exponents are wrapped in <> (= #x3008 #x3009)
 		    (if nc
 			(mathml (cadr x) '("</mrow> <mrow><mo form=\"prefix\">&#x3008;</mo><mo form=\"prefix\">-</mo>")(cons "<mo form=\"postfix\">&#x3009;</mo></mrow></msup> " r) 'mparen 'mparen)
 			(mathml (cadr x) '("</mrow> <mrow> <mo form=\"prefix\">-</mo>")(cons "</mrow></msup> " r) 'mparen 'mparen))

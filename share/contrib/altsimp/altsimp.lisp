@@ -4,7 +4,7 @@
 #|
 To simplify a sum with n terms, the standard simplus function calls
 great O(n^2) times. By using sorting more effectively, this code
-reduces the calls to O(n log_2(n)).
+reduces the calls to O(n log_2(n)).
 
 When the option variable `use_extended_real_arithmetic` is true, 
 this code tries to be "infinity correct" for addition. By this I
@@ -309,14 +309,14 @@ would possibly speed the code.
 ;;; If EQUAL does not recognize two terms as identical, no harm is done: both
 ;;; entries are stored separately.  In that case the table may contain entries
 ;;; (n1 . E1) and (n2 . E2) even when E1 and E2 are alike1 but not EQUAL.  The
-;;; hash table therefore performs only a *partial* common‑term combination.
+;;; hash table therefore performs only a *partial* common-term combination.
 ;;;
 ;;; After the DOLIST, the hash table entries are collected into a list and sorted
 ;;; with the predicate GREAT.  This ordering makes algebraically similar
 ;;; expressions adjacent to one another.  The subsequent WHILE loop then performs
 ;;; the full combination of common terms by using ALIKE1, which recognizes
 ;;; expressions that are alike1 even when they are not EQUAL.  Thus some common
-;;; terms are combined during the hash‑table phase, and the remainder are
+;;; terms are combined during the hash-table phase, and the remainder are
 ;;; combined in the WHILE loop.
 ;;;
 ;;; The hash table is optional: the WHILE loop alone is sufficient for correctness.
@@ -325,7 +325,7 @@ would possibly speed the code.
 ;;; are alike1 but not EQUAL.
 ;;;
 ;;; The DO-OVER mechanism handles a special case: when combining coefficients
-;;; produces ±1 times an expression that is itself an MPLUS, for example
+;;; produces +/-1 times an expression that is itself an MPLUS, for example
 ;;; 5*(a+b) - 4*(a+b) + a.  Without the DO-OVER scheme, this expression would
 ;;; simplify only to (a+b) + a, rather than to the fully simplified result.
 
