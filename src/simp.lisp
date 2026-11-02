@@ -2729,10 +2729,9 @@
                    (rplacd fm (cddr fm))
                    (go absmerge))
 
-                  ((or (maxima-constantp (car x))
-                       (maxima-constantp (cadadr fm)))
-                   (if (great temp (cadr fm))
-                       (go gr)))
+                  ;; Sort the factors by their bases, constant or not, so that
+                  ;; the order does not depend on the exponents and the powers
+                  ;; of a base stay next to each other.
                   ((great (car x) (cadadr fm))
                    (go gr)))
             (go less))
@@ -2775,9 +2774,7 @@
             (rplacd fm (cddr fm))
             (go absmerge))
 
-           ((maxima-constantp (car x))
-            (when (great temp (cadr fm))
-              (go gr)))
+           ;; Sort by the base, as for a power above.
            ((great (car x) (cadr fm))
             (go gr)))
   less

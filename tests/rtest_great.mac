@@ -117,6 +117,28 @@ block([a,b,c,d,M,L,ans],
  ans);
 [false, false, false, false, false, false]$
 
+
+/* Bug #5760: "Products with powers of constants depend on the order of their factors" */
+
+block([e : %e^(2*x)/(%e^x+1)],
+  [e*(%e^x+1),
+   map(lambda([l], apply("*", l)), permutations([%e^x+1, (%e^x+1)^2, %e^(2*x)])),
+   map(lambda([l], apply("*", l)), permutations([1-%pi, %pi, sqrt(%pi)]))]);
+[%e^(2*x), {%e^(2*x)*(%e^x+1)^3}, {(1-%pi)*%pi^(3/2)}]$
+
+block([e : %e^(2*x)*(%e^x-2)^2*(%e^x+1)],
+  [cardinality(map(lambda([l], apply("*", l)), permutations([%e^(2*x), (%e^x-2)^2, %e^x+1]))),
+   is(expand(e, 0, 0) = e)]);
+[1, true]$
+
+block([A, B, C],
+  local(a, b),
+  declare([a, b], constant),
+  [A, B, C] : [b^2, (b-2*a)^2, a+b],
+  [is(A*B*C = C*A*B), is(A*B*C = B*C*A), is(expand(A*B*C, 0, 0) = A*B*C)]);
+[true, true, true]$
+
+
 /* Did we make a mess? Let's clean it up!*/
 (remvalue(L),remvalue(bad),remove(z,complex), reset(domain), 0);
 0$

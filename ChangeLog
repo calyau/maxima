@@ -305,6 +305,7 @@ Bug fixes for numbered bugs:
 * \#5757 integrate(tan(x)*atan(sin(x)/(cos(x)+1)), x) exhausts the control stack
 * \#5758 integrate() gives half powers and stray constants for integrands with several exponentials
 * \#5759 integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z
+* \#5760 Products with powers of constants depend on the order of their factors
 
 Bug fixes for unnumbered bugs:
 ------------------------------
