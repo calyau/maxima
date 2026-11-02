@@ -2014,6 +2014,59 @@ true;
  closeto(realpart(inverse_jacobi_cn(2b0^1020*%i, 0.5b0)) - 1.258691851193086924183388283942521b-307, 1b-338)];
 [true, true, true, true];
 
+/* inverse_jacobi_nc and inverse_jacobi_nd with u near 1.  1/u is not
+ * formed, since its rounding error dominates the result there. */
+[closeto(inverse_jacobi_nc(1 + 2.0^-30, 0.5) - 4.3158372865106896e-5, 9.5831e-21),
+ closeto(inverse_jacobi_nc(1 + 2b0^-30, 0.5b0) - 4.3158372865106896816853644982381b-5, 5.3197b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nd(1 + 2.0^-30, 0.5) - 6.103515626421085e-5, 1.3553e-20),
+ closeto(inverse_jacobi_nd(1 + 2b0^-30, 0.5b0) - 6.1035156264210854734723466198711b-5, 7.5232b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nc(-1 - 2.0^-30, 0.5) - 3.708106196229879, 8.2337e-16),
+ closeto(inverse_jacobi_nc(-1 - 2b0^-30, 0.5b0) - 3.7081061962298787299708838407455b0, 9.1412b-32)];
+[true, true];
+
+[closeto(inverse_jacobi_nc(1 + 2.0^-30 + 2.0^-40*%i, 0.5) - (4.315837800998433e-5 + 2.1073421728580513e-8*%i), 9.5831e-21),
+ closeto(inverse_jacobi_nc(1 + 2b0^-30 + 2b0^-40*%i, 0.5b0) - (4.3158378009984335732854990151609b-5 + 2.1073421728580512769869755731514b-8*%i), 5.3197b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nd(1 + 2.0^-30 + 2.0^-40*%i, 0.5) - (6.10351635401663e-5 + 2.9802318855799798e-8*%i), 1.3553e-20),
+ closeto(inverse_jacobi_nd(1 + 2b0^-30 + 2b0^-40*%i, 0.5b0) - (6.1035163540166295432692656892758b-5 + 2.9802318855799798592885693720484b-8*%i), 7.5232b-37)];
+[true, true];
+
+/* inverse_jacobi_ns with u and m both near 1. */
+[closeto(inverse_jacobi_ns(1 + 2.0^-20, 1 - 2.0^-40) - 7.278045515090278, 1.6161e-15),
+ closeto(inverse_jacobi_ns(1 + 2b0^-20, 1 - 2b0^-40) - 7.2780455150902777650709949991357b0, 8.9709b-32)];
+[true, true];
+
+/* inverse_jacobi_ns, inverse_jacobi_nc and inverse_jacobi_nd with tiny
+ * u, where the arguments of R_F are scaled.  The tiny real part of
+ * inverse_jacobi_ns is checked on its own. */
+[closeto(inverse_jacobi_ns(2.0^-1000, 0.5) - (1.3198340665566424e-301 - 1.8540746773013719*%i), 4.1169e-16),
+ closeto(realpart(inverse_jacobi_ns(2.0^-1000, 0.5))/1.3198340665566424e-301 - 1, 4.4409e-16),
+ closeto(inverse_jacobi_ns(2b0^-1000, 0.5b0) - (1.3198340665566423146125205532233b-301 - 1.8540746773013719184338503471953b0*%i), 4.5707b-32),
+ closeto(realpart(inverse_jacobi_ns(2b0^-1000, 0.5b0))/1.3198340665566423146125205532233b-301 - 1, 4.9304b-32)];
+[true, true, true, true];
+
+[closeto(inverse_jacobi_nc(2.0^-1000, 0.5) - 1.8540746773013719*%i, 4.1169e-16),
+ closeto(inverse_jacobi_nc(2b0^-1000, 0.5b0) - 1.8540746773013719184338503471953b0*%i, 4.5707b-32),
+ closeto(inverse_jacobi_nd(2.0^-1000, 0.5) - 1.8540746773013719*%i, 4.1169e-16),
+ closeto(inverse_jacobi_nd(2b0^-1000, 0.5b0) - 1.8540746773013719184338503471953b0*%i, 4.5707b-32)];
+[true, true, true, true];
+
+/* inverse_jacobi_ns, inverse_jacobi_nc and inverse_jacobi_nd at u = 0
+ * signal an error, except for m = 1, where jacobi_nc(u,1) =
+ * jacobi_nd(u,1) = cosh(u). */
+[errcatch(inverse_jacobi_ns(0.0, 0.5)), errcatch(inverse_jacobi_nc(0b0, 0.5b0)),
+ errcatch(inverse_jacobi_nd(0.0, 0.5)), errcatch(inverse_jacobi_ns(1.0, 1.0))];
+[[], [], [], []];
+
+[closeto(inverse_jacobi_nc(0.0, 1.0) - %pi/2*%i, 2.2205e-16),
+ closeto(inverse_jacobi_nd(0b0, 1b0) - bfloat(%pi/2)*%i, 1.2326b-32)];
+[true, true];
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
