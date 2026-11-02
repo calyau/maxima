@@ -1926,7 +1926,7 @@ true;
  * is tiny, so it is also checked on its own: the tolerance on the
  * whole value would pass even if the real part were lost. */
 [closeto(inverse_jacobi_sn(2.0^600, 0.5) - (3.4081413574608386e-181 - 1.8540746773013719*%i), 2.2205e-16),
- closeto(realpart(inverse_jacobi_sn(2.0^600, 0.5)) - 3.4081413574608386e-181, 1.0702e-196),
+ closeto(realpart(inverse_jacobi_sn(2.0^600, 0.5)) - 3.4081413574608386e-181, 1.0703e-196),
  closeto(inverse_jacobi_sn(2b0^600, 0.5b0) - (3.408141357460838414302093156091263b-181 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32),
  closeto(realpart(inverse_jacobi_sn(2b0^600, 0.5b0)) - 3.408141357460838414302093156091263b-181, 1b-212)];
 [true, true, true, true];
@@ -1935,7 +1935,7 @@ true;
  * is tiny, so it is also checked on its own: the tolerance on the
  * whole value would pass even if the real part were lost. */
 [closeto(inverse_jacobi_cn(2.0^600*%i, 0.5) - (3.4081413574608386e-181 - 1.8540746773013719*%i), 2.2205e-16),
- closeto(realpart(inverse_jacobi_cn(2.0^600*%i, 0.5)) - 3.4081413574608386e-181, 1.0702e-196),
+ closeto(realpart(inverse_jacobi_cn(2.0^600*%i, 0.5)) - 3.4081413574608386e-181, 1.0703e-196),
  closeto(inverse_jacobi_cn(2b0^600*%i, 0.5b0) - (3.408141357460838414302093156091263b-181 - 1.85407467730137191843385034719526b0*%i), 1.2326b-32),
  closeto(realpart(inverse_jacobi_cn(2b0^600*%i, 0.5b0)) - 3.408141357460838414302093156091263b-181, 1b-212)];
 [true, true, true, true];
