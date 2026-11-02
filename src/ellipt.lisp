@@ -1386,27 +1386,40 @@
 ;; This is bf-inverse-jacobi-sn-aux with s2 = t^2-(1-m)*v^2, -m for m,
 ;; and the exact difference 1 between the coefficients of u^2 in the
 ;; second and first arguments.
+(defun bf-inverse-jacobi-sd-aux (v tt w2 m)
+  (let* ((v2 (* v v))
+	 (m1v2 (* (- 1 m) v2))
+	 (mv2 (* m v2)))
+    ;; s2 = 1-(1-m)*u^2 (scaled: t^2-(1-m)*v^2), computed as either
+    ;;
+    ;;   A: 1-(1-m)*u^2
+    ;;   B: (1-u^2)+m*u^2
+    ;;
+    ;; where W2 is 1-u^2 (scaled: t^2-v^2).  A cancels near the branch
+    ;; points u = +/- 1/sqrt(1-m), where the rounding of 1-m matters
+    ;; when m is small.  B is accurate there, but cancels when u is
+    ;; large and m is near 1, where A is fine.
+    (bf-inverse-jacobi-sn-aux
+     v tt
+     (bf-inverse-jacobi-choose (abs m1v2) (- (* tt tt) m1v2)
+			       (+ (abs w2) (abs mv2)) (+ w2 mv2))
+     (- m) 1)))
+
 (defun bf-inverse-jacobi-sd (u m)
   (multiple-value-bind (v tt)
       (bf-inverse-jacobi-scale u (- 1 m))
-    (let* ((v2 (* v v))
-	   (m1v2 (* (- 1 m) v2))
-	   (mv2 (* m v2))
-	   (w2 (bf-diff-of-squares tt v)))
-      ;; s2 = 1-(1-m)*u^2 (scaled: t^2-(1-m)*v^2), computed as either
-      ;;
-      ;;   A: 1-(1-m)*u^2
-      ;;   B: (1-u^2)+m*u^2
-      ;;
-      ;; A cancels near the branch points u = +/- 1/sqrt(1-m), where
-      ;; the rounding of 1-m matters when m is small.  B is accurate
-      ;; there, but cancels when u is large and m is near 1, where A
-      ;; is fine.
-      (bf-inverse-jacobi-sn-aux
-       v tt
-       (bf-inverse-jacobi-choose (abs m1v2) (- (* tt tt) m1v2)
-				 (+ (abs w2) (abs mv2)) (+ w2 mv2))
-       (- m) 1))))
+    (bf-inverse-jacobi-sd-aux v tt (bf-diff-of-squares tt v) m)))
+
+;; inverse_jacobi_ds(u,m) = inverse_jacobi_sd(1/u,m), computed without
+;; forming 1/u.
+(defun bf-inverse-jacobi-ds (u m)
+  ;; u = 0 is on the branch cut, where the limits from either side
+  ;; differ.
+  (when (zerop u)
+    (bf-inverse-jacobi-pole "inverse_jacobi_ds" u m))
+  (multiple-value-bind (v tt)
+      (bf-inverse-jacobi-scale-recip u (- 1 m))
+    (bf-inverse-jacobi-sd-aux v tt (bf-diff-of-recip-squares tt v u) m)))
 
 ;; inverse_jacobi_cs(u,m) = inverse_jacobi_sc(1/u,m), computed without
 ;; forming 1/u.  With v = t/u, s2 = t^2+v^2 = t^2-(%i*v)^2, and %i*v =
@@ -1544,53 +1557,55 @@
 ;; arguments of rf by 1-m (homogeneity) gives a form with no division:
 ;;
 ;;   sqrt(1-u^2)*rf((1-m)*u^2, 1-m*u^2, 1-m)
-(defun bf-inverse-jacobi-cd-aux (u m upper-p)
+(defun bf-inverse-jacobi-cd-aux (v tt s2 m reflect upper-p)
+  (let* ((t2 (* tt tt))
+	 (v2 (* v v))
+	 (m1 (- 1 m))
+	 (mv2 (* m v2))
+	 (m1v2 (* m1 v2))
+	 ;; d^2 = 1-m*u^2 (scaled: t^2-m*v^2), chosen as in
+	 ;; bf-inverse-jacobi-sn-aux.
+	 (d2 (bf-inverse-jacobi-choose (abs mv2) (- t2 mv2)
+				       (+ (abs s2) (abs m1v2)) (+ s2 m1v2))))
+    (if (and (realp m) (< m 1))
+	(let ((z (bf-inverse-jacobi-rf-small-z (sqrt s2) m1v2 d2 (* m1 t2)
+					       (* (sqrt m1) tt))))
+	  (if reflect
+	      (- (* 2 (bf-elliptic-k m)) z)
+	      z))
+	(let* ((am (if (and (cl:numberp m1) (< (abs m1) (expt 2d0 -500)))
+		       (expt 2d0 -600)
+		       1))
+	       ;; For real m > 1, 1-m is on the cut of sqrt.  The
+	       ;; arguments of rf that are negative reals are taken on
+	       ;; the upper side of its cut, which is the limit from
+	       ;; Im(m) > 0, so take sqrt(1-m) from that side too.
+	       (ph (/ (sqrt am)
+		      (if upper-p
+			  (* #c(0 -1) (sqrt (- m1)))
+			  (sqrt m1))))
+	       ;; Likewise, when 1-u^2 is a negative real, take its sqrt
+	       ;; from the side that becomes the usual one after the
+	       ;; conjugation in bf-inverse-jacobi-cd or bf-inverse-jacobi-dc.
+	       (s (if (and upper-p (realp s2) (minusp s2))
+		      (* #c(0 -1) (sqrt (- s2)))
+		      (sqrt s2)))
+	       (z (bf-inverse-jacobi-rf-small-z (* s ph)
+						(* am v2) (/ (* am d2) m1) (* am t2)
+						(* (sqrt am) tt))))
+	  (if reflect
+	      (- (* 2 ph (bf-inverse-jacobi-rf 0 (/ am m1) am))
+		 z)
+	      z)))))
+
+(defun bf-inverse-jacobi-cd-1 (u m upper-p)
   (when (bf-negative-imaginary-axis-p u)
-    (return-from bf-inverse-jacobi-cd-aux
-      (conjugate (bf-inverse-jacobi-cd-aux (conjugate u) (conjugate m) upper-p))))
+    (return-from bf-inverse-jacobi-cd-1
+      (conjugate (bf-inverse-jacobi-cd-1 (conjugate u) (conjugate m) upper-p))))
   (multiple-value-bind (v tt)
       (bf-inverse-jacobi-scale u m)
-    (let* ((t2 (* tt tt))
-	   (v2 (* v v))
-	   (s2 (bf-diff-of-squares tt v))
-	   (m1 (- 1 m))
-	   (mv2 (* m v2))
-	   (m1v2 (* m1 v2))
-	   ;; d^2 = 1-m*u^2 (scaled: t^2-m*v^2), chosen as in
-	   ;; bf-inverse-jacobi-sn-aux.
-	   (d2 (bf-inverse-jacobi-choose (abs mv2) (- t2 mv2)
-					 (+ (abs s2) (abs m1v2)) (+ s2 m1v2)))
-	   (reflect (minusp (realpart u))))
-      (if (and (realp m) (< m 1))
-	  (let ((z (bf-inverse-jacobi-rf-small-z (sqrt s2) m1v2 d2 (* m1 t2)
-						 (* (sqrt m1) tt))))
-	    (if reflect
-		(- (* 2 (bf-elliptic-k m)) z)
-		z))
-	  (let* ((am (if (and (cl:numberp m1) (< (abs m1) (expt 2d0 -500)))
-			 (expt 2d0 -600)
-			 1))
-		 ;; For real m > 1, 1-m is on the cut of sqrt.  The
-		 ;; arguments of rf that are negative reals are taken on
-		 ;; the upper side of its cut, which is the limit from
-		 ;; Im(m) > 0, so take sqrt(1-m) from that side too.
-		 (ph (/ (sqrt am)
-			(if upper-p
-			    (* #c(0 -1) (sqrt (- m1)))
-			    (sqrt m1))))
-		 ;; Likewise, for real u with |u| > 1, take sqrt(1-u^2)
-		 ;; from the side that becomes the usual one after the
-		 ;; conjugation in bf-inverse-jacobi-cd.
-		 (s (if (and upper-p (realp s2) (minusp s2))
-			(* #c(0 -1) (sqrt (- s2)))
-			(sqrt s2)))
-		 (z (bf-inverse-jacobi-rf-small-z (* s ph)
-						  (* am v2) (/ (* am d2) m1) (* am t2)
-						  (* (sqrt am) tt))))
-	    (if reflect
-		(- (* 2 ph (bf-inverse-jacobi-rf 0 (/ am m1) am))
-		   z)
-		z))))))
+    (bf-inverse-jacobi-cd-aux v tt (bf-diff-of-squares tt v) m
+			      (minusp (realpart u)) upper-p)))
 
 (defun bf-inverse-jacobi-cd (u m)
   ;; cd(z|1) = 1.
@@ -1600,8 +1615,32 @@
   ;; does, which is the conjugate of the limit from Im(m) > 0 at the
   ;; conjugate of u.
   (if (and (realp m) (> m 1))
-      (conjugate (bf-inverse-jacobi-cd-aux (conjugate u) m t))
-      (bf-inverse-jacobi-cd-aux u m nil)))
+      (conjugate (bf-inverse-jacobi-cd-1 (conjugate u) m t))
+      (bf-inverse-jacobi-cd-1 u m nil)))
+
+;; inverse_jacobi_dc(u,m) = inverse_jacobi_cd(1/u,m), computed without
+;; forming 1/u.  1/u has the sign of the real part of u, and is on the
+;; negative imaginary axis when u is on the positive one.
+(defun bf-inverse-jacobi-dc-1 (u m upper-p)
+  (when (bf-negative-imaginary-axis-p (conjugate u))
+    (return-from bf-inverse-jacobi-dc-1
+      (conjugate (bf-inverse-jacobi-dc-1 (conjugate u) (conjugate m) upper-p))))
+  (multiple-value-bind (v tt)
+      (bf-inverse-jacobi-scale-recip u m)
+    (bf-inverse-jacobi-cd-aux v tt (bf-diff-of-recip-squares tt v u) m
+			      (minusp (realpart u)) upper-p)))
+
+(defun bf-inverse-jacobi-dc (u m)
+  ;; dc(z|1) = 1.
+  (when (= m 1)
+    (bf-inverse-jacobi-pole "inverse_jacobi_dc" u m))
+  ;; u = 0 is on the branch cut, where the limits from either side
+  ;; differ.
+  (when (zerop u)
+    (bf-inverse-jacobi-pole "inverse_jacobi_dc" u m))
+  (if (and (realp m) (> m 1))
+      (conjugate (bf-inverse-jacobi-dc-1 (conjugate u) m t))
+      (bf-inverse-jacobi-dc-1 u m nil)))
 
 ;; The part of inverse_jacobi_dn after scaling, for the argument v/t.
 ;; V and TT are the scaled argument and the scale factor t, S2 is
@@ -4904,11 +4943,7 @@ first kind:
   nil)
   
 (def-simplifier inverse_jacobi_ds (u m)
-  (cond ((or (float-numerical-eval-p u m)
-	     (complex-float-numerical-eval-p u m)
-	     (bigfloat-numerical-eval-p u m)
-	     (complex-bigfloat-numerical-eval-p u m))
-	 (ftake '%inverse_jacobi_sd ($rectform (div 1 u)) m))
+  (cond ((inverse-jacobi-numerical-eval #'bigfloat::bf-inverse-jacobi-ds u m))
 	((and $trigsign (mminusp* u))
 	 (neg (ftake* '%inverse_jacobi_ds (neg u) m)))
 	((eql 0 ($ratsimp (sub u (power (sub 1 m) 1//2))))
@@ -4951,9 +4986,7 @@ first kind:
 )
 
 (def-simplifier inverse_jacobi_dc (u m)
-  (cond ((or (complex-float-numerical-eval-p u m)
-	     (complex-bigfloat-numerical-eval-p u m))
-	 (ftake '%inverse_jacobi_cd ($rectform (div 1 u)) m))
+  (cond ((inverse-jacobi-numerical-eval #'bigfloat::bf-inverse-jacobi-dc u m))
 	((onep1 u)
 	 0)
 	((and (eq $triginverses '$all)
