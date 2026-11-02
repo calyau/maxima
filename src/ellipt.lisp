@@ -1358,7 +1358,8 @@
 ;; inverse_jacobi_ns(u,m) = inverse_jacobi_sn(1/u,m), computed without
 ;; forming 1/u.
 (defun bf-inverse-jacobi-ns (u m)
-  ;; jacobi_ns is never 0.
+  ;; u = 0 is on the branch cut, where the limits from either side
+  ;; differ.
   (when (zerop u)
     (bf-inverse-jacobi-pole "inverse_jacobi_ns" u m))
   (multiple-value-bind (v tt)
@@ -1568,7 +1569,8 @@
   (when (= m 1)
     (return-from bf-inverse-jacobi-nc
       (bf-inverse-jacobi-acosh u)))
-  ;; For m /= 1, jacobi_nc is never 0.
+  ;; For m /= 1, u = 0 is on the branch cut, where the limits from
+  ;; either side differ.
   (when (zerop u)
     (bf-inverse-jacobi-pole "inverse_jacobi_nc" u m))
   (when (bf-negative-imaginary-axis-p (conjugate u))
@@ -1782,7 +1784,7 @@
 		 z))))))
 
 ;; inverse_jacobi_dn(w,m) is the z with dn(z|m) = w.  From Gradshteyn &
-;; Ryzhik 8.153.6 (DLMF 22.17.2), dn(z|m) = cn(sqrt(m)*z|1/m), so
+;; Ryzhik 8.153.6 (DLMF 22.17.4), dn(z|m) = cn(sqrt(m)*z|1/m), so
 ;; sqrt(m)*z = inverse_jacobi_cn(w,1/m), and
 ;;
 ;;   inverse_jacobi_dn(w,m) = inverse_jacobi_cn(w,1/m)/sqrt(m)
@@ -1852,7 +1854,8 @@
   (when (= m 1)
     (return-from bf-inverse-jacobi-nd
       (bf-inverse-jacobi-acosh u)))
-  ;; For m /= 1, jacobi_nd is never 0.
+  ;; For m /= 1, u = 0 is on the branch cut, where the limits from
+  ;; either side differ.
   (when (zerop u)
     (bf-inverse-jacobi-pole "inverse_jacobi_nd" u m))
   (when (bf-negative-imaginary-axis-p (conjugate u))
