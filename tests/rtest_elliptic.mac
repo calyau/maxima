@@ -2168,6 +2168,42 @@ true;
  errcatch(inverse_jacobi_cd(0.5, 1.0)), errcatch(inverse_jacobi_cd(0.5b0, 1b0))];
 [[], [], [], []];
 
+/* inverse_jacobi_ds with tiny u, where the arguments of R_F are
+ * scaled, and with complex u and negative m. */
+[closeto(inverse_jacobi_ds(2.0^-1000, 0.5) - (1.8540746773013719-1.8540746773013719*%i), 2.3289e-15),
+ closeto(inverse_jacobi_ds(2b0^-1000, 0.5b0) - (1.8540746773013719184338503471953b0-1.8540746773013719184338503471953b0*%i), 1.2928b-31),
+ closeto(inverse_jacobi_ds(3.0-4.0*%i, 0.5) - (0.119999392650797+0.15999202421524025*%i), 8.8815e-17),
+ closeto(inverse_jacobi_ds(3b0-4b0*%i, 0.5b0) - (1.1999939265079699201565374162826b-1+1.5999202421524026625183497920265b-1*%i), 9.8605b-33),
+ closeto(inverse_jacobi_ds(0.5, -3.0) - (0.14800957393120565-0.842875177406298*%i), 3.8004e-16),
+ closeto(inverse_jacobi_ds(0.5b0, -3b0) - (1.4800957393120565086766496173059b-1-8.4287517740629802143560182889954b-1*%i), 4.2193b-32)];
+[true, true, true, true, true, true];
+
+/* inverse_jacobi_dc near u = +/-1.  The old code computed
+ * inverse_jacobi_cd(1/u), and the rounding of 1/u dominates the result
+ * there. */
+[closeto(inverse_jacobi_dc(1+2.0^-30, 0.5) - (6.1035156207367436e-5), 2.7106e-20),
+ closeto(inverse_jacobi_dc(1+2b0^-30, 0.5b0) - (6.1035156207367435913620120597522b-5), 3.0093b-36),
+ closeto(inverse_jacobi_dc(-1-2.0^-30, 0.5) - (3.7080883194465364), 1.6468e-15),
+ closeto(inverse_jacobi_dc(-1-2b0^-30, 0.5b0) - (3.7080883194465364694317870742699b0), 1.8283b-31),
+ closeto(inverse_jacobi_dc(1+2.0^-30+2.0^-40*%i, 0.5) - (6.10351634833229e-5+2.9802318772533068e-8*%i), 2.7106e-20),
+ closeto(inverse_jacobi_dc(1+2b0^-30+2b0^-40*%i, 0.5b0) - (6.1035163483322896940378762707281b-5+2.9802318772533068534212310641886b-8*%i), 3.0093b-36)];
+[true, true, true, true, true, true];
+
+/* inverse_jacobi_dc with tiny u, and with real m > 1, which is the
+ * limit from Im(m) < 0, as for inverse_jacobi_cd. */
+[closeto(inverse_jacobi_dc(2.0^-1000, 0.5) - (1.8540746773013719+1.8540746773013719*%i), 2.3289e-15),
+ closeto(inverse_jacobi_dc(2b0^-1000, 0.5b0) - (1.8540746773013719184338503471953b0+1.8540746773013719184338503471953b0*%i), 1.2928b-31),
+ closeto(inverse_jacobi_dc(0.5, 3.0) - (0.6942441933523164), 3.0831e-16),
+ closeto(inverse_jacobi_dc(0.5b0, 3b0) - (6.9424419335231638969891094795744b-1), 3.4229b-32)];
+[true, true, true, true];
+
+/* inverse_jacobi_ds and inverse_jacobi_dc at u = 0, which is on a
+ * branch cut, and inverse_jacobi_dc with m = 1, where jacobi_dc(u,1)
+ * = 1. */
+[errcatch(inverse_jacobi_ds(0.0, 0.5)), errcatch(inverse_jacobi_ds(0b0, 0.5b0)),
+ errcatch(inverse_jacobi_dc(0.0, 0.5)), errcatch(inverse_jacobi_dc(2.0, 1.0))];
+[[], [], [], []];
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
