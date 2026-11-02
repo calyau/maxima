@@ -1295,12 +1295,14 @@
 
 ;; v*rf(t^2-v^2, t^2-m*v^2, t^2), which is inverse_jacobi_sn(v/t,m).
 ;; V and TT are the scaled argument and the scale factor t, and S2 is
-;; t^2-v^2.
-(defun bf-inverse-jacobi-sn-aux (v tt s2 m)
+;; t^2-v^2.  M1 is 1-m, given separately so that callers that use
+;; other forms of the arguments can pass an exact value (see
+;; bf-inverse-jacobi-sc).
+(defun bf-inverse-jacobi-sn-aux (v tt s2 m m1)
   (let* ((t2 (* tt tt))
 	 (v2 (* v v))
 	 (mv2 (* m v2))
-	 (m1v2 (* (- 1 m) v2)))
+	 (m1v2 (* m1 v2)))
     ;; d^2 = 1-m*u^2 (scaled: t^2-m*v^2), computed as either
     ;;
     ;;   A: 1-m*u^2
@@ -1333,7 +1335,7 @@
       ;; converge.
       (when (and (= m 1) (zerop s2))
 	(bf-inverse-jacobi-pole "inverse_jacobi_sn" u m))
-      (bf-inverse-jacobi-sn-aux v tt s2 m))))
+      (bf-inverse-jacobi-sn-aux v tt s2 m (- 1 m)))))
 
 ;; inverse_jacobi_ns(u,m) = inverse_jacobi_sn(1/u,m), computed without
 ;; forming 1/u.
@@ -1347,7 +1349,64 @@
       ;; For m = 1, u = +/-1 is a pole.
       (when (and (= m 1) (zerop s2))
 	(bf-inverse-jacobi-pole "inverse_jacobi_ns" u m))
-      (bf-inverse-jacobi-sn-aux v tt s2 m))))
+      (bf-inverse-jacobi-sn-aux v tt s2 m (- 1 m)))))
+
+;; inverse_jacobi_sc(u,m) = F(atan(u)|m) (A&S 17.4.41).  With sn =
+;; u/sqrt(1+u^2), cn^2 = 1/(1+u^2) and dn^2 = (1+(1-m)*u^2)/(1+u^2),
+;; homogeneity gives
+;;
+;;   inverse_jacobi_sc(u,m) = u*rf(1+u^2, 1+(1-m)*u^2, 1)
+;;
+;; which is inverse_jacobi_sn's u*rf(1-u^2, 1-m*u^2, 1) with -u^2 for
+;; u^2 in the first argument and m-1 for m in the second.  So this uses
+;; bf-inverse-jacobi-sn-aux with s2 = t^2+v^2, m-1, and the exact
+;; difference -m for 1-(m-1).  (Using inverse_jacobi_sc(u,m) =
+;; -%i*inverse_jacobi_sn(%i*u,1-m) instead would round 1-m, losing
+;; accuracy near the branch points u = +/- %i/sqrt(1-m) when m is
+;; small.)  As for inverse_jacobi_sn, no reflection is needed, since
+;; Re(atan(u)) is always in (-%pi/2, %pi/2).
+(defun bf-inverse-jacobi-sc (u m)
+  (multiple-value-bind (v tt)
+      (bf-inverse-jacobi-scale u (- 1 m))
+    ;; s2 = t^2+v^2 = t^2-(%i*v)^2.  bf-diff-of-squares keeps the
+    ;; imaginary part when v is near +/- %i*t.
+    (let ((s2 (bf-diff-of-squares tt (* #c(0 1) v))))
+      ;; For m = 0, u = +/- %i is a pole, where rf(0, 0, 1) would not
+      ;; converge.
+      (when (and (zerop m) (zerop s2))
+	(bf-inverse-jacobi-pole "inverse_jacobi_sc" u m))
+      (bf-inverse-jacobi-sn-aux v tt s2 (- m 1) (- m)))))
+
+;; inverse_jacobi_sd(u,m) = F(asin(u/sqrt(1+m*u^2))|m).  With sn =
+;; u/sqrt(1+m*u^2), cn^2 = (1-(1-m)*u^2)/(1+m*u^2) and dn^2 =
+;; 1/(1+m*u^2), homogeneity gives
+;;
+;;   inverse_jacobi_sd(u,m) = u*rf(1-(1-m)*u^2, 1+m*u^2, 1)
+;;
+;; This is bf-inverse-jacobi-sn-aux with s2 = t^2-(1-m)*v^2, -m for m,
+;; and the exact difference 1 between the coefficients of u^2 in the
+;; second and first arguments.
+(defun bf-inverse-jacobi-sd (u m)
+  (multiple-value-bind (v tt)
+      (bf-inverse-jacobi-scale u (- 1 m))
+    (let* ((v2 (* v v))
+	   (m1v2 (* (- 1 m) v2))
+	   (mv2 (* m v2))
+	   (w2 (bf-diff-of-squares tt v)))
+      ;; s2 = 1-(1-m)*u^2 (scaled: t^2-(1-m)*v^2), computed as either
+      ;;
+      ;;   A: 1-(1-m)*u^2
+      ;;   B: (1-u^2)+m*u^2
+      ;;
+      ;; A cancels near the branch points u = +/- 1/sqrt(1-m), where
+      ;; the rounding of 1-m matters when m is small.  B is accurate
+      ;; there, but cancels when u is large and m is near 1, where A
+      ;; is fine.
+      (bf-inverse-jacobi-sn-aux
+       v tt
+       (bf-inverse-jacobi-choose (abs m1v2) (- (* tt tt) m1v2)
+				 (+ (abs w2) (abs mv2)) (+ w2 mv2))
+       (- m) 1))))
 
 ;; True if U is on the negative imaginary axis.  -0d0 is not included.
 ;;
@@ -4607,13 +4666,7 @@ first kind:
 
 
 (def-simplifier inverse_jacobi_sc (u m)
-  (cond ((or (float-numerical-eval-p u m)
-	     (complex-float-numerical-eval-p u m)
-	     (bigfloat-numerical-eval-p u m)
-	     (complex-bigfloat-numerical-eval-p u m))
-	 (ftake '%inverse_jacobi_sn
-		($rectform (div u (power (add 1 (mul u u)) 1//2)))
-		m))
+  (cond ((inverse-jacobi-numerical-eval #'bigfloat::bf-inverse-jacobi-sc u m))
 	((zerop1 u)
 	 ;; jacobi_sc(0,m) = 0
 	 0)
@@ -4653,13 +4706,7 @@ first kind:
   nil)
 
 (def-simplifier inverse_jacobi_sd (u m)
-  (cond ((or (float-numerical-eval-p u m)
-	     (complex-float-numerical-eval-p u m)
-	     (bigfloat-numerical-eval-p u m)
-	     (complex-bigfloat-numerical-eval-p u m))
-	 (ftake '%inverse_jacobi_sn
-		($rectform (div u (power (add 1 (mul m (mul u u))) 1//2)))
-		m))
+  (cond ((inverse-jacobi-numerical-eval #'bigfloat::bf-inverse-jacobi-sd u m))
 	((zerop1 u)
 	 0)
 	((eql 0 ($ratsimp (sub u (div 1 (power (sub 1 m) 1//2)))))
