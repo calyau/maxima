@@ -284,7 +284,7 @@
 ;; m is an integer, n is a number(?).  a, b, c, e, and f are
 ;; expressions independent of x (var).
 (defun inti (funct x assoclist)
-  (prog (met n expr f e #+nil denom)
+  (prog ((met (make-symbol (symbol-name '#:yannis))) n expr f e #+nil denom)
      (setq n (cdras 'n assoclist))
      (when (or (null assoclist) (maxima-integerp n))
        (return nil))
@@ -311,11 +311,13 @@
 
      ;; Apply the linear substitution y = f*x+e.  That is x = (y-e)/f.
      ;; Then use INTIRA to integrate this.  The integrand becomes
-     ;; something like p(y)*y^m and other terms.
+     ;; something like p(y)*y^m and other terms. For complex x, y is
+     ;; complex too.
+     (when (decl-complexp x) (declare1 (list met) t '$complex 'kind))
      (setq expr (intira (distrexpandroot
 			 (cdr ($substitute
 			       (mul (inv f)
-				    (add (setq met (make-symbol (symbol-name '#:yannis)))
+				    (add met
 					 (mul -1 e)))
 			       x funct)))
 			met))
@@ -1121,7 +1123,13 @@
 ;;
 (defun den1den1 (c b a x ec-1)
   (let ((exp2 (add (mul b x) a a))                ; exp2 = b*x+2*a
-        (exp3 (inv (simplify (list '(mabs) x))))) ; exp3 = 1/abs(x)
+        ;; exp3 = 1/abs(x), which keeps the results real for real x, but 1/x
+        ;; for complex x. That gives the formulas for x > 0. The asinh and
+        ;; asin formulas then hold only up to a sign, so the logarithm
+        ;; formula takes their place, and the sign abs(2*a+b*x)/(2*a+b*x)
+        ;; becomes (2*a+b*x)/(2*sqrt(a)*sqrt(R)), which is 1 or -1 on each
+        ;; region where sqrt(R) is analytic.
+        (exp3 (inv (if (decl-complexp x) x (simplify (list '(mabs) x))))))
     (prog (signdiscrim
 	   (signa (checksigntm (simplifya a nil)))
 	   exp1)
@@ -1132,7 +1140,7 @@
        #+nil (format t "signa = ~A~%signdiscrim = ~A~%" signa signdiscrim)
 
        (when (and (eq signa '$positive)
-		  (eq signdiscrim '$negative))
+		  (eq signdiscrim '$negative) (not (decl-complexp x)))
 	 ;; G&R case a > 0, del > 0
 	 ;;
 	 ;; -1/sqrt(a)*asinh((2*a+b*x)/x/sqrt(del)
@@ -1148,20 +1156,21 @@
 	 ;;
 	 ;; 1/sqrt(a)*log(x/(2*a+b*x))
 	 (return (mul*
-		       (div (ftake 'mabs exp2) exp2)
+		       (if (decl-complexp x)
+			 (div exp2 (mul 2 (power a 1//2)
+					(power (polfoo c b a x) 1//2)))
+			 (div (ftake 'mabs exp2) exp2))
 		       -1 exp1
 		       `((%log) ,(augmult (mul exp3 exp2))))))
-       (when (eq signa '$positive)
-	 ;; G&R case a > 0
+       (when (or (eq signa '$positive)
+		 (and (decl-complexp x) (eq signa '$negative)
+		      (eq signdiscrim '$positive)))
+	 ;; G&R case a > 0, and for complex x also a < 0, del < 0
 	 ;;
 	 ;; -1/sqrt(a)*log((2*a+b*x+2*sqrt(a*R))/x)
 	 ;;
 	 ;; R = c*x^2+b*x+a.
 	 ;;
-	 ;; For real x, dividing by abs(x) instead of x keeps the result
-	 ;; real. For complex x, that would make it wrong.
-	 (when (decl-complexp x)
-	   (setq exp3 (inv x)))
 	 (return (mul* -1 exp1
 		       `((%log)
 			 ,(add (mul b x exp3)
@@ -1181,6 +1190,12 @@
        ;; I think this is the case of a < 0.  We flip the sign of
        ;; coefficients of the quadratic to make a positive, and
        ;; multiply the result by 1/%i.
+       ;;
+       ;; This takes sqrt(R) to be %i*sqrt(-R), which holds for real x where
+       ;; R < 0, as it is for all x when a < 0 and del >= 0. Do so for
+       ;; complex x too: other formulas of the integrator do the same, such
+       ;; as -%i*asinh(x) for 1/sqrt(-x^2-1), and the terms of one integrand
+       ;; must agree, as for sqrt(tan(x)*tan(2*x)).
        ;;
        ;; Why can't we use the case a < 0 in G&R 2.266:
        ;;

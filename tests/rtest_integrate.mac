@@ -7415,6 +7415,47 @@ integrate(%e^(2*(a+b*x))*sinh(a+b*x)^3, x);
 ((%e^-(5*(-b*x-a))*(15*%e^(4*(-b*x-a))-5*%e^(2*(-b*x-a))+1))/(5*b)+%e^(-b*x-a)/b)/8$
 
 
+/* Bug #5759: "integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z" */
+
+block([],
+  local(z),
+  declare(z, complex),
+  map(lambda([g],
+      block([G : integrate(g, z)],
+        [freeof(abs, G), block([algebraic : true], ratsimp(diff(G, z) - g))])),
+    [1/(z*sqrt(z^2+z+1)), 1/(z*sqrt(z^2+2*z+1)), 1/(z*sqrt(z^2-1))]));
+[[true, 0], [true, 0], [true, 0]]$
+
+block([],
+  local(z),
+  declare(z, complex),
+  block([g : 1/(z*sqrt(-z^2+z-1)), G],
+    G : integrate(g, z),
+    [freeof(abs, G), ratsimp(subst(z = 2, diff(G, z) - g))]));
+[true, 0]$
+
+block([g : 1/sqrt(%e^(2*%i*x)+%e^(%i*x)+1)],
+  block([algebraic : true], ratsimp(diff(integrate(g, x), x) - g)));
+0$
+
+block([f : sqrt(cot(2*x)/cot(x)), G],
+  G : integrate(f, x),
+  map(lambda([p], radcan(ratsimp(rectform(subst(x = p, diff(G, x) - f))))), [%pi/6, 5*%pi/6]));
+[0, 0]$
+
+block([f : sqrt(tan(x)*tan(2*x)), G],
+  G : integrate(f, x),
+  radcan(ratsimp(rectform(subst(x = %pi/6, diff(G, x) - f)))));
+0$
+
+block([f : 1/(x*log(x)*sqrt(log(x)^2-a^2)), G],
+  local(a),
+  assume(a > 0),
+  G : integrate(f, x),
+  ratsimp(rectform(subst([a = 1, x = %e^-2], diff(G, x) - f))));
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
