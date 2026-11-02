@@ -303,6 +303,7 @@ Bug fixes for numbered bugs:
 * \#5755 integrate() calls facsum on the same exponents up to 17 times in INTEGRATE-EXP-SPECIAL
 * \#5756 carg() and cabs() give an error and csign() never returns under logarc
 * \#5757 integrate(tan(x)*atan(sin(x)/(cos(x)+1)), x) exhausts the control stack
+* \#5758 integrate() gives half powers and stray constants for integrands with several exponentials
 
 Bug fixes for unnumbered bugs:
 ------------------------------

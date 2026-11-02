@@ -1706,7 +1706,7 @@ integrate (1 / (sqrt (x) * (1 + sqrt (x))^2), x, 1, 4)$
  -((%e^(-(t/tau3)-t/tau2-t/tau1+t)*tau1*tau2*tau3^2)
  /(tau1^2*(tau2*(tau3^2-tau3)-tau3^2)+tau1*(-tau3^2-tau3-tau2)
                                      +tau2*(-tau3^2-tau3)))
- -(%e^-(t/tau2)*tau2*tau3)/(tau1*tau3^2+tau3^2+tau3)$
+ -(%e^-(t/tau2)*tau2)/(tau1*tau3+tau3+1)$
 
 is(equal(diff(I_tau, t), expr_tau));
 true;
@@ -1715,7 +1715,7 @@ true;
  I_c : integrate (expr_c, t));
 (-(c1*c2*c3^2*%e^((-t/c3)-t/c2-t/c1+t))
  /(c1^2*(c2*(c3^2-c3)-c3^2)+c1*((-c3^2)-c3-c2)+c2*((-c3^2)-c3)))
- -(c2*c3*%e^-(t/c2))/(c1*c3^2+c3^2+c3)$
+ -(c2*%e^-(t/c2))/(c1*c3+c3+1)$
 
 is(equal(diff(I_c, t), expr_c));
 true;

@@ -227,8 +227,10 @@
         
           ;; Method 1: Elementary function of exponentials
           ((freevar2 (cadr expres) var2)
-           (cond ((and (setq w (m2-b*x+a (caddr expres) var2))
-                       (setq ans (superexpt *exp* var2 (cadr expres) w))
+           (cond ((and (m2-b*x+a (caddr expres) var2)
+                       (setq w (superexpt-power *exp* var2 expres))
+                       (setq ans (superexpt *exp* var2 (cadr w)
+                                            (m2-b*x+a (caddr w) var2)))
                        (freeof '%integrate ans)
                        ans))
                  ((intform (caddr expres) var2))
@@ -838,6 +840,40 @@
 ;;;   integrate(exp(x)/(2+3*exp(2*x)),x)
 ;;;   integrate(exp(x+1)/(1+exp(x)),x)
 ;;;   integrate(10^x*exp(x),x)
+
+;; The power base^(b*x+a) for SUPEREXPT to substitute for: one in EXPR with
+;; a number as b*log(base), then the one that the most others are integer
+;; powers of, then the least by GREAT. POW if that is no better, or if POW is
+;; complex, as some methods go wrong for a complex new variable.
+(defun superexpt-power (expr var2 pow)
+  (let (l)
+    (labels ((walk (e)
+               (cond ((or (atom e) (freevar2 e var2)))
+                     ((and (mexptp e) (freevar2 (cadr e) var2)
+                           (m2-b*x+a (caddr e) var2))
+                      (pushnew e l :test #'alike1))
+                     (t (mapc #'walk (cdr e)))))
+             (realp (e)
+               (not (member ($csign e) '($complex $imaginary))))
+             (rate (e)
+               (mul (cdras 'b (m2-b*x+a (caddr e) var2))
+                    (ftake '%log (cadr e))))
+             (score (e)
+               (let ((r (rate e)))
+                 (+ (count-if-not #'(lambda (f) (integerp (div (rate f) r))) l)
+                    (if (mnump r) 0 (length l))))))
+      (walk expr)
+      (if (or (every #'(lambda (e) (alike1 e pow)) l) (not (realp pow)))
+        pow
+        (let ((best (car (sort (mapcar #'(lambda (e) (cons (score e) e))
+                                       (setq l (remove-if-not #'realp l)))
+                               #'(lambda (p q)
+                                   (or (< (car p) (car q))
+                                       (and (= (car p) (car q))
+                                            (great (cdr q) (cdr p)))))))))
+          (if (and best (< (car best) (score pow)))
+            (cdr best)
+            pow))))))
 
 (let ((base nil)       ; The common base.
       (pow nil)       ; The common power of the form b*x+a. The values are

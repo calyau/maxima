@@ -7406,6 +7406,15 @@ block([fs : [tan(x)*atan(sin(x)/(cos(x)+1)), (sin(x)*atan(sin(x)/(cos(x)+1)))/(2
 [[true, [true, true, true]], [true, [true, true, true]]]$
 
 
+/* Bug #5758: "integrate() gives half powers and stray constants for integrands with several exponentials" */
+
+[integrate(%e^(2*x)/(%e^x+1), x), integrate(%e^(2*a*x)/(%e^(a*x)+1), x), integrate(10^x*%e^x, x)];
+[%e^x-log(%e^x+1), %e^(a*x)/a-log(%e^(a*x)+1)/a, %e^((log(10)+1)*x)/(log(10)+1)]$
+
+integrate(%e^(2*(a+b*x))*sinh(a+b*x)^3, x);
+((%e^-(5*(-b*x-a))*(15*%e^(4*(-b*x-a))-5*%e^(2*(-b*x-a))+1))/(5*b)+%e^(-b*x-a)/b)/8$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
