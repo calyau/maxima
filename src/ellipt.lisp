@@ -1180,12 +1180,19 @@
     ;; 2^997 (it divides by sqrt(epsilon)), so any threshold up to
     ;; about 490 would do.  64 leaves a wide margin and keeps ordinary
     ;; arguments on the unscaled path.
+    ;;
+    ;; With t = 2^(-s), the arguments of rf run from t^2 = 2^(-2*s) up
+    ;; to about 2^(2*e-2*s).  s = ceiling(e/2) centers that range, so
+    ;; the smallest argument does not underflow.  It can be the only
+    ;; source of a tiny real or imaginary part of the result.  s is at
+    ;; least e-480 so that the largest argument stays below 2^960.
     (if (> e 64)
-	(values (if (cl:complexp u)
-		    (cl:complex (cl:scale-float (cl:realpart u) (- e))
-				(cl:scale-float (cl:imagpart u) (- e)))
-		    (cl:scale-float u (- e)))
-		(cl:scale-float 1d0 (- e)))
+	(let ((s (max (ceiling e 2) (- e 480))))
+	  (values (if (cl:complexp u)
+		      (cl:complex (cl:scale-float (cl:realpart u) (- s))
+				  (cl:scale-float (cl:imagpart u) (- s)))
+		      (cl:scale-float u (- s)))
+		  (cl:scale-float 1d0 (- s))))
 	(values u 1))))
 
 ;; Compute carefully a^2 - b^2 where a is a real.
