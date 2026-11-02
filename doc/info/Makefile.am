@@ -176,7 +176,11 @@ distclean-local:
 # manual; build them with "make impl-notes-docs" (or the html, info or
 # pdf variants).  The output goes in impl-notes/ so that the manual's
 # html install and html index never see it.
-impl_notes = impl-notes/jacobi-am impl-notes/elliptic-pi-complex-values impl-notes/jacobi-epsilon impl-notes/jacobi-sn
+impl_notes = impl-notes/jacobi-am \
+	impl-notes/elliptic-pi-complex-values \
+	impl-notes/jacobi-epsilon \
+	impl-notes/jacobi-sn \
+	impl-notes/inverse-jacobi-accuracy
 impl_notes_texi = $(impl_notes:=.texi)
 
 # Use MathJax, syntax highlighting and style sheets the same way
