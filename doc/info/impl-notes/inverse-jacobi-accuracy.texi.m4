@@ -366,7 +366,8 @@ m4_math(<<<{\rm dn}^{-1}>>>, <<<dn^-1>>>)
 for @code{inverse_jacobi_sn}, @code{inverse_jacobi_cn} and
 @code{inverse_jacobi_dn}, and
 m4_math(<<<K(m) = R_F(0, 1-m, 1)>>>, <<<K(m) = R_F(0, 1-m, 1)>>>)
-for the complete integral.  All square roots are principal.
+(@urldlmf{19.25.E1}) for the complete integral.  All square roots are
+principal.
 
 @menu
 * inverse_jacobi_sn::
@@ -2084,15 +2085,28 @@ forms and share most of the code.  Write
 m4_math(<<<{\rm pq}^{-1}>>>, <<<pq^-1>>>)
 for @code{inverse_jacobi_pq}.
 
-@multitable @columnfractions 0.12 0.48 0.40
+@ifinfo
+@multitable @columnfractions 0.16 0.38 0.46
 @headitem Function @tab Computed as @tab Shared code
-@item @code{sc} @tab @math{u R_F(1+u^2, 1+(1-m)u^2, 1)} @tab @code{bf-inverse-jacobi-sn-aux}
-@item @code{sd} @tab @math{u R_F(1-(1-m)u^2, 1+m u^2, 1)} @tab @code{bf-inverse-jacobi-sd-aux}, @code{bf-inverse-jacobi-sn-aux}
-@item @code{cs} @tab @code{sc} at @math{1/u} @tab @code{bf-inverse-jacobi-sn-aux}
-@item @code{ds} @tab @code{sd} at @math{1/u} @tab @code{bf-inverse-jacobi-sd-aux}
-@item @code{cd} @tab @code{cn} with parameter @math{m/(m-1)}, divided by @code{sqrt(1-m)} @tab @code{bf-inverse-jacobi-cd-aux}
-@item @code{dc} @tab @code{cd} at @math{1/u} @tab @code{bf-inverse-jacobi-cd-aux}
+@item sc^-1(u|m) @tab u*R_F(1+u^2, 1+(1-m)*u^2, 1) @tab @code{bf-inverse-jacobi-sn-aux}
+@item sd^-1(u|m) @tab u*R_F(1-(1-m)*u^2, 1+m*u^2, 1) @tab @code{bf-inverse-jacobi-sd-aux}, @code{bf-inverse-jacobi-sn-aux}
+@item cs^-1(u|m) @tab sc^-1(1/u|m) @tab @code{bf-inverse-jacobi-sn-aux}
+@item ds^-1(u|m) @tab sd^-1(1/u|m) @tab @code{bf-inverse-jacobi-sd-aux}
+@item cd^-1(u|m) @tab cn^-1(u|m/(m-1))/sqrt(1-m) @tab @code{bf-inverse-jacobi-cd-aux}
+@item dc^-1(u|m) @tab cd^-1(1/u|m) @tab @code{bf-inverse-jacobi-cd-aux}
 @end multitable
+@end ifinfo
+@ifnotinfo
+@multitable @columnfractions 0.16 0.38 0.46
+@headitem Function @tab Computed as @tab Shared code
+@item @math{{\rm sc}^{-1}(u | m)} @tab @math{u R_F(1+u^2, 1+(1-m)u^2, 1)} @tab @code{bf-inverse-jacobi-sn-aux}
+@item @math{{\rm sd}^{-1}(u | m)} @tab @math{u R_F(1-(1-m)u^2, 1+m u^2, 1)} @tab @code{bf-inverse-jacobi-sd-aux}, @code{bf-inverse-jacobi-sn-aux}
+@item @math{{\rm cs}^{-1}(u | m)} @tab @math{{\rm sc}^{-1}(1/u | m)} @tab @code{bf-inverse-jacobi-sn-aux}
+@item @math{{\rm ds}^{-1}(u | m)} @tab @math{{\rm sd}^{-1}(1/u | m)} @tab @code{bf-inverse-jacobi-sd-aux}
+@item @math{{\rm cd}^{-1}(u | m)} @tab @math{{\rm cn}^{-1}(u | m/(m-1))/\sqrt{1-m}} @tab @code{bf-inverse-jacobi-cd-aux}
+@item @math{{\rm dc}^{-1}(u | m)} @tab @math{{\rm cd}^{-1}(1/u | m)} @tab @code{bf-inverse-jacobi-cd-aux}
+@end multitable
+@end ifnotinfo
 
 The reciprocal functions
 m4_mathcomma(<<<{\rm cs}^{-1}>>>, <<<cs^-1>>>)
@@ -2133,7 +2147,6 @@ m4_mathdot(<<<u>>>, <<<u>>>)
 * inverse_jacobi_sc and inverse_jacobi_sd::
 * inverse_jacobi_cs and inverse_jacobi_ds::
 * inverse_jacobi_cd::
-* Real m Greater Than 1::
 * inverse_jacobi_dc::
 * Accuracy of the Other Six Functions::
 @end menu
@@ -2184,12 +2197,22 @@ m4_math(<<<{\rm sn}^{-1}>>>, <<<sn^-1>>>)
 formula,
 m4_math(<<<u \, R_F(1+au^2,\ 1+bu^2,\ 1){:}>>>, <<<u*R_F(1+a*u^2, 1+b*u^2, 1):>>>)
 
+@ifinfo
 @multitable @columnfractions 0.25 0.25 0.25 0.25
 @headitem Function @tab @math{a} @tab @math{b} @tab @math{b - a}
-@item @code{sn} @tab @math{-1} @tab @math{-m} @tab @math{1-m}
-@item @code{sc} @tab @math{1} @tab @math{1-m} @tab @math{-m}
-@item @code{sd} @tab @math{-(1-m)} @tab @math{m} @tab @math{1}
+@item sn^-1(u|m) @tab @math{-1} @tab @math{-m} @tab @math{1-m}
+@item sc^-1(u|m) @tab @math{1} @tab @math{1-m} @tab @math{-m}
+@item sd^-1(u|m) @tab @math{-(1-m)} @tab @math{m} @tab @math{1}
 @end multitable
+@end ifinfo
+@ifnotinfo
+@multitable @columnfractions 0.25 0.25 0.25 0.25
+@headitem Function @tab @math{a} @tab @math{b} @tab @math{b - a}
+@item @math{{\rm sn}^{-1}(u | m)} @tab @math{-1} @tab @math{-m} @tab @math{1-m}
+@item @math{{\rm sc}^{-1}(u | m)} @tab @math{1} @tab @math{1-m} @tab @math{-m}
+@item @math{{\rm sd}^{-1}(u | m)} @tab @math{-(1-m)} @tab @math{m} @tab @math{1}
+@end multitable
+@end ifnotinfo
 
 @code{bf-inverse-jacobi-sn-aux} computes the second argument as either
 m4_math(<<<1 + bu^2>>>, <<<1 + b*u^2>>>)
@@ -2399,6 +2422,28 @@ m4_mathdot(<<<u = \pm i>>>, <<<u = +/- %i>>>)
 @section @code{inverse_jacobi_cd}
 @end ifnotinfo
 
+The same formula is used for every
+m4_math(<<<m \ne 1>>>, <<<m # 1>>>)
+(@pxref{inverse_jacobi_cd Except for Real m Greater Than 1}).  For real
+m4_mathcomma(<<<m > 1>>>, <<<m > 1>>>)
+m4_math(<<<m>>>, <<<m>>>)
+is on a branch cut of the result, and the formula has to be evaluated
+so that it gives the right limit (@pxref{inverse_jacobi_cd with Real m
+Greater Than 1}).
+
+@menu
+* inverse_jacobi_cd Except for Real m Greater Than 1::
+* inverse_jacobi_cd with Real m Greater Than 1::
+@end menu
+
+@node inverse_jacobi_cd Except for Real m Greater Than 1
+@ifinfo
+@subsection All m Except Real m > 1
+@end ifinfo
+@ifnotinfo
+@subsection All @math{m} Except Real @math{m > 1}
+@end ifnotinfo
+
 With
 m4_mathcomma(<<<{\rm cd}(z) = u>>>, <<<cd(z) = u>>>)
 m4_mathcomma(<<<{\rm sn}^2 = (1-u^2)/(1-mu^2)>>>, <<<sn^2 = (1-u^2)/(1-m*u^2)>>>)
@@ -2567,33 +2612,43 @@ m4_mathdot(<<<1.8540646773013716>>>, <<<1.8540646773013716>>>)
 @code{inverse_jacobi_cd(0.5+0.5*%i, 3.0)} was not evaluated.
 @end itemize
 
-@node Real m Greater Than 1
+@node inverse_jacobi_cd with Real m Greater Than 1
 @ifinfo
-@section Real m > 1
+@subsection Real m > 1
 @end ifinfo
 @ifnotinfo
-@section Real @math{m > 1}
+@subsection Real @math{m > 1}
 @end ifnotinfo
 
-For real
-m4_mathcomma(<<<m > 1>>>, <<<m > 1>>>)
+The general formula for
+m4_math(<<<{\rm cd}^{-1}>>>, <<<cd^-1>>>)
+(@pxref{inverse_jacobi_cd Except for Real m Greater Than 1}) divides by
+m4_math(<<<1-m>>>, <<<1-m>>>)
+and takes
+m4_mathdot(<<<\sqrt{1-m}>>>, <<<sqrt(1-m)>>>)
+When
+m4_math(<<<m>>>, <<<m>>>)
+is real and greater than 1,
 m4_math(<<<1-m>>>, <<<1-m>>>)
 is a negative real, on the branch cut of the square root, and
 m4_math(<<<m>>>, <<<m>>>)
-is on a branch cut of the result.  @code{elliptic_kc} and
-@code{inverse_jacobi_cn} return the limit from
-m4_math(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
-there.  For example,
+itself is on a branch cut of the result, so the result has two limits,
+from
+m4_math(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
+and from
+m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+@code{elliptic_kc} and @code{inverse_jacobi_cn} return the limit from
+m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+For example,
 m4_math(<<<{\rm cn}^{-1}(0.3 | 3)>>>, <<<inverse_jacobi_cn(0.3, 3)>>>)
 is
 m4_mathcomma(<<<1.0011 - 1.1714i>>>, <<<1.0011 - 1.1714*%i>>>)
 and the limit from
 m4_math(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
-is its conjugate.
+is its conjugate.  So @code{inverse_jacobi_cd} and
+@code{inverse_jacobi_dc} return that limit too.
 
-The general form for
-m4_math(<<<{\rm cd}^{-1}>>>, <<<cd^-1>>>)
-mixes the two sides: @code{sqrt} of
+The general formula mixes the two sides: @code{sqrt} of
 m4_math(<<<1-m>>>, <<<1-m>>>)
 takes the upper side of its cut, which belongs to the limit from
 m4_mathcomma(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
@@ -2647,11 +2702,39 @@ m4_mathcomma(<<<1+2^{-40}>>>, <<<1+2^-40>>>)
 the results agreed with those for
 m4_math(<<<m - 10^{-13}(m-1)\, i>>>, <<<m - 1e-13*(m-1)*%i>>>)
 at 180 random real and complex
-m4_mathdot(<<<u>>>, <<<u>>>)
+m4_math(<<<u>>>, <<<u>>>)
+off the imaginary axis.
 For real
 m4_mathcomma(<<<m < 1>>>, <<<m < 1>>>)
 they also agree with the limit from
 m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+
+On the imaginary axis of
+m4_mathcomma(<<<u>>>, <<<u>>>)
+the result is not always the limit from
+m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+There the reflection described in @ref{The Imaginary Axis} replaces
+m4_math(<<<m>>>, <<<m>>>)
+by
+m4_mathcomma(<<<\bar m>>>, <<<conjugate(m)>>>)
+which for real
+m4_math(<<<m>>>, <<<m>>>)
+does not change sides, and
+m4_mathcomma(<<<{\rm cn}^{-1}>>>, <<<cn^-1>>>)
+m4_mathcomma(<<<{\rm dn}^{-1}>>>, <<<dn^-1>>>)
+m4_mathcomma(<<<{\rm nc}^{-1}>>>, <<<nc^-1>>>)
+m4_mathcomma(<<<{\rm nd}^{-1}>>>, <<<nd^-1>>>)
+m4_math(<<<{\rm cd}^{-1}>>>, <<<cd^-1>>>)
+and
+m4_math(<<<{\rm dc}^{-1}>>>, <<<dc^-1>>>)
+can return the limit from
+m4_mathdot(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
+For example, @code{inverse_jacobi_cn(-2.0*%i, 3.0)} is
+m4_mathcomma(<<<0.2708 + 1.1714i>>>, <<<0.2708 + 1.1714*%i>>>)
+while the limit from
+m4_math(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+is
+m4_mathdot(<<<1.7313 - 1.1714i>>>, <<<1.7313 - 1.1714*%i>>>)
 
 @node inverse_jacobi_dc
 @ifinfo
@@ -2664,7 +2747,7 @@ m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
 This is
 m4_mathcomma(<<<{\rm cd}^{-1}(1/u)>>>, <<<inverse_jacobi_cd(1/u)>>>)
 computed as described in @ref{Reciprocal Functions}:
-@code{bf-inverse-jacobi-dc-1} scales with
+@code{bf-inverse-jacobi-dc} scales with
 @code{bf-inverse-jacobi-scale-recip}, computes
 m4_math(<<<t^2-v^2>>>, <<<t^2-v^2>>>)
 with @code{bf-diff-of-recip-squares}, and calls
@@ -2676,7 +2759,8 @@ and with the negative-imaginary-axis test applied to
 m4_mathdot(<<<\bar u>>>, <<<conjugate(u)>>>)
 @code{bf-inverse-jacobi-dc} handles real
 m4_math(<<<m > 1>>>, <<<m > 1>>>)
-as described in @ref{Real m Greater Than 1}.  It signals an error for
+as described in @ref{inverse_jacobi_cd with Real m Greater Than 1}.
+It signals an error for
 m4_mathcomma(<<<m = 1>>>, <<<m = 1>>>)
 where
 m4_mathcomma(<<<{\rm dc}(z | 1) = 1>>>, <<<dc(z|1) = 1>>>)
