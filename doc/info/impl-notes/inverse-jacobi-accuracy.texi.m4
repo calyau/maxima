@@ -2642,7 +2642,7 @@ m4_mathdot(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
 For example,
 m4_math(<<<{\rm cn}^{-1}(0.3 | 3)>>>, <<<inverse_jacobi_cn(0.3, 3)>>>)
 is
-m4_mathcomma(<<<1.0011 - 1.1714i>>>, <<<1.0011 - 1.1714*%i>>>)
+m4_mathcomma(<<<1.0011 - 0.9507i>>>, <<<1.0011 - 0.9507*%i>>>)
 and the limit from
 m4_math(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
 is its conjugate.  So @code{inverse_jacobi_cd} and
@@ -2735,6 +2735,16 @@ while the limit from
 m4_math(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
 is
 m4_mathdot(<<<1.7313 - 1.1714i>>>, <<<1.7313 - 1.1714*%i>>>)
+Both are inverses of
+m4_mathdot(<<<-2i>>>, <<<-2*%i>>>)
+Mathematica's @code{InverseJacobiCN[-2 I, 3]} is
+m4_mathcomma(<<<1.7313 - 1.1714i>>>, <<<1.7313 - 1.1714*%i>>>)
+the limit from
+m4_mathcomma(<<<{\rm Im}\, m < 0>>>, <<<imagpart(m) < 0>>>)
+consistent with its @code{EllipticK[3]}
+m4_mathcomma(<<<= 1.0011 - 1.1714i>>>, <<<= 1.0011 - 1.1714*%i>>>)
+while mpmath's @code{ellipf(acos(u), m)} gives the same values as
+Maxima.
 
 @node inverse_jacobi_dc
 @ifinfo
