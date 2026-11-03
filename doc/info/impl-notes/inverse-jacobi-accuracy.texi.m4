@@ -492,13 +492,13 @@ dn(z|m) = cn(sqrt(m)*z|1/m)
 )
 
 so for
-m4_mathcomma(<<<w = {\rm dn}(z | m)>>>, <<<w = dn(z|m)>>>)
+m4_mathcomma(<<<u = {\rm dn}(z | m)>>>, <<<u = dn(z|m)>>>)
 
 m4_displaymath(
-<<<{\rm dn}^{-1}(w | m) = {{\rm cn}^{-1}(w | 1/m) \over \sqrt{m}}.>>>
+<<<{\rm dn}^{-1}(u | m) = {{\rm cn}^{-1}(u | 1/m) \over \sqrt{m}}.>>>
 ,
 <<<@example
-inverse_jacobi_dn(w, m) = inverse_jacobi_cn(w, 1/m)/sqrt(m)
+inverse_jacobi_dn(u, m) = inverse_jacobi_cn(u, 1/m)/sqrt(m)
 @end example>>>
 )
 
@@ -506,11 +506,11 @@ The two cases of the @code{inverse_jacobi_cn} formula carry over, for
 the same reason.  Computing
 m4_math(<<<1/m>>>, <<<1/m>>>)
 first and then
-m4_math(<<<1-(1/m)(1-w^2)>>>, <<<1-(1/m)*(1-w^2)>>>)
+m4_math(<<<1-(1/m)(1-u^2)>>>, <<<1-(1/m)*(1-u^2)>>>)
 loses accuracy when
 m4_math(<<<m>>>, <<<m>>>)
 is near 1 and
-m4_math(<<<w^2>>>, <<<w^2>>>)
+m4_math(<<<u^2>>>, <<<u^2>>>)
 is near
 m4_mathcomma(<<<1-m>>>, <<<1-m>>>)
 near the zero of
@@ -521,10 +521,10 @@ is not small compared with the result.  So the substitution is done
 algebraically,
 
 m4_displaymath(
-<<<1 - {1-w^2 \over m} = {w^2-(1-m) \over m},>>>
+<<<1 - {1-u^2 \over m} = {u^2-(1-m) \over m},>>>
 ,
 <<<@example
-1 - (1-w^2)/m = (w^2-(1-m))/m
+1 - (1-u^2)/m = (u^2-(1-m))/m
 @end example>>>
 )
 
@@ -535,15 +535,15 @@ m4_math(<<<m>>>, <<<m>>>)
 near 1.  This gives
 
 m4_displaymath(
-<<<{\rm dn}^{-1}(w | m) = \cases{
-\displaystyle{\sqrt{1-w^2} \over \sqrt{m}} \, R_F\left(w^2,\ {w^2-(1-m) \over m},\ 1\right), & ${\rm Re}\, w \ge 0$, \cr
-\displaystyle{2K(1/m) \over \sqrt{m}} - {\rm dn}^{-1}(-w | m), & ${\rm Re}\, w < 0$,
+<<<{\rm dn}^{-1}(u | m) = \cases{
+\displaystyle{\sqrt{1-u^2} \over \sqrt{m}} \, R_F\left(u^2,\ {u^2-(1-m) \over m},\ 1\right), & ${\rm Re}\, u \ge 0$, \cr
+\displaystyle{2K(1/m) \over \sqrt{m}} - {\rm dn}^{-1}(-u | m), & ${\rm Re}\, u < 0$,
 }>>>
 ,
 <<<@example
-                          / sqrt(1-w^2)*R_F(w^2, (w^2-(1-m))/m, 1)/sqrt(m),  realpart(w) >= 0
-inverse_jacobi_dn(w, m) = <
-                          \ 2*K(1/m)/sqrt(m) - inverse_jacobi_dn(-w, m),      realpart(w) < 0
+                          / sqrt(1-u^2)*R_F(u^2, (u^2-(1-m))/m, 1)/sqrt(m),  realpart(u) >= 0
+inverse_jacobi_dn(u, m) = <
+                          \ 2*K(1/m)/sqrt(m) - inverse_jacobi_dn(-u, m),      realpart(u) < 0
 @end example>>>
 )
 
@@ -552,7 +552,7 @@ m4_mathcomma(<<<K(1/m) = R_F(0,\ (m-1)/m,\ 1)>>>, <<<K(1/m) = R_F(0, (m-1)/m, 1)
 computed the same way rather than as
 m4_mathdot(<<<R_F(0,\ 1-1/m,\ 1)>>>, <<<R_F(0, 1-1/m, 1)>>>)
 Computing @code{inverse_jacobi_dn} instead as
-@code{(/ (bf-inverse-jacobi-cn w (/ m)) (sqrt m))} raised the worst
+@code{(/ (bf-inverse-jacobi-cn u (/ m)) (sqrt m))} raised the worst
 double-float error on the real test points from about 1 ulp to about
 m4_math(<<<2\times10^{3}>>>, <<<2e3>>>)
 ulps, and on complex points from 3.3 to
@@ -561,7 +561,7 @@ m4_mathdot(<<<1.9\times10^{5}>>>, <<<1.9e5>>>)
 For real
 m4_math(<<<m \in (0, 1)>>>, <<<0 < m < 1>>>)
 and real
-m4_mathcomma(<<<w \in [\sqrt{1-m}, 1]>>>, <<<sqrt(1-m) <= w <= 1>>>)
+m4_mathcomma(<<<u \in [\sqrt{1-m}, 1]>>>, <<<sqrt(1-m) <= u <= 1>>>)
 where the result is real and lies in
 m4_mathcomma(<<<[0, K(m)]>>>, <<<[0, K(m)]>>>)
 multiplying the arguments of
@@ -572,10 +572,10 @@ m4_math(<<<m>>>, <<<m>>>)
 m4_math(<<<m{:}>>>, <<<m:>>>)
 
 m4_displaymath(
-<<<{\rm dn}^{-1}(w | m) = \sqrt{1-w^2} \, R_F(w^2-(1-m),\ mw^2,\ m).>>>
+<<<{\rm dn}^{-1}(u | m) = \sqrt{1-u^2} \, R_F(u^2-(1-m),\ mu^2,\ m).>>>
 ,
 <<<@example
-inverse_jacobi_dn(w, m) = sqrt(1-w^2)*R_F(w^2-(1-m), m*w^2, m)
+inverse_jacobi_dn(u, m) = sqrt(1-u^2)*R_F(u^2-(1-m), m*u^2, m)
 @end example>>>
 )
 
@@ -592,7 +592,7 @@ code uses the one whose terms are smaller in magnitude
 @headitem Function @tab Form A @tab Form B
 @item @code{inverse_jacobi_sn} @tab @math{1-m u^2} @tab @math{(1-u^2) + (1-m) u^2}
 @item @code{inverse_jacobi_cn} @tab @math{1-m(1-u^2)} @tab @math{(1-m) + m u^2}
-@item @code{inverse_jacobi_dn} @tab @math{w^2-(1-m)} @tab @math{m-(1-w^2)}
+@item @code{inverse_jacobi_dn} @tab @math{u^2-(1-m)} @tab @math{m-(1-u^2)}
 @end multitable
 
 In every case
@@ -650,11 +650,11 @@ sqrt(1-u^2)*R_F(u^2, 1-m*(1-u^2), 1)
 For @code{inverse_jacobi_dn},
 
 m4_displaymath(
-<<<{\sqrt{1-w^2}\over\sqrt{m}} \, R_F\left(w^2,\ {w^2-(1-m)\over m},\ 1\right)
+<<<{\sqrt{1-u^2}\over\sqrt{m}} \, R_F\left(u^2,\ {u^2-(1-m)\over m},\ 1\right)
 = {\sqrt{t^2-v^2}\over\sqrt{m}} \, R_F\left(v^2,\ {v^2-(1-m)t^2\over m},\ t^2\right),>>>
 ,
 <<<@example
-sqrt(1-w^2)*R_F(w^2, (w^2-(1-m))/m, 1)/sqrt(m)
+sqrt(1-u^2)*R_F(u^2, (u^2-(1-m))/m, 1)/sqrt(m)
    = sqrt(t^2-v^2)*R_F(v^2, (v^2-(1-m)*t^2)/m, t^2)/sqrt(m)
 @end example>>>
 )
@@ -1271,16 +1271,16 @@ to @code{bf-inverse-jacobi-scale}, so
 m4_mathdot(<<<e = e_u>>>, <<<e = e_u>>>)
 Its arguments of
 m4_mathcomma(<<<R_F>>>, <<<R_F>>>)
-m4_mathcomma(<<<w^2>>>, <<<w^2>>>)
-m4_math(<<<(w^2-(1-m))/m>>>, <<<(w^2-(1-m))/m>>>)
+m4_mathcomma(<<<u^2>>>, <<<u^2>>>)
+m4_math(<<<(u^2-(1-m))/m>>>, <<<(u^2-(1-m))/m>>>)
 and 1, do not contain
-m4_mathdot(<<<mw^2>>>, <<<m*w^2>>>)
+m4_mathdot(<<<mu^2>>>, <<<m*u^2>>>)
 Including
 m4_math(<<<\lceil e_m/2\rceil>>>, <<<ceiling(e_m/2)>>>)
 made
 m4_math(<<<t>>>, <<<t>>>)
 much smaller than needed: for large
-m4_math(<<<|w|>>>, <<<abs(w)>>>)
+m4_math(<<<|u|>>>, <<<abs(u)>>>)
 and
 m4_mathcomma(<<<|m|>>>, <<<abs(m)>>>)
 m4_math(<<<t^2>>>, <<<t^2>>>)
@@ -1713,10 +1713,10 @@ m4_mathdot(<<<u>>>, <<<u>>>)
 @code{inverse_jacobi_dn} computes
 
 m4_displaymath(
-<<<z = {\sqrt{1-w^2} \over \sqrt{m}} \, R_F\left(w^2,\ {w^2-(1-m) \over m},\ 1\right),>>>
+<<<z = {\sqrt{1-u^2} \over \sqrt{m}} \, R_F\left(u^2,\ {u^2-(1-m) \over m},\ 1\right),>>>
 ,
 <<<@example
-z = sqrt(1-w^2)*R_F(w^2, (w^2-(1-m))/m, 1)/sqrt(m)
+z = sqrt(1-u^2)*R_F(u^2, (u^2-(1-m))/m, 1)/sqrt(m)
 @end example>>>
 )
 
@@ -1759,16 +1759,16 @@ times too large, and its result is multiplied by
 m4_math(<<<\sqrt{\lambda} = 2^{-300}{:}>>>, <<<sqrt(lambda) = 2^-300:>>>)
 
 m4_displaymath(
-<<<z = {\sqrt{1-w^2}\,\sqrt{\lambda} \over \sqrt{m}} \,
-R_F\left(\lambda w^2,\ {\lambda(w^2-(1-m)) \over m},\ \lambda\right).>>>
+<<<z = {\sqrt{1-u^2}\,\sqrt{\lambda} \over \sqrt{m}} \,
+R_F\left(\lambda u^2,\ {\lambda(u^2-(1-m)) \over m},\ \lambda\right).>>>
 ,
 <<<@example
-z = sqrt(1-w^2)*sqrt(lambda)*R_F(lambda*w^2, lambda*(w^2-(1-m))/m, lambda)/sqrt(m)
+z = sqrt(1-u^2)*sqrt(lambda)*R_F(lambda*u^2, lambda*(u^2-(1-m))/m, lambda)/sqrt(m)
 @end example>>>
 )
 
 The products
-m4_math(<<<\lambda(w^2-(1-m))>>>, <<<lambda*(w^2-(1-m))>>>)
+m4_math(<<<\lambda(u^2-(1-m))>>>, <<<lambda*(u^2-(1-m))>>>)
 and
 m4_math(<<<\lambda(m-1)>>>, <<<lambda*(m-1)>>>)
 are formed before dividing by
@@ -1778,7 +1778,7 @@ m4_math(<<<\lambda>>>, <<<lambda>>>)
 is a power of 2, the scaling is exact.
 
 The function
-m4_math(<<<{\rm dn}^{-1}(w | m)>>>, <<<inverse_jacobi_dn(w, m)>>>)
+m4_math(<<<{\rm dn}^{-1}(u | m)>>>, <<<inverse_jacobi_dn(u, m)>>>)
 has no Taylor series in
 m4_math(<<<m>>>, <<<m>>>)
 about 0 that could replace this: at
@@ -1787,7 +1787,7 @@ m4_math(<<<{\rm dn}(z | 0) = 1>>>, <<<dn(z|0) = 1>>>)
 for every
 m4_mathcomma(<<<z>>>, <<<z>>>)
 and for
-m4_math(<<<w>>>, <<<w>>>)
+m4_math(<<<u>>>, <<<u>>>)
 outside
 m4_math(<<<[\sqrt{1-m}, 1]>>>, <<<[sqrt(1-m), 1]>>>)
 the result has an imaginary part that grows like
@@ -1799,9 +1799,9 @@ The constants follow from the bounds above:
 @item
 Without scaling
 m4_math(<<<(|m| \ge 2^{-500}){:}>>>, <<<(abs(m) >= 2^-500):>>>)
-m4_math(<<<w>>>, <<<w>>>)
+m4_math(<<<u>>>, <<<u>>>)
 is unscaled only while
-m4_mathcomma(<<<|w| < 2^{64}>>>, <<<abs(w) < 2^64>>>)
+m4_mathcomma(<<<|u| < 2^{64}>>>, <<<abs(u) < 2^64>>>)
 so the second argument is at most about
 m4_mathcomma(<<<2^{128+1+500} = 2^{629}>>>, <<<2^(128+1+500) = 2^629>>>)
 below
@@ -1819,7 +1819,7 @@ m4_mathdot(<<<2^{128+1+1074-600} = 2^{603}>>>, <<<2^(128+1+1074-600) = 2^603>>>)
 An earlier version multiplied by
 m4_mathdot(<<<\lambda = |m|>>>, <<<lambda = abs(m)>>>)
 That pushed
-m4_math(<<<\lambda w^2>>>, <<<lambda*w^2>>>)
+m4_math(<<<\lambda u^2>>>, <<<lambda*u^2>>>)
 into the denormal range for tiny
 m4_mathcomma(<<<m>>>, <<<m>>>)
 where doubles have few significant bits.  For
