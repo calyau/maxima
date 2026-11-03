@@ -731,38 +731,80 @@ m4_math(<<<R_F>>>, <<<R_F>>>)
 has a branch cut along the negative real axis, so an argument on the
 cut is taken on one side or the other according to the sign of a zero
 imaginary part.  In double float that sign depends on how the value
-was computed.  For
-m4_math(<<<u = -iy>>>, <<<u = -%i*y>>>)
-with
-m4_mathcomma(<<<y > 0>>>, <<<y > 0>>>)
-@code{(* u u)} gives @code{#C(-y^2 -0.0)}, below the cut.  But adding
-a real number to a complex number with imaginary part
-m4_math(<<<-0>>>, <<<-0>>>)
-gives
-m4_mathcomma(<<<+0>>>, <<<+0>>>)
-so
-m4_mathcomma(<<<1-m(1-u^2)>>>, <<<1-m*(1-u^2)>>>)
-computed from the same
-m4_mathcomma(<<<u>>>, <<<u>>>)
-ends up above the cut.  Two arguments of
+was computed, and two arguments of
 m4_math(<<<R_F>>>, <<<R_F>>>)
-that should be on the same side are then on opposite sides, and the
-result is not an inverse at all.  For example,
-@code{inverse_jacobi_cn(-1d10*%i, 1-2^-52)} returned
-m4_mathcomma(<<<2K(m) \approx 38.73>>>, <<<2*K(m) = 38.73>>>)
-where
-m4_mathcomma(<<<{\rm cn} = -1>>>, <<<cn = -1>>>)
-not
-m4_mathdot(<<<-10^{10}i>>>, <<<-1e10*%i>>>)
+that should be on the same side of the cut can end up on opposite
+sides.  For @code{inverse_jacobi_sc(-10.0*%i, 0.5)},
+m4_math(<<<u>>>, <<<u>>>)
+is on the branch cut of
+m4_mathcomma(<<<{\rm sc}^{-1}>>>, <<<sc^-1>>>)
+and the first argument of
+m4_mathcomma(<<<R_F>>>, <<<R_F>>>)
+m4_mathcomma(<<<1 + u^2 = 1 - (iu)^2>>>, <<<1 + u^2 = 1 - (%i*u)^2>>>)
+is computed by @code{bf-diff-of-squares} as @code{#C(-99.0 -0.0)}: its
+imaginary part is
+m4_math(<<<-2xy>>>, <<<-2*x*y>>>)
+with
+m4_math(<<<x = 10>>>, <<<x = 10>>>)
+and
+m4_mathdot(<<<y = +0>>>, <<<y = +0>>>)
+The second argument,
+m4_mathcomma(<<<1 + (1-m)u^2>>>, <<<1 + (1-m)*u^2>>>)
+is @code{#C(-49.0 0.0)}.  The result is then
+m4_mathdot(<<<1.8541 - 3.5660i>>>, <<<1.8541 - 3.5660*%i>>>)
+That is an inverse of
+m4_mathcomma(<<<-10i>>>, <<<-10*%i>>>)
+but it is not the limit from either side of the cut, which are
+m4_mathcomma(<<<\pm 1.8541 - 0.1421i>>>, <<<+/- 1.8541 - 0.1421*%i>>>)
+and it does not agree with the bigfloat result.
 
 So @code{bf-inverse-jacobi-rf} makes any argument with a zero
 imaginary part real before calling @code{bf-rf}.  Such an argument is
 then always taken on the upper side of the cut.  Bigfloats have no
 signed zero and already behave this way, so this also makes float and
-bigfloat agree.  Without it, the number of sweep points where float
-and bigfloat gave different values rose from 8 to 195 for
-@code{inverse_jacobi_nc} and from 8 to 212 for
-@code{inverse_jacobi_nd}.
+bigfloat agree: @code{inverse_jacobi_sc(-10.0*%i, 0.5)} is
+m4_mathcomma(<<<-1.8541 - 0.1421i>>>, <<<-1.8541 - 0.1421*%i>>>)
+the limit from
+m4_mathcomma(<<<{\rm Re}\, u < 0>>>, <<<realpart(u) < 0>>>)
+as is @code{inverse_jacobi_sc(-10b0*%i, 0.5b0)}.  The inverse
+functions call
+m4_math(<<<R_F>>>, <<<R_F>>>)
+only through @code{bf-inverse-jacobi-rf}, so they do not need to
+convert its arguments themselves.  On 48,000 random calls of the twelve
+functions with
+m4_mathcomma(<<<|u| \le 10^4>>>, <<<abs(u) <= 1e4>>>)
+converting no arguments at all, here or in
+@code{bf-inverse-jacobi-rf-small-z}, changed 1412 results, all with
+m4_math(<<<u>>>, <<<u>>>)
+on the imaginary axis, for
+m4_mathcomma(<<<{\rm sc}^{-1}>>>, <<<sc^-1>>>)
+m4_mathcomma(<<<{\rm cs}^{-1}>>>, <<<cs^-1>>>)
+m4_math(<<<{\rm cd}^{-1}>>>, <<<cd^-1>>>)
+and
+m4_mathdot(<<<{\rm dc}^{-1}>>>, <<<dc^-1>>>)
+
+The one exception is the expansion in
+@code{bf-inverse-jacobi-rf-small-z} (@pxref{When the Smallest Argument
+Is Negligible}), which also takes
+m4_math(<<<\sqrt x>>>, <<<sqrt(x)>>>)
+and
+m4_mathdot(<<<\sqrt y>>>, <<<sqrt(y)>>>)
+These must take
+m4_math(<<<x>>>, <<<x>>>)
+and
+m4_math(<<<y>>>, <<<y>>>)
+on the same side of the cut as
+m4_math(<<<R_F>>>, <<<R_F>>>)
+does, so @code{bf-inverse-jacobi-rf-small-z} makes
+m4_math(<<<x>>>, <<<x>>>)
+and
+m4_math(<<<y>>>, <<<y>>>)
+real in the same way.  Without that,
+@code{inverse_jacobi_sc(-1e30*%i, 0.5)}, which uses the expansion,
+would be
+m4_math(<<<-1.8541 + 1.414\times10^{-30}i>>>, <<<-1.8541 + 1.414e-30*%i>>>)
+instead of
+m4_mathdot(<<<-1.8541 - 1.414\times10^{-30}i>>>, <<<-1.8541 - 1.414e-30*%i>>>)
 
 A simpler-looking alternative is to add zero, which also turns
 m4_math(<<<-0>>>, <<<-0>>>)
@@ -800,6 +842,7 @@ No such step is needed for the square roots.  The argument of
 @code{sqrt} is
 m4_mathcomma(<<<1-u^2>>>, <<<1-u^2>>>)
 m4_mathcomma(<<<m>>>, <<<m>>>)
+m4_mathcomma(<<<1-m>>>, <<<1-m>>>)
 or a positive scale factor.  Here
 m4_math(<<<1-u^2>>>, <<<1-u^2>>>)
 is negative only for real
@@ -811,7 +854,9 @@ m4_math(<<<u = iy>>>, <<<u = %i*y>>>)
 it is
 m4_mathdot(<<<1+y^2 > 0>>>, <<<1+y^2 > 0>>>)
 m4_math(<<<m>>>, <<<m>>>)
-is a Lisp real whenever its imaginary part is zero.
+and
+m4_math(<<<1-m>>>, <<<1-m>>>)
+are Lisp reals whenever their imaginary part is zero.
 
 @node The Imaginary Axis
 @section The Imaginary Axis
@@ -1443,9 +1488,14 @@ m4_mathdot(<<<y>>>, <<<y>>>)
 m4_math(<<<\sqrt{x}>>>, <<<sqrt(x)>>>)
 and
 m4_math(<<<\sqrt{y}>>>, <<<sqrt(y)>>>)
-are the principal square roots of the same arguments that
-@code{bf-inverse-jacobi-rf} gives @code{bf-rf}, after making those with
-a zero imaginary part real.  They are the values at
+are the principal square roots of
+m4_math(<<<x>>>, <<<x>>>)
+and
+m4_math(<<<y>>>, <<<y>>>)
+after making those with a zero imaginary part real, as
+@code{bf-inverse-jacobi-rf} does for
+m4_math(<<<R_F>>>, <<<R_F>>>)
+(@pxref{Signed Zeros}).  They are the values at
 m4_math(<<<s = 0>>>, <<<s = 0>>>)
 of the square roots in the integral, so the correction is on the same
 branch as
