@@ -2716,11 +2716,13 @@ m4_mathcomma(<<<-0.680 - 1.171i>>>, <<<-0.680 - 1.171*%i>>>)
 where the limits are
 m4_mathdot(<<<0.680 \mp 1.171i>>>, <<<0.680 -/+ 1.171*%i>>>)
 
-So @code{bf-inverse-jacobi-cd} computes the limit from
-m4_math(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
-at
+So for real
+m4_mathcomma(<<<m > 1>>>, <<<m > 1>>>)
+@code{bf-inverse-jacobi-cd-aux} computes the limit from
+m4_mathcomma(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
+and @code{bf-inverse-jacobi-cd} computes that at
 m4_mathcomma(<<<\bar u>>>, <<<conjugate(u)>>>)
-and conjugates it:
+with @code{bf-inverse-jacobi-cd-from-above}, and conjugates it:
 
 m4_displaymath(
 <<<{\rm cd}^{-1}(u | m - i0) = \overline{{\rm cd}^{-1}(\bar u | m + i0)}.>>>
@@ -2730,8 +2732,9 @@ inverse_jacobi_cd(u, m - %i*0) = conjugate(inverse_jacobi_cd(conjugate(u), m + %
 @end example>>>
 )
 
-@code{bf-inverse-jacobi-cd-aux} is told this with @code{upper-p}, and
-takes
+To get the limit from
+m4_mathcomma(<<<{\rm Im}\, m > 0>>>, <<<imagpart(m) > 0>>>)
+@code{bf-inverse-jacobi-cd-aux} takes
 m4_mathcomma(<<<\sqrt{1-m} = -i\sqrt{m-1}>>>, <<<sqrt(1-m) = -%i*sqrt(m-1)>>>)
 the value from that side.  When
 m4_math(<<<1-u^2>>>, <<<1-u^2>>>)
@@ -2807,7 +2810,7 @@ Maxima.
 This is
 m4_mathcomma(<<<{\rm cd}^{-1}(1/u)>>>, <<<inverse_jacobi_cd(1/u)>>>)
 computed as described in @ref{Reciprocal Functions}:
-@code{bf-inverse-jacobi-dc} scales with
+@code{bf-inverse-jacobi-dc-from-above} scales with
 @code{bf-inverse-jacobi-scale-recip}, computes
 m4_math(<<<t^2-v^2>>>, <<<t^2-v^2>>>)
 with @code{bf-diff-of-recip-squares}, and calls

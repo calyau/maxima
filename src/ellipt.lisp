@@ -1653,11 +1653,12 @@
 ;;
 ;; This is the part after scaling, for the argument v/t.  V and TT are
 ;; the scaled argument and the scale factor t, S2 is t^2-v^2, and
-;; REFLECT is true when the real part of the argument is negative.
-;; UPPER-P is true when the caller wants the limit from Im(m) > 0 for
-;; real m > 1 (see bf-inverse-jacobi-cd).
-(defun bf-inverse-jacobi-cd-aux (v tt s2 m reflect upper-p)
-  (let* ((t2 (* tt tt))
+;; REFLECT is true when the real part of the argument is negative.  For
+;; real m > 1 it computes the limit from Im(m) > 0 (see
+;; bf-inverse-jacobi-cd).
+(defun bf-inverse-jacobi-cd-aux (v tt s2 m reflect)
+  (let* ((upper-p (and (realp m) (> m 1)))
+         (t2 (* tt tt))
 	 (v2 (* v v))
 	 (m1 (- 1 m))
 	 (mv2 (* m v2))
@@ -1695,7 +1696,8 @@
 			  (sqrt m1))))
 	       ;; Likewise, when 1-u^2 is a negative real, take its sqrt
 	       ;; from the side that becomes the usual one after the
-	       ;; conjugation in bf-inverse-jacobi-cd or bf-inverse-jacobi-dc.
+	       ;; conjugation in bf-inverse-jacobi-cd or
+	       ;; bf-inverse-jacobi-dc.
 	       (s (if (and upper-p (realp s2) (minusp s2))
 		      (* #c(0 -1) (sqrt (- s2)))
 		      (sqrt s2)))
@@ -1713,53 +1715,68 @@
 		 z)
 	      z)))))
 
-;; Compute inverse_jacobi_cd(u,m).
-;;
-;; For real m > 1, m is on a branch cut, and the result is the limit
-;; from Im(m) < 0, as for elliptic_kc and inverse_jacobi_cn.  The
-;; general formula in bf-inverse-jacobi-cd-aux cannot compute that
-;; directly: rf takes the negative reals 1/(1-m) and (1-m*u^2)/(1-m)
-;; on the upper side of its cut, which is the limit from Im(m) > 0,
-;; while sqrt takes 1-m on the upper side of its cut, which is the
-;; limit from Im(m) < 0.  So for real m > 1, this calls itself with
-;; conjugate(u) and UPPER-P true, which tells bf-inverse-jacobi-cd-aux
-;; to take sqrt(1-m) from the side for Im(m) > 0 too, and conjugates
-;; the result:
-;;
-;;   inverse_jacobi_cd(u,m-%i*0) = conjugate(inverse_jacobi_cd(conjugate(u),m+%i*0))
-;;
-;; UPPER-P is only for that call.  The reflection for the negative
-;; imaginary axis comes after it, so that it is applied to conjugate(u)
-;; when m > 1.
-(defun bf-inverse-jacobi-cd (u m &optional upper-p)
-  ;; cd(z|1) = 1.
-  (when (= m 1)
-    (bf-inverse-jacobi-pole "inverse_jacobi_cd" u m))
-  (when (and (realp m) (> m 1) (not upper-p))
-    (return-from bf-inverse-jacobi-cd
-      (conjugate (bf-inverse-jacobi-cd (conjugate u) m t))))
+;; inverse_jacobi_cd(u,m), except that for real m > 1 it is the limit
+;; from Im(m) > 0, which is what bf-inverse-jacobi-cd-aux computes.
+;; This is the part of bf-inverse-jacobi-cd that depends on u: the
+;; reflection for the negative imaginary axis, the scaling, and
+;; t^2-v^2.
+(defun bf-inverse-jacobi-cd-from-above (u m)
   (when (bf-negative-imaginary-axis-p u)
-    (return-from bf-inverse-jacobi-cd
-      (conjugate (bf-inverse-jacobi-cd (conjugate u)
-                                       (conjugate m)
-                                       upper-p))))
+    (return-from bf-inverse-jacobi-cd-from-above
+      (conjugate (bf-inverse-jacobi-cd-from-above (conjugate u)
+                                                  (conjugate m)))))
   (multiple-value-bind (v tt)
       (bf-inverse-jacobi-scale u m)
     (bf-inverse-jacobi-cd-aux v
                               tt
                               (bf-diff-of-squares tt v)
                               m
-			      (minusp (realpart u))
-                              upper-p)))
+			      (minusp (realpart u)))))
+
+;; Compute inverse_jacobi_cd(u,m).
+;;
+;; For real m > 1, m is on a branch cut, and the result is the limit
+;; from Im(m) < 0, as for elliptic_kc and inverse_jacobi_cn.  The
+;; general formula cannot compute that directly: rf takes the negative
+;; reals 1/(1-m) and (1-m*u^2)/(1-m) on the upper side of its cut,
+;; which is the limit from Im(m) > 0, while sqrt takes 1-m on the
+;; upper side of its cut, which is the limit from Im(m) < 0.  So
+;; bf-inverse-jacobi-cd-aux takes sqrt(1-m) from the side for
+;; Im(m) > 0 too, which gives the limit from Im(m) > 0, and this
+;; computes that at conjugate(u) and conjugates the result:
+;;
+;;   inverse_jacobi_cd(u,m-%i*0) = conjugate(inverse_jacobi_cd(conjugate(u),m+%i*0))
+(defun bf-inverse-jacobi-cd (u m)
+  ;; cd(z|1) = 1.
+  (when (= m 1)
+    (bf-inverse-jacobi-pole "inverse_jacobi_cd" u m))
+  (if (and (realp m) (> m 1))
+      (conjugate (bf-inverse-jacobi-cd-from-above (conjugate u) m))
+      (bf-inverse-jacobi-cd-from-above u m)))
 
 ;; jacobi_dc = 1/jacobi_cd (DLMF 22.2.8, https://dlmf.nist.gov/22.2.E8),
 ;; so inverse_jacobi_dc(u,m) = inverse_jacobi_cd(1/u,m) (DLMF 22.15.18,
 ;; https://dlmf.nist.gov/22.15.E18; A&S 17.4.47,
-;; https://personal.math.ubc.ca/~cbm/aands/page_596.htm).  This is computed as in
-;; bf-inverse-jacobi-cd, without forming 1/u.  1/u has the sign of the
-;; real part of u, and is on the negative imaginary axis when u is on
-;; the positive one.  UPPER-P is as for bf-inverse-jacobi-cd.
-(defun bf-inverse-jacobi-dc (u m &optional upper-p)
+;; https://personal.math.ubc.ca/~cbm/aands/page_596.htm).  This is
+;; computed as in bf-inverse-jacobi-cd, without forming 1/u.
+
+;; bf-inverse-jacobi-cd-from-above for the argument 1/u.  1/u has the
+;; sign of the real part of u, and is on the negative imaginary axis
+;; when u is on the positive one.
+(defun bf-inverse-jacobi-dc-from-above (u m)
+  (when (bf-negative-imaginary-axis-p (conjugate u))
+    (return-from bf-inverse-jacobi-dc-from-above
+      (conjugate (bf-inverse-jacobi-dc-from-above (conjugate u)
+                                                  (conjugate m)))))
+  (multiple-value-bind (v tt)
+      (bf-inverse-jacobi-scale-recip u m)
+    (bf-inverse-jacobi-cd-aux v
+                              tt
+                              (bf-diff-of-recip-squares tt v u)
+                              m
+			      (minusp (realpart u)))))
+
+(defun bf-inverse-jacobi-dc (u m)
   ;; dc(z|1) = 1.
   (when (= m 1)
     (bf-inverse-jacobi-pole "inverse_jacobi_dc" u m))
@@ -1767,22 +1784,11 @@
   ;; differ.
   (when (zerop u)
     (bf-inverse-jacobi-pole "inverse_jacobi_dc" u m))
-  (when (and (realp m) (> m 1) (not upper-p))
-    (return-from bf-inverse-jacobi-dc
-      (conjugate (bf-inverse-jacobi-dc (conjugate u) m t))))
-  (when (bf-negative-imaginary-axis-p (conjugate u))
-    (return-from bf-inverse-jacobi-dc
-      (conjugate (bf-inverse-jacobi-dc (conjugate u)
-                                       (conjugate m)
-                                       upper-p))))
-  (multiple-value-bind (v tt)
-      (bf-inverse-jacobi-scale-recip u m)
-    (bf-inverse-jacobi-cd-aux v
-                              tt
-                              (bf-diff-of-recip-squares tt v u)
-                              m
-			      (minusp (realpart u))
-                              upper-p)))
+  ;; For real m > 1, use the limit from Im(m) < 0, as in
+  ;; bf-inverse-jacobi-cd.
+  (if (and (realp m) (> m 1))
+      (conjugate (bf-inverse-jacobi-dc-from-above (conjugate u) m))
+      (bf-inverse-jacobi-dc-from-above u m)))
 
 ;; The part of inverse_jacobi_dn after scaling, for the argument v/t.
 ;; V and TT are the scaled argument and the scale factor t, S2 is
