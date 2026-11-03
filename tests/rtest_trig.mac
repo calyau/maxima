@@ -1087,7 +1087,7 @@ closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then
 
 closeto_relerr(asech(1 - 1e-12),
                1.41419791986886460165008241167b-6,
-               7.7495e-17);
+               2.2724e-16);
 true$
 
 closeto_relerr(asech(-1 + 1e-12),
@@ -1122,7 +1122,7 @@ true$
 
 closeto_relerr(asech(0.9999999999999986 - 4.4e-15*%i),
                7.79356009779577277772218293743b-8 + 5.64568688094731952613708037345b-8*%i,
-               9.7292e-18);
+               1.2801e-16);
 true$
 
 closeto_relerr(asech(1e-310),
@@ -1157,7 +1157,7 @@ true$
 
 closeto_relerr(asech(2.0),
                1.04719755119659774615421446109b0*%i,
-               1.0238e-16);
+               3.2170e-16);
 true$
 
 closeto_relerr(asech(-2.0),

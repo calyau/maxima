@@ -79,7 +79,9 @@
 	 ((mlist simp) 23 24 38))
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_trig"
-	 #+allegro ((mlist simp) 58))
+	 #+allegro ((mlist simp) 58)
+         ;; Clisp doesn't have denormals so these tests fail.
+         #+clisp ((mlist simp) 246 247 248 249))
         "rtest_zeta"
         "rtest_diff_invtrig"
         "rtest_scalarp"
