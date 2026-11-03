@@ -1347,6 +1347,12 @@
                                (+ s2 m1v2))
      t2 tt)))
 
+;; Signal an error for an argument U where the inverse Jacobi function
+;; NAME with parameter M has a pole.
+(defun bf-inverse-jacobi-pole (name u m)
+  (maxima::merror (intl:gettext "~A: ~A(~:M, ~:M) is undefined.")
+		  name name (maxima::to u) (maxima::to m)))
+
 ;; Compute inverse_jacobi_sn.  It is defined by the integral in DLMF
 ;; 22.15.12 (https://dlmf.nist.gov/22.15.E12), and is F(asin(u)|m)
 ;; (A&S 17.4.45, https://personal.math.ubc.ca/~cbm/aands/page_596.htm).  With
@@ -1516,12 +1522,6 @@
   (and (not (realp u))
        (zerop (realpart u))
        (minusp (imagpart u))))
-
-;; Signal an error for an argument U where the inverse Jacobi function
-;; NAME with parameter M has a pole.
-(defun bf-inverse-jacobi-pole (name u m)
-  (maxima::merror (intl:gettext "~A: ~A(~:M, ~:M) is undefined.")
-		  name name (maxima::to u) (maxima::to m)))
 
 ;; Compute asech(u).
 (defun bf-inverse-jacobi-asech (u)
