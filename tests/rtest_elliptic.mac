@@ -2206,22 +2206,23 @@ true;
 
 /* For real m, inverse_jacobi_dn and inverse_jacobi_nd are conjugate
  * symmetric: f(conjugate(u),m) = conjugate(f(u,m)).  This failed for
- * real m < 0, and for real m in (0,1) with realpart(u) < 0. */
-[closeto(inverse_jacobi_dn(-0.3+0.4*%i, 0.5) - (2.432484727215252+2.1988178705343584*%i), 1e-15),
- closeto(inverse_jacobi_dn(-0.3-0.4*%i, 0.5) - (2.432484727215252-2.1988178705343584*%i), 1e-15),
- closeto(inverse_jacobi_dn(-0.3b0+0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359425b0+2.198817870534358361205011073031b0*%i), 1b-31),
- closeto(inverse_jacobi_dn(-0.3b0-0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359425b0-2.198817870534358361205011073031b0*%i), 1b-31),
- closeto(inverse_jacobi_nd(-1.2-1.6*%i, 0.5) - (2.432484727215252+2.1988178705343584*%i), 1e-14),
- closeto(inverse_jacobi_nd(-1.2+1.6*%i, 0.5) - (2.432484727215252-2.1988178705343584*%i), 1e-14),
- closeto(inverse_jacobi_dn(0.965+1.394*%i, -0.1836) - (1.0164624580569208+1.9133831593831307*%i), 1e-15),
- closeto(inverse_jacobi_dn(0.965-1.394*%i, -0.1836) - (1.0164624580569208-1.9133831593831307*%i), 1e-15),
- closeto(inverse_jacobi_dn(0.965b0+1.394b0*%i, -0.1836b0) - (1.0164624580569209466715665309802b0+1.9133831593831308153219528376909b0*%i), 1b-31)];
+ * real m < 0, and for real m in (0,1) with realpart(u) < 0.  The
+ * expected values are from mpmath. */
+[closeto(inverse_jacobi_dn(-0.3+0.4*%i, 0.5) - (2.4324847272152521+2.1988178705343583*%i), 4.4409e-16),
+ closeto(inverse_jacobi_dn(-0.3-0.4*%i, 0.5) - (2.4324847272152521-2.1988178705343583*%i), 4.4409e-16),
+ closeto(inverse_jacobi_dn(-0.3b0+0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359424b0+2.1988178705343583612050110730310b0*%i), 6.2851b-32),
+ closeto(inverse_jacobi_dn(-0.3b0-0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359424b0-2.1988178705343583612050110730310b0*%i), 6.2851b-32),
+ closeto(inverse_jacobi_nd(-1.2-1.6*%i, 0.5) - (2.4324847272152520+2.1988178705343583*%i), 1.6012e-15),
+ closeto(inverse_jacobi_nd(-1.2+1.6*%i, 0.5) - (2.4324847272152520-2.1988178705343583*%i), 1.6012e-15),
+ closeto(inverse_jacobi_dn(0.965+1.394*%i, -0.1836) - (1.0164624580569209+1.9133831593831308*%i), 1e-16),
+ closeto(inverse_jacobi_dn(0.965-1.394*%i, -0.1836) - (1.0164624580569209-1.9133831593831308*%i), 1e-16),
+ closeto(inverse_jacobi_dn(0.965b0+1.394b0*%i, -0.1836b0) - (1.0164624580569209466715665309802b0+1.9133831593831308153219528376909b0*%i), 3.3189b-32)];
 [true, true, true, true, true, true, true, true, true];
 
 /* For real m < 0, inverse_jacobi_dn is continuous across the real axis
  * where it is real, [1, sqrt(1-m)]. */
-[closeto(inverse_jacobi_dn(1.2+1e-15*%i, -2.0) - 0.45713847114565376, 1e-14),
- closeto(inverse_jacobi_dn(1.2-1e-15*%i, -2.0) - 0.45713847114565376, 1e-14)];
+[closeto(inverse_jacobi_dn(1.2+1e-15*%i, -2.0) - (0.45713847114565363+1.2070113739631691e-15*%i), 1.1103e-16),
+ closeto(inverse_jacobi_dn(1.2-1e-15*%i, -2.0) - (0.45713847114565363-1.2070113739631691e-15*%i), 1.1103e-16)];
 [true, true];
 
 
