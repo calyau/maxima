@@ -59,7 +59,8 @@ It covers the formulas in terms of Carlson's integral
 m4_math(<<<R_F>>>, <<<R_F>>>)
 and how they avoid cancellation (@pxref{The Formulas and How They Are
 Scaled}), branch cuts and signed zeros (@pxref{Signed Zeros},
-@ref{The Imaginary Axis}), how the arguments are converted
+@ref{The Imaginary Axis}, @ref{Conjugate Symmetry of
+inverse_jacobi_dn}), how the arguments are converted
 (@pxref{Converting the Arguments}), the case
 m4_math(<<<m = 1>>>, <<<m = 1>>>)
 (@pxref{The Case m = 1}), and the argument scaling that prevents
@@ -351,6 +352,7 @@ m4_mathdot(<<<1/u^2>>>, <<<1/u^2>>>)
 * Rounding::
 * Signed Zeros::
 * The Imaginary Axis::
+* Conjugate Symmetry of inverse_jacobi_dn::
 * Converting the Arguments::
 @end menu
 
@@ -953,6 +955,191 @@ m4_math(<<<u \, R_F(1-u^2,\ 1-mu^2,\ 1)>>>, <<<u*R_F(1-u^2, 1-m*u^2, 1)>>>)
 carries the factor
 m4_math(<<<u>>>, <<<u>>>)
 itself.
+
+@node Conjugate Symmetry of inverse_jacobi_dn
+@section Conjugate Symmetry of @code{inverse_jacobi_dn}
+
+For real
+m4_mathcomma(<<<m>>>, <<<m>>>)
+m4_mathcomma(<<<{\rm dn}(\bar z | m) = \overline{{\rm dn}(z | m)}>>>, <<<dn(conjugate(z)|m) = conjugate(dn(z|m))>>>)
+so by the Schwarz reflection principle (@urldlmf{1.10.E5}) the inverse
+should satisfy
+
+m4_displaymath(
+<<<{\rm dn}^{-1}(\bar u | m) = \overline{{\rm dn}^{-1}(u | m)}>>>
+,
+<<<@example
+dn^-1(conjugate(u)|m) = conjugate(dn^-1(u|m))
+@end example>>>
+)
+
+everywhere off its branch cuts.  The formula of @ref{inverse_jacobi_dn}
+does not do this in two cases, because it uses a function on its
+branch cut, and @code{bf-inverse-jacobi-rf} (@pxref{Signed Zeros})
+takes the same side of the cut for
+m4_math(<<<u>>>, <<<u>>>)
+and
+m4_mathpunc(<<<:>>>, <<<\bar u>>>, <<<conjugate(u)>>>)
+
+@itemize @bullet
+@item
+For real
+m4_mathcomma(<<<m < 0>>>, <<<m < 0>>>)
+it divides by
+m4_mathcomma(<<<\sqrt m>>>, <<<sqrt(m)>>>)
+with
+m4_math(<<<m>>>, <<<m>>>)
+on the cut of the square root.  Then for many complex
+m4_math(<<<u>>>, <<<u>>>)
+the result at
+m4_math(<<<\bar u>>>, <<<conjugate(u)>>>)
+was
+m4_mathdot(<<<-\overline{{\rm dn}^{-1}(u | m)}>>>, <<<-conjugate(dn^-1(u|m))>>>)
+Both are inverses, since
+m4_math(<<<{\rm dn}>>>, <<<dn>>>)
+is even, but they are not conjugates.  For example, for
+m4_mathcomma(<<<m = -0.1836>>>, <<<m = -0.1836>>>)
+m4_math(<<<{\rm dn}^{-1}(0.965 + 1.394i)>>>, <<<dn^-1(0.965 + 1.394*%i)>>>)
+was
+m4_mathcomma(<<<-1.0164624580569208 - 1.9133831593831307i>>>, <<<-1.0164624580569208 - 1.9133831593831307*%i>>>)
+and
+m4_math(<<<{\rm dn}^{-1}(0.965 - 1.394i)>>>, <<<dn^-1(0.965 - 1.394*%i)>>>)
+was
+m4_mathdot(<<<1.0164624580569208 - 1.9133831593831307i>>>, <<<1.0164624580569208 - 1.9133831593831307*%i>>>)
+@item
+For real
+m4_math(<<<m \in (0, 1)>>>, <<<0 < m < 1>>>)
+and
+m4_mathcomma(<<<{\rm Re}\, u < 0>>>, <<<realpart(u) < 0>>>)
+the reflection uses
+m4_mathcomma(<<<K(1/m) = R_F\left(0,\ (m-1)/m,\ 1\right)>>>, <<<K(1/m) = R_F(0, (m-1)/m, 1)>>>)
+with
+m4_math(<<<(m-1)/m < 0>>>, <<<(m-1)/m < 0>>>)
+on the cut of
+m4_mathdot(<<<R_F>>>, <<<R_F>>>)
+For example, for
+m4_mathcomma(<<<m = 0.5>>>, <<<m = 0.5>>>)
+m4_math(<<<{\rm dn}^{-1}(-0.3 + 0.4i)>>>, <<<dn^-1(-0.3 + 0.4*%i)>>>)
+was
+m4_mathcomma(<<<2.432484727215252 - 5.217480838671128i>>>, <<<2.432484727215252 - 5.217480838671128*%i>>>)
+and
+m4_math(<<<{\rm dn}^{-1}(-0.3 - 0.4i)>>>, <<<dn^-1(-0.3 - 0.4*%i)>>>)
+was
+m4_mathdot(<<<2.432484727215252 - 2.1988178705343584i>>>, <<<2.432484727215252 - 2.1988178705343584*%i>>>)
+@end itemize
+
+In both cases @code{bf-inverse-jacobi-dn} computes only the value with
+m4_mathcomma(<<<{\rm Im}\, u < 0>>>, <<<imagpart(u) < 0>>>)
+and for
+m4_math(<<<{\rm Im}\, u > 0>>>, <<<imagpart(u) > 0>>>)
+returns
+m4_mathdot(<<<\overline{{\rm dn}^{-1}(\bar u | m)}>>>, <<<conjugate(dn^-1(conjugate(u)|m))>>>)
+Now
+m4_mathcomma(<<<{\rm dn}^{-1}(-0.3 \pm 0.4i | 0.5) = 2.432484727215252 \pm 2.1988178705343584i>>>, <<<dn^-1(-0.3 +/- 0.4*%i|0.5) = 2.432484727215252 +/- 2.1988178705343584*%i>>>)
+and
+m4_mathdot(<<<{\rm dn}^{-1}(0.965 \pm 1.394i | -0.1836) = 1.0164624580569208 \pm 1.9133831593831307i>>>, <<<dn^-1(0.965 +/- 1.394*%i|-0.1836) = 1.0164624580569208 +/- 1.9133831593831307*%i>>>)
+Mathematica gives the same value for
+m4_mathcomma(<<<-0.3 + 0.4i>>>, <<<-0.3 + 0.4*%i>>>)
+but
+m4_math(<<<1.27566 + 2.19882i>>>, <<<1.27566 + 2.19882*%i>>>)
+for
+m4_mathcomma(<<<-0.3 - 0.4i>>>, <<<-0.3 - 0.4*%i>>>)
+so its values are not conjugates either.
+@code{bf-inverse-jacobi-nd} does the same, computing only the value
+with
+m4_mathcomma(<<<{\rm Im}(1/u) < 0>>>, <<<imagpart(1/u) < 0>>>)
+that is,
+m4_mathdot(<<<{\rm Im}\, u > 0>>>, <<<imagpart(u) > 0>>>)
+
+This changes where the branch cuts are on the real axis.  A function
+with conjugate symmetry that is continuous across the real axis must be
+real there.  So the real axis is now a cut exactly where
+m4_math(<<<{\rm dn}^{-1}>>>, <<<dn^-1>>>)
+is not real:
+
+@itemize @bullet
+@item
+For real
+m4_mathcomma(<<<m < 0>>>, <<<m < 0>>>)
+m4_math(<<<{\rm dn}^{-1}>>>, <<<dn^-1>>>)
+is now continuous across
+m4_mathcomma(<<<[1, \sqrt{1-m}]>>>, <<<[1, sqrt(1-m)]>>>)
+where it is real.  Before, it jumped there: for
+m4_mathcomma(<<<m = -2>>>, <<<m = -2>>>)
+by 0.914 at
+m4_mathdot(<<<u = 1.2>>>, <<<u = 1.2>>>)
+@item
+For real
+m4_mathcomma(<<<m \in (0, 1)>>>, <<<0 < m < 1>>>)
+the whole negative real axis is now a cut, including
+m4_mathcomma(<<<[-1, -\sqrt{1-m}]>>>, <<<[-1, -sqrt(1-m)]>>>)
+across which the result used to be continuous.  There it is
+m4_mathcomma(<<<2K(1/m)/\sqrt m - {\rm dn}^{-1}(-u | m)>>>, <<<2*K(1/m)/sqrt(m) - dn^-1(-u|m)>>>)
+which is not real.  For
+m4_mathcomma(<<<m = 0.5>>>, <<<m = 0.5>>>)
+m4_math(<<<{\rm dn}^{-1}(-0.8)>>>, <<<dn^-1(-0.8)>>>)
+is
+m4_mathcomma(<<<2.6084739 - 3.7081494i>>>, <<<2.6084739 - 3.7081494*%i>>>)
+the limit from below, and the limit from above is its conjugate.
+@end itemize
+
+It also changes the relation between
+m4_math(<<<u>>>, <<<u>>>)
+and
+m4_math(<<<-u>>>, <<<-u>>>)
+used in @ref{inverse_jacobi_dn}.  With
+m4_mathcomma(<<<C = 2K(1/m)/\sqrt m>>>, <<<C = 2*K(1/m)/sqrt(m)>>>)
+for
+m4_math(<<<{\rm Re}\, u < 0>>>, <<<realpart(u) < 0>>>)
+and real
+m4_mathpunc(<<<:>>>, <<<m>>>, <<<m>>>)
+
+@itemize @bullet
+@item
+for real
+m4_mathcomma(<<<m \in (0, 1)>>>, <<<0 < m < 1>>>)
+m4_math(<<<{\rm dn}^{-1}(u | m) = C - {\rm dn}^{-1}(-u | m)>>>, <<<dn^-1(u|m) = C - dn^-1(-u|m)>>>)
+when
+m4_mathcomma(<<<{\rm Im}\, u < 0>>>, <<<imagpart(u) < 0>>>)
+and the same with
+m4_math(<<<\bar C>>>, <<<conjugate(C)>>>)
+in place of
+m4_math(<<<C>>>, <<<C>>>)
+when
+m4_mathpunc(<<<;>>>, <<<{\rm Im}\, u > 0>>>, <<<imagpart(u) > 0>>>)
+@item
+for real
+m4_mathcomma(<<<m < 0>>>, <<<m < 0>>>)
+m4_math(<<<{\rm dn}^{-1}(u | m) = C + {\rm dn}^{-1}(-u | m)>>>, <<<dn^-1(u|m) = C + dn^-1(-u|m)>>>)
+when
+m4_mathcomma(<<<{\rm Im}\, u < 0>>>, <<<imagpart(u) < 0>>>)
+and the same with
+m4_math(<<<\bar C>>>, <<<conjugate(C)>>>)
+in place of
+m4_math(<<<C>>>, <<<C>>>)
+when
+m4_mathdot(<<<{\rm Im}\, u > 0>>>, <<<imagpart(u) > 0>>>)
+The sign differs from the formula of @ref{inverse_jacobi_dn} because
+m4_math(<<<{\rm dn}^{-1}(-u | m)>>>, <<<dn^-1(-u|m)>>>)
+is now the negative of the value that formula uses, which is also an
+inverse since
+m4_math(<<<{\rm dn}>>>, <<<dn>>>)
+is even.
+@end itemize
+
+So
+m4_math(<<<{\rm dn}^{-1}(u) + {\rm dn}^{-1}(-u)>>>, <<<dn^-1(u) + dn^-1(-u)>>>)
+is no longer the same constant for all
+m4_mathdot(<<<u>>>, <<<u>>>)
+
+The other inverse functions do not need this: with the reflection of
+@ref{The Imaginary Axis}, their results at
+m4_math(<<<u>>>, <<<u>>>)
+and
+m4_math(<<<\bar u>>>, <<<conjugate(u)>>>)
+for real
+m4_math(<<<m>>>, <<<m>>>)
+are conjugates, except on their branch cuts.
 
 @node Converting the Arguments
 @section Converting the Arguments
