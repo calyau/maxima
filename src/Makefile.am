@@ -481,6 +481,7 @@ binary-ecl/maxima:
 	cp $(srcdir)/max_ext.lisp binary-ecl
 	cp autoconf-variables.lisp binary-ecl
 	cp $(srcdir)/../lisp-utils/defsystem.lisp binary-ecl
+	cp $(srcdir)/../lisp-utils/mk-defsystem.lisp binary-ecl
 	touch binary-ecl/maxima
 	chmod +x binary-ecl/maxima
 else
@@ -546,6 +547,7 @@ endif
 	cp autoconf-variables.lisp binary-abcl
 	cp $(ABCL_JAR) binary-abcl/abcl.jar
 	cp $(srcdir)/../lisp-utils/defsystem.lisp binary-abcl
+	cp $(srcdir)/../lisp-utils/mk-defsystem.lisp binary-abcl
 	cp -a startmaxima_abcl.sh binary-abcl/maxima
 	touch binary-abcl/maxima
 	chmod +x binary-abcl/maxima
