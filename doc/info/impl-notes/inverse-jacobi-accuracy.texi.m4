@@ -65,7 +65,7 @@ m4_math(<<<m = 1>>>, <<<m = 1>>>)
 (@pxref{The Case m = 1}), and the argument scaling that prevents
 overflow: the identity it relies on (@pxref{Homogeneity of R_F}), how
 the scale factor is chosen (@pxref{Choosing the Scale Factor}), and why
-scaling starts at @code{(> e 64)} (@pxref{Why the Threshold Is 64}).
+scaling starts at @code{(> e 64)} (@pxref{When to Scale}).
 
 @menu
 * The Problem::
@@ -73,7 +73,6 @@ scaling starts at @code{(> e 64)} (@pxref{Why the Threshold Is 64}).
 * The Formulas and How They Are Scaled::
 * The Case m = 1::
 * Choosing the Scale Factor::
-* Why the Threshold Is 64::
 * Small m in inverse_jacobi_dn::
 * Reciprocal Functions::
 * The Other Six Functions::
@@ -920,6 +919,20 @@ evaluating at
 m4_mathcomma(<<<\bar u>>>, <<<conjugate(u)>>>)
 which has
 m4_mathdot(<<<{\rm Im}\, \bar u > 0>>>, <<<imagpart(conjugate(u)) > 0>>>)
+This is the Schwarz reflection principle (@urldlmf{1.10.E5}), applied
+in
+m4_math(<<<u>>>, <<<u>>>)
+and in
+m4_mathdot(<<<m>>>, <<<m>>>)
+It holds for these formulas because each function they are built from
+commutes with conjugation off its branch cut: the principal square
+root, and
+m4_mathcomma(<<<R_F>>>, <<<R_F>>>)
+since conjugating the integrand in its definition (@urldlmf{19.16.E1})
+gives
+m4_mathdot(<<<R_F(\bar x, \bar y, \bar z) = \overline{R_F(x, y, z)}>>>, <<<R_F(conjugate(x), conjugate(y), conjugate(z)) = conjugate(R_F(x, y, z))>>>)
+On a branch cut it gives the value from the other side, which is why
+it is used here.
 @code{bf-negative-imaginary-axis-p} tests for this case: it is true
 when
 m4_math(<<<{\rm Re}\, u = 0>>>, <<<realpart(u) = 0>>>)
@@ -1149,7 +1162,7 @@ are below about
 m4_mathdot(<<<2^{2e}>>>, <<<2^(2*e)>>>)
 When
 m4_math(<<<e > 64>>>, <<<e > 64>>>)
-(@pxref{Why the Threshold Is 64}) it scales with
+(@pxref{When to Scale}) it scales with
 m4_mathcomma(<<<t = 2^{-s}>>>, <<<t = 2^(-s)>>>)
 where
 
@@ -1299,6 +1312,7 @@ unlimited.  The test is @code{cl:numberp}, because @code{numberp} in the
 @menu
 * When the Scaled Arguments Underflow::
 * When the Smallest Argument Is Negligible::
+* When to Scale::
 @end menu
 
 @node When the Scaled Arguments Underflow
@@ -1603,14 +1617,15 @@ m4_math(<<<10^{-303}>>>, <<<1e-303>>>)
 of its real part, which was not investigated.
 @end itemize
 
-@node Why the Threshold Is 64
-@ifinfo
-@chapter Why the Threshold Is (> e 64)
-@end ifinfo
-@ifnotinfo
-@chapter Why the Threshold Is @code{(> e 64)}
-@end ifnotinfo
+@node When to Scale
+@section When to Scale
 
+@code{bf-inverse-jacobi-scale} scales only when
+m4_mathcomma(<<<e > 64>>>, <<<e > 64>>>)
+and otherwise leaves
+m4_math(<<<u>>>, <<<u>>>)
+unscaled, with
+m4_mathdot(<<<t = 1>>>, <<<t = 1>>>)
 The threshold is a margin, not a derived constant.  Any value in a
 wide range works.
 
@@ -1621,7 +1636,7 @@ wide range works.
 @end menu
 
 @node Lower Bound on the Threshold
-@section Lower Bound: Scaling Must Only Shrink u
+@subsection Lower Bound: Scaling Must Only Shrink u
 
 If scaling were applied for
 m4_mathcomma(<<<e \le 0>>>, <<<e <= 0>>>)
@@ -1643,7 +1658,7 @@ and a test run that always scaled failed in exactly this way.  So the
 threshold must be at least 0.
 
 @node Upper Bound on the Threshold
-@section Upper Bound: The Unscaled Path Must Not Overflow
+@subsection Upper Bound: The Unscaled Path Must Not Overflow
 
 Without scaling, the largest argument of
 m4_math(<<<R_F>>>, <<<R_F>>>)
@@ -1664,7 +1679,7 @@ m4_math(<<<m>>>, <<<m>>>)
 case of @code{inverse_jacobi_dn} (@pxref{Small m in inverse_jacobi_dn}).
 
 @node Effect of the Threshold
-@section Effect of the Threshold
+@subsection Effect of the Threshold
 
 Thresholds 0 and 64 were compared, with the earlier
 m4_math(<<<s = e{:}>>>, <<<s = e:>>>)
@@ -2051,8 +2066,7 @@ The threshold
 m4_math(<<<e > 64>>>, <<<e > 64>>>)
 and
 m4_math(<<<s = \max(\lceil e/2\rceil,\ e - 480)>>>, <<<s = max(ceiling(e/2), e - 480)>>>)
-are those of @ref{Choosing the Scale Factor} and @ref{Why the Threshold
-Is 64}, and
+are those of @ref{Choosing the Scale Factor} and @ref{When to Scale}, and
 m4_math(<<<v = 2^{-s}/u>>>, <<<v = 2^-s/u>>>)
 is computed by one division, so
 m4_math(<<<1/u>>>, <<<1/u>>>)
