@@ -1253,14 +1253,20 @@
       w))
 
 ;; Carlson's Rf, with any argument whose imaginary part is exactly
-;; zero is changed to be a real value.  For lisp's that support
-;; signed-zeros, the sign of a zero imaginary part depends on how the
-;; value was computed: for u = -i*y, u*u is #C(-y^2 -0.0), but adding
-;; a real to it gives an imaginary part of +0.0.  Then two arguments
-;; of rf that should be on the same side of its branch cut on the
-;; negative real axis would be on opposite sides.  By converting to
-;; real, such an argument is always taken on the upper side, as it is
-;; for bigfloats, which have no signed zero.
+;; zero changed to a real value, so that it is taken on the upper side
+;; of the branch cut of rf, as it is for bigfloats, which have no
+;; signed zero.  In double float, the sign of a zero imaginary part
+;; depends on how the value was computed, and two arguments that
+;; should be on the same side of the cut can end up on opposite sides.
+;; For inverse_jacobi_sc(-10.0*%i, 0.5), 1+u^2 is computed by
+;; bf-diff-of-squares as #C(-99.0 -0.0), while 1+(1-m)*u^2 is
+;; #C(-49.0 0.0).  Without the conversion the result is
+;; 1.8541-3.5660*%i, which is an inverse of -10*%i but not the limit
+;; from either side of the cut; with it, the result is
+;; -1.8541-0.1421*%i, the limit from Re(u) < 0, as for bigfloats.
+;;
+;; The inverse functions call rf only through this function, so their
+;; arguments need not be converted first.
 (defun bf-inverse-jacobi-rf (x y z)
   (bf-rf (real-if-zero-imag x)
 	 (real-if-zero-imag y)
@@ -1279,11 +1285,15 @@
 ;;
 ;; which follows from d(rf)/dz = -1/(2*sqrt(x*y*z)) + O(1) as z -> 0.
 ;; With |z| < 2^-120*min(|x|,|y|), the O(z) term is far below the
-;; rounding error.  The square roots are of the same arguments that
-;; bf-inverse-jacobi-rf gives bf-rf, so the correction is on the same
-;; branch.  F*sqrt(z) is formed before dividing, so the correction
-;; does not underflow unless the result itself does.  Bigfloats do not
-;; underflow, so they always use rf directly.
+;; rounding error.  The correction must be on the same branch as rf,
+;; so its square roots must take X and Y on the same side of their
+;; cut as bf-inverse-jacobi-rf does.  So X and Y are made real here
+;; when their imaginary part is exactly zero, as bf-inverse-jacobi-rf
+;; would make them.  Without that, inverse_jacobi_sc(-1e30*%i, 0.5),
+;; which uses the expansion, would be -1.8541+1.414e-30*%i instead of
+;; -1.8541-1.414e-30*%i.  F*sqrt(z) is formed before dividing, so the
+;; correction does not underflow unless the result itself does.
+;; Bigfloats do not underflow, so they always use rf directly.
 (defun bf-inverse-jacobi-rf-small-z (f x y z sz)
   (let ((x (real-if-zero-imag x))
 	(y (real-if-zero-imag y)))
@@ -1294,7 +1304,7 @@
 	     (< (abs z)
                 (* (cl:scale-float 1d0 -120)
                    (min (abs x) (abs y)))))
-	(- (* f (bf-rf x y 0))
+	(- (* f (bf-inverse-jacobi-rf x y 0))
 	   (/ (/ (* f sz)
                  (sqrt x))
               (sqrt y)))
