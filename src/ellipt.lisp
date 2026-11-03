@@ -1912,6 +1912,20 @@
   (when (bf-negative-imaginary-axis-p u)
     (return-from bf-inverse-jacobi-dn
       (conjugate (bf-inverse-jacobi-dn (conjugate u) (conjugate m)))))
+  ;; For real m < 0, the formula divides by sqrt(m), with m on the cut
+  ;; of sqrt.  For real m in (0,1) and Re(u) < 0, the reflection uses
+  ;; K(1/m), with 1/m on the cut of K.  In both cases the same side of
+  ;; the cut is taken for u and conjugate(u), so the results would not
+  ;; be conjugates, as they should be for real m.  So compute only the
+  ;; one with Im(u) < 0, and use the reflection principle (DLMF 1.10.5,
+  ;; https://dlmf.nist.gov/1.10.E5) for the other.
+  (when (and (realp m)
+             (< m 1)
+             (or (minusp m)
+                 (minusp (realpart u)))
+             (plusp (imagpart u)))
+    (return-from bf-inverse-jacobi-dn
+      (conjugate (bf-inverse-jacobi-dn (conjugate u) m))))
   (when (= u 1)
     (return-from bf-inverse-jacobi-dn
       (float 0 u)))
@@ -1948,6 +1962,16 @@
     (return-from bf-inverse-jacobi-nd
       (conjugate (bf-inverse-jacobi-nd (conjugate u)
                                        (conjugate m)))))
+  ;; As in bf-inverse-jacobi-dn, for real m < 0, or real m in (0,1)
+  ;; and Re(u) < 0, compute only the result with Im(1/u) < 0, that is,
+  ;; Im(u) > 0, and use the reflection principle for the other.
+  (when (and (realp m)
+             (< m 1)
+             (or (minusp m)
+                 (minusp (realpart u)))
+             (minusp (imagpart u)))
+    (return-from bf-inverse-jacobi-nd
+      (conjugate (bf-inverse-jacobi-nd (conjugate u) m))))
   (when (= u 1)
     (return-from bf-inverse-jacobi-nd
       (float 0 u)))
