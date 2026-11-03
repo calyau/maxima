@@ -1798,18 +1798,18 @@
 (defun bf-inverse-jacobi-dn-aux (v tt s2 m reflect real-form-p)
   (let* ((t2 (* tt tt))
 	 (v2 (* v v))
-	 ;; c2 = w^2-(1-m) = m*cn(z)^2 (scaled: v^2-(1-m)*t^2),
+	 ;; c2 = u^2-(1-m) = m*cn(z)^2 (scaled: v^2-(1-m)*t^2),
 	 ;; computed as either
 	 ;;
-	 ;;   A: w^2-(1-m)
-	 ;;   B: m-(1-w^2)
+	 ;;   A: u^2-(1-m)
+	 ;;   B: m-(1-u^2)
 	 ;;
-	 ;; Both cancel when w^2 is near 1-m, near the zero of cn.
-	 ;; When m is small and w is near 1, the terms of A are near 1
+	 ;; Both cancel when u^2 is near 1-m, near the zero of cn.
+	 ;; When m is small and u is near 1, the terms of A are near 1
 	 ;; and 1-m has lost the low bits of m, while the terms of B are
-	 ;; small: m is exact and 1-w^2 is accurate because it is
-	 ;; computed as (1-w)*(1+w).  When m is near 1 and w is small,
-	 ;; the terms of B are near 1, while those of A are small: w^2
+	 ;; small: m is exact and 1-u^2 is accurate because it is
+	 ;; computed as (1-u)*(1+u).  When m is near 1 and u is small,
+	 ;; the terms of B are near 1, while those of A are small: u^2
 	 ;; is accurate and 1-m is exact.
 	 (c2 (bf-inverse-jacobi-choose (+ (abs v2)
                                           (abs (* (- 1 m)
@@ -1856,72 +1856,72 @@
 		    z)
 		 z))))))
 
-;; inverse_jacobi_dn(w,m) is the z with dn(z|m) = w, defined by the
+;; inverse_jacobi_dn(u,m) is the z with dn(z|m) = u, defined by the
 ;; integral in DLMF 22.15.14 (https://dlmf.nist.gov/22.15.E14); see
 ;; also A&S 17.4.44 (https://personal.math.ubc.ca/~cbm/aands/page_596.htm).
 ;; From Gradshteyn & Ryzhik 8.153.6 (DLMF 22.17.4,
 ;; https://dlmf.nist.gov/22.17.E4), dn(z|m) = cn(sqrt(m)*z|1/m), so
-;; sqrt(m)*z = inverse_jacobi_cn(w,1/m), and
+;; sqrt(m)*z = inverse_jacobi_cn(u,1/m), and
 ;;
-;;   inverse_jacobi_dn(w,m) = inverse_jacobi_cn(w,1/m)/sqrt(m)
+;;   inverse_jacobi_dn(u,m) = inverse_jacobi_cn(u,1/m)/sqrt(m)
 ;;
 ;; Using the formula for inverse_jacobi_cn with parameter 1/m (see
-;; above for why Re(w) < 0 is different),
+;; above for why Re(u) < 0 is different),
 ;;
-;;   Re(w) >= 0:  inverse_jacobi_cn(w,1/m) = sqrt(1-w^2)*rf(w^2, 1-(1-w^2)/m, 1)
-;;   Re(w) < 0:   inverse_jacobi_cn(w,1/m) = 2*K(1/m) - sqrt(1-w^2)*rf(w^2, 1-(1-w^2)/m, 1)
+;;   Re(u) >= 0:  inverse_jacobi_cn(u,1/m) = sqrt(1-u^2)*rf(u^2, 1-(1-u^2)/m, 1)
+;;   Re(u) < 0:   inverse_jacobi_cn(u,1/m) = 2*K(1/m) - sqrt(1-u^2)*rf(u^2, 1-(1-u^2)/m, 1)
 ;;
-;; We directly call inverse_jacobi_cn(w,1/m) because computing 1/m
-;; first and then 1-(1/m)*(1-w^2) loses accuracy when m is near 1 and
-;; w^2 is near 1-m (near the zero of cn), because the rounding error
+;; We directly call inverse_jacobi_cn(u,1/m) because computing 1/m
+;; first and then 1-(1/m)*(1-u^2) loses accuracy when m is near 1 and
+;; u^2 is near 1-m (near the zero of cn), because the rounding error
 ;; in 1/m is not small compared with the result.  So this is rewritten
 ;; without 1/m, as
 ;;
-;;   1-(1-w^2)/m = (w^2-(1-m))/m
+;;   1-(1-u^2)/m = (u^2-(1-m))/m
 ;;
 ;; where 1-m is exact for m near 1.  Similarly, K(1/m) = rf(0, 1-1/m, 1)
 ;; is computed as rf(0, (m-1)/m, 1).  This gives
 ;;
-;;   Re(w) >= 0:  z = sqrt(1-w^2)*rf(w^2, (w^2-(1-m))/m, 1)/sqrt(m)
-;;   Re(w) < 0:   z = 2*rf(0, (m-1)/m, 1)/sqrt(m)
-;;                    - sqrt(1-w^2)*rf(w^2, (w^2-(1-m))/m, 1)/sqrt(m)
+;;   Re(u) >= 0:  z = sqrt(1-u^2)*rf(u^2, (u^2-(1-m))/m, 1)/sqrt(m)
+;;   Re(u) < 0:   z = 2*rf(0, (m-1)/m, 1)/sqrt(m)
+;;                    - sqrt(1-u^2)*rf(u^2, (u^2-(1-m))/m, 1)/sqrt(m)
 ;;
-;; For real m in (0,1) and real w in [sqrt(1-m),1], where z is real and
+;; For real m in (0,1) and real u in [sqrt(1-m),1], where z is real and
 ;; in [0,K(m)], multiplying the arguments of rf by m (homogeneity) gives
 ;; a form with no division by m at all:
 ;;
-;;   z = sqrt(1-w^2)*rf(w^2-(1-m), m*w^2, m)
+;;   z = sqrt(1-u^2)*rf(u^2-(1-m), m*u^2, m)
 ;;
-;; For double-float m with |m| < 2^-500, (w^2-(1-m))/m and (m-1)/m are
+;; For double-float m with |m| < 2^-500, (u^2-(1-m))/m and (m-1)/m are
 ;; about -1/m and would overflow, in the division itself or in bf-rf.
 ;; The scaling of u above does not help, since this comes from m.  So
 ;; the arguments of rf are multiplied by 2^-600 before dividing by m,
 ;; and since rf(c*a, c*b, c*c') = rf(a,b,c')/sqrt(c), the result of rf
 ;; by sqrt(2^-600) = 2^-300.
-(defun bf-inverse-jacobi-dn (w m)
+(defun bf-inverse-jacobi-dn (u m)
   ;; dn(z|1) = sech(z), A&S 16.6.3
   ;; (https://personal.math.ubc.ca/~cbm/aands/page_571.htm) and DLMF
   ;; Table 22.5.4 (https://dlmf.nist.gov/22.5.T4).
   (when (= m 1)
     (return-from bf-inverse-jacobi-dn
-      (bf-inverse-jacobi-asech w)))
-  (when (bf-negative-imaginary-axis-p w)
+      (bf-inverse-jacobi-asech u)))
+  (when (bf-negative-imaginary-axis-p u)
     (return-from bf-inverse-jacobi-dn
-      (conjugate (bf-inverse-jacobi-dn (conjugate w) (conjugate m)))))
-  (when (= w 1)
+      (conjugate (bf-inverse-jacobi-dn (conjugate u) (conjugate m)))))
+  (when (= u 1)
     (return-from bf-inverse-jacobi-dn
-      (float 0 w)))
-  ;; dn's R_F arguments, w^2, (w^2-(1-m))/m and 1, do not grow with m,
-  ;; so scale on w alone.
+      (float 0 u)))
+  ;; dn's R_F arguments, u^2, (u^2-(1-m))/m and 1, do not grow with m,
+  ;; so scale on u alone.
   (multiple-value-bind (v tt)
-      (bf-inverse-jacobi-scale w 0)
+      (bf-inverse-jacobi-scale u 0)
     (bf-inverse-jacobi-dn-aux v
                               tt
                               (bf-diff-of-squares tt v)
                               m
-			      (minusp (realpart w))
-			      (and (realp w)
-                                   (<= 0 w 1)))))
+			      (minusp (realpart u))
+			      (and (realp u)
+                                   (<= 0 u 1)))))
 
 ;; jacobi_nd = 1/jacobi_dn (DLMF 22.2.6, https://dlmf.nist.gov/22.2.E6),
 ;; so inverse_jacobi_nd(u,m) = inverse_jacobi_dn(1/u,m) (DLMF 22.15.17,
