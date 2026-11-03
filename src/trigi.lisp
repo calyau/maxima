@@ -189,36 +189,72 @@
     (complex 0.0 #.(/ (float pi) -2))
     (maxima-branch-atanh (/ 1 x))))
 
-;; asech(x) for a double-float or complex double-float X.  For |x| >= 2, use
-;; asech(x) = -%i*acos(1/x) when imagpart(x) > 0 and %i*acos(1/x) otherwise.
-;; For tiny |x|, asech(x) = log(2/x), with X scaled so that the log does not
-;; see a subnormal argument.  Otherwise use Kahan's acosh(w) with w = 1/x,
-;; computing w-1 and w+1 directly from x to avoid cancellation near x = 1 and
-;; x = -1.
+;; asech(x) for a double-float or complex double-float X.
 (defun maxima-branch-asech (x)
   (let ((absx (abs x)))
     (cond ((>= absx 2)
+           ;; From A&S 4.6.18:
+           ;; asech(x) = -%i*acos(1/x).
            (let ((a (cl:acos (/ x))))
              (if (plusp (imagpart x))
                  (* #c(0 -1) a)
                  (* #c(0 1) a))))
           ((< absx #.(scale-float 1d0 -500))
-           (let ((v (* x #.(scale-float 1d0 600)))
-                 (c #.(* 601 (cl:log 2d0))))
-             (if (and (realp x) (minusp x))
-                 (complex (- c (cl:log (- v))) (cl:float pi 1d0))
-                 (- c (cl:log v)))))
+           ;; For very small x, use the series (http://functions.wolfram.com/01.30.06.0004.02):
+           ;;
+           ;;   asech(z) = log(2/z) - z^2/4*(1 + O(z^2))
+           ;;
+           ;; But 2/z can overflow, so scale z by 2^600:
+           ;;
+           ;;   log(2/z) = log(2/(z*2^600)) + 600*log(2)
+           ;;
+           (+ (cl:log (/ 2 (* x #.(scale-float 1d0 600))))
+              #.(* 600 (cl:log 2d0))))
           (t
+           ;; Kahan's formula for acosh(w) where w = 1/z because
+           ;; asech(z) = acosh(1/z).
+           ;;
+           ;; acosh(w) = asinh(Re(conjugate(sqrt(w-1))*sqrt(w+1)))
+           ;;            + %i*atan2(Im(sqrt(w-1)), Re(sqrt(w+1)))
+           ;;
+           ;; Let z = x+ %i*y and d = x^2 + y^2.  Then w=1/z gives
+           ;;
+           ;;    w - 1 = ((1 - x)*x - y^2)/d - %i*y/d
+           ;;    w + 1 = ((1 + x)*x + y^2)/d - %i*y/d
+           ;;
+           ;; d can't overflow here because the case |z| > 2 is handled above.
+           ;;
+           ;; Note that 
+           ;;
+           ;;   Re(conjugate(sqrt(w-1))*sqrt(w+1)) =
+           ;;     Re(sqrt(w-1))*Re(sqrt(w+1)) + Im(sqrt(w-1))*Im(sqrt(w+1))
+           ;;
+           ;; Also, Re(sqrt(w-1)) and Re(sqrt(w+1)) are both >= 0.
+           ;; And Im(sqrt(w-1)) and Im(sqrt(w+1)) have the sign of
+           ;; Im(w).  Thus the sum above has no cancellation errors.
            (let* ((re (realpart x))
                   (im (imagpart x))
                   (d (+ (* re re) (* im im)))
-                  (im-w (if (zerop im) 0d0 (/ (- im) d)))
-                  (sqrt-w-1 (sqrt (complex (/ (- (* (- 1 re) re) (* im im)) d) im-w)))
-                  (sqrt-w+1 (sqrt (complex (/ (+ (* (+ 1 re) re) (* im im)) d) im-w)))
-                  (u (cl:asinh (+ (* (realpart sqrt-w-1) (realpart sqrt-w+1))
-                                  (* (imagpart sqrt-w-1) (imagpart sqrt-w+1)))))
-                  (v (* 2 (atan (imagpart sqrt-w-1) (realpart sqrt-w+1)))))
-             (if (zerop v) u (complex u v)))))))
+                  (im-w (if (zerop im)
+                            0d0
+                            (/ (- im) d)))
+                  (sqrt-w-1 (sqrt (complex (/ (- (* (- 1 re) re)
+                                                 (* im im))
+                                              d)
+                                           im-w)))
+                  (sqrt-w+1 (sqrt (complex (/ (+ (* (+ 1 re) re)
+                                                 (* im im))
+                                              d)
+                                           im-w)))
+                  (u (cl:asinh (+ (* (realpart sqrt-w-1)
+                                     (realpart sqrt-w+1))
+                                  (* (imagpart sqrt-w-1)
+                                     (imagpart sqrt-w+1)))))
+                  (v (* 2 (atan (imagpart sqrt-w-1)
+                                (realpart sqrt-w+1)))))
+             (if (zerop v)
+                 u
+                 (complex u v)))))))
 
 ;; Fill the hash table.
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *flonum-op*) ,dfun)))
