@@ -1517,7 +1517,11 @@
 ;; of rf with a zero imaginary part is taken on the upper side of the
 ;; branch cut (bf-inverse-jacobi-rf).  For Im(u) < 0, the callers
 ;; instead use the reflection f(u|m) =
-;; conjugate(f(conjugate(u)|conjugate(m))).
+;; conjugate(f(conjugate(u)|conjugate(m))), the Schwarz reflection
+;; principle (DLMF 1.10.5, https://dlmf.nist.gov/1.10.E5).  It holds
+;; because sqrt and rf commute with conjugation off their branch cuts;
+;; for rf this follows from its definition (DLMF 19.16.1,
+;; https://dlmf.nist.gov/19.16.E1).
 (defun bf-negative-imaginary-axis-p (u)
   (and (not (realp u))
        (zerop (realpart u))
