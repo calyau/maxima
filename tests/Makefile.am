@@ -32,9 +32,9 @@ sbcl-test.sh: test.sh Makefile
 	echo "./test.sh sbcl" >> $@
 	chmod +x "$@"
 
-## Verifies src/maxima.system's :DEPENDENCIES-COMPLETE claims against the
-## compiler's cross-reference data.  SBCL-only, so it is attached here
-## rather than to the general per-lisp driver.
+## Checks that no file in src/maxima.system leaves the global compiler
+## policy changed. Runs with SBCL only, so it is attached here rather than
+## to the general per-lisp driver.
 TESTS += sbcl-depcheck.sh
 CLEANFILES += sbcl-depcheck.sh
 sbcl-depcheck.sh: depcheck.sh Makefile

@@ -2014,6 +2014,218 @@ true;
  closeto(realpart(inverse_jacobi_cn(2b0^1020*%i, 0.5b0)) - 1.258691851193086924183388283942521b-307, 1b-338)];
 [true, true, true, true];
 
+/* inverse_jacobi_nc and inverse_jacobi_nd with u near 1.  1/u is not
+ * formed, since its rounding error dominates the result there. */
+[closeto(inverse_jacobi_nc(1 + 2.0^-30, 0.5) - 4.3158372865106896e-5, 9.5831e-21),
+ closeto(inverse_jacobi_nc(1 + 2b0^-30, 0.5b0) - 4.3158372865106896816853644982381b-5, 5.3197b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nd(1 + 2.0^-30, 0.5) - 6.103515626421085e-5, 1.3553e-20),
+ closeto(inverse_jacobi_nd(1 + 2b0^-30, 0.5b0) - 6.1035156264210854734723466198711b-5, 7.5232b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nc(-1 - 2.0^-30, 0.5) - 3.708106196229879, 8.2337e-16),
+ closeto(inverse_jacobi_nc(-1 - 2b0^-30, 0.5b0) - 3.7081061962298787299708838407455b0, 9.1412b-32)];
+[true, true];
+
+[closeto(inverse_jacobi_nc(1 + 2.0^-30 + 2.0^-40*%i, 0.5) - (4.315837800998433e-5 + 2.1073421728580513e-8*%i), 9.5831e-21),
+ closeto(inverse_jacobi_nc(1 + 2b0^-30 + 2b0^-40*%i, 0.5b0) - (4.3158378009984335732854990151609b-5 + 2.1073421728580512769869755731514b-8*%i), 5.3197b-37)];
+[true, true];
+
+[closeto(inverse_jacobi_nd(1 + 2.0^-30 + 2.0^-40*%i, 0.5) - (6.10351635401663e-5 + 2.9802318855799798e-8*%i), 1.3553e-20),
+ closeto(inverse_jacobi_nd(1 + 2b0^-30 + 2b0^-40*%i, 0.5b0) - (6.1035163540166295432692656892758b-5 + 2.9802318855799798592885693720484b-8*%i), 7.5232b-37)];
+[true, true];
+
+/* inverse_jacobi_ns with u and m both near 1. */
+[closeto(inverse_jacobi_ns(1 + 2.0^-20, 1 - 2.0^-40) - 7.278045515090278, 1.6161e-15),
+ closeto(inverse_jacobi_ns(1 + 2b0^-20, 1 - 2b0^-40) - 7.2780455150902777650709949991357b0, 8.9709b-32)];
+[true, true];
+
+/* inverse_jacobi_ns, inverse_jacobi_nc and inverse_jacobi_nd with tiny
+ * u, where the arguments of R_F are scaled.  The tiny real part of
+ * inverse_jacobi_ns is checked on its own. */
+[closeto(inverse_jacobi_ns(2.0^-1000, 0.5) - (1.3198340665566424e-301 - 1.8540746773013719*%i), 4.1169e-16),
+ closeto(realpart(inverse_jacobi_ns(2.0^-1000, 0.5))/1.3198340665566424e-301 - 1, 4.4409e-16),
+ closeto(inverse_jacobi_ns(2b0^-1000, 0.5b0) - (1.3198340665566423146125205532233b-301 - 1.8540746773013719184338503471953b0*%i), 4.5707b-32),
+ closeto(realpart(inverse_jacobi_ns(2b0^-1000, 0.5b0))/1.3198340665566423146125205532233b-301 - 1, 4.9304b-32)];
+[true, true, true, true];
+
+[closeto(inverse_jacobi_nc(2.0^-1000, 0.5) - 1.8540746773013719*%i, 4.1169e-16),
+ closeto(inverse_jacobi_nc(2b0^-1000, 0.5b0) - 1.8540746773013719184338503471953b0*%i, 4.5707b-32),
+ closeto(inverse_jacobi_nd(2.0^-1000, 0.5) - 1.8540746773013719*%i, 4.1169e-16),
+ closeto(inverse_jacobi_nd(2b0^-1000, 0.5b0) - 1.8540746773013719184338503471953b0*%i, 4.5707b-32)];
+[true, true, true, true];
+
+/* inverse_jacobi_ns, inverse_jacobi_nc and inverse_jacobi_nd at u = 0
+ * signal an error, except for m = 1, where jacobi_nc(u,1) =
+ * jacobi_nd(u,1) = cosh(u). */
+[errcatch(inverse_jacobi_ns(0.0, 0.5)), errcatch(inverse_jacobi_nc(0b0, 0.5b0)),
+ errcatch(inverse_jacobi_nd(0.0, 0.5)), errcatch(inverse_jacobi_ns(1.0, 1.0))];
+[[], [], [], []];
+
+[closeto(inverse_jacobi_nc(0.0, 1.0) - %pi/2*%i, 2.2205e-16),
+ closeto(inverse_jacobi_nd(0b0, 1b0) - bfloat(%pi/2)*%i, 1.2326b-32)];
+[true, true];
+
+/* inverse_jacobi_sc.  The old code computed
+ * inverse_jacobi_sn(u/sqrt(1+u^2)), which loses accuracy for large u
+ * and near the poles u = +/- %i, and overflows when u^2 does. */
+[closeto(inverse_jacobi_sc(2.0*%i, 0.5) - (0.8260178762492452*%i+1.8540746773013719), 9.0140e-16),
+ closeto(inverse_jacobi_sc(2b0*%i, 0.5b0) - (8.2601787624924518545623940780389b-1*%i+1.8540746773013719184338503471953b0), 1.0008b-31),
+ closeto(inverse_jacobi_sc(1e10, 0.5) - (1.8540746771599506), 8.2338e-16),
+ closeto(inverse_jacobi_sc(1b10, 0.5b0) - (1.8540746771599505621965408423158b0), 9.1417b-32),
+ closeto(inverse_jacobi_sc(2.0^1000, 0.5) - (1.8540746773013719), 8.2338e-16),
+ closeto(inverse_jacobi_sc(2b0^1000, 0.5b0) - (1.8540746773013719184338503471953b0), 9.1417b-32)];
+[true, true, true, true, true, true];
+
+/* inverse_jacobi_sc near the branch point u = %i/sqrt(1-m) with
+ * small m, where 1-m is not exact. */
+[closeto(inverse_jacobi_sc((1+2.0^-20)*%i, 2.0^-40) - (7.27804575350897*%i+1.5707963267952538), 3.3066e-15),
+ closeto(inverse_jacobi_sc((1+2b0^-20)*%i, 2b0^-40) - (7.2780457535089705535909307245976b0*%i+1.5707963267952537769655179582649b0), 3.6710b-31)];
+[true, true];
+
+/* inverse_jacobi_sc with complex u. */
+[closeto(inverse_jacobi_sc(3.0-4.0*%i, 0.5) - (1.6791007330370706-0.22406701582745228*%i), 1.5046e-15),
+ closeto(inverse_jacobi_sc(3b0-4b0*%i, 0.5b0) - (1.6791007330370705558060848967054b0-2.2406701582745228946631730245049b-1*%i), 8.3520b-32)];
+[true, true];
+
+/* inverse_jacobi_sd near the branch point u = 1/sqrt(1-m) with small
+ * m, where 1-m is not exact. */
+[closeto(inverse_jacobi_sd(1+2.0^-33, 2.0^-33) - (1.5707963268406129-1.078959321795149e-5*%i), 6.9758e-16),
+ closeto(inverse_jacobi_sd(1+2b0^-33, 2b0^-33) - (1.5707963268406128092114140932179b0-1.0789593217951489492764470200859b-5*%i), 7.7449b-32)];
+[true, true];
+
+/* inverse_jacobi_sd with large u.  The old code computed
+ * inverse_jacobi_sn(u/sqrt(1+m*u^2)), which loses accuracy for large
+ * u and overflows when u^2 does. */
+[closeto(inverse_jacobi_sd(1e10, 0.5) - (1.8540746773013719-1.8540746771013719*%i), 1.1645e-15),
+ closeto(inverse_jacobi_sd(1b10, 0.5b0) - (1.8540746773013719184338503471953b0-1.8540746771013719184338503471953b0*%i), 1.2928b-31),
+ closeto(inverse_jacobi_sd(2.0^1000, 0.5) - (1.8540746773013719-1.8540746773013719*%i), 1.1645e-15),
+ closeto(inverse_jacobi_sd(2b0^1000, 0.5b0) - (1.8540746773013719184338503471953b0-1.8540746773013719184338503471953b0*%i), 1.2928b-31)];
+[true, true, true, true];
+
+/* inverse_jacobi_sd(2,-3) and inverse_jacobi_sd(2*%i,0.5).  The old
+ * code returned values for which jacobi_sd gives -2 and -2*%i. */
+[closeto(inverse_jacobi_sd(2.0, -3.0) - (0.14800957393120565-0.842875177406298*%i), 3.8004e-16),
+ closeto(inverse_jacobi_sd(2b0, -3b0) - (1.4800957393120565086766496173059b-1-8.4287517740629802143560182889954b-1*%i), 4.2196b-32),
+ closeto(inverse_jacobi_sd(2.0*%i, 0.5) - (1.8540746773013719*%i+0.8260178762492452), 9.0140e-16),
+ closeto(inverse_jacobi_sd(2b0*%i, 0.5b0) - (1.8540746773013719184338503471953b0*%i+8.2601787624924518545623940780389b-1), 1.0008b-31)];
+[true, true, true, true];
+
+/* Poles of inverse_jacobi_sc with m = 0. */
+[errcatch(inverse_jacobi_sc(1.0*%i, 0.0)), errcatch(inverse_jacobi_sc(-1b0*%i, 0b0))];
+[[], []];
+
+/* inverse_jacobi_cd near u = 0 and u = 1.  The old code computed
+ * inverse_jacobi_sn(sqrt(1-u^2)/sqrt(1-m*u^2)), which loses accuracy
+ * near u = 0. */
+[closeto(inverse_jacobi_cd(1e-5, 0.5) - (1.8540646773013716), 8.2338e-16),
+ closeto(inverse_jacobi_cd(1b-5, 0.5b0) - (1.8540646773013716684338503353203b0), 9.1413b-32),
+ closeto(inverse_jacobi_cd(1-2.0^-30, 0.5) - (6.1035156235789145e-5), 2.7106e-20),
+ closeto(inverse_jacobi_cd(1-2b0^-30, 0.5b0) - (6.1035156235789145304319458713792b-5), 3.0093b-36)];
+[true, true, true, true];
+
+/* inverse_jacobi_cd with Re(u) < 0.  The old code returned
+ * inverse_jacobi_cd(-u,m). */
+[closeto(inverse_jacobi_cd(-0.5, 0.5) - (2.389697410106775), 1.0613e-15),
+ closeto(inverse_jacobi_cd(-0.5b0, 0.5b0) - (2.3896974101067752381381177125857b0), 1.1783b-31)];
+[true, true];
+
+/* inverse_jacobi_cd with large u, where the old code overflowed. */
+[closeto(inverse_jacobi_cd(1e200, 0.5) - (1.8540746773013719+1.8540746773013719*%i), 1.1645e-15),
+ closeto(inverse_jacobi_cd(1b200, 0.5b0) - (1.8540746773013719184338503471953b0+1.8540746773013719184338503471953b0*%i), 1.2928b-31)];
+[true, true];
+
+/* inverse_jacobi_cd with real m > 1, which is the limit from
+ * Im(m) < 0, as for elliptic_kc. */
+[closeto(inverse_jacobi_cd(0.5+0.5*%i, 3.0) - (-0.6829849114941232-0.62160073331705*%i), 8.2024e-16),
+ closeto(inverse_jacobi_cd(0.5b0+0.5b0*%i, 3b0) - (-6.8298491149412319106541386144104b-1-6.216007333170499665720149407943b-1*%i), 4.5533b-32),
+ closeto(inverse_jacobi_cd(2.0, 3.0) - (0.6942441933523164), 3.0831e-16),
+ closeto(inverse_jacobi_cd(2b0, 3b0) - (6.9424419335231638969891094795744b-1), 3.4229b-32)];
+[true, true, true, true];
+
+/* inverse_jacobi_cs near u = %i, where the old code, which computed
+ * inverse_jacobi_sc(1/u), lost accuracy. */
+[closeto(inverse_jacobi_cs((1+2.0^-30)*%i, 0.5) - (-1.8540136421451645*%i), 8.2335e-16),
+ closeto(inverse_jacobi_cs((1+2b0^-30)*%i, 0.5b0) - (-1.8540136421451645509979367270747b0*%i), 9.1410b-32)];
+[true, true];
+
+/* inverse_jacobi_cs with tiny u and with complex u. */
+[closeto(inverse_jacobi_cs(2.0^-1000, 0.5) - (1.8540746773013719), 8.2338e-16),
+ closeto(inverse_jacobi_cs(2b0^-1000, 0.5b0) - (1.8540746773013719184338503471953b0), 9.1413b-32),
+ closeto(inverse_jacobi_cs(3.0-4.0*%i, 0.5) - (0.12186822660333226+0.1592579453991921*%i), 8.9057e-17),
+ closeto(inverse_jacobi_cs(3b0-4b0*%i, 0.5b0) - (1.2186822660333226021151370391045b-1+1.592579453991921191239351724451b-1*%i), 9.8873b-33)];
+[true, true, true, true];
+
+/* inverse_jacobi_cs(0,m) = K(m). */
+[closeto(inverse_jacobi_cs(0.0, 0.5) - 1.8540746773013719, 4.4409e-16),
+ closeto(inverse_jacobi_cs(0b0, 0.5b0) - 1.8540746773013719184338503471953b0, 9.1409b-32)];
+[true, true];
+
+/* Poles of inverse_jacobi_cs with m = 0, and inverse_jacobi_cd with
+ * m = 1, where jacobi_cd(u,1) = 1. */
+[errcatch(inverse_jacobi_cs(1.0*%i, 0.0)), errcatch(inverse_jacobi_cs(-1b0*%i, 0b0)),
+ errcatch(inverse_jacobi_cd(0.5, 1.0)), errcatch(inverse_jacobi_cd(0.5b0, 1b0))];
+[[], [], [], []];
+
+/* inverse_jacobi_ds with tiny u, where the arguments of R_F are
+ * scaled, and with complex u and negative m. */
+[closeto(inverse_jacobi_ds(2.0^-1000, 0.5) - (1.8540746773013719-1.8540746773013719*%i), 2.3289e-15),
+ closeto(inverse_jacobi_ds(2b0^-1000, 0.5b0) - (1.8540746773013719184338503471953b0-1.8540746773013719184338503471953b0*%i), 1.2928b-31),
+ closeto(inverse_jacobi_ds(3.0-4.0*%i, 0.5) - (0.119999392650797+0.15999202421524025*%i), 9.3096e-17),
+ closeto(inverse_jacobi_ds(3b0-4b0*%i, 0.5b0) - (1.1999939265079699201565374162826b-1+1.5999202421524026625183497920265b-1*%i), 9.8605b-33),
+ closeto(inverse_jacobi_ds(0.5, -3.0) - (0.14800957393120565-0.842875177406298*%i), 3.8004e-16),
+ closeto(inverse_jacobi_ds(0.5b0, -3b0) - (1.4800957393120565086766496173059b-1-8.4287517740629802143560182889954b-1*%i), 4.2193b-32)];
+[true, true, true, true, true, true];
+
+/* inverse_jacobi_dc near u = +/-1.  The old code computed
+ * inverse_jacobi_cd(1/u), and the rounding of 1/u dominates the result
+ * there. */
+[closeto(inverse_jacobi_dc(1+2.0^-30, 0.5) - (6.1035156207367436e-5), 2.7106e-20),
+ closeto(inverse_jacobi_dc(1+2b0^-30, 0.5b0) - (6.1035156207367435913620120597522b-5), 3.0093b-36),
+ closeto(inverse_jacobi_dc(-1-2.0^-30, 0.5) - (3.7080883194465364), 1.6468e-15),
+ closeto(inverse_jacobi_dc(-1-2b0^-30, 0.5b0) - (3.7080883194465364694317870742699b0), 1.8283b-31),
+ closeto(inverse_jacobi_dc(1+2.0^-30+2.0^-40*%i, 0.5) - (6.10351634833229e-5+2.9802318772533068e-8*%i), 2.7106e-20),
+ closeto(inverse_jacobi_dc(1+2b0^-30+2b0^-40*%i, 0.5b0) - (6.1035163483322896940378762707281b-5+2.9802318772533068534212310641886b-8*%i), 3.0093b-36)];
+[true, true, true, true, true, true];
+
+/* inverse_jacobi_dc with tiny u, and with real m > 1, which is the
+ * limit from Im(m) < 0, as for inverse_jacobi_cd. */
+[closeto(inverse_jacobi_dc(2.0^-1000, 0.5) - (1.8540746773013719+1.8540746773013719*%i), 2.3289e-15),
+ closeto(inverse_jacobi_dc(2b0^-1000, 0.5b0) - (1.8540746773013719184338503471953b0+1.8540746773013719184338503471953b0*%i), 1.2928b-31),
+ closeto(inverse_jacobi_dc(0.5, 3.0) - (0.6942441933523164), 3.0831e-16),
+ closeto(inverse_jacobi_dc(0.5b0, 3b0) - (6.9424419335231638969891094795744b-1), 3.4229b-32)];
+[true, true, true, true];
+
+/* inverse_jacobi_ds and inverse_jacobi_dc at u = 0, which is on a
+ * branch cut, and inverse_jacobi_dc with m = 1, where jacobi_dc(u,1)
+ * = 1. */
+[errcatch(inverse_jacobi_ds(0.0, 0.5)), errcatch(inverse_jacobi_ds(0b0, 0.5b0)),
+ errcatch(inverse_jacobi_dc(0.0, 0.5)), errcatch(inverse_jacobi_dc(2.0, 1.0))];
+[[], [], [], []];
+
+/* For real m, inverse_jacobi_dn and inverse_jacobi_nd are conjugate
+ * symmetric: f(conjugate(u),m) = conjugate(f(u,m)).  This failed for
+ * real m < 0, and for real m in (0,1) with realpart(u) < 0. */
+[closeto(inverse_jacobi_dn(-0.3+0.4*%i, 0.5) - (2.432484727215252+2.1988178705343584*%i), 1e-15),
+ closeto(inverse_jacobi_dn(-0.3-0.4*%i, 0.5) - (2.432484727215252-2.1988178705343584*%i), 1e-15),
+ closeto(inverse_jacobi_dn(-0.3b0+0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359425b0+2.198817870534358361205011073031b0*%i), 1b-31),
+ closeto(inverse_jacobi_dn(-0.3b0-0.4b0*%i, 0.5b0) - (2.4324847272152520395161839359425b0-2.198817870534358361205011073031b0*%i), 1b-31),
+ closeto(inverse_jacobi_nd(-1.2-1.6*%i, 0.5) - (2.432484727215252+2.1988178705343584*%i), 1e-14),
+ closeto(inverse_jacobi_nd(-1.2+1.6*%i, 0.5) - (2.432484727215252-2.1988178705343584*%i), 1e-14),
+ closeto(inverse_jacobi_dn(0.965+1.394*%i, -0.1836) - (1.0164624580569208+1.9133831593831307*%i), 1e-15),
+ closeto(inverse_jacobi_dn(0.965-1.394*%i, -0.1836) - (1.0164624580569208-1.9133831593831307*%i), 1e-15),
+ closeto(inverse_jacobi_dn(0.965b0+1.394b0*%i, -0.1836b0) - (1.0164624580569209466715665309802b0+1.9133831593831308153219528376909b0*%i), 1b-31)];
+[true, true, true, true, true, true, true, true, true];
+
+/* For real m < 0, inverse_jacobi_dn is continuous across the real axis
+ * where it is real, [1, sqrt(1-m)]. */
+[closeto(inverse_jacobi_dn(1.2+1e-15*%i, -2.0) - 0.45713847114565376, 1e-14),
+ closeto(inverse_jacobi_dn(1.2-1e-15*%i, -2.0) - 0.45713847114565376, 1e-14)];
+[true, true];
+
+
+
 /* make_elliptic_f used the wrong amplitude for inverse_jacobi_cd,
  * inverse_jacobi_dc and inverse_jacobi_ds. */
 make_elliptic_f(inverse_jacobi_cd(u, m));

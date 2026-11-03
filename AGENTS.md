@@ -43,11 +43,11 @@ make
 `-j` buys nothing on the Lisp build unless you configured several Lisps (it does
 parallelise `doc/`): each core is one target whose recipe feeds the whole
 system to the Lisp -- a compile pass, then a load-and-dump pass. What gets
-recompiled is decided in that image by `defsystem`, from the `:depends-on`
-graph in `src/maxima.system` -- so an edit low in that graph, such as
-`src/simp.lisp`, costs far more than one at the leaves. Prefer sec. 4's
-no-rebuild loop. `make install` is not needed -- `./maxima-local` runs the
-fresh image:
+recompiled is decided in that image by `defsystem`: a changed file and every
+file compiled after it in `src/maxima.system`'s order. So an edit early in
+that order, such as `src/simp.lisp`, costs far more than one near the end.
+Prefer sec. 4's no-rebuild loop. `make install` is not needed -- `./maxima-local`
+runs the fresh image:
 
 ```sh
 ./maxima-local --version                                  # -> Maxima <version>
@@ -79,6 +79,11 @@ A build, and a test run, leave `git status` clean.
 `make` compiles **no** Lisp: it generates wrapper scripts, then shells out to
 the Lisp, which loads `lisp-utils/defsystem.lisp` and runs `mk:oos` on the
 system that **`src/maxima.system`** defines.
+
+`lisp-utils/mk-defsystem.lisp` is upstream MK:DEFSYSTEM, **unmodified. Never
+edit it**. `lisp-utils/defsystem.lisp` loads it and adds what Maxima needs from
+outside, by wrapping a few upstream functions. `lisp-utils/update-defsystem.txt`
+says how to upgrade, and `lisp-utils/test-defsystem.lisp` checks the additions.
 
 - `src/maxima.system`: every source file in dependency order, in `:module`s.
 - **Order matters** -- `defsystem` loads as it compiles, so macro modules
@@ -271,9 +276,7 @@ finish. Core newer does **not** prove it was clean: a *semantic* error (calling
 an undefined function) still writes a valid fasl, exits 0, loads, and the core
 *is* redumped. For that, grep the build log for `caught ERROR`, `caught WARNING`
 **and `undefined function:`** -- SBCL reports a call to a function that does not
-exist as only a `caught STYLE-WARNING`. Every build also prints a run of
-`undefined function: MAKE::...` while it loads `lisp-utils/defsystem.lisp` from
-source: noise, not yours.
+exist as only a `caught STYLE-WARNING`.
 
 `:lisp (fboundp 'maxima::my-new-fn)` is decisive **only for a newly added
 function**; for an edited body it was already true and stays true after a failed
@@ -343,14 +346,11 @@ gathers the logs of failed tests.
 
 **Under SBCL `make check` runs a second test.** `tests/sbcl-depcheck.sh` wraps
 `tests/depcheck.sh` (generated from `depcheck.sh.in`) and loads
-`lisp-utils/check-dependencies.lisp` into the built image, checking
-`src/maxima.system`'s `:dependencies-complete` claims against SBCL's
-cross-reference data (sec. 13). It exits 1 on an undeclared compile-time
-dependency, or on a file whose top-level `OPTIMIZE` proclamations leave the
+`lisp-utils/check-dependencies.lisp` into the built image. It exits 1 on a file
+in `src/maxima.system` whose top-level `OPTIMIZE` proclamations leave the
 global compiler policy changed for the files after it, and 2 when it cannot
 run at all, so unlike the suite its exit status is the contract and there is
-no log to grep. SBCL-only -- no other Lisp exposes the xref. Run it alone with
-`cd tests && ./depcheck.sh`.
+no log to grep. Run it alone with `cd tests && ./depcheck.sh`.
 
 **Baseline before blaming your change.** On a current SBCL the core suite and
 core + share are expected green, so a red run is a real signal. It still need
@@ -726,21 +726,10 @@ every file. `src/Makefile.am` needs no edit: it globs `$(srcdir)/*.lisp` plus
 `numerical/` and `numerical/slatec/` -- only a new *subdirectory* needs one.
 Never hand-edit `src/*-depends.mk`.
 
-A module marked `:dependencies-complete t` tells `defsystem` that its declared
-`:depends-on` edges are the whole truth, so it stops adding its own "anything
-compiled after a changed file may have been compiled against it" edges. The
-option is Maxima's addition to MK:DEFSYSTEM, so every use in `maxima.system` is
-written `#+mk-deps-complete :dependencies-complete #+mk-deps-complete t` --
-grep for `:dependencies-complete`, not for the whole `t`-terminated phrase. An
-undeclared edge then leaves a stale fasl on the next incremental build, and no
-test can see it -- the answers stay right until someone changes the file that
-was never rebuilt. An edge is anything that changes how a later file compiles
-(the comment above `(mk:defsystem "maxima"` lists them): a macro, an inline
-function or structure accessor, a constant or type, and, easy to miss, a call
-to a `defmfun`, whose compiler-macro rewrites `($foo ...)` to `(FOO-IMPL ...)`
-at the call site. A plain `defun` call or a read of a special is late-bound
-and creates none. Under SBCL `make check` verifies all but constants and types
-(sec. 5).
+A file is compiled after everything listed before it, so it may use their
+macros, inline functions, structures, constants and types. Once `defsystem`
+recompiles a file, it recompiles every file compiled after it, whatever their
+`:depends-on` say, so a missing edge costs no stale fasl.
 
 **`tests/`** -- `$testsuite_files` (`src/testsuite.lisp`) only;
 `tests/Makefile.am` globs `*.mac`; adding to an existing file needs neither

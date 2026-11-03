@@ -1,23 +1,43 @@
-defsystem.lisp is a slightly modified version of mk:defsystem from
-CLOCC, <http://clocc.sourceforge.net>. This file contains instructions
-for applying CLOCC updates to defsystem.lisp.
+lisp-utils/mk-defsystem.lisp is MK:DEFSYSTEM exactly as its maintainers
+publish it (see its header). Never edit it. Maxima loads it through
+lisp-utils/defsystem.lisp, which adds Maxima's changes from outside, by
+wrapping a few upstream functions:
 
-1) Get difference between current defsystem.lisp and the clocc version
-   it is based on.
-   
-   diff -c defsystem.lisp-clocc defsystem.lisp > ds.diff
+- Once a file is recompiled, every file compiled after it is recompiled
+  too, declared dependency or not.
+- A binary that fails to load is deleted, recompiled and loaded once more.
+- OPERATE-ON-SYSTEM keeps the caller's *LOAD-VERBOSE* and
+  *COMPILE-VERBOSE*, and the banner upstream prints while loading is
+  suppressed.
+- After compiling a file that grew the heap a lot, SBCL and CMUCL collect
+  garbage.
+- On Windows, files and binary directories keep their drive letter
+  instead of getting the current one.
+- Portability fixes for ECL, CLISP and GCL 2.6 and 2.7.
 
-2) Get the new version of defsystem.lisp from
-   clocc.sourceforge.net. Call it defsystem.lisp-new.
+Both files are installed through genericdirDATA in
+lisp-utils/Makefile.am, and src/Makefile.am copies both into binary-ecl
+and binary-abcl, where ABCL, and ECL on Windows, load them at every
+start. The Windows installer packages what make install installs, so it
+needs no list of its own. A file added to lisp-utils has to go into the
+same places.
 
-3) Replace *both* defsystem.lisp and defsystem.lisp-clocc with
-   defsystem.lisp-new.
+Report bugs in MK:DEFSYSTEM itself to its maintainers, so that the
+wrapper can shrink.
 
-   cp defsystem.lisp-new defsystem.lisp
-   cp defsystem.lisp-new defsystem.lisp-clocc
+To upgrade MK:DEFSYSTEM:
 
-4) Apply the patch from step (1).
-   
-   patch < ds.diff
+1) Replace lisp-utils/mk-defsystem.lisp with the new upstream file.
 
-5) Make sure to commit both defsystem.lisp and defsystem.lisp-clocc.
+2) Set *TESTED-VERSION* in lisp-utils/defsystem.lisp to the new
+   MK::*DEFSYSTEM-VERSION*. Until then, loading it warns.
+
+3) Run lisp-utils/test-defsystem.lisp with every Lisp at hand, for example
+
+     sbcl --non-interactive --load lisp-utils/test-defsystem.lisp
+
+   Every check must pass. A failure, or a warning that a wrapped function
+   is missing, means the new version changed something the wrapper relies
+   on. Fix lisp-utils/defsystem.lisp, not mk-defsystem.lisp.
+
+4) Build Maxima with every Lisp at hand and run its test suite.
