@@ -189,6 +189,37 @@
     (complex 0.0 #.(/ (float pi) -2))
     (maxima-branch-atanh (/ 1 x))))
 
+;; asech(x) for a double-float or complex double-float X.  For |x| >= 2, use
+;; asech(x) = -%i*acos(1/x) when imagpart(x) > 0 and %i*acos(1/x) otherwise.
+;; For tiny |x|, asech(x) = log(2/x), with X scaled so that the log does not
+;; see a subnormal argument.  Otherwise use Kahan's acosh(w) with w = 1/x,
+;; computing w-1 and w+1 directly from x to avoid cancellation near x = 1 and
+;; x = -1.
+(defun maxima-branch-asech (x)
+  (let ((absx (abs x)))
+    (cond ((>= absx 2)
+           (let ((a (cl:acos (/ x))))
+             (if (plusp (imagpart x))
+                 (* #c(0 -1) a)
+                 (* #c(0 1) a))))
+          ((< absx #.(scale-float 1d0 -500))
+           (let ((v (* x #.(scale-float 1d0 600)))
+                 (c #.(* 601 (cl:log 2d0))))
+             (if (and (realp x) (minusp x))
+                 (complex (- c (cl:log (- v))) (cl:float pi 1d0))
+                 (- c (cl:log v)))))
+          (t
+           (let* ((re (realpart x))
+                  (im (imagpart x))
+                  (d (+ (* re re) (* im im)))
+                  (im-w (if (zerop im) 0d0 (/ (- im) d)))
+                  (sqrt-w-1 (sqrt (complex (/ (- (* (- 1 re) re) (* im im)) d) im-w)))
+                  (sqrt-w+1 (sqrt (complex (/ (+ (* (+ 1 re) re) (* im im)) d) im-w)))
+                  (u (cl:asinh (+ (* (realpart sqrt-w-1) (realpart sqrt-w+1))
+                                  (* (imagpart sqrt-w-1) (imagpart sqrt-w+1)))))
+                  (v (* 2 (atan (imagpart sqrt-w-1) (realpart sqrt-w+1)))))
+             (if (zerop v) u (complex u v)))))))
+
 ;; Fill the hash table.
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *flonum-op*) ,dfun)))
   (frob mplus #'+)
@@ -292,7 +323,7 @@
 		     (if y y (domain-error x 'atanh)))))
 
   (frob %asech #'(lambda (x)
-		   (let ((y (ignore-errors (cl:acosh (/ 1 x)))))
+		   (let ((y (ignore-errors (maxima-branch-asech x))))
 		     (if y y (domain-error x 'asech)))))
 
   (frob %acsch

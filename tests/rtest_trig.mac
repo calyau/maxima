@@ -1060,7 +1060,6 @@ sublist(makelist(bfloat(k/10), k, 1, 80),
   lambda([x], block([y : -x], atan(x) + atan(y) # 0b0 or acot(x) + acot(y) # 0b0)));
 []$
 
-
 /* Bug #5739: "Bigfloat atan() and acot() are off by several ulp, more at higher fpprec" */
 
 /* atan(x) and acot(x) lie in [1/2, 1) here, so half an ulp is
@@ -1075,3 +1074,99 @@ map(lambda([p],
           block([fpprec : p + 40], lmax(abs(u - v))) > h))))),
   [16, 200]);
 [[], []]$
+
+/* Bug 5762:
+ * Float asech loses accuracy near 1 and -1 and fails for subnormal arguments
+ */
+
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+
+(oldfpprec:fpprec,fpprec:32);
+32;
+
+closeto_relerr(asech(1 - 1e-12),
+               1.41419791986886460165008241167b-6,
+               7.7495e-17);
+true$
+
+closeto_relerr(asech(-1 + 1e-12),
+               1.41419791986886460165008241167b-6 + 3.14159265358979323846264338328b0*%i,
+               3.8982e-17);
+true$
+
+closeto_relerr(asech(1 + 1e-12),
+               1.41427642318007092633958070705b-6*%i,
+               7.2591e-17);
+true$
+
+closeto_relerr(asech(-1 - 1e-12),
+               3.1415912393133700583917170437b0*%i,
+               8.4028e-18);
+true$
+
+closeto_relerr(asech(1 + 1e-10*%i),
+               9.99999999958333351546744488805b-6 - 1.00000000004166668488007782669b-5*%i,
+               1.1813e-16);
+true$
+
+closeto_relerr(asech(1 - 1e-10*%i),
+               9.99999999958333351546744488805b-6 + 1.00000000004166668488007782669b-5*%i,
+               1.1813e-16);
+true$
+
+closeto_relerr(asech(-0.999999999999999 - 3.3e-15*%i),
+               6.66870072835920258917474942693b-8 + 3.14159260410489153989815461892b0*%i,
+               2.1104e-17);
+true$
+
+closeto_relerr(asech(0.9999999999999986 - 4.4e-15*%i),
+               7.79356009779577277772218293743b-8 + 5.64568688094731952613708037345b-8*%i,
+               9.7292e-18);
+true$
+
+closeto_relerr(asech(1e-310),
+               7.14494526008714110410061832784b2,
+               8.8975e-17);
+true$
+
+closeto_relerr(asech(-1e-310),
+               7.14494526008714110410061832784b2 + 3.14159265358979323846264338328b0*%i,
+               8.8974e-17);
+true$
+
+closeto_relerr(asech(1e-310 + 1e-310*%i),
+               7.14147952418434137755353216723b2 - 7.8539816339744830961566084582b-1*%i,
+               5.0525e-17);
+true$
+
+closeto_relerr(asech(-1e-310 - 1e-310*%i),
+               7.14147952418434137755353216723b2 + 2.35619449019234492884698253746b0*%i,
+               5.0523e-17);
+true$
+
+closeto_relerr(asech(1e300*%i),
+               9.99999999999999947495239744796b-301 - 1.57079632679489661923132169164b0*%i,
+               3.8982e-17);
+true$
+
+closeto_relerr(asech(-1e300*%i),
+               9.99999999999999947495239744796b-301 + 1.57079632679489661923132169164b0*%i,
+               3.8982e-17);
+true$
+
+closeto_relerr(asech(2.0),
+               1.04719755119659774615421446109b0*%i,
+               1.0234e-16);
+true$
+
+closeto_relerr(asech(-2.0),
+               2.09439510239319549230842892219b0*%i,
+               1.0238e-16);
+true$
+
+kill(closeto_relerr);
+done$
+
+(fpprec:oldfpprec, done);
+done;
