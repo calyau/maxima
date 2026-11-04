@@ -2461,22 +2461,18 @@
 	(complex-sqrt re-1-z im-1-z)
       (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
 	  (complex-sqrt re-1+z im-1+z)
-	;; Realpart is atan(x/Re(sqrt(1-z)*sqrt(1+z)))
-	;; Imagpart is asinh(Im(conj(sqrt(1-z))*sqrt(1+z)))
+	;; Realpart is
+        ;;
+        ;;   atan(x/Re(sqrt(1-z)*sqrt(1+z))) =
+        ;;     atan2(Re(sqrt(1-z)*sqrt(1+z)), x)
+        ;; 
+        ;; where the denominator is nonnegative, so atan2 gives +/-
+        ;; %pi/2 where it is 0. Imagpart is
+        ;; asinh(Im(conj(sqrt(1-z))*sqrt(1+z)))
 	(values (bcons
-		 (let ((d (fpdifference (fptimes* re-sqrt-1-z
-						  re-sqrt-1+z)
-					(fptimes* im-sqrt-1-z
-						  im-sqrt-1+z))))
-		   ;; Check for division by zero.  If we would divide
-		   ;; by zero, return pi/2 or -pi/2 according to the
-		   ;; sign of X.
-		   (cond ((equal d '(0 0))
-			  (if (fplessp x '(0 0))
-			      (fpminus (fpquotient (fppi) (intofp 2)))
-			      (fpquotient (fppi) (intofp 2))))
-			 (t
-			  (fpatan (fpquotient x d))))))
+		 (fpatan2 x
+			  (fpdifference (fptimes* re-sqrt-1-z re-sqrt-1+z)
+					(fptimes* im-sqrt-1-z im-sqrt-1+z))))
 		(fpasinh (bcons
 			  (fpdifference (fptimes* re-sqrt-1-z
 						  im-sqrt-1+z)
