@@ -1076,7 +1076,7 @@ map(lambda([p],
 [[], []]$
 
 
-/* Bug #NNNN:
+/* Bug #5747:
  * Bigfloat asec, acsc, acoth, acot and acsch lose digits near 1, -1, %i and -%i.
  * The expected values are from mpmath.  Where one part of the result is much
  * smaller than the other, the parts are checked separately.
