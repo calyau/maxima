@@ -2744,10 +2744,9 @@
                       (mul b x))
                  d))))
 
-;; asec(z) = acos(1/z), acsc(z) = asin(1/z) and acoth(z) = atanh(1/z), with
-;; 1-1/z and 1+1/z from ONE-MINUS-C/Z, for accuracy near z = 1 and z = -1.
-;; acot(z) = -%i*atanh(%i/z) and acsch(z) = -%i*asin(%i/z), with 1-%i/z and
-;; 1+%i/z, for accuracy near z = %i and z = -%i. Z must not be 0.
+;; asec(z) = acos(w), w = 1/z, computed by KAHAN-ACOS from 1-w = (z-1)/z and
+;; 1+w = (z+1)/z, which ONE-MINUS-C/Z computes from z, so that no digits are
+;; lost near z = 1 and z = -1. A real z is treated as z+0*%i. Z must not be 0.
 (defun big-float-asec (x &optional y)
   (let ((y (or y (bcons (intofp 0)))))
     (multiple-value-bind (re-1-w im-1-w)
@@ -2758,6 +2757,10 @@
             (kahan-acos re-1-w im-1-w re-1+w im-1+w)
           (add u (mul '$%i v)))))))
 
+;; acsc(z) = asin(w), w = 1/z, computed by KAHAN-ASIN from Re(w) = x/|z|^2,
+;; 1-w = (z-1)/z and 1+w = (z+1)/z, the latter two from ONE-MINUS-C/Z, so that
+;; no digits are lost near z = 1 and z = -1. A real z is treated as z+0*%i.
+;; Z must not be 0.  KAHAN-ASIN doesn't need Im(w).
 (defun big-float-acsc (x &optional y)
   (let* ((y (or y (bcons (intofp 0))))
          (d (add (mul x x) (mul y y))))
@@ -2769,6 +2772,10 @@
             (kahan-asin (div x d) re-1-w im-1-w re-1+w im-1+w)
           (add u (mul '$%i v)))))))
 
+;; acoth(z) = atanh(w), w = 1/z = (x-%i*y)/|z|^2, computed by KAHAN-ATANH from
+;; w and the real parts of 1-w = (z-1)/z and 1+w = (z+1)/z, which ONE-MINUS-C/Z
+;; computes from z, so that no digits are lost near z = 1 and z = -1. A real z
+;; is treated as z+0*%i. Z must not be 0.
 (defun big-float-acoth (x &optional y)
   (let* ((y (or y (bcons (intofp 0))))
          (d (add (mul x x) (mul y y))))
@@ -2779,6 +2786,11 @@
                      (one-minus-c/z x y -1 0))
       (add u (mul '$%i v)))))
 
+;; acot(z) = atan(1/z) = -%i*atanh(w), w = %i/z = (y+%i*x)/|z|^2, computed by
+;; KAHAN-ATANH from w and the real parts of 1-w = (z-%i)/z and 1+w = (z+%i)/z,
+;; which ONE-MINUS-C/Z computes from z, so that no digits are lost near z = %i
+;; and z = -%i. A real z, for which 1/z is far from the poles of atan, is
+;; computed as atan(1/z). Z must not be 0.
 (defun big-float-acot (x &optional y)
   (if (null y)
       (big-float-atan (invertbigfloat x))
@@ -2791,6 +2803,11 @@
                          (one-minus-c/z x y 0 -1))
           (sub v (mul '$%i u))))))
 
+;; acsch(z) = asinh(1/z) = -%i*asin(w), w = %i/z = (y+%i*x)/|z|^2, computed by
+;; KAHAN-ASIN from Re(w) = y/|z|^2, 1-w = (z-%i)/z and 1+w = (z+%i)/z, the
+;; latter two from ONE-MINUS-C/Z, so that no digits are lost near z = %i and
+;; z = -%i. A real z, for which 1/z is far from the branch points of asinh, is
+;; computed as asinh(1/z). Z must not be 0.
 (defun big-float-acsch (x &optional y)
   (if (null y)
       (fpasinh (invertbigfloat x))
