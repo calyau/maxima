@@ -2731,9 +2731,14 @@
 ;; The real and imaginary parts of 1-c/z = (z-c)/z for z = x+%i*y and
 ;; c = a+%i*b. For z near c, this keeps the digits that rounding 1/z would lose.
 (defun one-minus-c/z (x y a b)
-  (let ((d (add (mul x x) (mul y y))))
-    (values (div (add (mul (sub x a) x) (mul (sub y b) y)) d)
-            (div (sub (mul a y) (mul b x)) d))))
+  (let ((d (add (mul x x)
+                (mul y y))))
+    (values (div (add (mul (sub x a) x)
+                      (mul (sub y b) y))
+                 d)
+            (div (sub (mul a y)
+                      (mul b x))
+                 d))))
 
 ;; asec(z) = acos(1/z), acsc(z) = asin(1/z) and acoth(z) = atanh(1/z), with
 ;; 1-1/z and 1+1/z from ONE-MINUS-C/Z, for accuracy near z = 1 and z = -1.
@@ -2741,16 +2746,21 @@
 ;; 1+%i/z, for accuracy near z = %i and z = -%i. Z must not be 0.
 (defun big-float-asec (x &optional y)
   (let ((y (or y (bcons (intofp 0)))))
-    (multiple-value-bind (re-1-w im-1-w) (one-minus-c/z x y 1 0)
-      (multiple-value-bind (re-1+w im-1+w) (one-minus-c/z x y -1 0)
-        (multiple-value-bind (u v) (kahan-acos re-1-w im-1-w re-1+w im-1+w)
+    (multiple-value-bind (re-1-w im-1-w)
+        (one-minus-c/z x y 1 0)
+      (multiple-value-bind (re-1+w im-1+w)
+          (one-minus-c/z x y -1 0)
+        (multiple-value-bind (u v)
+            (kahan-acos re-1-w im-1-w re-1+w im-1+w)
           (add u (mul '$%i v)))))))
 
 (defun big-float-acsc (x &optional y)
   (let* ((y (or y (bcons (intofp 0))))
          (d (add (mul x x) (mul y y))))
-    (multiple-value-bind (re-1-w im-1-w) (one-minus-c/z x y 1 0)
-      (multiple-value-bind (re-1+w im-1+w) (one-minus-c/z x y -1 0)
+    (multiple-value-bind (re-1-w im-1-w)
+        (one-minus-c/z x y 1 0)
+      (multiple-value-bind (re-1+w im-1+w)
+          (one-minus-c/z x y -1 0)
         (multiple-value-bind (u v)
             (kahan-asin (div x d) re-1-w im-1-w re-1+w im-1+w)
           (add u (mul '$%i v)))))))
