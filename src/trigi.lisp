@@ -423,25 +423,23 @@
                   (intl:gettext "atan2: atan2(0,0) is undefined."))
                 (cl:atan y x)))))
 
-;; Return *BIG-FLOAT-OP* function for F that applies BOP to 1/z. Used for acsc,
-;; asec, acot, acsch and acoth, analogous to FLONUM-EVAL, to prevent losing
-;; digits like rectform() and logarc() would near 0 and inf. At 0 it declines,
-;; and where BOP fails, at a pole of F, it signals a domain error for F.
+;; Return a *BIG-FLOAT-OP* function for F that applies BOP, which computes F(z)
+;; from 1/z, with guard digits. Used for acsc, asec, acot, acsch and acoth,
+;; analogous to FLONUM-EVAL, to prevent losing digits like rectform() and
+;; logarc() would near 0 and inf. At 0 it declines, and where BOP fails, at a
+;; pole of F, it signals a domain error for F.
 (defun big-float-recip (bop f)
   #'(lambda (x &optional y)
       (unless (and (zerop1 x) (or (null y) (zerop1 y)))
         (let ((ans (ignore-errors
-                     ;; 1/z and BOP get guard digits, and the result is
+                     ;; BOP gets guard digits, and the result is
                      ;; rounded once. WITH-$ERROR lets IGNORE-ERRORS catch an
                      ;; MERROR in BOP, which becomes a domain error of F.
                      (let ((x (bigfloatp x)))
                        (with-$error
                          ($bfloat
                           (bind-fpprec (fpprec-with-guard-digits)
-                            (if y
-                              (let ((d (add (mul x x) (mul y y))))
-                                (funcall bop (div x d) (div (neg y) d)))
-                              (funcall bop (invertbigfloat x))))))))))
+                            (funcall bop x y))))))))
           (if ans ans (domain-error (if y (add x (mul '$%i y)) x) f))))))
 
 ;; Return a *BIG-FLOAT-OP* function for F that computes 1/BOP(z). Used for cot,
@@ -473,11 +471,11 @@
   (frob %log #'big-float-log)
   (frob %sqrt #'big-float-sqrt)
   (frob %atan #'big-float-atan)
-  (frob %acsc (big-float-recip 'big-float-asin 'acsc))
-  (frob %asec (big-float-recip 'big-float-acos 'asec))
-  (frob %acot (big-float-recip 'big-float-atan 'acot))
-  (frob %acsch (big-float-recip 'big-float-asinh 'acsch))
-  (frob %acoth (big-float-recip 'big-float-atanh 'acoth))
+  (frob %acsc (big-float-recip 'big-float-acsc 'acsc))
+  (frob %asec (big-float-recip 'big-float-asec 'asec))
+  (frob %acot (big-float-recip 'big-float-acot 'acot))
+  (frob %acsch (big-float-recip 'big-float-acsch 'acsch))
+  (frob %acoth (big-float-recip 'big-float-acoth 'acoth))
   (frob %tan #'big-float-tan)
   (frob %cot (big-float-inverse 'big-float-tan 'cot))
   (frob %coth (big-float-inverse 'big-float-tanh 'coth))

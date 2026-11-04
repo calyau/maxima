@@ -2444,17 +2444,17 @@
 		       rho))))
       (values eta nu))))
 
-;; asin(z) for complex z = x + %i*y.  X and Y are bigfloats.  The real
-;; and imaginary parts are returned as bigfloat numbers.
-(defun complex-asin (x y)
-  (let ((x (cdr (bigfloatp x)))
-	(y (cdr (bigfloatp y))))
+;; asin(z) from x = Re(z) and the real and imaginary parts of 1-z and 1+z,
+;; which are bigfloats, following Kahan: the real part is
+;; atan(x/Re(sqrt(1-z)*sqrt(1+z))), the imaginary part
+;; asinh(Im(conj(sqrt(1-z))*sqrt(1+z))). The real and imaginary parts are
+;; returned as bigfloat numbers.
+(defun kahan-asin (x re-1-z im-1-z re-1+z im-1+z)
+  (let ((x (cdr (bigfloatp x))))
     (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
-	(complex-sqrt (bcons (fpdifference (intofp 1) x))
-		      (bcons (fpminus y)))
+	(complex-sqrt re-1-z im-1-z)
       (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
-	  (complex-sqrt (bcons (fpplus (intofp 1) x))
-			(bcons y))
+	  (complex-sqrt re-1+z im-1+z)
 	;; Realpart is atan(x/Re(sqrt(1-z)*sqrt(1+z)))
 	;; Imagpart is asinh(Im(conj(sqrt(1-z))*sqrt(1+z)))
 	(values (bcons
@@ -2476,6 +2476,15 @@
 						  im-sqrt-1+z)
 					(fptimes* im-sqrt-1-z
 						  re-sqrt-1+z)))))))))
+
+;; asin(z) for complex z = x + %i*y.  X and Y are bigfloats.  The real
+;; and imaginary parts are returned as bigfloat numbers.
+(defun complex-asin (x y)
+  (let ((x (cdr (bigfloatp x)))
+	(y (cdr (bigfloatp y))))
+    (kahan-asin (bcons x)
+		(bcons (fpdifference (intofp 1) x)) (bcons (fpminus y))
+		(bcons (fpplus (intofp 1) x)) (bcons y))))
 
 (defun big-float-asin (x &optional y)
   (if y
@@ -2577,7 +2586,14 @@
 ;; = atan2(2*y,((1-x)*(1+x)-y^2))
 ;;
 ;; These are the eta and nu forms below.
-(defun complex-atanh (x y)
+;;
+;; KAHAN-ATANH computes atanh(x+%i*y) from X, Y and the real 1-x and 1+x, which
+;; are bigfloats, following Kahan: for x >= 0, the real part is
+;; log1p(4*x/((1-x)^2+y^2))/4, the imaginary part
+;; atan2(2*y,(1-x)*(1+x)-y^2)/2, and for x < 0, atanh(z) = -atanh(-z), for
+;; which 1-x and 1+x trade places. The real and imaginary parts are returned as
+;; bigfloat numbers.
+(defun kahan-atanh (x y one-minus-x one-plus-x)
   (let* ((fpx (cdr (bigfloatp x)))
 	 (fpy (cdr (bigfloatp y)))
      (fp1 (fpone))
@@ -2595,7 +2611,8 @@
 	 ;(t1 (fpplus (fpabs y) rho))
 	 ;(t1^2 (fptimes* t1 t1))
      (t1^2 (fptimes* y y))
-	 (1-x (fpdifference fp1 x))
+	 (1-x (cdr (bigfloatp (if (minusp (car fpx)) one-plus-x one-minus-x))))
+	 (1+x (cdr (bigfloatp (if (minusp (car fpx)) one-minus-x one-plus-x))))
 
 	 ;; eta = log(1+4*x/((1-x)^2+y^2))/4
 	 (eta (fpquotient
@@ -2619,10 +2636,15 @@
 			          '(0 0))))
 	         (fptimes* (cdr *bfmhalf*)
 		           (fpatan2 (fptimes* (intofp 2) y)
-				    (fpdifference (fptimes* 1-x (fpplus fp1 x))
+				    (fpdifference (fptimes* 1-x 1+x)
 					          t1^2))))))
     (values (bcons (fptimes* beta eta))
 	    (bcons (fptimes* beta nu)))))
+
+(defun complex-atanh (x y)
+  (let ((fpx (cdr (bigfloatp x))))
+    (kahan-atanh x y
+		 (bcons (fpdifference (fpone) fpx)) (bcons (fpplus (fpone) fpx)))))
 
 (defun big-float-atanh (x &optional y)
   ;; The poles at +/-1.
@@ -2638,22 +2660,29 @@
   ;; acos(x) = %pi/2 - asin(x)
   ($bfloat (add (div '$%pi 2) (mul -1 (fpasin-core x)))))
 
+;; acos(z) from the real and imaginary parts of 1-z and 1+z, which are
+;; bigfloats, following Kahan: the real part is
+;; 2*atan2(Re(sqrt(1-z)),Re(sqrt(1+z))), the imaginary part
+;; asinh(Im(conj(sqrt(1+z))*sqrt(1-z))). The real and imaginary parts are
+;; returned as bigfloat numbers.
+(defun kahan-acos (re-1-z im-1-z re-1+z im-1+z)
+  (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
+      (complex-sqrt re-1-z im-1-z)
+    (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
+	(complex-sqrt re-1+z im-1+z)
+      (values (bcons
+	       (fptimes* (intofp 2)
+			 (fpatan2 re-sqrt-1-z re-sqrt-1+z)))
+	      (fpasinh (bcons
+			(fpdifference
+			 (fptimes* re-sqrt-1+z im-sqrt-1-z)
+			 (fptimes* im-sqrt-1+z re-sqrt-1-z))))))))
+
 (defun complex-acos (x y)
   (let ((x (cdr (bigfloatp x)))
 	(y (cdr (bigfloatp y))))
-    (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
-	(complex-sqrt (bcons (fpdifference (intofp 1) x))
-		      (bcons (fpminus y)))
-      (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
-	  (complex-sqrt (bcons (fpplus (intofp 1) x))
-			(bcons y))
-	(values (bcons
-		 (fptimes* (intofp 2)
-			   (fpatan (fpquotient re-sqrt-1-z re-sqrt-1+z))))
-		(fpasinh (bcons
-			  (fpdifference
-			   (fptimes* re-sqrt-1+z im-sqrt-1-z)
-			   (fptimes* im-sqrt-1+z re-sqrt-1-z)))))))))
+    (kahan-acos (bcons (fpdifference (intofp 1) x)) (bcons (fpminus y))
+		(bcons (fpplus (intofp 1) x)) (bcons y))))
 
 
 (defun big-float-acos (x &optional y)
@@ -2687,6 +2716,60 @@
       (let ((im (div (neg y) d)))
         (kahan-acosh (div (sub (mul (sub 1 x) x) (mul y y)) d) im
                      (div (add (mul (add 1 x) x) (mul y y)) d) im)))))
+
+;; The real and imaginary parts of 1-c/z = (z-c)/z for z = x+%i*y and
+;; c = a+%i*b. For z near c, this keeps the digits that rounding 1/z would lose.
+(defun one-minus-c/z (x y a b)
+  (let ((d (add (mul x x) (mul y y))))
+    (values (div (add (mul (sub x a) x) (mul (sub y b) y)) d)
+            (div (sub (mul a y) (mul b x)) d))))
+
+;; asec(z) = acos(1/z), acsc(z) = asin(1/z) and acoth(z) = atanh(1/z), with
+;; 1-1/z and 1+1/z from ONE-MINUS-C/Z, for accuracy near z = 1 and z = -1.
+;; acot(z) = -%i*atanh(%i/z) and acsch(z) = -%i*asin(%i/z), with 1-%i/z and
+;; 1+%i/z, for accuracy near z = %i and z = -%i. Z must not be 0.
+(defun big-float-asec (x &optional y)
+  (let ((y (or y (bcons (intofp 0)))))
+    (multiple-value-bind (re-1-w im-1-w) (one-minus-c/z x y 1 0)
+      (multiple-value-bind (re-1+w im-1+w) (one-minus-c/z x y -1 0)
+        (multiple-value-bind (u v) (kahan-acos re-1-w im-1-w re-1+w im-1+w)
+          (add u (mul '$%i v)))))))
+
+(defun big-float-acsc (x &optional y)
+  (let* ((y (or y (bcons (intofp 0))))
+         (d (add (mul x x) (mul y y))))
+    (multiple-value-bind (re-1-w im-1-w) (one-minus-c/z x y 1 0)
+      (multiple-value-bind (re-1+w im-1+w) (one-minus-c/z x y -1 0)
+        (multiple-value-bind (u v)
+            (kahan-asin (div x d) re-1-w im-1-w re-1+w im-1+w)
+          (add u (mul '$%i v)))))))
+
+(defun big-float-acoth (x &optional y)
+  (let* ((y (or y (bcons (intofp 0))))
+         (d (add (mul x x) (mul y y))))
+    (multiple-value-bind (u v)
+        (kahan-atanh (div x d) (div (neg y) d)
+                     (one-minus-c/z x y 1 0) (one-minus-c/z x y -1 0))
+      (add u (mul '$%i v)))))
+
+(defun big-float-acot (x &optional y)
+  (if (null y)
+      (big-float-atan (invertbigfloat x))
+      (let ((d (add (mul x x) (mul y y))))
+        (multiple-value-bind (u v)
+            (kahan-atanh (div y d) (div x d)
+                         (one-minus-c/z x y 0 1) (one-minus-c/z x y 0 -1))
+          (sub v (mul '$%i u))))))
+
+(defun big-float-acsch (x &optional y)
+  (if (null y)
+      (fpasinh (invertbigfloat x))
+      (let ((d (add (mul x x) (mul y y))))
+        (multiple-value-bind (re-1-u im-1-u) (one-minus-c/z x y 0 1)
+          (multiple-value-bind (re-1+u im-1+u) (one-minus-c/z x y 0 -1)
+            (multiple-value-bind (u v)
+                (kahan-asin (div y d) re-1-u im-1-u re-1+u im-1+u)
+              (sub v (mul '$%i u))))))))
 
 (defun complex-log (x y)
   (let* ((x (cdr (bigfloatp x)))

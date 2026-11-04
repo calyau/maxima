@@ -1075,6 +1075,115 @@ map(lambda([p],
   [16, 200]);
 [[], []]$
 
+
+/* Bug #NNNN:
+ * Bigfloat asec, acsc, acoth, acot and acsch lose digits near 1, -1, %i and -%i.
+ * The expected values are from mpmath.  Where one part of the result is much
+ * smaller than the other, the parts are checked separately.
+ */
+
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+
+(oldfpprec:fpprec,fpprec:32);
+32;
+
+closeto_relerr(asec(1+1b-25),
+               4.472135929791495655778532346185053271411b-13,
+               1b-33);
+true$
+
+closeto_relerr(asec(1-1b-25),
+               4.472135964243577921687943669147123556694b-13*%i,
+               1b-33);
+true$
+
+block([w : asec(-1+1b-25*%i)],
+  [closeto_relerr(realpart(w), 3.141592653589477010696626545346302994830b0, 1b-33),
+   closeto_relerr(imagpart(w), 3.162277660168379331998893412671150262785b-13, 1b-33)]);
+[true, true]$
+
+block([w : acsc(1+1b-25*%i)],
+  [closeto_relerr(realpart(w), 1.570796326794580391465304853706551552731b0, 1b-33),
+   closeto_relerr(imagpart(w), -3.162277660168379331998893412671150262785b-13, 1b-33)]);
+[true, true]$
+
+block([w : acsc(1-1b-25)],
+  [closeto_relerr(realpart(w), 1.570796326794896619231321691639751442099b0, 1b-33),
+   closeto_relerr(imagpart(w), -4.472135964243577921687943669147123556694b-13, 1b-33)]);
+[true, true]$
+
+block([w : acsc(-1+1b-25)],
+  [closeto_relerr(realpart(w), -1.570796326794896619231321691639751442099b0, 1b-33),
+   closeto_relerr(imagpart(w), 4.472135964243577921687943669147123556694b-13, 1b-33)]);
+[true, true]$
+
+block([w : acsc(-1-1b-25*%i)],
+  [closeto_relerr(realpart(w), -1.570796326794580391465304853706551552731b0, 1b-33),
+   closeto_relerr(imagpart(w), 3.162277660168379331998893412671150262785b-13, 1b-33)]);
+[true, true]$
+
+closeto_relerr(acoth(1+1b-25),
+               2.912888725834224260267249238905358771093b1,
+               1b-33);
+true$
+
+closeto_relerr(acoth(1+1b-25*%i),
+               2.912888725270554370493350924428364059358b1 - 7.853981633974483096156608208198757210493b-1*%i,
+               1b-33);
+true$
+
+closeto_relerr(acoth(-1+1b-25*%i),
+               -2.912888725270554370493350924428364059358b1 - 7.853981633974483096156608208198757210493b-1*%i,
+               1b-33);
+true$
+
+closeto_relerr(acoth(-1-1b-25),
+               -2.912888725834224260267249238905358771093b1,
+               1b-33);
+true$
+
+closeto_relerr(acot(%i+1b-25),
+               7.853981633974483096156608208198757210493b-1 - 2.912888725270554370493350924428364059358b1*%i,
+               1b-33);
+true$
+
+closeto_relerr(acot(%i*(1+1b-25)),
+               -2.912888725834224260267249238905358771093b1*%i,
+               1b-33);
+true$
+
+closeto_relerr(acot(-%i+1b-25),
+               7.853981633974483096156608208198757210493b-1 + 2.912888725270554370493350924428364059358b1*%i,
+               1b-33);
+true$
+
+closeto_relerr(acot(-%i-1b-25),
+               -7.853981633974483096156608208198757210493b-1 + 2.912888725270554370493350924428364059358b1*%i,
+               1b-33);
+true$
+
+block([w : acsch(%i+1b-25)],
+  [closeto_relerr(realpart(w), 3.162277660168379331998893412671150262785b-13, 1b-33),
+   closeto_relerr(imagpart(w), -1.570796326794580391465304853706551552731b0, 1b-33)]);
+[true, true]$
+
+block([w : acsch(-%i+1b-25)],
+  [closeto_relerr(realpart(w), 3.162277660168379331998893412671150262785b-13, 1b-33),
+   closeto_relerr(imagpart(w), 1.570796326794580391465304853706551552731b0, 1b-33)]);
+[true, true]$
+
+block([w : acsch(-%i-1b-25)],
+  [closeto_relerr(realpart(w), -3.162277660168379331998893412671150262785b-13, 1b-33),
+   closeto_relerr(imagpart(w), 1.570796326794580391465304853706551552731b0, 1b-33)]);
+[true, true]$
+
+kill(closeto_relerr);
+done$
+
+(fpprec:oldfpprec, done);
+done;
+
 /* Bug 5762:
  * Float asech loses accuracy near 1 and -1 and fails for subnormal arguments
  */
