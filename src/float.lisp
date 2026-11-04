@@ -2449,6 +2449,12 @@
 ;; atan(x/Re(sqrt(1-z)*sqrt(1+z))), the imaginary part
 ;; asinh(Im(conj(sqrt(1-z))*sqrt(1+z))). The real and imaginary parts are
 ;; returned as bigfloat numbers.
+;;
+;; X, 1-z and 1+z are separate arguments because none can be computed from the
+;; others without cancellation: 1-z and 1+z from x lose digits near z = 1 and
+;; z = -1, and x from 1-z and 1+z loses digits when x is small. COMPLEX-ASIN
+;; passes them for z itself. BIG-FLOAT-ACSC and BIG-FLOAT-ACSCH pass them for
+;; w = 1/z and w = %i/z, with Re(w), 1-w and 1+w each computed directly from z.
 (defun kahan-asin (x re-1-z im-1-z re-1+z im-1+z)
   (let ((x (cdr (bigfloatp x))))
     (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
@@ -2593,6 +2599,11 @@
 ;; atan2(2*y,(1-x)*(1+x)-y^2)/2, and for x < 0, atanh(z) = -atanh(-z), for
 ;; which 1-x and 1+x trade places. The real and imaginary parts are returned as
 ;; bigfloat numbers.
+;;
+;; X, 1-x and 1+x are separate arguments for the same reason as in KAHAN-ASIN.
+;; COMPLEX-ATANH passes them for z itself. BIG-FLOAT-ACOTH and BIG-FLOAT-ACOT
+;; pass them for w = 1/z and w = %i/z, with Re(w), 1-Re(w) and 1+Re(w) each
+;; computed directly from z.
 (defun kahan-atanh (x y one-minus-x one-plus-x)
   (let* ((fpx (cdr (bigfloatp x)))
 	 (fpy (cdr (bigfloatp y)))
@@ -2665,6 +2676,10 @@
 ;; 2*atan2(Re(sqrt(1-z)),Re(sqrt(1+z))), the imaginary part
 ;; asinh(Im(conj(sqrt(1+z))*sqrt(1-z))). The real and imaginary parts are
 ;; returned as bigfloat numbers.
+;;
+;; 1-z and 1+z are the arguments, rather than z, so that BIG-FLOAT-ASEC can pass
+;; 1-w and 1+w for w = 1/z computed directly from z, without the cancellation
+;; that forming them from a rounded w would cause near z = 1 and z = -1.
 (defun kahan-acos (re-1-z im-1-z re-1+z im-1+z)
   (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
       (complex-sqrt re-1-z im-1-z)
