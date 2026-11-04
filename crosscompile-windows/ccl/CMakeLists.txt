@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-set(CCL_VERSION 1.13)
-set(CCL_MD5 "7b27dd6b472d1e012704654948a23924")
+set(CCL_VERSION 1.14)
+set(CCL_MD5 "b34c525965047399f9aedc4a63232faa")
 set(CCL_URL "https://github.com/Clozure/ccl/releases/download/v${CCL_VERSION}/ccl-${CCL_VERSION}-windowsx86.zip")
 
 externalproject_add(ccl
