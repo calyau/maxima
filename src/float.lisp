@@ -2134,67 +2134,40 @@
 	 (list '(%log) (car a)))))
 
 
-;;; Computes the log of a bigfloat number.
+;;; Computes log(x) for a positive FP number X.  A FP number is
+;;; returned.
 ;;;
-;;; Uses the series
+;;; X is (mantissa exp), with x = frac*2^exp, where frac =
+;;; mantissa/2^fpprec and 1/2 <= frac < 1.  Use
 ;;;
-;;; log(1+x) = sum((x/(x+2))^(2*n+1)/(2*n+1),n,0,inf);
+;;;   log(x) = log1p(f-1) + (exp-k)*log(2),  f = frac*2^k,
 ;;;
+;;; with k = 1 if frac < 1/sqrt(2) and k = 0 otherwise, so that
+;;; 1/sqrt(2) <= f < sqrt(2).  The test frac < 1/sqrt(2) is done
+;;; exactly as 2*mantissa^2 < 2^(2*fpprec).
 ;;;
-;;;                  INF      x   2 n + 1
-;;;                  ====  (-----)
-;;;                  \      x + 2
-;;;          =  2     >    --------------
-;;;                  /        2 n + 1
-;;;                  ====
-;;;                  n = 0
+;;; This choice keeps the two terms from cancelling.  If exp-k = 0,
+;;; the result is log1p(f-1) alone, which has small relative error
+;;; because f-1 is exact by Sterbenz's lemma.  Otherwise
+;;; |(exp-k)*log(2)| >= log(2) is at least twice |log(f)| <= log(2)/2.
+;;; In this range the series in FPLOG1P has u^2 <= (3-2*sqrt(2))^2 <
+;;; 0.03, so each term adds 5 bits.
 ;;;
-;;;
-;;; which converges for x > 0.
-;;;
-;;; Note that FPLOG is given 1+X, not X.
-;;;
-;;; However, to aid convergence of the series, we scale 1+x until 1/e
-;;; <= 1+x <= e.
-;;;
+;;; EXTRA guard bits absorb the rounding in the series, in log(2), and
+;;; in the final sum; the result is then rounded to fpprec.
 (defun fplog (x)
-  (prog (over two ans oldans term e sum)
-     (unless (> (car x) 0)
-       (merror (intl:gettext "fplog: argument must be positive; found: ~M") (car x)))
-     (setq e (fpe)
-	   over (fpquotient (fpone) e)
-	   ans 0)
-     ;; Scale X until 1/e <= X <= E.  ANS keeps track of how
-     ;; many factors of E were used.  Set X to NIL if X is E.
-     ;; 1/e itself has to count as in range: divided by E and
-     ;; multiplied back, it can come out unchanged.
-     (do ()
-	 (nil)
-       (cond ((equal x e) (setq x nil) (return nil))
-	     ((and (fplessp x e) (not (fplessp x over)))
-	      (return nil))
-	     ((fplessp x over)
-	      (setq x (fptimes* x e))
-	      (decf ans))
-	     (t
-	      (incf ans)
-	      (setq x (fpquotient x e)))))
-     (when (null x) (return (intofp (1+ ans))))
-     ;; Prepare X for the series.  The series is for 1 + x, so
-     ;; get x from our X.  TERM is (x/(x+2)).  X becomes
-     ;; (x/(x+2))^2.
-     (setq x (fpdifference  x (fpone))
-	   ans (intofp ans))
-     (setq x (fpexpt (setq term (fpquotient x (fpplus x (setq two (intofp 2))))) 2))
-     ;; Sum the series until the sum (in ANS) doesn't change
-     ;; anymore.
-     (setq sum (intofp 0))
-     (do ((n 1 (+ n 2)))
-	 ((equal sum oldans))
-       (setq oldans sum)
-       (setq sum (fpplus sum (fpquotient term (intofp n))))
-       (setq term (fptimes* term x)))
-     (return (fpplus ans (fptimes* two sum)))))
+  (unless (> (car x) 0)
+    (merror (intl:gettext "fplog: argument must be positive; found: ~M") (car x)))
+  (let* ((k (if (< (* 2 (car x) (car x)) (ash 1 (* 2 fpprec)))
+		1
+		0))
+	 (extra 8)
+	 (result
+	   (let ((fpprec (+ fpprec extra)))
+	     (bcons (fpplus (fplog1p (fpdifference (list (ash (car x) extra) k)
+						   (fpone)))
+			    (fptimes* (intofp (- (second x) k)) (fplog2)))))))
+    (cdr (bigfloatp result))))
 
 (defun mabsbigfloat (l)
   (prog (r)
@@ -2243,15 +2216,19 @@
 
 ;; log(1+x) for small x.  X is FP number, and a FP number is returned.
 (defun fplog1p (x)
-  ;; Use the series (the same one as for FPLOG) only for -1/2 <= x <= 1,
-  ;; where the term ratio u^2 = (x/(x+2))^2 is at most 1/9 and the
-  ;; series converges quickly. Otherwise, fall back to FPLOG(1+x):
+  ;; Use the series
+  ;;
+  ;;   log(1+x) = 2*atanh(u) = 2*sum(u^(2*n+1)/(2*n+1), n, 0, inf),
+  ;;
+  ;; with u = x/(x+2), only for -1/2 <= x <= 1, where the term ratio
+  ;; u^2 is at most 1/9 and the series converges quickly. Otherwise,
+  ;; fall back to FPLOG(1+x):
   ;; For x >= 1, there is no cancellation in computing 1+x, and for
   ;; -1 < x <= -1/2, the sum 1+x is exact, so nothing is lost.
   ;; Using the series near x = -1 is catastrophic: u approaches -1,
   ;; and convergence is extremely poor.
   (cond ((or (fpgreaterp x (fpone))
-	     (fplessp x (fpminus (cdr *bfhalf*))))
+	     (fplessp x (fpminus (cdr (bigfloatp *bfhalf*)))))
 	 (fplog (fpplus x (fpone))))
 	(t
 	 (let* ((sum (intofp 0))
@@ -2849,35 +2826,18 @@
   (if y
       (multiple-value-bind (u v) (complex-log x y)
 	(add (bcons u) (mul '$%i (bcons v))))
-      (flet ((%log (x)
-	       ;; x is (mantissa exp), where mantissa = frac*2^fpprec,
-	       ;; with 1/2 < frac <= 1 and x is frac*2^exp.  To
-	       ;; compute log(x), use log(x) = log(frac)+ exp*log(2).
-	       (cdr
-		(let* ((extra 8)
-		       (fpprec (+ fpprec extra))
-		       (log-frac
-			(fplog #+nil
-			       (cdr ($bfloat
-				     (cl-rat-to-maxima (/ (car x)
-							  (ash 1 (- fpprec 8))))))
-			       (list (ash (car x) extra) 0)))
-		       (log-exp (fptimes* (intofp (second x)) (fplog2)))
-		       (result (bcons (fpplus log-frac log-exp))))
-		  (let ((fpprec (- fpprec extra)))
-		    (bigfloatp result))))))
-	(let ((fp-x (cdr (bigfloatp x))))
-	  (cond ((onep1 x)
-		 ;; Special case for log(1).  See:
-		 ;; https://sourceforge.net/p/maxima/bugs/2240/
-		 (bcons (intofp 0)))
-		((fplessp fp-x (intofp 0))
-		 ;; ??? Do we want to return an exact %i*%pi or a float
-		 ;; approximation?
-		 (add (big-float-log (bcons (fpminus fp-x)))
-		      (mul '$%i (bcons (fppi)))))
-		(t
-		 (bcons (%log fp-x))))))))
+      (let ((fp-x (cdr (bigfloatp x))))
+	(cond ((onep1 x)
+	       ;; Special case for log(1).  See:
+	       ;; https://sourceforge.net/p/maxima/bugs/2240/
+	       (bcons (intofp 0)))
+	      ((fplessp fp-x (intofp 0))
+	       ;; ??? Do we want to return an exact %i*%pi or a float
+	       ;; approximation?
+	       (add (big-float-log (bcons (fpminus fp-x)))
+		    (mul '$%i (bcons (fppi)))))
+	      (t
+	       (bcons (fplog fp-x)))))))
 
 (defun big-float-sqrt (x &optional y)
   (if y
