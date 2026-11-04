@@ -424,10 +424,11 @@
                 (cl:atan y x)))))
 
 ;; Return a *BIG-FLOAT-OP* function for F that applies BOP, which computes F(z)
-;; from 1/z, with guard digits. Used for acsc, asec, acot, acsch and acoth,
-;; analogous to FLONUM-EVAL, to prevent losing digits like rectform() and
-;; logarc() would near 0 and inf. At 0 it declines, and where BOP fails, at a
-;; pole of F, it signals a domain error for F.
+;; from z, with guard digits, so the result is rounded once. Used for acsc,
+;; asec, acot, acsch and acoth, whose BOPs evaluate the inverse function at 1/z
+;; or %i/z without the cancellation that rounding 1/z would cause. At 0 it
+;; declines, and where BOP fails, at a pole of F, it signals a domain error
+;; for F.
 (defun big-float-recip (bop f)
   #'(lambda (x &optional y)
       (unless (and (zerop1 x) (or (null y) (zerop1 y)))
