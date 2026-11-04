@@ -422,8 +422,10 @@ endif
 EXECUTECCL64 = "$(CCL64_NAME)" --no-init --batch --quiet
 BUILT_FILES += $(CCL64_MAXIMA)
 
-COMPILE_CCL64 = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl:quit)' | $(EXECUTECCL64)
-WRITE_CCL64 = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(ccl64_flag)) (ccl:quit)' | $(EXECUTECCL64)
+# Using pipes instead of tmp-files would be logical, but that doesn't seem to work, when crosscompiling Maximan for Windows
+# (there one pipes to the windows version of CCL64 running in 'wine'), so please don't optimize that (for now).
+COMPILE_CCL64 = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl:quit)' > ccl64-build.tmp ; $(EXECUTECCL64) --load ccl64-build.tmp
+WRITE_CCL64 = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(ccl64_flag)) (ccl:quit)' > ccl64-write.tmp ; $(EXECUTECCL64) --load ccl64-write.tmp
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
 ccl64: $(CCL64_MAXIMA)
@@ -432,9 +434,11 @@ $(CCL64_MAXIMA):
 	$(MAKE) bd
 	$(BUILD_CCL64)
 
+# Using pipes instead of tmp-files would be logical, but that doesn't seem to work, when crosscompiling Maxima for Windows
+# (there one pipes to the windows version of CCL64 running in 'wine'), so please don't optimize that (for now).
 ccl64-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) | $(EXECUTECCL64)
-	sed -e "s#\\\\#/#g" < ccl64-depends.mk.tmp > ccl64-depends.mk
+	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) >ccl64-depends.mk.tmp
+	$(EXECUTECCL64) --load ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
 
 -include ccl64-depends.mk
 
