@@ -2154,7 +2154,7 @@
                          (cdr ex))))))
 
 (defun powerlist (expr var2)
-  (prog (y cc dd power-list bb)
+  (prog (y cc dd power-list bb expanded result)
      (setq y (m2 expr
 		 `((mtimes)
 		   ((mexpt) (var varp2 ,var2) (c integerp2))
@@ -2179,12 +2179,20 @@
                        ((null u) t)
 	             (if (not (rat10 (car u)))
                          (return nil)))))))
-       (unless  (rat10 bb) (return nil))
+       (unless (rat10 bb)
+         ;; INTFORM may have factored the base of a power, as x^4+x^2+1
+         ;; into (x^2+x+1)*(x^2-x+1), which hides that it is a polynomial
+         ;; in x^2. Multiplying out products of sums shows that again.
+         (setq expanded ($expand bb 1 1)
+               power-list nil)
+         (unless (and (not (alike1 expanded bb)) (rat10 expanded))
+           (return nil))
+         (setq bb expanded))
        (setq dd (apply #'gcd (cons (1+ cc) power-list))))
      (when (or (eql 1 dd) (zerop dd)) (return nil))
      (let* ((subst-expr (list '(mexpt) var2 dd))
             (new-var (make-new-var "powerlist" subst-expr)))
-       (return
+       (setq result
          (substint
           subst-expr
           new-var
@@ -2195,7 +2203,11 @@
                                       (subst10 bb var2 dd new-var)))
                       new-var)
           var2
-          expr)))))
+          expr)))
+     ;; If the products had to be multiplied out, give up unless the
+     ;; integral was found, so that the methods after this one get their
+     ;; turn.
+     (return (unless (and expanded (isinop result '%integrate)) result))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

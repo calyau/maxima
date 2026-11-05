@@ -307,6 +307,7 @@ Bug fixes for numbered bugs:
 * \#5759 integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z
 * \#5760 Products with powers of constants depend on the order of their factors
 * \#5764 integrate() can't integrate half-integer powers of cos and sin
+* \#5767 integrate(x/sqrt(1+x^2+x^4), x) is not solved
 
 Bug fixes for unnumbered bugs:
 ------------------------------
