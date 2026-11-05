@@ -7456,6 +7456,33 @@ block([f : 1/(x*log(x)*sqrt(log(x)^2-a^2)), G],
 0$
 
 
+/* Bug #5764: "integrate() can't integrate half-integer powers of cos and sin" */
+
+[integrate(sqrt(cos(x)), x), integrate(1/sqrt(cos(x)), x), integrate(sqrt(sec(x)), x)];
+[2*elliptic_e(x/2, 2), 2*elliptic_f(x/2, 2), 2*elliptic_f(x/2, 2)*sqrt(cos(x))*sqrt(sec(x))]$
+
+integrate(sin(2*x+1)^(3/2), x);
+((2*elliptic_f((2*x-%pi/2+1)/2, 2))/3-(2*cos(2*x+1)*sqrt(sin(2*x+1)))/3)/2$
+
+block([fs : [(a+b*cos(x))^2/cos(x)^(5/2), csc(x)^2*(d*csc(x))^(3/2), (b*cos(x))^(3/2)*sec(x)^3]],
+  map(lambda([f],
+    block([F : integrate(f, x)],
+      [freeof('integrate, F),
+       map(lambda([p], is(cabs(float(rectform(subst([a = 2, b = 3, d = 5, x = p], diff(F, x) - f)))) < 1e-10)),
+           [1/2, 5/2, 4])])),
+    fs));
+[[true, [true, true, true]], [true, [true, true, true]], [true, [true, true, true]]]$
+
+block([f : cos(x)^(5/6)*sec(x)^(1/3), F],
+  F : block([domain : complex], integrate(f, x)),
+  [integrate(f, x), integrate(cos(x)^(1/3)*(a*cos(x))^(1/6), x), freeof('integrate, F),
+   block([domain : complex],
+     map(lambda([p], is(cabs(float(rectform(subst(x = p, diff(F, x) - f)))) < 1e-10)),
+       [1/2, 5/2, 4, 1+%i]))]);
+['integrate(cos(x)^(5/6)*sec(x)^(1/3), x), 'integrate(cos(x)^(1/3)*(a*cos(x))^(1/6), x), true,
+ [true, true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

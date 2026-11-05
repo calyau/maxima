@@ -433,7 +433,8 @@
 	     (t
 	      (return
 		(mul* const
-		      (cond ((setq y (scep *exp* var2))
+		      (cond ((integrate-cos-half-power *exp* var2))
+			    ((setq y (scep *exp* var2))
 			     (cond ((cddr y)
 				    #+nil
 				    (progn
@@ -602,6 +603,66 @@
                (cdr terms))
 	  (return (addn (cons (rischint (cons '(mplus) terms) var2) (cdr ans))
 			nil)))))
+
+;; Integrate EXPR if it is a product of powers of c = cos(u) and d = sec(u),
+;; or of c = sin(u) and d = csc(u), with u linear in VAR2, that equals c^p
+;; times a piecewise constant, with p an odd multiple of 1/2. Else return NIL.
+;;
+;; With gensyms TC for c and TD for d, EXPR becomes g, which is TC^r*TD^s
+;; times a piecewise constant exactly when Euler's operators TC*diff(g, TC)/g
+;; and TD*diff(g, TD)/g are numbers, r and s. As d = 1/c, p = r-s, and the
+;; piecewise constant is EXPR/(d^n*c^(p+n)) for any integer n. n = floor(s)
+;; makes it 1 or sqrt(d)*sqrt(c) in most cases.
+;;
+;; With v = u for cos(u) and v = u-%pi/2 for sin(u), c is cos(v), and the
+;; reduction formula
+;;   integrate(cos(v)^q, v)
+;;     = cos(v)^(q-1)*sin(v)/q + (q-1)/q*integrate(cos(v)^(q-2), v)
+;; takes the integral of cos(v)^p down or up to
+;;   integrate(cos(v)^(1/2), v) = 2*elliptic_e(v/2, 2) or
+;;   integrate(cos(v)^(-1/2), v) = 2*elliptic_f(v/2, 2).
+;;
+;; All this holds for complex u and constants too. But domain : real takes
+;; odd roots of negative numbers to be real, where c^x*c^y = c^(x+y) can
+;; fail, so then all roots in EXPR must be square roots.
+;;
+(defun integrate-cos-half-power (expr var2)
+  (labels ((other-root-p (e)        ; E has a root other than a square root
+             (or (and (mexptp e) (ratnump (caddr e)) (/= (caddr (caddr e)) 2))
+                 (and (consp e) (some #'other-root-p (cdr e)))))
+           (int-cos-power (q c w v) ; integrate(c^q, v), c = cos(v), w = sin(v)
+             (cond ((alike1 q 1//2) (mul 2 (ftake '%elliptic_e (div v 2) 2)))
+                   ((alike1 q -1//2) (mul 2 (ftake '%elliptic_f (div v 2) 2)))
+                   ((mnegp q)           ; the reduction formula for q+2, upward
+                    (sub (mul (div (add q 2) (add q 1))
+                              (int-cos-power (add q 2) c w v))
+                         (div (mul (power c (add q 1)) w) (add q 1))))
+                   (t                   ; the reduction formula for q, downward
+                    (add (div (mul (power c (sub q 1)) w) q)
+                         (mul (div (sub q 1) q)
+                              (int-cos-power (sub q 2) c w v)))))))
+    (dolist (fns '((%cos %sec) (%sin %csc)))
+      (let* ((u (cadr (or (isinop expr (car fns)) (isinop expr (cadr fns)))))
+             (b (and u (cdras 'b (m2-b*x+a u var2)))) ; u = b*VAR2+a, b # 0
+             (c (and b (ftake (car fns) u)))          ; cos(u) or sin(u)
+             (d (and b (ftake (cadr fns) u)))         ; sec(u) or csc(u)
+             (tc (gensym)) (td (gensym))
+             ;; EXPR with TC for c and TD for d, simplified if free of VAR2
+             (raw (and b (subst td d (subst tc c expr :test #'alike1)
+                                :test #'alike1)))
+             (g (and raw (freevar2 raw var2) (resimplify raw)))
+             ;; the degrees r and s of g in TC and TD, by Euler's operator
+             (r (and g ($ratsimp (div (mul tc (sdiff g tc)) g))))
+             (s (and (mnump r) ($ratsimp (div (mul td (sdiff g td)) g))))
+             (p (and (mnump s) (sub r s))))
+        ;; p must be an odd multiple of 1/2
+        (when (and (ratnump p) (eql (caddr p) 2)
+                   (or (eq $domain '$complex) (not (other-root-p expr))))
+          (let ((n (ftake '$floor s))
+                (v (if (eq (car fns) '%cos) u (sub u (div '$%pi 2)))))
+            (return
+              (mul (div expr (mul (power d n) (power c (add p n))))
+                   (div (int-cos-power p c (ftake '%sin v) v) b)))))))))
 
 (defun scep (expr var2 &aux trigl ex)	; Product of SIN, COS, EXP
   (and (mtimesp expr)			;	of linear args.

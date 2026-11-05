@@ -306,6 +306,7 @@ Bug fixes for numbered bugs:
 * \#5758 integrate() gives half powers and stray constants for integrands with several exponentials
 * \#5759 integrate(1/(z*sqrt(z^2+z+1)), z) is wrong for complex z
 * \#5760 Products with powers of constants depend on the order of their factors
+* \#5764 integrate() can't integrate half-integer powers of cos and sin
 
 Bug fixes for unnumbered bugs:
 ------------------------------
