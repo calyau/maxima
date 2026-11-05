@@ -2158,15 +2158,22 @@
 (defun fplog (x)
   (unless (> (car x) 0)
     (merror (intl:gettext "fplog: argument must be positive; found: ~M") (car x)))
-  (let* ((k (if (< (* 2 (car x) (car x)) (ash 1 (* 2 fpprec)))
+  (let* ((extra-precision-bits 8)
+         ;; As explained above k = 1 if 2*mantissa^2 < 2^(2*fpprec).
+         ;; Otherwise 0.
+         (k (if (< (* 2 (car x) (car x))
+                   (ash 1 (* 2 fpprec)))
 		1
 		0))
-	 (extra 8)
+	 
 	 (result
-	   (let ((fpprec (+ fpprec extra)))
-	     (bcons (fpplus (fplog1p (fpdifference (list (ash (car x) extra) k)
+	   (let ((fpprec (+ fpprec extra-precision-bits)))
+	     (bcons (fpplus (fplog1p (fpdifference (list (ash (car x)
+                                                              extra-precision-bits)
+                                                         k)
 						   (fpone)))
-			    (fptimes* (intofp (- (second x) k)) (fplog2)))))))
+			    (fptimes* (intofp (- (second x) k))
+                                      (fplog2)))))))
     (cdr (bigfloatp result))))
 
 (defun mabsbigfloat (l)
