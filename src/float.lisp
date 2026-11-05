@@ -945,48 +945,41 @@
 	    (return (cond ((fplessp x (intofp 0))
 			   (fpminus ans))
 			  (t ans))))
-	   ((fpgreaterp (fpabs x) (fpquotient one two))
-	    ;; |x| > 1/2
-	    ;;
-	    ;; Use A&S 4.4.42, third formula:
-	    ;;
-	    ;; atan(z) = z/(1+z^2)*[1 + 2/3*r + (2*4)/(3*5)*r^2 + ...]
-	    ;;
-	    ;; r = z^2/(1+z^2)
-	    (setq tmp (fpquotient x (fpplus (fptimes* x x) one)))
-	    (setq x2 (fptimes* x tmp) term (setq ans one))
-	    (do ((n 0 (1+ n)))
-		((equal ans oans))
-	      (setq term
-		    (fptimes* term (fptimes* x2 (fpquotient
-						 (intofp (+ 2 (* 2 n)))
-						 (intofp (+ (* 2 n) 3))))))
-	      (setq oans ans ans (fpplus term ans)))
-	    (setq ans (fptimes* tmp ans)))
 	   (t
-	    ;; |x| <= 1/2.  Use Taylor series (A&S 4.4.42, first
-	    ;; formula).
-            ;;
-            ;; The n'th term is (-1)^n*x^(2*n+1)/(2*n+1).  We want to
-            ;; stop summing when the relative error between the n'th
-            ;; term and the first is small.  That is
-            ;; |x^(2*n+1)/(2*n+1)/x| <= tol. Hence, |x^(2*n)|/(2*n+1)
-            ;; <= tol.  Or |x^(2*n)| <= tol.  But we know |x| <= 1/2,
-            ;; so (1/2)^(2*n) <= tol.  Then n = -log2(tol)/2.  Since
-            ;; tol is basically 2^(-fpprec), n = fpprec/2.  But double
-            ;; it so that the testsuite passes without differences.
-	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
-            (let ((max-n fpprec))
+	    ;; |x| <= 1.
+	    ;;
+	    ;; Reduce the argument with
+	    ;;
+	    ;;   atan(x) = 2*atan(x/(1+sqrt(1+x^2)))
+	    ;;
+	    ;; K times, until |x| < 2^(-m), and then sum the Taylor
+	    ;; series (A&S 4.4.42, first formula), whose terms then
+	    ;; shrink by 2^(2*m) or more.  atan(x) is 2^K times the
+	    ;; sum.  m = sqrt(fpprec/2) roughly balances the number of
+	    ;; square roots against the number of terms.
+	    ;;
+	    ;; Compute atan(|x|) and negate it for x < 0, so that atan
+	    ;; is exactly odd.
+	    (let* ((m (max 2 (isqrt (floor fpprec 2))))
+		   (limit (list (ash 1 (1- fpprec)) (- 1 m)))
+		   (a (fpabs x))
+		   (k 0))
+	      (loop while (fpgreaterp a limit)
+		    do (setq a (fpquotient a
+					   (fpplus one
+						   (fproot (bcons (fpplus one (fptimes* a a)))
+							   2))))
+		       (incf k))
+	      (setq ans a x2 (fpminus (fptimes* a a)) term a)
 	      (do ((n 3 (+ n 2)))
-		  ((or (equal ans oans)
-                       (>= n max-n))
-                   #+nil
-                   (progn
-                     (format t "n max-n ~A ~A~%" n max-n)
-                     (format t "ans oans = ~A ~A~%" ans oans)))
-	        (setq term (fptimes* term x2))
-	        (setq oans ans
-		      ans (fpplus ans (fpquotient term (intofp n))))))))
+		  ((equal ans oans))
+		(setq term (fptimes* term x2))
+		(setq oans ans
+		      ans (fpplus ans (fpquotient term (intofp n)))))
+	      (unless (equal (car ans) 0)
+		(setq ans (list (car ans) (+ (cadr ans) k))))
+	      (when (minusp (car x))
+		(setq ans (fpminus ans))))))
      (return ans)))
 
 (defun big-float-atan (x &optional y)
