@@ -29,33 +29,38 @@
 @c pass them to the plotting package together with a set of commands. That 
 @c information can be passed to the external program either through a pipe or by
 @c calling the program with the name of a file where the data has been saved. 
-@c The data file is given the name @code{maxout.interface}, where 
-@c @code{interface} is the name of the plotting interface being used (gnuplot, 
-@c xmaxima, mgnuplot or gnuplot_pipes).
+@c If the format used is either @code{gnuplot}, @code{xmaxima} or
+@c @code{geomview}, the commands used to create the plot are placed in a
+@c file named @code{maxout-random-string.format}, where @code{random-string}
+@c is made of the process ID of Maxima, a number and 16 random characters,
+@c and @code{format} is the name of the plotting
+@c format being used (@code{gnuplot} or @code{xmaxima}), or @code{gcl} for
+@c @code{geomview}.
 
 Maxima verwendet externe Grafikprogramme, um grafische Darstellungen auszugeben.
 Die Grafikfunktionen berechnen die Punkte der Grafik und senden diese mit einem 
 Satz an Kommandos an das externe Grafikprogramm.  Die Daten werden als
 Datenstrom @"uber eine Pipe oder als eine Datei an das Grafikprogramm 
-@"ubergeben.  Die Datei erh@"alt den Namen @code{maxout.interface}, wobei 
-@code{interface} der Name des externen Grafikprogramms ist.  Die m@"oglichen 
-Dateiendungen sind: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot},
-@code{gnuplot_pipes} oder @code{geomview}.
+@"ubergeben.  Bei den Grafikformaten @code{gnuplot}, @code{xmaxima} und
+@code{geomview} erh@"alt die Datei den Namen @code{maxout-random-string.format}.
+Dabei besteht @code{random-string} aus der Prozess-ID von Maxima, einer Nummer
+und 16 zuf@"alligen Zeichen, und @code{format} ist der Name des Grafikformats,
+also @code{gnuplot} oder @code{xmaxima}, oder @code{gcl} f@"ur @code{geomview}.
 
-@c The @code{maxout.interface} file, in the cases when it is used, is created 
+@c That file, in the cases when it is used, is created
 @c in the directory specified by the system variable @var{maxima_tempdir}. That 
 @c location can be changed; by assigning to that variable a string that 
 @c represents a valid directory where Maxima can create new files.
 
-Die Datei @code{maxout.interface} wird in dem Verzeichnis gespeichert, das
+Diese Datei wird in dem Verzeichnis gespeichert, das
 durch die Systemvariable @mref{maxima_tempdir} bezeichnet wird. 
 
-@c After a plot has been created, the file @code{maxout.interface} can be
+@c After a plot has been created, that file can be
 @c executed again with the appropriate external program. If a Maxima plotting
 @c command fails to show anything, that file can be inspected to look for
 @c possible sources of problems.
 
-Die Datei @code{maxout.interface} kann wiederholt an das Grafikprogramm
+Diese Datei kann wiederholt an das Grafikprogramm
 @"ubergeben werden.  Gibt Maxima keine Grafik aus, kann diese Datei gepr@"uft 
 werden, um m@"ogliche Fehler festzustellen.
 
@@ -86,18 +91,22 @@ Grafikformate f@"ur diese Programme ausgew@"ahlt werden.  Die Grafikformate
 sind:
 
 @c Used to launch the external program gnuplot, which must be installed in your
-@c system. All plotting commands and data are saved into the file 
-@c @code{maxout.gnuplot}.
+@c system. All plotting commands and data are saved into a file
+@c @code{maxout-random-string.gnuplot} in the temporary directory, where
+@c @code{random-string} is made of the process ID of Maxima, a number and
+@c 16 random characters.
 
 @itemize @bullet
 @item @strong{gnuplot}
 
 Startet das externe Programm Gnuplot.  Gnuplot muss installiert sein.  Die
-Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
+Grafikkommandos und Daten werden in die Datei @code{maxout-random-string.gnuplot}
+im tempor@"aren Verzeichnis gespeichert, wobei @code{random-string} aus der
+Prozess-ID von Maxima, einer Nummer und 16 zuf@"alligen Zeichen besteht.
 
 @c This format is not available in Windows platforms. It is similar to the 
-@c @code{gnuplot} format except that the commands are sent to gnuplot through a 
-@c pipe, while the data are saved into the file @code{maxout.gnuplot_pipes}. A 
+@c @code{gnuplot} format except that the commands and plot data are sent
+@c directly to @code{gnuplot} without creating any files. A
 @c single gnuplot process is kept open and subsequent plot commands will be sent
 @c to the same process, replacing previous plots, unless the gnuplot pipe is 
 @c closed with the function @code{gnuplot_close()}. When this format is used, 
@@ -107,21 +116,28 @@ Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
 @item @strong{gnuplot_pipes} (Standardwert)
 
 Es ist @"ahnlich dem Format
-@code{gnuplot}, mit der Ausnahme, dass die Grafikkommandos als Datenstrom @"uber
-eine Pipe an Gnuplot gesendet werden, w@"ahrend die Daten in der Datei 
-@code{maxout.gnuplot_pipes} gespeichert werden.  Es wird nur eine Instanz von
+@code{gnuplot}, mit der Ausnahme, dass die Grafikkommandos und Daten direkt an
+Gnuplot gesendet werden, ohne dass Dateien angelegt werden. Es wird nur eine
+Instanz von
 Gnuplot gestartet.  Aufeinander folgende Grafikkommandos werden an ein bereits
 ge@"offnetes Gnuplot-Programm gesendet.  Gnuplot wird mit der Funktion
 @mref{gnuplot_close} geschlossen.  In diesem Grafikformat kann die Funktion 
 @mref{gnuplot_replot} genutzt werden, um eine Grafik zu modifizieren, die 
 bereits auf dem Bildschirm ausgegeben wurde.
 
-@c This format should only be used to plot to the screen; for plotting to files 
-@c it is better to use the @code{gnuplot} format.
+@c This format is only used to plot to the screen; whenever graphic files are
+@c to be created, the format is silently switched to @code{gnuplot} and the
+@c commands needed to create the graphic file are saved with the data into a
+@c file @code{maxout-random-string.gnuplot} in the temporary directory, where
+@c @code{random-string} is made of the process ID of Maxima, a number and
+@c 16 random characters.
 
-Dieses Grafikformat sollte nur f@"ur die Ausgabe von Grafiken auf den Bildschirm
-verwendet werden.  F@"ur die Ausgabe von Grafiken in eine Datei ist das 
-Grafikformat @code{gnuplot} besser geeignet.
+Dieses Grafikformat wird nur f@"ur die Ausgabe von Grafiken auf den Bildschirm
+verwendet. Sollen Grafikdateien erzeugt werden, wird stillschweigend das
+Grafikformat @code{gnuplot} verwendet, und die Kommandos f@"ur die Grafikdatei
+werden mit den Daten in die Datei @code{maxout-random-string.gnuplot} im
+tempor@"aren Verzeichnis gespeichert, wobei @code{random-string} aus der
+Prozess-ID von Maxima, einer Nummer und 16 zuf@"alligen Zeichen besteht.
 
 @c Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the Maxima 
 @c distribution. Mgnuplot offers a rudimentary GUI for gnuplot, but has fewer 
@@ -141,10 +157,12 @@ Gnuplot.  Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 @c distributed together with Maxima, should be installed. If Maxima is
 @c being run from xmaxima itself, this format will make the plot functions
 @c send the data and commands through the same socket used for the
-@c communication between Maxima and Xmaxima. When used from the console
-@c or from other interface, the commands and data will be saved in the file
-@c @code{maxout.xmaxima}, and the xmaxima program will be launched with the
-@c name of the location of that file as argument.
+@c communication between Maxima and Xmaxima. When used from a terminal
+@c or from graphical interfaces different from Xmaxima, the commands and data
+@c are saved in a file @code{maxout-random-string.xmaxima} in the temporary
+@c directory, where @code{random-string} is made of the process ID of Maxima,
+@c a number and 16 random characters. The program xmaxima is run with the
+@c name of that file as argument.
 
 @item @strong{xmaxima}
 
@@ -155,7 +173,9 @@ Wird Maxima aus Xmaxima gestartet, werden die Grafikkommandos und Daten @"uber
 denselben Socket gesendet, der auch f@"ur die Kommunikation zwischen Xmaxima und
 Maxima ge@"offnet wird.  Wird das Grafikformat von einer Konsole oder einer
 anderen Nutzeroberfl@"ache gestartet, werden die Grafikkommandos und Daten in
-die Datei @code{maxout.xmaxima} gespeichert.  Diese Datei wird an Xmaxima f@"ur
+die Datei @code{maxout-random-string.xmaxima} im tempor@"aren Verzeichnis
+gespeichert, wobei @code{random-string} aus der Prozess-ID von Maxima, einer
+Nummer und 16 zuf@"alligen Zeichen besteht. Diese Datei wird an Xmaxima f@"ur
 die Ausgabe der Grafik @"ubergeben.
 
 @c In previous versions this format used to be called @code{openmath}.
@@ -1717,24 +1737,39 @@ Setzt den Terminaltyp f@"ur das Grafikformat Gnuplot.
 
 Die Ausgabe von Gnuplot wird in einem separatem Fenster angezeigt.
 
-@c Gnuplot output is displayed in the Maxima console by an "ASCII art" 
-@c approximation to graphics.
+@c Gnuplot output is saved to a file @code{maxplot-random-string.txt} using "ASCII
+@c art" approximation to graphics. If the option @mref{gnuplot_out_file} is
+@c set to @var{filename}, the plot will be saved there, instead of the
+@c default @code{maxplot-random-string.txt}. The settings for the ``dumb''
+@c terminal of Gnuplot are given by the value of option
+@c @mrefdot{gnuplot_dumb_term_command} If option @mref{run_viewer} is set
+@c to true and the plot_format is @code{gnuplot} that ASCII representation
+@c will also be shown in the Maxima or Xmaxima console.
 
 @item @strong{dumb}
 
-Die Ausgabe von Gnuplot wird in der Maxima Konsole mit Ascii-Zeichen angezeigt.
+Die Ausgabe von Gnuplot wird mit Ascii-Zeichen in die Datei
+@code{maxplot-random-string.txt} geschrieben. Erh@"alt die Grafikoption
+@mref{gnuplot_out_file} den Wert @var{filename}, wird die Ausgabe stattdessen
+in die Datei @var{filename} geschrieben. Die Einstellungen f@"ur das Terminal
+@code{dumb} von Gnuplot enth@"alt die Grafikoption
+@mrefdot{gnuplot_dumb_term_command} Hat die Grafikoption @mref{run_viewer} den
+Wert @code{true} und ist das Grafikformat @code{gnuplot}, wird die Ausgabe auch
+in der Konsole von Maxima oder Xmaxima angezeigt.
 
 @c Gnuplot generates commands in the PostScript page description language.
 @c If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot
 @c writes the PostScript commands to @var{filename}.  Otherwise, it is
-@c saved as @code{maxplot.ps} file.
+@c saved as @code{maxplot-random-string.ps} file. The settings for this terminal
+@c are given by the value of the option @mrefdot{gnuplot_ps_term_command}
 
 @item @strong{ps}
 
 Gnuplot generiert PostScript-Kommandos.  Mit der Grafikoption 
 @code{gnuplot_out_file} werden die PostScript-Kommandos in eine Datei
 @var{filename} geschrieben.  Ansonsten werden die Kommandos in die Datei
-@code{maxplot.ps} geschrieben.
+@code{maxplot-random-string.ps} geschrieben. Die Einstellungen f@"ur dieses
+Terminal enth@"alt die Grafikoption @mrefdot{gnuplot_ps_term_command}
 
 @c any other valid gnuplot term specification
 
@@ -1750,8 +1785,9 @@ Gnuplot generiert PostScript-Kommandos.  Mit der Grafikoption
 @c creates PNG of 1000x1000 pixels size. 
 @c If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot 
 @c writes the output to @var{filename}. Otherwise, it is saved as 
-@c @code{maxplot.@var{term}} file, where @var{term} is gnuplot 
-@c terminal name.
+@c @code{maxplot-random-string.@var{term}} file, where @var{term} is
+@c gnuplot terminal name and @code{random-string} is made of the process
+@c ID of Maxima, a number and 16 random characters.
 
 Gnuplot kann Ausgaben in verschiedenen Formaten wie zum Beispiel PNG, JPEG, SVG
 generieren.  Die verschiedenen Formate werden mit der Option @code{gnuplot_term}
@@ -1760,9 +1796,21 @@ werden.  Zum Beispiel generiert @code{[gnuplot_term, png]} eine Grafik im
 PNG-Format.  Das Kommando @code{[gnuplot_term, "png size 1000, 1000"]} generiert
 eine Grafik im PNG-Format mit dem Format 1000@ x@ 1000 Punkte.  Erh@"alt die 
 Grafikoption @code{gnuplot_out_file} den Wert @var{filename}, wird die Ausgabe 
-in die Datei @var{filename} geschrieben.  Ansonsten werden die Kommandos in die 
-Datei @code{maxplot.@var{term}} geschrieben, wobei @var{term} das verwendete 
-Grafikformat ist.
+in die Datei @var{filename} geschrieben.  Ansonsten wird die Ausgabe in die
+Datei @code{maxplot-random-string.@var{term}} geschrieben, wobei @var{term} der
+Name des Gnuplot-Terminals ist und @code{random-string} aus der Prozess-ID von
+Maxima, einer Nummer und 16 zuf@"alligen Zeichen besteht.
+
+@c The files @code{maxplot-random-string.txt}, @code{maxplot-random-string.ps}
+@c and @code{maxplot-random-string.@var{term}} are created in the temporary
+@c directory, and Maxima deletes them when it exits. To keep the output,
+@c name the file with @mrefdot{gnuplot_out_file}
+
+Die Dateien @code{maxplot-random-string.txt}, @code{maxplot-random-string.ps}
+und @code{maxplot-random-string.@var{term}} werden im tempor@"aren Verzeichnis
+angelegt, und Maxima l@"oscht sie beim Beenden. Soll die Ausgabe erhalten
+bleiben, wird der Dateiname mit der Grafikoption @mref{gnuplot_out_file}
+angegeben.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------

@@ -611,6 +611,35 @@ geschrieben.  Im Unterschied dazu, speichert die allgemeine Form der Funktion
 @code{stringout} die Variablen nicht als Zuweisung.
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{tempfile}
+@deffn  {Funktion} tempfile (@var{prefix})
+@deffnx {Funktion} tempfile (@var{prefix}, @var{ext})
+@deffnx {Funktion} tempfile (@var{prefix}, @var{ext}, @var{dir})
+
+Gibt einen Namen f@"ur eine tempor@"are Datei im Verzeichnis @var{dir} zur@"uck,
+der sich von den Namen unterscheidet, die andere Aufrufe von @code{tempfile} in
+diesem Maxima-Prozess und in anderen gleichzeitig laufenden Maxima-Prozessen
+zur@"uckgeben. Der Name besteht aus der Zeichenkette @var{prefix}, der
+Prozess-ID von Maxima, einer Nummer und 16 zuf@"alligen Zeichen, jeweils durch
+einen Bindestrich getrennt, gefolgt von einem Punkt und der Dateiendung
+@var{ext}. @code{tempfile} legt die Datei nicht an.
+
+Die Dateiendung @var{ext} kann mit oder ohne Punkt angegeben werden. Fehlt
+@var{ext}, oder ist @var{ext} @code{false} oder die leere Zeichenkette, hat der
+Name keine Dateiendung. Fehlt @var{dir}, wird das Verzeichnis
+@mref{maxima_tempdir} verwendet.
+
+Beispiele:
+
+@example
+(%i1) tempfile ("plot", "txt");
+(%o1)                /tmp/plot-6867-1-st92z7trdx80s1s0.txt
+(%i2) tempfile ("plot", false, "/home/dieter/maxima");
+(%o2)          /home/dieter/maxima/plot-6867-2-z0nk66blh63li1va
+@end example
+@end deffn
+
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{with_stdout}
 @deffn  {Funktion} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})

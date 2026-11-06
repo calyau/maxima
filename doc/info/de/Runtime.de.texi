@@ -292,10 +292,14 @@ Maxima restarted.
 Die Systemvariable @code{maxima_tempdir} enth@"alt das Verzeichnis, in dem
 Maxima tempor@"are Dateien ablegt.  Insbesondere werden tempor@"are
 Grafikausgaben von Funktionen wie @mref{plot2d} und @mref{plot3d} in diesem
-Verzeichnis abgelegt.  Der Standardwert von @code{maxima_tempdir} ist das
-Home-Verzeichnis des Nutzers, sofern Maxima dieses feststellen kann.
-Andernfalls initialisiert Maxima die Systemvariable @code{maxima_tempdir} mit
-einer geeigneten Annahme.
+Verzeichnis abgelegt. Die Funktion @mref{tempfile} gibt Namen f@"ur solche
+Dateien zur@"uck.
+
+Der Standardwert von @code{maxima_tempdir} ist der Wert der Umgebungsvariablen
+@env{MAXIMA_TEMPDIR}, sofern diese gesetzt ist. Andernfalls ist er der Wert der
+ersten der Umgebungsvariablen @env{TEMP}, @env{TMPDIR}, @env{TMP} und
+@env{TEMPDIR}, die gesetzt und nicht leer ist, oder, wenn es keine solche gibt,
+@file{C:\Windows\temp} unter Windows und @file{/tmp} auf anderen Systemen.
 
 Der Systemvariablen @code{maxima_tempdir} kann eine Zeichenkette zugewiesen 
 werden, die ein Verzeichnis bezeichnet.
