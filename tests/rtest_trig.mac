@@ -1299,6 +1299,35 @@ block([x : 1b0 + 2b0^-80],
    closeto_relerr(-imagpart(acos(-x)), 1.28621974215374852865505875045121502946281677b-12, 0)]);
 [true, true, true]$
 
+/* Bug #5744: Bigfloat asinh, acosh and atanh are off by several ulp */
+
+/* The results lie in [1/2, 1) for these x, so an ulp is 2^-?fpprec,
+   ?fpprec counting bits.  Each failure is reported as [f, x, error],
+   with the error in ulps. */
+map(lambda([p],
+  block([fpprec : p],
+    sublist(
+      map(lambda([fx],
+            block([u : apply(fx[1], [fx[2]]),
+                   v : block([fpprec : p + 40], apply(fx[1], [fx[2]])),
+                   ulp : 2^-?fpprec],
+              [fx[1], fx[2], block([fpprec : p + 40], float(abs(u - v)/ulp))])),
+          append(map(lambda([x], [asinh, x]), makelist(bfloat(k/200), k, 106, 234)),
+                 map(lambda([x], [acosh, x]), makelist(bfloat(k/200), k, 226, 308)),
+                 map(lambda([x], [atanh, x]), makelist(bfloat(k/200), k, 94, 152)))),
+      lambda([e], e[3] > 0.5)))),
+  [16, 200]);
+[[], []]$
+
+/* The expected values are from mpmath. */
+[closeto_relerr(asinh(1.8b-1), 1.79041904333765946920272156625063927244968042b-1, 0),
+ closeto_relerr(asinh(7.2b-1), 6.68974226754279827704403527155265332482925467b-1, 0),
+ closeto_relerr(acosh(1.24b0), 6.79662728202180700398234729875485471365655510b-1, 0),
+ closeto_relerr(acosh(1.1b0), 4.43568254385115189132911066352500776392164088b-1, 0),
+ closeto_relerr(atanh(2.6b-1), 2.66108406873654121763873773128391789222048761b-1, 0),
+ closeto_relerr(atanh(1.9b-1), 1.92337169219545309886953206813101675364224987b-1, 0)];
+[true, true, true, true, true, true]$
+
 kill(closeto_relerr);
 done$
 
