@@ -152,7 +152,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 
 	 (cond
 	   ((and tmpdir-windows (string/= tmpdir-windows "")) tmpdir-windows)
-	   ((and tmpdir-posix (string/= tmpdir-windows "")) tmpdir-posix)
+	   ((and tmpdir-posix (string/= tmpdir-posix "")) tmpdir-posix)
 	   ((and tmpdir-nonstandard1 (string/= tmpdir-nonstandard1 "")) tmpdir-nonstandard1)
 	   ((and tmpdir-nonstandard2 (string/= tmpdir-nonstandard2 "")) tmpdir-nonstandard2)
 	   ; A fallback for windows if everything else has failed

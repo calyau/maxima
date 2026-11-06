@@ -131,8 +131,11 @@ files.  In particular, temporary files for plotting are created in
 @code{maxima_tempdir}.
 @mref{tempfile} returns names for such files.
 
-The initial value of @code{maxima_tempdir} is the user's home directory, if
-Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+The initial value of @code{maxima_tempdir} is the value of the environment
+variable @env{MAXIMA_TEMPDIR} if that is set. Otherwise it is the value of
+the first of the environment variables @env{TEMP}, @env{TMPDIR}, @env{TMP}
+and @env{TEMPDIR} that is set and not empty, or, if none is,
+@file{C:\Windows\temp} on Windows and @file{/tmp} on other systems.
 
 @code{maxima_tempdir} may be assigned a string which names a directory.
 

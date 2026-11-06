@@ -325,6 +325,8 @@ Bug fixes for unnumbered bugs:
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
 * zn_factor_generators could return different generators from identical calls
+* maxima_tempdir started out as / when the environment variable TMPDIR was
+  empty and TEMP not set, and TMPDIR was ignored when TEMP was empty
 
 Changes in the Windows installer:
 ---------------------------------
