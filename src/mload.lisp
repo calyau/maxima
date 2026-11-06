@@ -1186,13 +1186,16 @@
           t)
         ((not (or successful unsuccessful))
           ;; Test whether we can use the directory cache.
-          ;; Use IGNORE-ERRORS to make sure that if the test itself produces
-          ;; an error that isn't caught, it doesn't prevent Maxima from working.
+          ;; Catch errors to make sure that if the test itself produces an
+          ;; error, it doesn't prevent Maxima from working. An error, which
+          ;; another Maxima process testing at the same time can cause, is
+          ;; not remembered: this session just doesn't use the cache.
           (dbg "no previous test result, testing whether cache can be used")
-          (let ((result (ignore-errors (test-directory-cached))))
+          (let ((result (handler-case (test-directory-cached)
+                          (error () :error))))
             (dbg "test successful? ~A" result)
-            ;; If the test result was T or NIL (it could also be :TRY-LATER),
-            ;; remember it by creating the appropriate file.
+            ;; If the test result was T or NIL (it could also be :TRY-LATER
+            ;; or :ERROR), remember it by creating the appropriate file.
             (case result
               ((t)
                 (dbg "create \"successful\" file")
@@ -1202,7 +1205,7 @@
                 (dbg "create \"unsuccessful\" file")
                 (ignore-errors (create-empty-file unsuccessful-file))
                 (dbg "file created? ~A" (file-exists-p unsuccessful-file))))
-            result))
+            (if (eq result :error) nil result)))
         (t
           ;; The cache cannot be used.
           (dbg "previous test unsuccessful, not using cache")
