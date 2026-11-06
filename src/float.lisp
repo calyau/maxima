@@ -2371,14 +2371,16 @@
 	   ;; x > 1
 	   ;; asin(x) = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
 	   ;;
-	   ;; Should we try to do something a little fancier with the
-	   ;; argument to log and use log1p for better accuracy?
-	   (let ((arg (fpplus fp-x
-			      (fproot (bcons (fptimes* (fpdifference fp-x (fpone))
-						       (fpplus fp-x (fpone))))
-				      2))))
+	   ;; log(x+sqrt(x^2-1)) = log1p((x-1)+sqrt((x-1)*(x+1))).  x-1
+	   ;; is exact for x <= 2, so this keeps the digits that log loses
+	   ;; for x near 1.
+	   (let* ((x-1 (fpdifference fp-x (fpone)))
+		  (arg (fpplus x-1
+			       (fproot (bcons (fptimes* x-1
+							(fpplus fp-x (fpone))))
+				       2))))
 	     (add (div '$%pi 2)
-		  (mul -1 '$%i (bcons (fplog arg))))))
+		  (mul -1 '$%i (bcons (fplog1p arg))))))
 
 	  (t
 	   ;; 1/2 <= x <= 1
@@ -2406,8 +2408,11 @@
   ;;         = -%i*log(%i*x + %i*sqrt(x^2-1))
   ;;         = -%i*[log(|x + sqrt(x^2-1)|) + %i*%pi/2]
   ;;         = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
-
-  ($bfloat (fpasin-core x)))
+  ;;
+  ;; The result is computed with guard digits and rounded once.
+  (let ((x (bigfloatp x)))
+    ($bfloat (bind-fpprec (fpprec-with-guard-digits)
+               ($bfloat (fpasin-core x))))))
 
 ;; Square root of a complex number (xx, yy).  Both are bigfloats.  FP
 ;; (non-bigfloat) numbers are returned.
@@ -2656,7 +2661,14 @@
 ;; acos(x) for real x.  X is a bigfloat, and a maxima number is returned.
 (defun fpacos (x)
   ;; acos(x) = %pi/2 - asin(x)
-  ($bfloat (add (div '$%pi 2) (mul -1 (fpasin-core x)))))
+  ;;
+  ;; For x >= 1/2, FPASIN-CORE returns %pi/2 - atan(...), so the %pi/2
+  ;; terms cancel exactly.  The result is computed with guard digits
+  ;; and rounded once.
+  (let ((x (bigfloatp x)))
+    ($bfloat (bind-fpprec (fpprec-with-guard-digits)
+               ($bfloat (sub (div '$%pi 2)
+                             (fpasin-core x)))))))
 
 ;; acos(z) from the real and imaginary parts of 1-z and 1+z, which are
 ;; bigfloats, following Kahan: the real part is
