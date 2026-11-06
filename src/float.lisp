@@ -1004,7 +1004,41 @@
 ;; arg(x+%i*y).)
 ;;
 ;; See also http://functions.wolfram.com/01.15.27.0006.01
+;;
+;; The result is computed with guard digits and rounded once.
 (defun fpatan2 (y x)
+  (let ((y (bcons y))
+        (x (bcons x)))
+    (flet
+        ((atan2-core (y x)
+           (cond ((equal (car x) 0)
+	          ;; atan(y/0) = atan(inf), but what sign?
+	          (cond ((equal (car y) 0)
+		         (merror (intl:gettext "atan2: atan2(0, 0) is undefined.")))
+	                ((minusp (car y))
+		         ;; We're on the negative imaginary axis, so -pi/2.
+		         (fpquotient (fppi) (intofp -2)))
+	                (t
+		         ;; The positive imaginary axis, so +pi/2
+		         (fpquotient (fppi) (intofp 2)))))
+	         ((signp g (car x))
+	          ;; x > 0.  atan(y/x) is the correct value.
+	          (fpatan (fpquotient y x)))
+	         ((signp ge (car y))
+	          ;; x < 0, and y >= 0.  We're in quadrant II or on the
+	          ;; negative real axis, so the angle we want is pi+atan(y/x).
+	          (fpplus (fppi) (fpatan (fpquotient y  x))))
+	         (t
+	          ;; x < 0 and y < 0.  We're in quadrant III, so the angle we
+	          ;; want is atan(y/x)-pi.
+	          (fpdifference (fpatan (fpquotient y x)) (fppi))))))
+      (cdr (bigfloatp
+            (bind-fpprec (fpprec-with-guard-digits)
+              (bcons (atan2-core (cdr (bigfloatp y))
+                                 (cdr (bigfloatp x))))))))))
+
+#+nil
+(defun fpatan2-1 (y x)
   (cond ((equal (car x) 0)
 	 ;; atan(y/0) = atan(inf), but what sign?
 	 (cond ((equal (car y) 0)
@@ -2798,28 +2832,46 @@
                 (kahan-asin (div y d) re-1-u im-1-u re-1+u im-1+u)
               (sub v (mul '$%i u))))))))
 
+;; log(z) for z = x + %i*y.  X and Y are bigfloats.  The real and
+;; imaginary parts are returned as FP numbers.
+;;
+;; The real part is log(rho)/2, rho = x^2+y^2, computed with guard
+;; digits and rounded once.  For 1/2 < rho < 3, log1p(rho-1)/2 is used
+;; instead.  There rho-1 can be far smaller than ulp(rho), so it is
+;; computed exactly from the integer mantissas of X and Y and then
+;; rounded to the guard precision.  This takes only two squarings
+;; and shifts, so it is cheap even when |y| is tiny.
 (defun complex-log (x y)
   (let* ((x (cdr (bigfloatp x)))
 	 (y (cdr (bigfloatp y)))
-	 (t2 (intofp 3))
 	 (rho (fpplus (fptimes* x x)
 		      (fptimes* y y)))
-	 (abs-x (fpabs x))
-	 (abs-y (fpabs y))
-	 (beta (fpmax abs-x abs-y))
-	 (theta (fpmin abs-x abs-y)))
-	 ;; Use the log1p form only when rho = |z|^2 is near 1.
-	 ;; There, forming rho-1 as (beta-1)*(beta+1)+theta^2 avoids the
-	 ;; cancellation that log(rho) would suffer. For rho <= 1/2 - in particular
-	 ;; for small |z| - the LOG1P form is much less accurate.
-	 ;; Plain log(rho) is fast and fully accurate away from rho = 1.
-	 (values (if (and (fplessp (cdr *bfhalf*) rho)
-		     (fplessp rho t2))
-		(fpquotient (fplog1p (fpplus (fptimes* (fpdifference beta (fpone))
-						       (fpplus beta (fpone)))
-					     (fptimes* theta theta)))
-			    (intofp 2))
-		(fpquotient (fplog rho) (intofp 2)))
+	 (re
+	   (if (and (fplessp (cdr (bigfloatp *bfhalf*)) rho)
+		    (fplessp rho (intofp 3)))
+	       ;; With x = mx*2^(ex-fpprec) and y = my*2^(ey-fpprec),
+	       ;; rho-1 = n*2^(s-2*fpprec) exactly.
+	       (destructuring-bind ((mx ex) (my ey))
+		   (list x y)
+		 (let* ((s (min (* 2 ex) (* 2 ey) 0))
+			(scale (- s (* 2 fpprec)))
+			(n (+ (ash (* mx mx) (- (* 2 ex) s))
+			      (ash (* my my) (- (* 2 ey) s))
+			      (- (ash 1 (- (* 2 fpprec) s))))))
+		   (bind-fpprec (fpprec-with-guard-digits)
+		     (bcons (fpquotient (fplog1p (if (zerop n)
+						     (list 0 0)
+						     (list (fpround n) (+ *m fpprec scale))))
+					(intofp 2))))))
+	       (let ((x (bcons x))
+		     (y (bcons y)))
+		 (bind-fpprec (fpprec-with-guard-digits)
+		   (let ((x (cdr (bigfloatp x)))
+			 (y (cdr (bigfloatp y))))
+		     (bcons (fpquotient (fplog (fpplus (fptimes* x x)
+						       (fptimes* y y)))
+					(intofp 2)))))))))
+    (values (cdr (bigfloatp re))
 	    (fpatan2 y x))))
 
 (defun big-float-log (x &optional y)
