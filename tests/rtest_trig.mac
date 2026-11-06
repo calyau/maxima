@@ -1082,8 +1082,8 @@ map(lambda([p],
  * smaller than the other, the parts are checked separately.
  */
 
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
 
 (oldfpprec:fpprec,fpprec:32);
 32;
@@ -1188,8 +1188,8 @@ done;
  * Float asech loses accuracy near 1 and -1 and fails for subnormal arguments
  */
 
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e < tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
 
 (oldfpprec:fpprec,fpprec:32);
 32;
@@ -1273,6 +1273,43 @@ closeto_relerr(asech(-2.0),
                2.09439510239319549230842892219b0*%i,
                1.0238e-16);
 true$
+
+/* Bug #5744: Bigfloat asin and acos are off by several ulp */
+
++/* Bug #5744: Bigfloat asin and acos are off by several ulp */
+
+/* asin(x) and acos(x) lie in [1/2, 1) here, so an ulp is
+   2^-?fpprec, ?fpprec counting bits.  Each failure is reported as
+   [x, asin error, acos error], with the errors in ulps. */
+map(lambda([p],
+  block([fpprec : p],
+    sublist(
+      map(lambda([x],
+            block([u : [asin(x), acos(x)],
+                   v : block([fpprec : p + 40], [asin(x), acos(x)]),
+                   ulp : 2^-?fpprec],
+              cons(x, block([fpprec : p + 40], float(abs(u - v)/ulp))))),
+          makelist(bfloat(k/200), k, 110, 168)),
+      lambda([e], lmax(rest(e)) > 0.5)))),
+  [16, 200]);
+[[], []]$
+
+/* The points in the bug report.  The expected values are from mpmath. */
+[closeto_relerr(asin(5.75b-1), 6.12604148048622465668519880307185356366444318b-1, 0),
+ closeto_relerr(asin(6.25b-1), 6.75131532937031647209056265294388014204185351b-1, 0),
+ closeto_relerr(asin(7.75b-1), 8.86715094999567382941145221058770691196889760b-1, 0),
+ closeto_relerr(acos(5.75b-1), 9.58192178746274153562801811332566085732140382b-1, 0),
+ closeto_relerr(acos(6.25b-1), 8.95664793857864972022265426345363427894399348b-1, 0),
+ closeto_relerr(acos(7.75b-1), 6.84081231795329236290176470580980750901694940b-1, 0)];
+[true, true, true, true, true, true]$
+
+/* For x > 1, the imaginary part is -acosh(x), which lost nearly all
+   digits for x near 1.  The expected value is from mpmath. */
+block([x : 1b0 + 2b0^-80],
+  [closeto_relerr(-imagpart(asin(x)), 1.28621974215374852865505875045121502946281677b-12, 0),
+   closeto_relerr(imagpart(acos(x)), 1.28621974215374852865505875045121502946281677b-12, 0),
+   closeto_relerr(-imagpart(acos(-x)), 1.28621974215374852865505875045121502946281677b-12, 0)]);
+[true, true, true]$
 
 kill(closeto_relerr);
 done$
