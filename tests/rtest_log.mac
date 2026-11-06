@@ -570,5 +570,44 @@ close_to(
 );
 true;
 
+/* Bug #5744: complex bfloat log is off by several ulp */
+
+/* |z| is within an ulp of 1, so rho-1 must be computed exactly */
+close_to(
+  realpart(log(0.6b0 + %i * 0.8b0)),
+  -3.7982270983039194989892969078247828616883863334479779865119119963099635b-66,
+  0
+);
+true;
+
+close_to(
+  realpart(log(0.34b0 + %i * 0.94b0)),
+  -4.00160085384566123193656817031436870469405152626891551417326171353367003b-4,
+  0
+);
+true;
+
+close_to(
+  realpart(log(1.3b0 + %i * 1.5b-12)),
+  2.62364264467491052035496652561427769985231544888387459597229811643761737b-1,
+  0
+);
+true;
+
+/* The imaginary part comes from atan2 */
+close_to(
+  imagpart(log(8.3b0 + %i * 8.6b0)),
+  8.03147778453945921392377111125605026813587966095680323857551073490025424b-1,
+  0
+);
+true;
+
+close_to(
+  imagpart(log(1b-500 + %i * 1b-500)),
+  7.85398163397448309615660845819875721049292349843776455243736148076954102b-1,
+  0
+);
+true;
+
 (kill(close_to), reset(fpprec), 0);
 0;
