@@ -1178,18 +1178,9 @@ block([w : acsch(-%i-1b-25)],
    closeto_relerr(imagpart(w), 1.570796326794580391465304853706551552731b0, 1b-33)]);
 [true, true]$
 
-kill(closeto_relerr);
-done$
-
-(fpprec:oldfpprec, done);
-done;
-
 /* Bug 5762:
  * Float asech loses accuracy near 1 and -1 and fails for subnormal arguments
  */
-
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
-closeto_relerr(u, v, tol) := block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
 
 (oldfpprec:fpprec,fpprec:32);
 32;
