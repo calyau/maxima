@@ -1305,7 +1305,12 @@
       (remove-if-not
         filterp
         (cond
-          ((or (not $file_search_cache) (eq *test-directory-cached-result* nil))
+          ((if (eq $file_search_cache '$auto)
+             ;; Use the cache only if the test has succeeded, not while its
+             ;; result is :TRY-LATER.
+             (not (eq *test-directory-cached-result* t))
+             ;; T uses the cache whatever the test result.
+             (not $file_search_cache))
             ;; Cache disabled, use regular DIRECTORY.
             (directory path))
           ((wild-pathname-p path)

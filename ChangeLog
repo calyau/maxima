@@ -309,6 +309,7 @@ Bug fixes for numbered bugs:
 * \#5764 integrate() can't integrate half-integer powers of cos and sin
 * \#5767 integrate(x/sqrt(1+x^2+x^4), x) is not solved
 * \#5769 load() finds no packages with (some) ECL on Windows unless file_search_cache is false
+* \#5770 file_search_cache: true doesn't override a failed check, and auto uses the cache before checking
 
 Bug fixes for unnumbered bugs:
 ------------------------------
