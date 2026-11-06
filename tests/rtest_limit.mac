@@ -1825,6 +1825,59 @@ block([a, x, f],
 [ind, a^(1/3), ind]$
 
 
+/* Bug #5768: "limit() misses values like 0, 1 or %e in disguise" */
+
+/* sqrt(2)*log(x)-2-sqrt(2) vanishes at x = %e^(1+sqrt(2)), where the limits of its terms add up to
+   sqrt(2)*(sqrt(2)+1)-sqrt(2)-2 */
+
+block([d : sqrt(2)*log(x) - 2 - sqrt(2), p : %e^(1 + sqrt(2))],
+  [limit(1/d, x, p), limit(1/d, x, p, plus), limit(1/d, x, p, minus), limit(exp(1/d), x, p, minus),
+   limit(atan(1/d), x, p, plus), limit(log(d), x, p, plus), limit(x/d, x, p, plus), limit(d, x, p, plus)]);
+[infinity, inf, minf, 0, %pi/2, minf, inf, 0]$
+
+block([d : sqrt(2)*log(x) - 2 - sqrt(2), p : %e^(1 + sqrt(2))],
+  limit(tan(d)/d^2, x, p, plus));
+inf$
+
+/* Other numbers in disguise. limit() works with floor(d+2)-2 for floor(d) and with (d-1)! for gamma(d) */
+
+block([d : sqrt(2)*log(x) - 2 - sqrt(2), p : %e^(1 + sqrt(2))],
+  [limit(1/log(d+1), x, p, plus), limit((d+1)^(1/d), x, p, plus), limit(floor(d), x, p, minus),
+   limit(gamma(d), x, p, plus)]);
+[inf, %e, -1, inf]$
+
+/* A term tending to 0 from one side must not lend its side to the whole sum */
+
+block([d : sqrt(2)*log(x) - 2 - sqrt(2), p : %e^(1 + sqrt(2))],
+  [limit(1/(d - (x-p)/100), x, p, plus), limit(log(d - (x-p)/100), x, p, plus)]);
+[inf, minf]$
+
+/* Other values in disguise. limit() expands %pi/2*(d+1) and %e*(log(x)-sqrt(2)) into sums whose terms
+   have limits adding up to %pi/2, %pi/2+1 or %e */
+
+block([d : sqrt(2)*log(x) - 2 - sqrt(2), p : %e^(1 + sqrt(2))],
+  [limit(tan(%pi/2*(d+1)), x, p, minus), limit(1/(cos(%pi/2*(d+1) + 1) + sin(1)), x, p, plus)]);
+[inf, minf]$
+
+block([p : %e^(1 + sqrt(2))],
+  [limit(log(%e*(log(x) - sqrt(2))), x, p), limit(floor(log(%e*(log(x) - sqrt(2)))), x, p, minus),
+   limit(atanh(log(%e*(log(x) - sqrt(2)))), x, p, minus)]);
+[1, 0, inf]$
+
+/* With a parameter: the limits of the terms of the denominator add up to a^3+a*(1-a^2)-a */
+
+block([a],
+  local(a),
+  assume(a > -1, a < 1),
+  limit(1/((a-1)*sin(x + acos(a))^2 + (a+1)*cos(x + acos(a))^2 - 2*(a+1)*cos(x + acos(a)) + a + 1), x, 0, plus));
+inf$
+
+/* A base tending to 1 in disguise, to an infinite power */
+
+limit((cos(x)^2 + x*sin(x)^2)^(1/(x-1)), x, 1, plus);
+%e^sin(1)^2$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

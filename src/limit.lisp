@@ -2381,14 +2381,18 @@ ignoring dummy variables and array indices."
         ((and (equal (ridofab bl) -1)
             (infinityp el))  '$ind)	;LB
         ((eq el '$inf)  (cond ((abeq1 bl)
-                               (if (equal (getsignl bl) 1) 1 '$ind))
+                               (if (equal (getsignl bl) 1)
+                                 (bylog expo bas)
+                                 '$ind))
                               ((abless1 bl)
                                (if (equal (getsignl bl) 1) '$zeroa 0))
                               ((equal (getsignl (m1- bl)) 1) '$inf)
                               ((equal (getsignl (m1- `((mabs) ,bl))) 1) '$infinity)
                               (t (throw 'limit t))))
         ((eq el '$minf)  (cond ((abeq1 bl)
-                                (if (equal (getsignl bl) 1) 1 '$ind))
+                                (if (equal (getsignl bl) 1)
+                                  (bylog expo bas)
+                                  '$ind))
 
 							   ((equal (getsignl (m1- `((mabs) ,bl))) 1)
                                 (if (equal (getsignl bl) 1) '$zeroa 0))
@@ -2776,6 +2780,20 @@ ignoring dummy variables and array indices."
 					     '$infinity)))
 		(when d
 		  (return (simplimplus-with-finite d (fapply 'mplus sum)))))))
+
+	;; The limits of the terms are added unexpanded, so their sum can be a
+	;; simpler value in disguise: sqrt(2)*(sqrt(2)+1)-sqrt(2)-2 is 0 and
+	;; (sqrt(2)+1)*%e-sqrt(2)*%e is %e. Expand the sum as $LIMIT expands its
+	;; input and keep the expansion when terms cancel, before a zeroa or
+	;; zerob term lends the sum its side. SRATSIMP also finds numbers that
+	;; need fractions combined.
+	(let ((s (fapply 'mplus sum)) (r nil))
+	  (when (and (mplusp s) (freeof-extended-real s))
+	    (setq r ($expand s 1 0))
+	    (cond ((or (not (mplusp r)) (< (length r) (length s)))
+		   (setq sum (list r)))
+		  ((mnump (setq r (let (($ratprint nil)) (sratsimp s))))
+		   (setq sum (list r))))))
 
 	;; Blend the zerob, zeroa, and sum terms. When there are both zerob
 	;; and zeroa terms, ignore them. When *preserve-direction* is true and
