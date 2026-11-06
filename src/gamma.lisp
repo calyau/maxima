@@ -2201,12 +2201,28 @@
 
 (in-package :bigfloat)
 
-;; Erf(z) by the series A&S 7.1.6 when abs(realpart(z)) >=
-;; abs(imagpart(z)) and A&S 7.1.5 otherwise.  The magnitudes of the
-;; terms of either series sum to about exp(abs(z)^2).  This choice
-;; makes the cancellation about 2*imagpart(z)^2/log(2) bits for 7.1.6
-;; and 2*realpart(z)^2/log(2) bits for 7.1.5, which the caller must
-;; supply as extra precision.
+;; Erf(z) by the series A&S 7.1.6 (DLMF 7.6.2,
+;; https://dlmf.nist.gov/7.6.E2) when abs(realpart(z))
+;; >= abs(imagpart(z)) and A&S 7.1.5 (DLMF 7.6.1,
+;; >https://dlmf.nist.gov/7.6.E1) otherwise.  The
+;; magnitudes of the terms of either series sum to about
+;; exp(abs(z)^2).  This choice makes the cancellation about
+;; 2*imagpart(z)^2/log(2) bits for 7.1.6 and 2*realpart(z)^2/log(2)
+;; bits for 7.1.5, which the caller must supply as extra precision.
+;;
+;; A&S 7.1.6/DLMF 7.6.2
+;;
+;;   erf z = 2/sqrt(%pi) * exp(-z^2)
+;;             * sum(2^n*z^(2*n+1)/(1*3...*(2*n+1)), n, 0, inf)
+;;         = 2*z/sqrt(%pi) * exp(-z^2)
+;;             * sum((2*z^2)^n/(1*3*...*(2*n+1)), n, 0, inf)
+;;
+;; A&S 7.1.5/DLMF 7.6.1
+;;
+;;   erf z = 2/sqrt(%pi)
+;;             * sum((-1)^n*z*(2*n+1)/(n!*(2*n+1)), n, 0, inf)
+;;         = 2*z/sqrt(%pi)
+;;             * sum((-1)^n*z*(2*n)/(n!*(2*n+1)), n, 0, inf)
 (defun bf-erf-series (z)
   (let ((z^2 (* z z)))
     (/ (* 2 z
@@ -2223,10 +2239,15 @@
 					    (+ 2k 1))))))))
        (sqrt (%pi z)))))
 
-;; Erfc(z) by the asymptotic series A&S 7.1.23, valid for
-;; abs(arg(z)) < 3*%pi/4.  The smallest term is about
-;; exp(-abs(z)^2), so this is accurate only when abs(z)^2/log(2)
-;; exceeds the precision in bits.
+;; Erfc(z) by the asymptotic series A&S 7.1.23 (DLMF 7.12.1,
+;; https://dlmf.nist.gov/7.12.E1), valid for abs(arg(z)) < 3*%pi/4.
+;; The smallest term is about exp(-abs(z)^2), so this is accurate only
+;; when abs(z)^2/log(2) exceeds the precision in bits.
+;;
+;; A&S 7.1.23/DLMF 7.12.1:
+;;
+;;   erfc z ~ exp(-z^2)/sqrt(%pi) * sum((-1)^m*pochhammer(1/2,m)/z^(2*m+1), m, 0, inf)
+;;          = exp(-z^2)/z/sqrt(%pi) * sum((-1)^m*pochhammer(1/2,m)/z^(2*m), m, 0, inf)
 (defun bf-erfc-asymptotic (z)
   (let ((z^2 (* z z)))
     (/ (* (exp (- z^2))
