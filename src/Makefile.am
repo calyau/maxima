@@ -437,8 +437,9 @@ $(CCL64_MAXIMA):
 # Using pipes instead of tmp-files would be logical, but that doesn't seem to work, when crosscompiling Maxima for Windows
 # (there one pipes to the windows version of CCL64 running in 'wine'), so please don't optimize that (for now).
 ccl64-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) >ccl64-depends.mk.tmp
-	$(EXECUTECCL64) --load ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
+	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) > ccl64-depends.tmp
+	$(EXECUTECCL64) --load ccl64-depends.tmp
+	sed -e "s#\\\\#/#g" < ccl64-depends.mk.tmp > ccl64-depends.mk
 
 -include ccl64-depends.mk
 
