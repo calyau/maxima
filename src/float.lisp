@@ -2284,7 +2284,13 @@
     (fpsinh x)))
 
 ;; asinh(x) for real x.  X is a bigfloat, and a bigfloat is returned.
+;; The result is computed with guard digits and rounded once.
 (defun fpasinh (x)
+  (let ((x (bigfloatp x)))
+    (bigfloatp (bind-fpprec (fpprec-with-guard-digits)
+                 (fpasinh-1 x)))))
+
+(defun fpasinh-1 (x)
   ;; asinh(x) = sign(x) * log(|x| + sqrt(1+x*x))
   ;;
   ;; And
@@ -2531,7 +2537,13 @@
 
 ;; atanh(x) for real x, |x| <= 1.  X is a bigfloat, and a bigfloat is
 ;; returned.
+;; The result is computed with guard digits and rounded once.
 (defun fpatanh (x)
+  (let ((x (bigfloatp x)))
+    ($bfloat (bind-fpprec (fpprec-with-guard-digits)
+               ($bfloat (fpatanh-1 x))))))
+
+(defun fpatanh-1 (x)
   ;; atanh(x) = -atanh(-x)
   ;;          = 1/2*log1p(2*x/(1-x)), x >= 0.5
   ;;          = 1/2*log1p(2*x+2*x*x/(1-x)), x <= 0.5
@@ -2717,9 +2729,14 @@
            (mul '$%i (bcons (fptimes* (intofp 2)
                                       (fpatan2 im-sqrt-w-1 re-sqrt-w+1))))))))
 
+;; The result is computed with guard digits and rounded once.
 (defun big-float-acosh (x &optional y)
-  (let ((y (or y (bcons (intofp 0)))))
-    (kahan-acosh (sub x 1) y (add x 1) y)))
+  (let ((x (bigfloatp x))
+        (y (bigfloatp (or y (bcons (intofp 0))))))
+    ($bfloat (bind-fpprec (fpprec-with-guard-digits)
+               (let ((x (bigfloatp x))
+                     (y (bigfloatp y)))
+                 (kahan-acosh (sub x 1) y (add x 1) y))))))
 
 ;; asech(z) = acosh(1/z), from 1/z-1 = (1-z)/z and 1/z+1 = (1+z)/z. These keep
 ;; the digits that rounding 1/z would lose near z = 1 and z = -1. At 0 decline.
