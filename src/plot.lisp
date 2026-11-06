@@ -1677,15 +1677,6 @@ vertices of a triangle or a quadrilateral."
     user manual."
     :setting-predicate #'string-predicate)
 
-;; random-file-name
-;; Creates a random word of 'count' alphanumeric characters
-(defun random-name (count)
-  (let ((chars "0123456789abcdefghijklmnopqrstuvwxyz") (name ""))
-    (setf *random-state* (make-random-state t))
-    (dotimes (i count)
-      (setq name (format nil "~a~a" name (aref chars (random 36)))))
-    name))
-
 (defun plot-temp-file0 (file &optional (preserve-file nil))
   (let ((filename 
 	 (if *maxima-tempdir* 

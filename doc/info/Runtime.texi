@@ -129,6 +129,7 @@ to resume from the point at which it was stopped.
 @code{maxima_tempdir} names the directory in which Maxima creates some temporary
 files.  In particular, temporary files for plotting are created in
 @code{maxima_tempdir}.
+@mref{tempfile} returns names for such files.
 
 The initial value of @code{maxima_tempdir} is the user's home directory, if
 Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.

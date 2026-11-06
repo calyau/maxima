@@ -117,28 +117,6 @@
   (setq $show_openplot nil)
   (setup-client port host))
 
-#-gcl
-(defun getpid-from-environment ()
-  (handler-case
-      (values (parse-integer (maxima-getenv "PID")))
-    ((or type-error parse-error) () -1)))
-
-;;; For gcl, getpid imported from system in maxima-package.lisp
-#-gcl
-(defun getpid ()
-#+clisp (os:process-id)
-#+(or cmu scl) (unix:unix-getpid)
-#+sbcl (sb-unix:unix-getpid)
-#+gcl (system:getpid)
-#+openmcl (ccl::getpid)
-#+lispworks (system::getpid)
-#+ecl (si:getpid)
-#+ccl (ccl::getpid)
-#+allegro (excl::getpid)
-#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl allegro)
-  (getpid-from-environment)
-)
-
 #+(or gcl clisp cmu scl sbcl lispworks ecl ccl allegro)
 (defun xchdir (w)
   #+clisp (ext:cd w)

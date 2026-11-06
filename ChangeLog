@@ -232,6 +232,7 @@ Bug fixes for numbered bugs:
 * \#5641 exp(%i*%pi*r) is displayed with the minus sign in the numerator
 * \#5642 product returns its noun form for an infinite product without the simp flag
 * \#5643 at() returns an unsimplified noun form when it drops equations
+* \#5645 Maxima processes running at the same time overwrite each other's files
 * \#5646 rtest2 and rtest_draw change settings for the tests after them
 * \#5647 reset() sets browser and url_base to values that don't fit the system
 * \#5648 defsystem cannot load what it compiles with ECL for Windows built with MSVC

@@ -652,8 +652,8 @@ tex ("Capture standard output as a string.", false);
    tex(expr, false) does not reach.  Write into maxima_tempdir and
    delete both files at the end of this file, so a suite run leaves
    nothing behind. */
-(tmpfile_c : sconcat (maxima_tempdir, "/rtest-mactex-c.tex"),
- tmpfile_d : sconcat (maxima_tempdir, "/rtest-mactex-d.tex"), 0);
+(tmpfile_c : tempfile ("rtest-mactex-c", "tex"),
+ tmpfile_d : tempfile ("rtest-mactex-d", "tex"), 0);
 0;
 
 (tex ("Write output directly to a named file.", tmpfile_c), 0);

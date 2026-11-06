@@ -126,7 +126,9 @@ block([f, result],
 
 (kill (foo, baz, quux),
  defstruct (foo (a, b = 123, c = 456), baz (x = 4321, y), quux (z)),
- save (sconcat (maxima_tempdir, "/tmp-save-structures-1.lisp"), foo, baz, quux),
+ /* a property keeps the prefix of the file names out of values */
+ put (tmpsavestructures, tempfile ("tmp-save-structures"), file),
+ save (sconcat (get (tmpsavestructures, file), "-1.lisp"), foo, baz, quux),
  kill (structures),
  structures);
 [];
@@ -134,7 +136,7 @@ block([f, result],
 [ errcatch (new (foo)), errcatch (new (baz)), errcatch (new (quux)) ];
 [ [], [], [] ];
 
-(load (sconcat (maxima_tempdir, "/tmp-save-structures-1.lisp")), 0);
+(load (sconcat (get (tmpsavestructures, file), "-1.lisp")), 0);
 0;
 
 structures;
@@ -167,34 +169,34 @@ block ([stringdisp: true], printf (false, "~m", C));
 "quux(z = \"blurf\")
 ";
 
-(save (sconcat (maxima_tempdir, "/tmp-save-structures-2.lisp"), structures),
+(save (sconcat (get (tmpsavestructures, file), "-2.lisp"), structures),
  kill (structures),
  structures);
 [];
 
-(load (sconcat (maxima_tempdir, "/tmp-save-structures-2.lisp")), 0);
+(load (sconcat (get (tmpsavestructures, file), "-2.lisp")), 0);
 0;
 
 structures;
 [ foo (a, 123, 456), baz (4321, y), quux (z) ];
 
-(save (sconcat (maxima_tempdir, "/tmp-save-structures-3.lisp"), all),
+(save (sconcat (get (tmpsavestructures, file), "-3.lisp"), all),
  kill (structures),
  structures);
 [];
 
-(load (sconcat (maxima_tempdir, "/tmp-save-structures-3.lisp")), 0);
+(load (sconcat (get (tmpsavestructures, file), "-3.lisp")), 0);
 0;
 
 structures;
 [ foo (a, 123, 456), baz (4321, y), quux (z) ];
 
-(save (sconcat (maxima_tempdir, "/tmp-save-structures-4.lisp"), baz, quux),
+(save (sconcat (get (tmpsavestructures, file), "-4.lisp"), baz, quux),
  kill (structures),
  structures);
 [];
 
-(load (sconcat (maxima_tempdir, "/tmp-save-structures-4.lisp")), 0);
+(load (sconcat (get (tmpsavestructures, file), "-4.lisp")), 0);
 0;
 
 structures;
@@ -206,12 +208,12 @@ errcatch (new (foo));
 [ new (baz), new (quux) ];
 [ baz (4321, y), quux (z) ];
 
-(save (sconcat (maxima_tempdir, "/tmp-save-structures-5.lisp"), values, functions),
+(save (sconcat (get (tmpsavestructures, file), "-5.lisp"), values, functions),
  kill (structures),
  structures);
 [];
 
-(load (sconcat (maxima_tempdir, "/tmp-save-structures-5.lisp")), 0);
+(load (sconcat (get (tmpsavestructures, file), "-5.lisp")), 0);
 0;
 
 structures;
@@ -220,3 +222,9 @@ structures;
 [ errcatch (new (foo)), errcatch (new (baz)), errcatch (new (quux)) ];
 [ [], [], [] ];
 
+/* Delete the files the tests above wrote */
+
+(map(lambda([f], ?delete\-file(f)), directory(sconcat(get(tmpsavestructures, file), "-*.lisp"))),
+ kill(tmpsavestructures),
+ 0);
+0$

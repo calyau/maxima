@@ -201,7 +201,7 @@ between 0 and 1, where 0 gives the first color and 1 the last one."
 
 (defmethod plot-shipout ((plot geomview-plot) options &optional output-file)
   (declare (ignore options))
-  (let ((file (plot-file-path (format nil "maxout~d.gcl" (getpid)))))
+  (let ((file (plot-file-path (temp-file-name "maxout" "gcl"))))
     (with-open-file (fl
                      #+sbcl (sb-ext:native-namestring file)
                      #-sbcl file

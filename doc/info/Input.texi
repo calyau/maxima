@@ -884,6 +884,46 @@ variable, a colon, and its value.  Note that the general form of
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{tempfile}
+@deffn  {Function} tempfile @
+@fname{tempfile} (@var{prefix}) @
+@fname{tempfile} (@var{prefix}, @var{ext}) @
+@fname{tempfile} (@var{prefix}, @var{ext}, @var{dir})
+
+Returns a name for a temporary file in the directory @var{dir}, which
+differs from the names that other calls of @code{tempfile} return, in
+this Maxima process and in others running at the same time. The name
+is the string @var{prefix}, a dash, the process ID of Maxima, a number
+and 16 random characters, separated by dashes, and a dot and the file
+type @var{ext}. @code{tempfile} does not create the file.
+
+@var{ext} may be given with or without its dot. Without @var{ext}, or
+if it is @code{false} or the empty string, the name has no file type.
+@var{dir} is @mref{maxima_tempdir} unless given.
+
+Examples:
+
+@c ===beg===
+@c tempfile ("plot", "txt");
+@c tempfile ("plot", false, "/home/dieter/maxima");
+@c ===end===
+@example maxima
+@group
+(%i1) tempfile ("plot", "txt");
+(%o1)                /tmp/plot-6867-1-st92z7trdx80s1s0.txt
+@end group
+@group
+(%i2) tempfile ("plot", false, "/home/dieter/maxima");
+(%o2)          /home/dieter/maxima/plot-6867-2-z0nk66blh63li1va
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{File output}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{with_stdout}
 @deffn  {Function} with_stdout @
 @fname{with_stdout} (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{}) @

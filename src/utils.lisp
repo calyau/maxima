@@ -128,3 +128,73 @@
   Any sequence is a prefix of itself."
   (let ((m (mismatch sequence prefix :test test)))
     (or (not m) (>= m (length prefix)))))
+
+;;; The process ID, and names for temporary files that differ between
+;;; Maxima processes running at the same time.
+
+#-gcl
+(defun getpid-from-environment ()
+  (handler-case
+      (values (parse-integer (maxima-getenv "PID")))
+    ((or type-error parse-error) () -1)))
+
+;;; For gcl, getpid imported from system in maxima-package.lisp
+#-gcl
+(defun getpid ()
+#+clisp (os:process-id)
+#+(or cmu scl) (unix:unix-getpid)
+#+sbcl (sb-unix:unix-getpid)
+#+gcl (system:getpid)
+#+openmcl (ccl::getpid)
+#+lispworks (system::getpid)
+#+ecl (si:getpid)
+#+ccl (ccl::getpid)
+#+allegro (excl::getpid)
+#+abcl
+(or (ignore-errors
+     ;; ProcessHandle needs Java 9.
+     (java:jcall "pid" (java:jstatic "current" "java.lang.ProcessHandle")))
+    (ignore-errors
+     ;; Java 8 names the JVM "<pid>@<host>".
+     (let ((name (java:jcall
+                  "getName"
+                  (java:jstatic "getRuntimeMXBean"
+                                "java.lang.management.ManagementFactory"))))
+       (parse-integer name :end (position #\@ name))))
+    (getpid-from-environment))
+#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl allegro abcl)
+  (getpid-from-environment)
+)
+
+;; Names of temporary files. PROCESS-TAG tells this Maxima process apart
+;; from others running at the same time on this machine: it is the process
+;; ID, or random characters made once where the ID is unknown. RANDOM-NAME
+;; adds the number of the call, so that the names of one process differ,
+;; and COUNT random alphanumeric characters from a newly seeded random
+;; state, which make the name hard to guess unless the Lisp seeds random
+;; states from the clock alone. TEMP-FILE-NAME puts PREFIX and a dash
+;; before such a name, and the file type TYPE after it, unless TYPE is NIL
+;; or empty.
+(defvar *random-process-tag* nil)
+(defvar *random-name-calls* 0)
+
+(defun random-chars (count)
+  (let ((chars "0123456789abcdefghijklmnopqrstuvwxyz") (name "")
+        (state (make-random-state t)))
+    (dotimes (i count name)
+      (setq name (format nil "~a~a" name (aref chars (random 36 state)))))))
+
+(defun process-tag ()
+  (let ((pid (getpid)))
+    (if (and (integerp pid) (plusp pid))
+      (format nil "~d" pid)
+      (or *random-process-tag*
+          (setq *random-process-tag* (random-chars 8))))))
+
+(defun random-name (count)
+  (format nil "~a-~d-~a"
+          (process-tag) (incf *random-name-calls*) (random-chars count)))
+
+(defun temp-file-name (prefix &optional type)
+  (format nil "~a-~a~@[.~a~]" prefix (random-name 16)
+          (and type (plusp (length type)) type)))

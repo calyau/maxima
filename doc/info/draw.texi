@@ -1060,7 +1060,10 @@ See also @mrefdot{contour}
 
 @anchor{data_file_name}
 @defvr {Graphic option} data_file_name
-Default value: @code{"data.gnuplot"}
+Default value: @code{"data-xxx.gnuplot"} with @code{"xxx"}
+being the process ID of maxima, or random characters where
+that is unknown, which is unique to each concurrently-running
+maxima process.
 
 This is the name of the file with the numeric data needed
 by Gnuplot to build the requested plot.
@@ -1621,8 +1624,9 @@ See also @mrefdot{font}
 
 @anchor{gnuplot_file_name}
 @defvr {Graphic option} gnuplot_file_name
-Default value: @code{"maxout_xxx.gnuplot"} with @code{"xxx"}
-being a number that is unique to each concurrently-running
+Default value: @code{"maxout-xxx.gnuplot"} with @code{"xxx"}
+being the process ID of maxima, or random characters where
+that is unknown, which is unique to each concurrently-running
 maxima process.
 
 This is the name of the file with the necessary commands to

@@ -3104,7 +3104,7 @@
               (merror "draw: item ~M is not recognized" x))) )
 
     ;; prepare script file
-    (setf gfn (plot-temp-file (format nil "maxout~d.py" (getpid))))
+    (setf gfn (plot-temp-file (temp-file-name "maxout" "py")))
     (setf cmdstorage
       (open gfn
             :direction :output :if-exists :supersede))

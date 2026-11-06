@@ -1,6 +1,6 @@
 (
     old_maxima_tempdir: maxima_tempdir,
-    maxima_tempdir: sconcat (maxima_tempdir, "/", "draw-test-", ?getpid ()),
+    maxima_tempdir: tempfile ("draw-test"),
     print ("rtest_draw: output image and Gnuplot files to", maxima_tempdir),
     load ("operatingsystem"),
     /* I SUPPOSE WE SHOULD NUKE THE DIRECTORY IF IT EXISTS ALREADY */

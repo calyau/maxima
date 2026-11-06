@@ -1372,8 +1372,8 @@
       (gethash '$key_pos *gr-options*)            nil
       (gethash '$dimensions *gr-options*)        '(600 500)
       (gethash '$file_name *gr-options*)         "maxima_out"
-      (gethash '$gnuplot_file_name *gr-options*) (format nil "maxout~d.gnuplot" (getpid))
-      (gethash '$data_file_name *gr-options*)    (format nil "data~d.gnuplot" (getpid))
+      (gethash '$gnuplot_file_name *gr-options*) (format nil "maxout-~a.gnuplot" (process-tag))
+      (gethash '$data_file_name *gr-options*)    (format nil "data-~a.gnuplot" (process-tag))
       (gethash '$delay *gr-options*)             5 ; delay for animated gif's, default 5*(1/100) sec
    ))
 

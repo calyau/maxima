@@ -4595,26 +4595,28 @@ block([msg : (errcatch(1/0), error)],
 /* Bug #5704: "with_stdout() to a file name is slow"
    (these tests don't actually measure speed, but with_stdout's functionality) */
 
-block([f : sconcat(maxima_tempdir, "/with_stdout_1.txt"), file_output_append : false, r, s, l],
+block([f : tempfile("with_stdout_1", "txt"), file_output_append : false, r, s, l],
   with_stdout(f, printf(true, "a~%")),
   r : with_stdout(f, printf(true, "b~%"), 42),
   s : openr(f),
   l : [readline(s), readline(s)],
   close(s),
+  ?delete\-file(f),
   [r, l]);
 [42, ["b", false]]$
 
-block([f : sconcat(maxima_tempdir, "/with_stdout_2.txt"), file_output_append : false, s, l],
+block([f : tempfile("with_stdout_2", "txt"), file_output_append : false, s, l],
   with_stdout(f, printf(true, "a~%")),
   file_output_append : true,
   with_stdout(f, printf(true, "b~%")),
   s : openr(f),
   l : [readline(s), readline(s), readline(s)],
   close(s),
+  ?delete\-file(f),
   l);
 ["a", "b", false]$
 
-block([f : sconcat(maxima_tempdir, "/with_stdout_3.txt"), g : sconcat(maxima_tempdir, "/with_stdout_4.txt"), file_output_append : false, s, l],
+block([f : tempfile("with_stdout_3", "txt"), g : tempfile("with_stdout_4", "txt"), file_output_append : false, s, l],
   with_stdout(f, printf(true, "a~%"), with_stdout(g, printf(true, "b~%")), printf(true, "c~%")),
   s : openr(f),
   l : [readline(s), readline(s), readline(s)],
@@ -4622,11 +4624,15 @@ block([f : sconcat(maxima_tempdir, "/with_stdout_3.txt"), g : sconcat(maxima_tem
   s : openr(g),
   l : append(l, [readline(s), readline(s)]),
   close(s),
+  ?delete\-file(f),
+  ?delete\-file(g),
   l);
 ["a", "c", false, "b", false]$
 
-block([f : sconcat(maxima_tempdir, "/with_stdout_5.txt"), file_output_append : false],
-  [catch(with_stdout(f, throw(1), 2)), errcatch(with_stdout(f, error("with_stdout"), 3)), with_stdout(f, 4)]);
+block([f : tempfile("with_stdout_5", "txt"), file_output_append : false, r],
+  r : [catch(with_stdout(f, throw(1), 2)), errcatch(with_stdout(f, error("with_stdout"), 3)), with_stdout(f, 4)],
+  ?delete\-file(f),
+  r);
 [1, [], 4]$
 
 

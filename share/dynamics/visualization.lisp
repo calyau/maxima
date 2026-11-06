@@ -146,7 +146,7 @@
           (setq objects (append objects (list v)))
           (setq options (append options (list v)))))
     ;; sets up output file name to pass to Xmaxima
-    (setq file (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))))
+    (setq file (plot-temp-file (temp-file-name "maxout" "xmaxima")))
 
     ;; parses objects
     (dolist (v objects)

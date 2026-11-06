@@ -216,7 +216,7 @@
               (format nil "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\" ~a" gstrings)))
       (if (getf plot-options '$gnuplot_out_file)
           (setq out-file (getf plot-options '$gnuplot_out_file))
-        (setq out-file (format nil "~a.ps" (random-name 16)))))
+        (setq out-file (temp-file-name "maxplot" "ps"))))
      ((eq (getf plot-options '$gnuplot_term) '$dumb)
       (if (getf plot-options '$gnuplot_dumb_term_command)
           (setq terminal-command
@@ -224,7 +224,7 @@
         (setq terminal-command "set term dumb 79 22"))
       (if (getf plot-options '$gnuplot_out_file)
           (setq out-file (getf plot-options '$gnuplot_out_file))
-        (setq out-file (format nil "~a.txt" (random-name 16)))))
+        (setq out-file (temp-file-name "maxplot" "txt"))))
      ((eq (getf plot-options '$gnuplot_term) '$default)
       (if (getf plot-options '$gnuplot_default_term_command)
           (setq terminal-command
@@ -243,8 +243,9 @@
           (setq out-file (getf plot-options '$gnuplot_out_file))
         (setq preserve-file nil
               out-file
-              (format nil "maxplot.~(~a~)"
-                      (get-gnuplot-term (getf plot-options '$gnuplot_term)))))))
+              (temp-file-name "maxplot"
+                              (get-gnuplot-term
+                               (getf plot-options '$gnuplot_term)))))))
     (when out-file
       (setq out-file (plot-file-path out-file preserve-file plot-options))
       ;; plots that create a file work better in gnuplot than gnuplot_pipes
@@ -827,7 +828,7 @@
     (if (and (find (getf options '$plot_format) '($gnuplot_pipes $gnuplot))
              (eq gnuplot-term '$default) gnuplot-out-file)
 	(plot-file-path gnuplot-out-file t options)
-      (plot-file-path (format nil "~a.~a" (random-name 16)
-                              (ensure-string (getf options '$plot_format)))
-                      nil options))))
+      (plot-file-path
+       (temp-file-name "maxout" (ensure-string (getf options '$plot_format)))
+       nil options))))
 

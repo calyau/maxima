@@ -212,6 +212,21 @@
   (let ((pathname (pathname path)))
     (pathname-type pathname)))
 
+(defmfun $tempfile (prefix &optional ext (dir $maxima_tempdir))
+  (unless (stringp prefix)
+    (merror (intl:gettext "tempfile: prefix must be a string; found: ~M")
+            prefix))
+  (unless (or (null ext) (stringp ext))
+    (merror
+     (intl:gettext "tempfile: extension must be a string or false; found: ~M")
+     ext))
+  (unless (stringp dir)
+    (merror (intl:gettext "tempfile: directory must be a string; found: ~M")
+            dir))
+  (when (and ext (plusp (length ext)) (char= (char ext 0) #\.))
+    (setq ext (subseq ext 1)))
+  (combine-path dir (temp-file-name prefix ext)))
+
 (defun wxmx-file-p (filename)
   "Does FILENAME name a wxMaxima .wxmx worksheet?"
   (member ($pathname_type filename) (cdr $file_type_wxmx) :test #'string=))
@@ -1055,8 +1070,7 @@
           (setq parent-dir *maxima-userdir*
                 file-to-create
                   (combine-path *maxima-userdir*
-                                (format nil "test-directory-cached-~A-~A"
-                                        now (get-internal-real-time)))))
+                                (temp-file-name "test-directory-cached"))))
         (t
           ;; The Maxima user directory doesn't exist yet, or there was an error.
           ;; We will try to create the directory and observe whether the parent

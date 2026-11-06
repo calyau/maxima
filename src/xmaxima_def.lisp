@@ -381,7 +381,7 @@
 
 (defmethod plot-shipout ((plot xmaxima-plot) options &optional output-file)
   (declare (ignore options))
-  (let ((file (plot-file-path (format nil "~a.xmaxima" (random-name 16)))))
+  (let ((file (plot-file-path (temp-file-name "maxout" "xmaxima"))))
     (cond ($show_openplot
            (with-open-file (fl
                             #+sbcl (sb-ext:native-namestring file)

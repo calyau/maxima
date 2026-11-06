@@ -444,9 +444,10 @@ slider that appears on the bottom.
 
 the sliders option of xmaxima is one feature that cannot be accessed
 directly from @command{plot2d} in Maxima. Other examples of input
-files for xmaxima are the files @file{maxoutNNNN.xmaxima} (where NNNN
-is the process id (an unique number) of the maxima process, that Maxima
-creates; when Maxima is run from the command line, and a plotting
+files for xmaxima are the files @file{maxout-NNNN.xmaxima} (where NNNN
+is made of the process id of the maxima process, a number and random
+characters) that Maxima creates; when Maxima is run from the command
+line, and a plotting
 function that involves xmaxima is used, the data is not passed directly
 to Xmaxima, but it is rather saved into that file and then xmaxima is
 executed with the name of that file as argument.

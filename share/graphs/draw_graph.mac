@@ -18,8 +18,8 @@
 
 */
 
-define_variable(gp_file_out, "out.txt", any)$
-define_variable(gp_file_in, "in.txt", any)$
+define_variable(gp_file_out, sconcat("out-", ?process\-tag(), ".txt"), any)$
+define_variable(gp_file_in, sconcat("in-", ?process\-tag(), ".txt"), any)$
 define_variable(draw_graph_program, 'spring_embedding, any)$
 define_variable(draw_graph_terminal, 'screen, any)$
 define_variable(graphs_plot_size, [400,400], list)$

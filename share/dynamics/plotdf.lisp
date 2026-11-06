@@ -145,7 +145,7 @@
     ;; Outputs the data, either into a file to be passedto Xmaxima
     ;; or sent directly to Xmaxima if Maxima is being run from Xmaxima.
     (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
-      (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
+      (setq file (plot-file-path (temp-file-name "maxout" "xmaxima")))
       (cond ($show_openplot
              (with-open-file (fl
                               #+sbcl (sb-ext:native-namestring file)
@@ -206,7 +206,7 @@
     ;; Outputs the data, either into a file to be passed to Xmaxima
     ;; or sent directly to Xmaxima if Maxima is being run from Xmaxima.
     (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
-      (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
+      (setq file (plot-file-path (temp-file-name "maxout" "xmaxima")))
       (cond ($show_openplot
              (with-open-file (fl
                               #+sbcl (sb-ext:native-namestring file)

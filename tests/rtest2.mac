@@ -724,7 +724,9 @@ errcatch (ev (define (f (x), foo, bar, baz)));
  myfast["mumble", "abc", "xy", "Z"] : 2*blurf,
  myfast[sin(foo), 1 - baz] : 3*blurf,
  reset (use_fast_arrays),
- save (sconcat (maxima_tempdir, "/tmpsavearrays.lisp"), arrays, values),
+ /* a property keeps the file name out of values */
+ put (tmpsavearrays, tempfile ("tmpsavearrays", "lisp"), file),
+ save (get (tmpsavearrays, file), arrays, values),
  0);
 0;
 
@@ -779,7 +781,7 @@ done;
  errcatch (listarray (myfast))];
 [[], [], [], []];
 
-(load (sconcat (maxima_tempdir, "/tmpsavearrays.lisp")), 0);
+(load (get (tmpsavearrays, file)), 0);
 0;
 
 [arrays, values];
@@ -1159,9 +1161,10 @@ block ([use_fast_arrays : false,
 
 (kill (xyz),
  xyz: 123,
- expected_filename: "tmpsave123.lisp",
- expected_path: sconcat (maxima_tempdir, "/", expected_filename),
- save (sconcat (maxima_tempdir, "/tmpsave", xyz, ".lisp"), xyz),
+ tmpsave: tempfile ("tmpsave"),
+ expected_filename: sconcat (pathname_name (tmpsave), "123.lisp"),
+ expected_path: sconcat (tmpsave, "123.lisp"),
+ save (sconcat (tmpsave, xyz, ".lisp"), xyz),
  /* call SUBSEQ to extract the filename from the path returned by 'save' */
  ?subseq (%%, ?length (%%) - ?length (expected_filename)));
 ''expected_filename;
@@ -1205,7 +1208,7 @@ apply (arrayinfo, [L[2]]);
  readline (make_string_input_stream (S1)));
 "Hello";
 
-(S: openw (hello_file: sconcat (maxima_tempdir, "/hello.txt")),
+(S: openw (hello_file: tempfile ("hello", "txt")),
  with_stdout (S, system ("echo", "Hello")),
  close (S),
  S: openr (hello_file),
@@ -1214,7 +1217,7 @@ apply (arrayinfo, [L[2]]);
  S1);
 "Hello";
 
-(with_stdout (hello_file: sconcat (maxima_tempdir, "/hello.txt"), system ("echo", "Hello")),
+(with_stdout (hello_file, system ("echo", "Hello")),
  S: openr (hello_file),
  S1: readline (S),
  close (S),
@@ -1261,3 +1264,27 @@ true;
 has_key (cc, [333, "xyz"]);
 false;
 
+/* Bug #5645: "Maxima processes running at the same time overwrite each other's files" */
+
+block([pid : ?getpid()], [integerp(pid), is(pid > 0)]);
+[true, true]$
+
+block([a : tempfile("rtest2", "txt"), b : tempfile("rtest2", ".txt")],
+  [stringp(a), is(a # b), pathname_type(a), pathname_type(b), ?search("rtest2-", pathname_name(a)),
+   is(pathname_directory(a) = pathname_directory(sconcat(maxima_tempdir, "/x")))]);
+[true, true, "txt", "txt", 0, true]$
+
+[pathname_type(tempfile("rtest2")), pathname_type(tempfile("rtest2", false)), pathname_type(tempfile("rtest2", "")),
+ is(pathname_directory(tempfile("rtest2", "txt", "/some/where")) = pathname_directory("/some/where/x"))];
+[false, false, false, true]$
+
+[errcatch(tempfile(1)), errcatch(tempfile("rtest2", 2)), errcatch(tempfile("rtest2", "txt", 3))];
+[[], [], []]$
+
+/* Delete the files the tests above wrote */
+
+(map(lambda([f], ?delete\-file(f)),
+   append(directory(get(tmpsavearrays, file)), directory(expected_path), directory(hello_file))),
+ kill(tmpsavearrays),
+ 0);
+0$

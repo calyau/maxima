@@ -93,7 +93,8 @@
 (defun ini-sound-options ()
   (setf
     (gethash '$channel *sound-options*)           1
-    (gethash '$file_name *sound-options*)         "maxout"
+    (gethash '$file_name *sound-options*)
+      (format nil "maxout-~a" (process-tag))
     (gethash '$file_format *sound-options*)       '$wav
     (gethash '$oscillator *sound-options*)        '(($sine) 1.0)
     (gethash '$envelope *sound-options*)          '$none
