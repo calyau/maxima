@@ -332,13 +332,15 @@ Bug fixes for unnumbered bugs:
   their output file in maxima_tempdir. Maxima now deletes it when it
   exits, as it does for the other terminals.
 
-Changes in the Windows installer:
----------------------------------
+Changes in the crosscompiled Windows installer:
+-----------------------------------------------
 * Update MS WebView2
 * Update SBCL
 * Update WxMaxima
 * Update CCL
 * Correct link to TCL/TK Website
+* ECL works now (basic support was introduced in the latest release,
+  now loading of packages works too.
 
 Other changes:
 --------------
