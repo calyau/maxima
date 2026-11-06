@@ -87,7 +87,7 @@ undiff(%)$
 %,idiff$
 canform(lc2kdt(%))$
 %,kdelta$
-ishow(ev(isimplify(%o66),kdelta,eval))$
+ishow(ev(isimplify(%),kdelta,eval))$
 ("Let us apply what we learned about the 4-current:")$
 subst(A([%2],[],a,%1),A([a],[],%1,%2),%th(2))$
 canform(%)$
