@@ -777,6 +777,22 @@
        :defaults p)
       p)))
 
+(defun directory-pathname-as-file (path)
+  "Return the directory pathname PATH, e.g. \"/dir/subdir/\", as a file
+  pathname, \"/dir/subdir\", whose name is the last directory component.
+  Return NIL if PATH isn't a directory pathname or if its last directory
+  component isn't a plain name, e.g. if PATH is a root directory."
+  (let* ((p (pathname path))
+         (components (pathname-directory p)))
+    (when (and (apparently-a-directory-p p)
+               (cdr components)
+               (stringp (car (last components))))
+      (make-pathname :directory (butlast components)
+                     :name (car (last components))
+                     :type nil
+                     :version nil
+                     :defaults p))))
+
 (defun parent-directory (path)
   "Return the parent directory of PATH as a directory pathname, or NIL if there
   is no parent, e.g. if PATH is a root directory or its last directory component
@@ -959,6 +975,12 @@
 (defvar *debug-directory-cached* nil
   "If non-NIL, print debug information for the DIRECTORY-CACHED function.")
 
+(defvar *directory-mtime-as-file* nil
+  "If non-NIL, FILE-MTIME-OR-NIL gets the modification timestamp of a
+  directory given as a directory pathname, e.g. \"C:/dir/\", through its file
+  pathname, \"C:/dir\". FILE-MTIME-OR-NIL sets it when only the latter works,
+  as can be the case for some Lisp implementations.")
+
 (defun file-mtime (path)
   "Returns the modification time of the file/directory PATH."
   #+clisp
@@ -970,8 +992,20 @@
 
 (defun file-mtime-or-nil (path)
   "Like FILE-MTIME, but returns NIL in the case of an error, the most likely
-  error being that the file/directory doesn't exist."
-  (ignore-errors (file-mtime path)))
+  error being that the file/directory doesn't exist.
+  If FILE-MTIME fails for an existing directory given as a directory pathname,
+  retry with its file pathname, and if that works, set
+  *DIRECTORY-MTIME-AS-FILE* to use the file pathname right away from now on."
+  (if *directory-mtime-as-file*
+    (ignore-errors (file-mtime (or (directory-pathname-as-file path) path)))
+    (or (ignore-errors (file-mtime path))
+        (ignore-errors
+          (let ((as-file (directory-pathname-as-file path)))
+            (when (and as-file (directory-exists-p path))
+              (let ((mtime (file-mtime as-file)))
+                (when mtime
+                  (setq *directory-mtime-as-file* t))
+                mtime)))))))
 
 (defun create-empty-file (&rest path)
   "Creates an empty file whose path is combined from PATH using COMBINE-PATH."
@@ -998,7 +1032,8 @@
   "Tests whether the directory cache can be used.
   It checks that creating a file/directory within a parent directory updates
   the parent directory's modification timestamp.
-  It also checks that the helper function COLLECT-DIRECTORIES work as expected.
+  It also checks that the helper function COLLECT-DIRECTORIES works as expected
+  and that FILE-MTIME-OR-NIL works for the directories it returns.
   The special return value :TRY-LATER means that the test cannot be performed
   reliably at the moment due to limited timestamp precision."
   (macrolet ((dbg (string &rest args)
@@ -1074,7 +1109,9 @@
             (return-from test-directory-cached nil)))
         ;; Create nested subdirectories inside *MAXIMA-USERDIR* and files
         ;; in them. Make sure that our helper function COLLECT-DIRECTORIES works
-        ;; as expected, as the directory cache relies on it.
+        ;; as expected and that FILE-MTIME-OR-NIL can get the modification
+        ;; timestamps of the directories it returns, as the directory cache
+        ;; relies on both.
         (let ((test-dir (test-directory-cached-dir)))
           (dbg "create test directories and files in \"~A\"" test-dir)
           (ensure-directories-exist (combine-path test-dir "dir" ""))
@@ -1086,7 +1123,9 @@
           (let ((items (collect-directories (combine-path test-dir "*" "*"))))
             (dbg "items listed (expect 1 directory): ~A" items)
             (cond
-              ((and (= (length items) 1) (every #'directory-exists-p items))
+              ((and (= (length items) 1)
+                    (every #'directory-exists-p items)
+                    (every #'file-mtime-or-nil items))
                 (dbg "test succeeded"))
               (t
                 (dbg "test failed")
@@ -1095,7 +1134,9 @@
           (let ((items (collect-directories (combine-path test-dir "**" "*"))))
             (dbg "items listed (expect 3 directories): ~A" items)
             (cond
-              ((and (= (length items) 3) (every #'directory-exists-p items))
+              ((and (= (length items) 3)
+                    (every #'directory-exists-p items)
+                    (every #'file-mtime-or-nil items))
                 (dbg "test succeeded"))
               (t
                 (dbg "test failed")
