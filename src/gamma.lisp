@@ -2316,8 +2316,16 @@
 		(bf-erf-or-erfc z nil)))))))
 
 (defun bf-erfc (z)
-  ;; Compute erfc(z) via 1 - erf(z) is not very accurate if erf(z) is
-  ;; near 1.  Wolfram says
+  ;; For a BIGFLOAT or COMPLEX-BIGFLOAT, BF-ERF-OR-ERFC computes
+  ;; erfc(z) for realpart(z) >= 0, and erfc(z) = 2 - erfc(-z)
+  ;; otherwise.
+  (when (typep z '(or bigfloat complex-bigfloat))
+    (return-from bf-erfc
+      (if (minusp (realpart z))
+	  (- 2 (bf-erf-or-erfc (- z) t))
+	  (bf-erf-or-erfc z t))))
+  ;; For a CL number, computing erfc(z) via 1 - erf(z) is not very
+  ;; accurate if erf(z) is near 1.  Wolfram says
   ;;
   ;; erfc(z) = 1 - sqrt(z^2)/z * (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2, z^2))
   ;;
@@ -2330,11 +2338,6 @@
   ;;
   ;; erfc(z) = 1 + (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2,z^2))
   ;;         = 2 - 1/sqrt(pi)*gamma_incomplete(1/2,z^2)
-  (when (typep z '(or bigfloat complex-bigfloat))
-    (return-from bf-erfc
-      (if (minusp (realpart z))
-	  (- 2 (bf-erf-or-erfc (- z) t))
-	  (bf-erf-or-erfc z t))))
   (flet ((gamma-inc (z)
 	   (maxima::gamma-incomplete 0.5 z)))
   (if (if (zerop (realpart z))
