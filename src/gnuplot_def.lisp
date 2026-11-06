@@ -215,16 +215,18 @@
         (setq terminal-command
               (format nil "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\" ~a" gstrings)))
       (if (getf plot-options '$gnuplot_out_file)
-          (setq out-file (getf plot-options '$gnuplot_out_file))
-        (setq out-file (temp-file-name "maxplot" "ps"))))
+        (setq out-file (getf plot-options '$gnuplot_out_file))
+        (setq preserve-file nil
+              out-file (temp-file-name "maxplot" "ps"))))
      ((eq (getf plot-options '$gnuplot_term) '$dumb)
       (if (getf plot-options '$gnuplot_dumb_term_command)
           (setq terminal-command
                 (getf plot-options '$gnuplot_dumb_term_command))
         (setq terminal-command "set term dumb 79 22"))
       (if (getf plot-options '$gnuplot_out_file)
-          (setq out-file (getf plot-options '$gnuplot_out_file))
-        (setq out-file (temp-file-name "maxplot" "txt"))))
+        (setq out-file (getf plot-options '$gnuplot_out_file))
+        (setq preserve-file nil
+              out-file (temp-file-name "maxplot" "txt"))))
      ((eq (getf plot-options '$gnuplot_term) '$default)
       (if (getf plot-options '$gnuplot_default_term_command)
           (setq terminal-command

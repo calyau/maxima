@@ -2137,7 +2137,8 @@ will also be shown in the Maxima or Xmaxima console.
 Gnuplot generates commands in the PostScript page description language.
 If the option @mref{gnuplot_out_file} is set to @var{filename}, gnuplot
 writes the PostScript commands to @var{filename}.  Otherwise, it is
-saved as @code{maxplot-random-string.ps} file. The settings for this terminal are given by the value of the option @mrefdot{gnuplot_dumb_term_command}
+saved as @code{maxplot-random-string.ps} file. The settings for this terminal
+are given by the value of the option @mrefdot{gnuplot_ps_term_command}
 
 @item
 A string representing any valid gnuplot term specification
@@ -2155,6 +2156,11 @@ output to @var{filename}.  Otherwise, it is saved as
 gnuplot terminal name and @code{random-string} is made of the process
 ID of Maxima, a number and 16 random characters.
 @end itemize
+
+The files @code{maxplot-random-string.txt}, @code{maxplot-random-string.ps}
+and @code{maxplot-random-string.@var{term}} are created in the temporary
+directory, and Maxima deletes them when it exits. To keep the output,
+name the file with @mrefdot{gnuplot_out_file}
 
 @opencatbox{Categories:}
 @category{Plotting}

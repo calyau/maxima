@@ -328,6 +328,9 @@ Bug fixes for unnumbered bugs:
 * zn_factor_generators could return different generators from identical calls
 * maxima_tempdir started out as / when the environment variable TMPDIR was
   empty and TEMP not set, and TMPDIR was ignored when TEMP was empty
+* Plots with gnuplot_term set to ps or dumb and no gnuplot_out_file left
+  their output file in maxima_tempdir. Maxima now deletes it when it
+  exits, as it does for the other terminals.
 
 Changes in the Windows installer:
 ---------------------------------
