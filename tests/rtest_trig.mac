@@ -1182,9 +1182,6 @@ block([w : acsch(-%i-1b-25)],
  * Float asech loses accuracy near 1 and -1 and fails for subnormal arguments
  */
 
-(oldfpprec:fpprec,fpprec:32);
-32;
-
 closeto_relerr(asech(1 - 1e-12),
                1.41419791986886460165008241167b-6,
                2.2724e-16);
