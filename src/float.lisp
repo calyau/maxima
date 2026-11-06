@@ -1037,30 +1037,6 @@
               (bcons (atan2-core (cdr (bigfloatp y))
                                  (cdr (bigfloatp x))))))))))
 
-#+nil
-(defun fpatan2-1 (y x)
-  (cond ((equal (car x) 0)
-	 ;; atan(y/0) = atan(inf), but what sign?
-	 (cond ((equal (car y) 0)
-		(merror (intl:gettext "atan2: atan2(0, 0) is undefined.")))
-	       ((minusp (car y))
-		;; We're on the negative imaginary axis, so -pi/2.
-		(fpquotient (fppi) (intofp -2)))
-	       (t
-		;; The positive imaginary axis, so +pi/2
-		(fpquotient (fppi) (intofp 2)))))
-	((signp g (car x))
-	 ;; x > 0.  atan(y/x) is the correct value.
-	 (fpatan (fpquotient y x)))
-	((signp ge (car y))
-	 ;; x < 0, and y >= 0.  We're in quadrant II or on the
-	 ;; negative real axis, so the angle we want is pi+atan(y/x).
-	 (fpplus (fppi) (fpatan (fpquotient y  x))))
-	(t
-	 ;; x < 0 and y < 0.  We're in quadrant III, so the angle we
-	 ;; want is atan(y/x)-pi.
-	 (fpdifference (fpatan (fpquotient y x)) (fppi)))))
-
 (defun tanbigfloat (a)
   (setq a (car a))
   (fpend (let ((fpprec (+ 8. fpprec)))
