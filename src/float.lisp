@@ -2287,52 +2287,52 @@
 ;; The result is computed with guard digits and rounded once.
 (defun fpasinh (x)
   (let ((x (bigfloatp x)))
-    (bigfloatp (bind-fpprec (fpprec-with-guard-digits)
-                 (fpasinh-1 x)))))
-
-(defun fpasinh-1 (x)
-  ;; asinh(x) = sign(x) * log(|x| + sqrt(1+x*x))
-  ;;
-  ;; And
-  ;;
-  ;; asinh(x) = x, if 1+x*x = 1
-  ;;          = sign(x) * (log(2) + log(x)), large |x|
-  ;;          = sign(x) * log(2*|x| + 1/(|x|+sqrt(1+x*x))), if |x| > 2
-  ;;          = sign(x) * log1p(|x|+x^2/(1+sqrt(1+x*x))), otherwise.
-  ;;
-  ;; But I'm lazy right now and we only implement the last 2 cases.
-  ;; We should implement all cases.
-  (let* ((fp-x (cdr (bigfloatp x)))
-	 (absx (fpabs fp-x))
-	 (one (fpone))
-	 (two (intofp 2))
-	 (minus (minusp (car fp-x)))
-	 result)
-    ;; We only use two formulas here.  |x| <= 2 and |x| > 2.  Should
-    ;; we add one for very big x and one for very small x, as given above.
-    (cond ((fpgreaterp absx two)
-	   ;; |x| > 2
-	   ;;
-	   ;; log(2*|x| + 1/(|x|+sqrt(1+x^2)))
-	   (setf result (fplog (fpplus (fptimes* absx two)
-				       (fpquotient one
-						   (fpplus absx
-							   (fproot (bcons (fpplus one
-										  (fptimes* absx absx)))
-							    2)))))))
-	  (t
-	   ;; |x| <= 2
-	   ;;
-	   ;; log1p(|x|+x^2/(1+sqrt(1+x^2)))
-	   (let ((x*x (fptimes* absx absx)))
-	     (setq result (fplog1p (fpplus absx
-					   (fpquotient x*x
-						       (fpplus one
-							       (fproot (bcons (fpplus one x*x))
-								       2)))))))))
-    (if minus
-	(bcons (fpminus result))
-	(bcons result))))
+    (flet
+        ((fpasinh-core (x)
+           ;; asinh(x) = sign(x) * log(|x| + sqrt(1+x*x))
+           ;;
+           ;; And
+           ;;
+           ;; asinh(x) = x, if 1+x*x = 1
+           ;;          = sign(x) * (log(2) + log(x)), large |x|
+           ;;          = sign(x) * log(2*|x| + 1/(|x|+sqrt(1+x*x))), if |x| > 2
+           ;;          = sign(x) * log1p(|x|+x^2/(1+sqrt(1+x*x))), otherwise.
+           ;;
+           ;; But I'm lazy right now and we only implement the last 2 cases.
+           ;; We should implement all cases.
+           (let* ((fp-x (cdr (bigfloatp x)))
+	          (absx (fpabs fp-x))
+	          (one (fpone))
+	          (two (intofp 2))
+	          (minus (minusp (car fp-x)))
+	          result)
+             ;; We only use two formulas here.  |x| <= 2 and |x| > 2.  Should
+             ;; we add one for very big x and one for very small x, as given above.
+             (cond ((fpgreaterp absx two)
+	            ;; |x| > 2
+	            ;;
+	            ;; log(2*|x| + 1/(|x|+sqrt(1+x^2)))
+	            (setf result (fplog (fpplus (fptimes* absx two)
+				                (fpquotient one
+						            (fpplus absx
+							            (fproot (bcons (fpplus one
+										           (fptimes* absx absx)))
+							                    2)))))))
+	           (t
+	            ;; |x| <= 2
+	            ;;
+	            ;; log1p(|x|+x^2/(1+sqrt(1+x^2)))
+	            (let ((x*x (fptimes* absx absx)))
+	              (setq result (fplog1p (fpplus absx
+					            (fpquotient x*x
+						                (fpplus one
+							                (fproot (bcons (fpplus one x*x))
+								                2)))))))))
+             (if minus
+	         (bcons (fpminus result))
+	         (bcons result)))))
+         (bigfloatp (bind-fpprec (fpprec-with-guard-digits)
+                      (fpasinh-core x))))))
 
 (defun complex-asinh (x y)
   ;; asinh(z) = -%i * asin(%i*z)
@@ -2540,37 +2540,38 @@
 ;; The result is computed with guard digits and rounded once.
 (defun fpatanh (x)
   (let ((x (bigfloatp x)))
+    (flet
+        ((fpatanh-core (x)
+           ;; atanh(x) = -atanh(-x)
+           ;;          = 1/2*log1p(2*x/(1-x)), x >= 0.5
+           ;;          = 1/2*log1p(2*x+2*x*x/(1-x)), x <= 0.5
+
+           (let* ((fp-x (cdr (bigfloatp x))))
+             (cond ((fplessp fp-x (intofp 0))
+	            ;; atanh(x) = -atanh(-x)
+	            (mul -1 (fpatanh (bcons (fpminus fp-x)))))
+	           ((fpgreaterp fp-x (fpone))
+	            ;; x > 1, so use complex version.
+	            (multiple-value-bind (u v)
+	                (complex-atanh x (bcons (intofp 0)))
+	              (add u (mul '$%i v))))
+	           ((fpgreaterp fp-x (cdr *bfhalf*))
+	            ;; atanh(x) = 1/2*log1p(2*x/(1-x))
+	            (bcons
+	             (fptimes* (cdr *bfhalf*)
+		               (fplog1p (fpquotient (fptimes* (intofp 2) fp-x)
+					            (fpdifference (fpone) fp-x))))))
+	           (t
+	            ;; atanh(x) = 1/2*log1p(2*x + 2*x*x/(1-x))
+	            (let ((2x (fptimes* (intofp 2) fp-x)))
+	              (bcons
+	               (fptimes* (cdr *bfhalf*)
+			         (fplog1p (fpplus 2x
+					          (fpquotient (fptimes* 2x fp-x)
+						              (fpdifference (fpone) fp-x))))))))))))
     ($bfloat (bind-fpprec (fpprec-with-guard-digits)
-               ($bfloat (fpatanh-1 x))))))
+               ($bfloat (fpatanh-core x)))))))
 
-(defun fpatanh-1 (x)
-  ;; atanh(x) = -atanh(-x)
-  ;;          = 1/2*log1p(2*x/(1-x)), x >= 0.5
-  ;;          = 1/2*log1p(2*x+2*x*x/(1-x)), x <= 0.5
-
-  (let* ((fp-x (cdr (bigfloatp x))))
-    (cond ((fplessp fp-x (intofp 0))
-	   ;; atanh(x) = -atanh(-x)
-	   (mul -1 (fpatanh (bcons (fpminus fp-x)))))
-	  ((fpgreaterp fp-x (fpone))
-	   ;; x > 1, so use complex version.
-	   (multiple-value-bind (u v)
-	       (complex-atanh x (bcons (intofp 0)))
-	     (add u (mul '$%i v))))
-	  ((fpgreaterp fp-x (cdr *bfhalf*))
-	   ;; atanh(x) = 1/2*log1p(2*x/(1-x))
-	   (bcons
-	    (fptimes* (cdr *bfhalf*)
-		      (fplog1p (fpquotient (fptimes* (intofp 2) fp-x)
-					   (fpdifference (fpone) fp-x))))))
-	  (t
-	   ;; atanh(x) = 1/2*log1p(2*x + 2*x*x/(1-x))
-	   (let ((2x (fptimes* (intofp 2) fp-x)))
-	     (bcons
-	      (fptimes* (cdr *bfhalf*)
-			(fplog1p (fpplus 2x
-					 (fpquotient (fptimes* 2x fp-x)
-						     (fpdifference (fpone) fp-x)))))))))))
 
 ;; Stuff which follows is derived from atanh z = (log(1 + z) - log(1 - z))/2
 ;; which apparently originates with Kahan's "Much ado" paper.
