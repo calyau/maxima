@@ -7526,6 +7526,12 @@ block([s : make_string_output_stream()],
 ["Principal", "Value", "Principal", "Value"]$
 
 
+/* Bug #5776: "integrate(x/(x^5-x-1)+1, x, 0, 1) returns false+1" */
+
+[integrate(x/(x^5-x-1)+1, x, 0, 1), integrate((x^6-1)/(x^5-x-1), x, 0, 1)];
+['integrate(x/(x^5-x-1)+1, x, 0, 1), 'integrate((x^6-1)/(x^5-x-1), x, 0, 1)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

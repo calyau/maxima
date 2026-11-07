@@ -790,8 +790,10 @@ in the interval of integration.")
 		      (m+t (eezz (car e) ll ul ivar)
 			   ans))
 		     (t
-		      (m+t (eezz (car e) ll ul ivar)
-			   (cv (m// (cdr e) dn*) ivar ll ul))))))))))
+		      (let ((poly-part (eezz (car e) ll ul ivar))
+			    (rat-part (cv (m// (cdr e) dn*) ivar ll ul)))
+			(and poly-part rat-part
+			     (m+t poly-part rat-part)))))))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
