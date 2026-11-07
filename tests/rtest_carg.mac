@@ -277,4 +277,18 @@ rectform(subst(x = -1, [carg(-x), carg(%i*x), carg((1 + %i)*x)])), logarc;
 [0, -%pi/2, -3*%pi/4]$
 
 
+/* Bug #5775: "carg(), realpart(), imagpart() and rectform() never return for some quotients with a radical" */
+
+block([r : (x - 2*x^2)/(x + sqrt(2))],
+  [carg((r + %i)/(r - %i)), map(lambda([v], subst(x = v, imagpart(log((%i + r)/(%i - r))))), [1/4, 1])]);
+[2*atan2(1, (x - 2*x^2)/(x + sqrt(2))) - 2*%pi*ceiling((2*atan2(1, (x - 2*x^2)/(x + sqrt(2))) - %pi)/(2*%pi)),
+ [2*atan(8*(sqrt(2) + 1/4)) - %pi, %pi/4]]$
+
+block([q : (c - 6*d)/(c - 3*sqrt(2))],
+  local(d),
+  assume(d > 0),
+  subst(c = -1.3, ceiling((atan2(1, q) - atan2(1, -q) - %pi)/(2*%pi))));
+0$
+
+
 /* ---------- End of file rtest_carg.mac ------------------------------------ */

@@ -310,8 +310,18 @@
           (when (and (>= $maxmin_effort 10) (amongl '($minf $inf) a) (lenient-extended-realp a))
             (setq a ($limit a)))
 
+          ;; trigreduce rewrites only trigonometric and hyperbolic functions,
+          ;; and acot, asec, acsc and their hyperbolic forms in terms of 1/x.
+          ;; Without them SRATSIMP alone does as well, and the repeated ratsimp
+          ;; passes of trigreduce can blow up a quotient with a radical.
           (when (>= $maxmin_effort 10)
-            (setq a (sratsimp ($trigreduce a))))
+            (setq a (sratsimp
+                     (if (amongl '(%sin %cos %tan %cot %sec %csc
+                                   %sinh %cosh %tanh %coth %sech %csch
+                                   %acot %asec %acsc %acoth %asech %acsch)
+                                 a)
+                       ($trigreduce a)
+                       a))))
 
           (setq sgn (csign a)) ;($rectform a)))
 	          (cond 
