@@ -69,9 +69,7 @@ canform(%);
 ("The energy-momentum tensor is symmetric in its indices")$
 remove(g,constant);
 T([a,b],[])-T([b,a],[])$
-canform(lc2kdt(%))$
-%,kdelta$
-canform(rename(contract(expand(%))));
+ev(contract(isimplify(rename(lc2kdt(rename(%))))),kdelta,eval);
 ("Let us examine the 4-current again")$
 declare(g,constant);
 rename(J([],[a]))$
