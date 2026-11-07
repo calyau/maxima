@@ -254,3 +254,56 @@ ezgcd(x/2, x/3);
 
 ezgcd(x/2, x/3, x/5);
 [x/30, 15, 10, 6]$
+
+
+/* Bug #5532: "gcd with a small modulus intermittently signals Invalid index 4 for (SIMPLE-ARRAY FIXNUM (4 5))" */
+
+block([modulus : 101, gcd : spmod, errormsg : false, f1, f2],
+  f1 : 9*y^4*z^4+3*x^2*y^2*z^4+3*y^2*z^4+x^2*z^4-6*x^2*y^3*z^3-2*x^4*y*z^3+6*x*y^3*z^2+2*x*y*z^2-4*x^3*y^2*z,
+  f2 : 3*y^4*z^4+x^2*y^2*z^4+18*x*y^2*z^4+6*x^3*z^4+2*x*y^3*z^2-24*x*y^2*z^2+12*x^2*y*z^2-8*x^3*z^2-16*x^2*y,
+  length(sublist(makelist(errcatch(gcd(f1, f2)), 100), lambda([u], u = []))));
+0$
+
+
+/* Bug #5533: "gcd with modulus set returns 1 when the leading coefficient vanishes at the evaluation point" */
+
+block([modulus : 2, gcd : spmod],
+  gcd(expand(((x^2+x)*y+1)*(y+x)), expand(((x^2+x)*y+1)*(y+x+1))));
+(x^2+x)*y+1$
+
+
+/* Bug #5534: "gcd with modulus set returns y+1 instead of x*y+1 and ratsimp fails" */
+
+block([modulus : 10007, gcd : spmod, f, g],
+  f : expand((x*y+1)*(y+1)*(x^2*y^2+y+3)),
+  g : expand((x*y+1)*(x^3*y^2+x+y^3+7)),
+  [gcd(f, g), ratsimp(f/g)]);
+[x*y+1, (x^2*y^3+(x^2+1)*y^2+4*y+3)/(y^3+x^3*y^2+x+7)]$
+
+
+/* Bug #5781: "gcd with modulus set returns non-divisors and too small gcds, or hangs"
+   More wrong gcds from gcd:spmod with modulus set, among them a candidate that divided only one of
+   the polynomials and an evaluation point where both vanish. ZGCD picks random evaluation points,
+   so each gcd is computed 20 times in each order. Under a modulus a correct gcd may come back times
+   a constant, so results are compared up to one. */
+
+(check_spmod_gcd(f, g, p, expected_result) :=
+  block([gcds : block([gcd : spmod, modulus : p], append(makelist(gcd(f, g), 20), makelist(gcd(g, f), 20)))],
+    if every(lambda([e], block([gcd : subres, modulus : p], numberp(ratdisrep(rat(e/expected_result))))), gcds)
+    then true
+    else FAILED_GCDS('modulus = p, 'expected = expected_result, 'actual = unique(gcds))),
+  0);
+0$
+
+block([f : (8*s^2*x+3)*(-s^2*x^2-7*s-4), g : (4-s*x)*(8*s^2*x+3)*(2-6*x^3)],
+  [check_spmod_gcd(f, g, 5, s^2*x+1), check_spmod_gcd(f, g, 7, s^2*x+3), check_spmod_gcd(f, g, 101, s^2*x+13)]);
+[true, true, true]$
+
+[check_spmod_gcd((s+8)*(3*x-4), -9*s^2*(s+8)*(9*s^2*x-4*x-3*s^3-2), 5, s-2),
+  check_spmod_gcd(9*s^4*x^2+18*s^4*x+12*s^3*x+24*s^3, -15*s^2*x^3+12*s^4*x^2-20*s*x^2+25*s^3*x+12*s^2, 5, s^3*x-2*s^2),
+  check_spmod_gcd(-32*s*t^3*x^3-32*s^2*t*x^3-36*s^3*t^4*x^2-36*s^4*t^2*x^2-32*s^2*t^3*x-36*s^4*t^4,
+    40*s^2*t^2*x^3+45*s^4*t^3*x^2+72*t^3*x^2+81*s^2*t^4*x, 7, t*x+2*s^2*t^2)];
+[true, true, true]$
+
+(kill(check_spmod_gcd), 0);
+0$

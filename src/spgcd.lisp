@@ -129,12 +129,8 @@
 
 ;; PARTIAL-DIAG fills in one more row of the matrix and tries to diagonalize
 ;; what it has so far.  If the row which has just been introduced has a 
-;; zero element on the diagonal then it is scanned for its first non-zero
-;; element and it is placed in the matrix so that the non-zero element is 
-;; on the diagonal.  The rows which are missing are added to the list in 
-;; badrows.  The current row pointer may skip a couple of numbers here, so
-;; when it is equal to n, the only empty rows to add thing to are on the
-;; bad rows list.
+;; zero element on the diagonal, it depends on the rows above it. It is
+;; dropped, and the next point fills the same row, so BADROWS stays empty.
 
 (defun partial-diag (lobj pt val) ; Does one step of diagonalization of
   (let ((n (len lobj))			;the matrix in lobj
@@ -172,7 +168,7 @@
 	  (one-step mat crow i n)))
 
     (if (zerop (aref mat crow crow))	;diagonal is zero?
-	(setq badrows (cons crow badrows))
+	(return-from partial-diag (list 'matrix n skel mat row badrows))
 	(progn
 	  (monicize-row mat crow n) ;Monicize the diagonal element on this
 					;row
@@ -272,9 +268,14 @@
 
 (defun sparse-lift (c f g l-lobjs vars)
   (do ((pt (gen-point vars) (gen-point vars))
+       (tries 0 (1+ tries))
+       ;; In a small field the points may never solve the systems.
+       (limit (+ 10 (* 3 (loop for q in l-lobjs maximize (len (cdr q))))))
        (gcd))
       ((eq (car l-lobjs) 'solved)
        (cdr l-lobjs))
+    (when (> tries limit)
+      (throw 'bad-point nil))
     (setq gcd (lifting-factors-image
 	       (pcsub c pt vars) (pcsub f pt vars) (pcsub g pt vars)))
     (if (or (pcoefp gcd)
@@ -291,9 +292,13 @@
 
 (defun zgcd-lift* (c f g vars degb)
   (do ((vals (gen-point vars) (gen-point vars))
+       (tries 0 (1+ tries))
        (ans))
       ((not (null ans))
        ans)
+    ;; In a small field most or all points may be bad.
+    (when (> tries 10)
+      (throw 'zgcd-fail nil))
     (setq ans
 	  (catch 'bad-point
 	    (zgcd-lift c f g vars vals degb)))))
@@ -306,8 +311,14 @@
 
 (defun zgcd-lift (c f g vars vals degb)
   (cond ((null vars)		 ;No variables left, just the main one
+	 ;; If the enforced leading coefficient vanishes, so may that of
+	 ;; the gcd, and a constant image proves nothing.
+	 (when (pzerop c)
+	   (throw 'bad-point nil))
 	 (let ((p (lifting-factors-image c f g))) ;Compute factor and 
 					;enforce leading coefficient
+	   (when (pzerop p)		;as where F and G both vanish
+	     (throw 'bad-point nil))
 	   (if (pcoefp p) (throw 'relprime 1) ;if the GCD is 1 quit
 	       (do ((l (p-terms p) (pt-red l)) ;otherwise march
 					;though the polynomial
@@ -316,6 +327,9 @@
 			       ans)))
 		   ((null l)
 		    (nreverse ans))))))
+	((and modulus (> (+ (car degb) 2) modulus))
+	 ;; The loop below draws (CAR DEGB)+2 distinct points.
+	 (throw 'zgcd-fail nil))
 	((let ((prev-lift		;Recurse if possible
 		(zgcd-lift (pcsubsty (car vals) (car vars) c)
 			   (pcsubsty (car vals) (car vars) f)
@@ -392,17 +406,19 @@
     (ptimes mon
 	    (do ((test))
 		(nil)
-	      (setq gcd (catch 'relprime (zgcd1 f g)))
+	      (setq gcd (catch 'zgcd-fail (catch 'relprime (zgcd1 f g))))
+	      ;; For *WHICH-FACTOR* 2 or 3, GCD is a cofactor. TEST is the
+	      ;; gcd only if it divides both F and G.
 	      (setq test
-		    (case *which-factor*
-		      (1 (testdivide f gcd))
-		      (2 (testdivide f gcd))
-		      (3 (testdivide g gcd))))
+		    (and gcd
+			 (case *which-factor*
+			   (1 (and (testdivide f gcd) (testdivide g gcd) gcd))
+			   (2 (let ((h (testdivide f gcd)))
+				(and h (testdivide g h) h)))
+			   (3 (let ((h (testdivide g gcd)))
+				(and h (testdivide f h) h))))))
 	      (cond ((not (null test))
-		     (return
-		       (cond ((equal *which-factor* 1)
-			      gcd)
-			     (t test))))
+		     (return test))
 		    ((not (null modulus))
 		     (return (let (($gcd '$red))
 			       (pgcd f g)))))))))
@@ -445,8 +461,12 @@
 		   (zpdegreevector c vars))))
 
     (cond ((not (null modulus))
+	   ;; LOBJ->POLY skips the first exponent of each monomial.
+	   ;; NEW-SKEL puts a 0 there, as for LINSOLS below.
 	   (lobj->poly (car vars) (cdr vars)
-		       (zgcd-lift* c f g (cdr vars) (cdr degb))))
+		       (mapcar #'(lambda (q)
+				   (cons (car q) (new-skel (cadr q) (caddr q))))
+			       (zgcd-lift* c f g (cdr vars) (cdr degb)))))
 	  (t
 	   (setq h (* (maxcoefficient f)
 			  (maxcoefficient g)))
@@ -519,10 +539,11 @@
 ;; resulting polynomials are called f* and g*.   The degree of gcd(f*, g*) is
 ;; used as the degree of gcd(f, g) in that variable.
 ;;
-;; The univariate gcd's are computed with modulus=*alpha.
+;; The univariate gcd's are computed modulo MODULUS, or *ALPHA if MODULUS is
+;; null.
 
 (defun gcd-degree-vector (f g vars)
-  (let ((modulus *alpha))
+  (let ((modulus (or modulus *alpha)))
     (setq f (pmod f) g (pmod g))
     (do ((vn (cdr vars) (cdr vn))
 	 (vs (delete (car vars) (copy-list vars) :test #'equal)

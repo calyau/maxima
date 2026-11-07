@@ -185,6 +185,9 @@ Bug fixes for numbered bugs:
 * \#5523 integrate(x^n*(%e^(sqrt(x)-x))^u,x) (type 6-1) has an extra factor %e^(2*u*(sqrt(x)-x))
 * \#5524 integrate(sin(2.0*x)*tan(x),x) exhausts the control stack
 * \#5525 integrate takes an even float power such as cos(x)^2.0 for an odd one
+* \#5532 gcd with a small modulus intermittently signals Invalid index 4 for (SIMPLE-ARRAY FIXNUM (4 5))
+* \#5533 gcd with modulus set returns 1 when the leading coefficient vanishes at the evaluation point
+* \#5534 gcd with modulus set returns y+1 instead of x*y+1 and ratsimp fails
 * \#5560 cos(%pi*(4*m+3)^3) simplifies to 1 for integer m; it is -1
 * \#5561 acot(-0.0) signals 'argument -0.0 isn't in the domain of acot'
 * \#5566 exp(%i*x/2+%i*%pi) is not simplified
@@ -320,6 +323,7 @@ Bug fixes for numbered bugs:
 * \#5773 integrate() announces a principal value for (exp(x)-1)/x on [-1, 1]
 * \#5775 carg(), realpart(), imagpart() and rectform() never return for some quotients with a radical
 * \#5776 integrate(x/(x^5-x-1)+1, x, 0, 1) returns false+1
+* \#5781 gcd with modulus set returns non-divisors and too small gcds, or hangs
 
 Bug fixes for unnumbered bugs:
 ------------------------------
