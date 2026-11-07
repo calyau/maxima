@@ -2257,30 +2257,37 @@
        (* z (sqrt (%pi z))))))
 
 ;; Erf(z), or erfc(z) if ERFCP is non-NIL, for a BIGFLOAT or
-;; COMPLEX-BIGFLOAT Z with realpart(z) >= 0.
+;; COMPLEX-BIGFLOAT Z.  For realpart(z) < 0, erf(z) = -erf(-z) and
+;; erfc(z) = 2 - erfc(-z) = 1 + erf(-z), computed with the same extra
+;; precision as erf(-z).
 (defun bf-erf-or-erfc (z erfcp)
-  (let* ((x^2 (expt (realpart z) 2))
+  (let* ((negp (minusp (realpart z)))
+	 (z (if negp (- z) z))
+	 (x^2 (expt (realpart z) 2))
 	 (y^2 (expt (imagpart z) 2))
 	 (r^2 (+ x^2 y^2))
 	 (guard (+ 10 (integer-length maxima::fpprec)
 		   (max 0 (nth-value 1 (decode-float (+ 1 r^2)))))))
     (if (> (/ r^2 (log 2d0)) (+ maxima::fpprec guard 8))
-	(let ((erfc (with-extra-precision (guard (z))
-		      (bf-erfc-asymptotic z))))
-	  ;; On the imaginary axis erfc(z) is 1 plus the asymptotic
-	  ;; series, so that erf(z) is pure imaginary.
-	  (if (zerop (realpart z))
-	      (if erfcp (+ 1 erfc) (- erfc))
-	      (if erfcp erfc (- 1 erfc))))
+	(with-extra-precision (guard (z))
+	  (let ((erfc (bf-erfc-asymptotic z)))
+	    ;; On the imaginary axis erfc(z) is 1 plus the asymptotic
+	    ;; series, so that erf(z) is pure imaginary.
+	    (when (zerop (realpart z))
+	      (setf erfc (+ 1 erfc)))
+	    (cond (erfcp (if negp (- 2 erfc) erfc))
+		  (negp (- erfc 1))
+		  (t (- 1 erfc)))))
 	(let ((loss (/ (* 2 (if (>= x^2 y^2) y^2 x^2)) (log 2d0))))
 	  ;; erfc(z) = 1 - erf(z) loses about realpart(z^2)/log(2) more
 	  ;; bits.
-	  (when (and erfcp (> x^2 y^2))
+	  (when (and erfcp (not negp) (> x^2 y^2))
 	    (setf loss (+ loss (/ (- x^2 y^2) (log 2d0)))))
 	  (with-extra-precision ((+ guard (values (ceiling loss))) (z))
-	    (if erfcp
-		(- 1 (bf-erf-series z))
-		(bf-erf-series z)))))))
+	    (let ((erf (bf-erf-series z)))
+	      (cond (erfcp (if negp (+ 1 erf) (- 1 erf)))
+		    (negp (- erf))
+		    (t erf))))))))
 
 ;; Erf(z) for all z.  Z must be a CL real or complex number or a
 ;; BIGFLOAT or COMPLEX-BIGFLOAT object.  The result will be of the
@@ -2311,19 +2318,12 @@
 	   (cl:real (maxima::erf z))
 	   (cl:complex (maxima::complex-erf z))
 	   ((or bigfloat complex-bigfloat)
-	    (if (minusp (realpart z))
-		(- (bf-erf-or-erfc (- z) nil))
-		(bf-erf-or-erfc z nil)))))))
+	    (bf-erf-or-erfc z nil))))))
 
 (defun bf-erfc (z)
-  ;; For a BIGFLOAT or COMPLEX-BIGFLOAT, BF-ERF-OR-ERFC computes
-  ;; erfc(z) for realpart(z) >= 0, and erfc(z) = 2 - erfc(-z)
-  ;; otherwise.
+  ;; For a BIGFLOAT or COMPLEX-BIGFLOAT, use BF-ERF-OR-ERFC.
   (when (typep z '(or bigfloat complex-bigfloat))
-    (return-from bf-erfc
-      (if (minusp (realpart z))
-	  (- 2 (bf-erf-or-erfc (- z) t))
-	  (bf-erf-or-erfc z t))))
+    (return-from bf-erfc (bf-erf-or-erfc z t)))
   ;; For a CL number, computing erfc(z) via 1 - erf(z) is not very
   ;; accurate if erf(z) is near 1.  Wolfram says
   ;;

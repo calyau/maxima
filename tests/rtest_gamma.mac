@@ -4599,3 +4599,19 @@ true;
 
 (reset(fpprec), done);
 done;
+
+/* erfc(z) for realpart(z) < 0 near a zero of erfc */
+(fpprec : 64, done);
+done;
+
+relerror(erfc(bfloat(-1420621/2^20) + bfloat(2088205/2^20)*%i), -6.8644539062097708724071503790660693252291302277464373424670277301134380342b-6 - 1.095632640090183973804446050860168884618884144069402392375538357099424611b-6*%i, 1b-64);
+true;
+
+(fpprec : 16, done);
+done;
+
+relerror(erfc(bfloat(-1382/2^10) + bfloat(2038/2^10)*%i), -2.1678434262245838826184981b-2 + 4.6167282549833713582522427b-2*%i, 1b-16);
+true;
+
+(reset(fpprec), done);
+done;
