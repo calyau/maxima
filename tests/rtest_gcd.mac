@@ -307,3 +307,13 @@ block([f : (8*s^2*x+3)*(-s^2*x^2-7*s-4), g : (4-s*x)*(8*s^2*x+3)*(2-6*x^3)],
 
 (kill(check_spmod_gcd), 0);
 0$
+
+
+/* Bug #5783: "gcd:mod hangs on multivariate polynomials with a small modulus" */
+
+block([gcd : 'mod, x, y],
+  [block([modulus : 2], gcd(expand((x+y)*(x*y+1)), expand((x+y)*(x^2+y)))),
+   block([modulus : 2], ratsimp(expand((x+y)*(x*y+1))/expand((x+y)*(x^2+y)))),
+   block([modulus : 3], gcd(expand((x*y+1)*(x*y+x+1)), expand((x*y+1)*(x*y-x+2)))),
+   block([modulus : 7], gcd(expand((x+y)*(x*y^6+1)), expand((x+y)*(x^2+y^6+1))))]);
+[y+x, (x*y+1)/(y+x^2), x*y+1, y+x]$

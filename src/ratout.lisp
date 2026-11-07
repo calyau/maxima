@@ -41,7 +41,11 @@
     (cond (a
 	   (list a (pquotient ratout-x a) (pquotient ratout-y a)))
 	  (modulus
-	   (pgcdp ratout-x ratout-y modulus))
+	   ;; PGCDP returns NIL when the modulus is too small for it. Then
+	   ;; use the subresultant gcd, as PGCDA does for algebraic inputs.
+	   (or (pgcdp ratout-x ratout-y modulus)
+	       (let ((g (let (($gcd '$subres)) (pgcd ratout-x ratout-y))))
+		 (list g (pquotient ratout-x g) (pquotient ratout-y g)))))
 	  (t
 	   (pgcdm ratout-x ratout-y)))))
 
@@ -193,7 +197,7 @@
 	   h2star	ratout-xv		e		b
 	   gbar		nubar		nu1bar		nu2bar
 	   gtilde		f1tilde		f2tilde		biggtilde
-	   degree		f1		f1f2)
+	   degree		f1		f1f2		(k 0))
        (set-modulus modulus)
        (cond ((and (univar (cdr ratout-bigf1))
 		   (univar (cdr ratout-bigf2)))
@@ -223,6 +227,10 @@
        (setq f1f2 (ptimes f1 f1f2))
        (setq nubar (max nu1bar nu2bar))
      step6
+       ;; B steps through the residues mod MODULUS, so after MODULUS
+       ;; points it would repeat one. Give up instead.
+       (when (> (incf k) modulus)
+	 (return nil))
        (setq b (cplus b 1))
        (cond ((equal (pcsubst f1f2 b ratout-xv) 0)
 	      (go step6)))
