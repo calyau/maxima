@@ -138,7 +138,7 @@
 		   (go ret1))
 		  ((null ratout-*var)
 		   (return (list p 1))))
-	    (pgath1 (cdr p) ratout-*max ratout-*var)
+	    (setq ratout-*max (pgath1 (cdr p) ratout-*max ratout-*var))
 	  a
 	    (setq ratout-*res 0)
 	    (labels
@@ -250,9 +250,9 @@
 	      (setq h1star h1tilde)
 	      (setq h2star h2tilde))
 	     (t
-	      (setq gstar (lagrange33 gstar biggtilde q b))
-	      (setq h1star (lagrange33 h1star h1tilde q b))
-	      (setq h2star (lagrange33 h2star h2tilde q b))
+	      (setq gstar (lagrange33 gstar biggtilde q b ratout-xv))
+	      (setq h1star (lagrange33 h1star h1tilde q b ratout-xv))
+	      (setq h2star (lagrange33 h2star h2tilde q b ratout-xv))
 	      (setq q (ptimes q (list ratout-xv 1 1 0 (cminus b))))))
        ;; Step 12
        (cond ((not (> ratout-n nubar))

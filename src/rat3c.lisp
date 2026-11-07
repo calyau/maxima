@@ -510,12 +510,11 @@
 	   (pplus u (pctimes qk uk)))))
 
 
-(defun lagrange33 (u uk qk xk)
-  (declare (special xv))
-  (setq uk (pdifference uk (pcsubst u xk xv)))
+(defun lagrange33 (u uk qk xk var2)
+  (setq uk (pdifference uk (pcsubst u xk var2)))
   (cond ((pzerop uk) u)
 	(t (pplus u (ptimes
-		     (pctimes (crecip (pcsubst qk xk xv)) uk)
+		     (pctimes (crecip (pcsubst qk xk var2)) uk)
 		     qk)))))
 
 

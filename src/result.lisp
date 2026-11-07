@@ -257,7 +257,7 @@
 			 (t (setq b* (pcsubst b bp xv))
 			    (cond ((reject b* n1 xr1) (go step3))) ))
 		   (setq c* (cpres a* b* xr1 varl))
-		   (setq c (lagrange33 c c* d bp))
+		   (setq c (lagrange33 c c* d bp xv))
 		   (setq d (ptimeschk d (list xv 1 1 0 (cminus bp))))
 		   (cond ((> (cadr d) k) (return c))
 			 (t (go step3))))))))
