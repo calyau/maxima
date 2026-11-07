@@ -7532,6 +7532,24 @@ block([s : make_string_output_stream()],
 ['integrate(x/(x^5-x-1)+1, x, 0, 1), 'integrate((x^6-1)/(x^5-x-1), x, 0, 1)]$
 
 
+/* Bug #5785: "integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x) contains false" */
+
+/* The second integral was partly returned unevaluated, the third never returned: */
+[integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x), integrate((x+2)*sqrt(1-x)/(x+1)^(5/2), x),
+ integrate((x^2+1)*sqrt(x^2+x)/x^3, x)];
+[-3*sqrt(2)*asin(20*x/11+1/11)/5^(5/2)-2*sqrt(-10*x^2-x+3)/(1875*x^2+2250*x+675)-194*sqrt(-10*x^2-x+3)/(4125*x+2475),
+ -asin(x)-2*sqrt(1-x^2)/(3*x^2+6*x+3)-5*sqrt(1-x^2)/(3*x+3),
+ log(2*sqrt(x^2+x)+2*x+1)/2-2*sqrt(x^2+x)/(3*x)-2*sqrt(x^2+x)/(3*x^2)+sqrt(x^2+x)]$
+
+/* Compare with quad_qags on intervals where the integrands are real: */
+map(lambda([f, ivs],
+  block([F : integrate(f, x)],
+    map(lambda([iv], is(abs(float(rectform(subst(x = iv[2], F) - subst(x = iv[1], F))) - quad_qags(f, x, iv[1], iv[2])[1]) < 1e-10)), ivs))),
+  [(2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), (x+2)*sqrt(1-x)/(x+1)^(5/2), (x^2+1)*sqrt(x^2+x)/x^3],
+  [[[-1/2, 0], [0, 2/5], [-11/20, 1/2]], [[-1/2, 9/10], [0, 1/2]], [[-3, -3/2], [1, 2]]]);
+[[true, true, true], [true, true], [true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
