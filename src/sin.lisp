@@ -31,6 +31,10 @@
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
   $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
 
+(defvar *integrate-abs* nil
+  "True while SININT or INTEGRATE-ABS integrates, so that INTEGRATE-ABS is
+  tried only on the integrand of an outermost SININT.")
+
 (defvar *integrator-stack* nil
   "The integrals that the enclosing calls of INTEGRATOR are computing for an
   integration by parts, each as a cons of the integrand and its variable. It
@@ -1885,6 +1889,82 @@
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
 
+;; Does E contain %e^q with a log of something depending on VAR2 in q? The
+;; integrator writes some powers it splits or merges that way, and then they
+;; can disagree with Maxima's powers where their base is negative.
+(defun exp-log-p (e var2)
+  (and (not (atom e))
+       (if (and (eq (caar e) 'mexpt) (eq (cadr e) '$%e))
+         (involve-var (caddr e) var2 '(%log))
+         (some #'(lambda (u) (exp-log-p u var2)) (cdr e)))))
+
+;; Integrate EXPR, which contains abs(p) for a single real p = b*VAR2+a, over
+;; the reals, or return NIL. Let r be the zero of p and s = abs(p)/p. Where
+;; p > 0, EXPR is FP, EXPR with p for abs(p), with antiderivative F. Where
+;; p < 0, it is FM, EXPR with -p for abs(p), and GM(y) = FM(2*r-y), with
+;; antiderivative G, moves that side to y where p > 0. Taking F and G only at
+;; y = (abs(p)-a)/b, which is where p > 0, (F(y)-G(y))/2 + s*(F(y)+G(y))/2 is
+;; an antiderivative on either side of r, and subtracting s*(F(r)+G(r))/2
+;; makes it continuous at r. This is s*(F(y)-F(r)) if GM = FP and F(y) if
+;; GM = -FP. If FM = -FP, s*(F-F(r)) is one, too, unless F has radicands that
+;; FP lacks, as when the integrator splits a root into roots that hold only
+;; where p > 0. With domain : complex, VAR2 may be complex: nothing is done.
+(defun integrate-abs (expr var2)
+  (let* ((ps (gather-args-of expr 'mabs var2))
+         (p (car ps))
+         (ab (and (eq $domain '$real)
+                  (not (or *integrate-abs* *in-risch-p*))
+                  p (null (cdr ps))
+                  (m2-b*x+a p var2))))
+    (when (and ab (not (member ($csign p) '($complex $imaginary))))
+      (let* ((*integrate-abs* t)
+             (a (cdras 'a ab))
+             (b (cdras 'b ab))
+             (r (div (neg a) b))
+             (abs-p (ftake 'mabs p))
+             (s (div abs-p p))
+             (fp (maxima-substitute p abs-p expr))
+             (fm (maxima-substitute (neg p) abs-p expr))
+             (gm (maxima-substitute (sub (mul 2 r) var2) var2 fm)))
+        (labels ((integ (e)
+                   (let ((*integrator-level* 0)
+                         $opsubst varlist genvar *integrator-stack*)
+                     (declare (special *integrator-level*))
+                     (let ((v (simplify (integrator e var2 nil))))
+                       (unless (or (isinop v '%integrate) (exp-log-p v var2))
+                         v))))
+                 (equiv (e1 e2)
+                   (zerop1 (let (($ratprint nil)) ($ratsimp (sub e1 e2)))))
+                 (at-r (e)
+                   (or (car (let (($errormsg nil))
+                              (errcatch (maxima-substitute r var2 e))))
+                       0))
+                 (at-abs (e)
+                   (maxima-substitute (div (sub abs-p a) b) var2 e))
+                 (radicands (e)
+                   (cond ((atom e) nil)
+                         ((and (mexptp e)
+                               (not (integerp (caddr e)))
+                               (not (freeof var2 (cadr e))))
+                          (cons (cadr e) (radicands (cadr e))))
+                         (t (mapcan #'radicands (cdr e))))))
+          (let ((f (integ fp))
+                g)
+            (cond ((null f) nil)
+                  ((equiv gm fp)
+                   (mul s (sub (at-abs f) (at-r f))))
+                  ((equiv gm (neg fp))
+                   (at-abs f))
+                  ((and (equiv fm (neg fp))
+                        (subsetp (radicands f) (radicands fp) :test #'alike1))
+                   (mul s (sub f (at-r f))))
+                  ((setq g (integ gm))
+                   (let ((u (at-abs f))
+                         (v (at-abs g)))
+                     (add (div (sub u v) 2)
+                          (mul s (sub (div (add u v) 2)
+                                      (at-r (div (add f g) 2))))))))))))))
+
 ;; This is the top level of the integrator
 (defun sinint (expr var2)
  (with-new-context (context)
@@ -1932,11 +2012,12 @@
        0)
       
       ((let ((ans (simplify
-                     (let ($opsubst varlist genvar *integrator-stack*)
+                     (let ($opsubst varlist genvar *integrator-stack*
+                           (*integrate-abs* t))
 		       (integrator expr var2 nil)))))
-	     (if (sum-of-intsp ans var2)
-		 (list '(%integrate) expr var2)
-		 ans)))))))
+	 (cond ((and (isinop ans '%integrate) (integrate-abs expr var2)))
+	       ((sum-of-intsp ans var2) (list '(%integrate) expr var2))
+	       (t ans))))))))
 
 ;; SUM-OF-INTSP
 ;;

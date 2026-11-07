@@ -29,10 +29,10 @@ integrate(abs(%pi * x + 1),x);
 ((%pi*x+1)*abs(%pi*x+1))/(2*%pi)$
 
 integrate(x*abs(x),x);
-(x^3*signum(x))/3$
+(x^2*abs(x))/3$
 
 (assume(n > 2), integrate(abs(x) * x^n,x));
-(x^(n+2)*signum(x))/(n+2)$
+x^(n+3)/((n+2)*abs(x))$
 
 (forget(n > 2),0);
 0$
@@ -151,7 +151,7 @@ integrate(x*abs(x),x,-a,a);
 0$
 
 integrate(x^2*abs(x),x,-a,a);
-(a^4*signum(a))/2$
+(a^3*abs(a))/2$
 
 integrate(unit_step(x),x,-1,0);
 0$
@@ -164,7 +164,7 @@ abs(b)/2+b/2-abs(a)/2-a/2$
 
 /* With hyper_int, we get an interesting result... */
 (i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
-(((2*x^3)/3-a*x^2+a^3/3)*signum(x-a))/2$
+((x-a)*((2*x^3-3*a*x^2)/6+a^3/6))/abs(x-a)$
 
 diff(i,x);
 f(x)*abs(x-a)$
@@ -225,19 +225,19 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 i : integrate(abs(x-1)/ ( 1 + x^2),x);
-signum(x-1)*(log(x^2+1)/2-atan(x)-log(2)/2+%pi/4)$
+((x-1)*(log(x^2+1)/2-atan(x)-log(2)/2+%pi/4))/abs(x-1)$
 
 [unwind_protect((assume(x<1), ratsimp(diff(i,x))), forget(x < 1)), unwind_protect((assume(x>1), ratsimp(diff(i,x))), forget(x>1))];
 [-((x-1)/(x^2+1)),(x-1)/(x^2+1)]$
 
 integrate(exp(-abs(x)), x);
-((-%e^x-%e^(-x)+2)*signum(x))/2+(%e^x-%e^(-x))/2$
+((1-%e^-abs(x))*x)/abs(x)$
 
 ratsimp(integrate(cos(x + abs(x)),x));
-((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
+((abs(x)+x)*sin(2*abs(x))+2*x*abs(x)-2*x^2)/(4*abs(x))$
 
 signum_to_abs(integrate(diff(abs(x) * cos(x),x),x));
-cos(x)*abs(x)$
+abs(x)*cos(abs(x))$
 
 integrate(abs(x) * exp(-abs(x-9)),x,minf,inf);
 18 + 2 * exp(-9)$
@@ -430,7 +430,7 @@ integrate(1/(1+abs(x)),x,-a,a),ratsimp;
 0$
 
 i : integrate(1/(1+abs(x)),x);
-signum(x)*(log(x+1)+log(1-x))/2+(log(x+1)-log(1-x))/2$
+(x*log(abs(x)+1))/abs(x)$
 
 [limit(i,x,-1,minus)-limit(i,x,-1,plus), limit(i,x,1,minus)-limit(i,x,1,plus)];
 [0,0]$
@@ -462,7 +462,7 @@ integrate(signum(abs(x)),x,0,2);
 /* SF bug ID: 3034415; the antidervative is non-ideal, but at least it no longer signals an error. */
 
 integrate(1/abs(x),x);
-'integrate(1/abs(x),x)$
+(x*log(abs(x)))/abs(x)$
 
 (extra_integration_methods : cons('conditional_integrate,extra_integration_methods),0);
 0$
@@ -538,7 +538,7 @@ integrate(signum(abs(x)),x,-2,2), prederror : false;
 4$
 
 integrate(sqrt(1+abs(x)),x);
-(((2*(x+1)^(3/2))/3+(2*(1-x)^(3/2))/3-4/3)*signum(x))/2+((2*(x+1)^(3/2))/3-(2*(1-x)^(3/2))/3)/2$
+(x*((2*(abs(x)+1)^(3/2))/3-2/3))/abs(x)$
 
 (i : integrate(sqrt(max(5,x)),x),0);
 0$
@@ -700,10 +700,10 @@ integrate(1/(1+abs(x)),x,-1,1);
 2*log(2)$
 
 integrate(1/(1+abs(x)),x,-1/2,1/2);
-(log(2)+log(3/2))/2-log(2)-((-log(2)-log(3/2))/2)+log(3/2)$
+2*log(3/2)$
 
 integrate(1/(1+abs(x)),x,-107,107);
-(log(108)-log(106)-%i*%pi)/2+log(108)-((-log(108)+log(106)+%i*%pi)/2)+log(106)+%i*%pi$
+2*log(108)$
 
 /* bugs #3519 & #3641 */
 integrate(abs(sin(x)),x,0,2*%pi);

@@ -673,7 +673,11 @@ in the interval of integration.")
 	   (let ((*pcprntd* t))
 	     (principal-value-integral exp ivar ll ul poles)))
 	  ((and (symmetric-intervalp ll ul) (oddfn exp ivar)) (principal) 0) ;odd integrand, symmetric interval
-	((not (null (setq anti-deriv (antideriv exp ivar))))
+	;; Not by INTEGRATE-ABS: looking for discontinuities, TAKE-PRINCIPAL
+	;; can ask for the sign of IVAR, which would turn abs(p)/p in the
+	;; antiderivative into a constant on the whole interval.
+	((not (null (setq anti-deriv (let ((*integrate-abs* t))
+				       (antideriv exp ivar)))))
 	   (cond ((not (null poles))
 		  (multiple-value-bind (ignore new-ll new-ul)
                       (order-limits 'ask ivar ll ul)

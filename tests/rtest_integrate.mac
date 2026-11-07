@@ -7532,6 +7532,50 @@ block([s : make_string_output_stream()],
 ['integrate(x/(x^5-x-1)+1, x, 0, 1), 'integrate((x^6-1)/(x^5-x-1), x, 0, 1)]$
 
 
+/* integrate() with abs(p), p linear in x: abs(p) is p or -p on either side of the zero of p.
+   sqrt(c*x^2) simplifies to sqrt(c)*abs(x). */
+
+[integrate(x^2*abs(x), x), integrate(x/abs(x), x), integrate(1/abs(x), x), integrate(1/abs(5*x+3), x),
+ integrate(sqrt(abs(x)), x)];
+[x^3*abs(x)/4, abs(x), x*log(abs(x))/abs(x), (5*x+3)*log(abs(5*x+3))/(5*abs(5*x+3)), 2*x*sqrt(abs(x))/3]$
+
+[integrate(sqrt(c*x^2)/(x*(a+b*x)^2), x), integrate(sqrt(c*x^2)/(x*(a+b*x)), x)];
+[x*(sqrt(c)/(a*b)-sqrt(c)/(b*(b*x+a)))/abs(x), x*(sqrt(c)*log(b*x+a)/b-log(a)*sqrt(c)/b)/abs(x)]$
+
+integrate(x^n*abs(x), x), ask_hide_prompt; no;
+x^(n+3)/((n+2)*abs(x))$
+
+[integrate(1/(1+abs(x)^3), x), integrate(x*sqrt(1+abs(x)), x)];
+[x*(atan((2*abs(x)-1)/sqrt(3))/sqrt(3)+log(abs(x)+1)/3-log(-abs(x)+x^2+1)/6+%pi/(2*3^(3/2)))/abs(x),
+ 2*(abs(x)+1)^(5/2)/5-2*(abs(x)+1)^(3/2)/3]$
+
+/* Continuous at the zero of p */
+
+block([F : integrate(abs(x-1)/(x+1), x)],
+  [F, limit(F, x, 1, minus), limit(F, x, 1, plus)]);
+[(x-1)*(-2*log(x+1)+x+2*log(2)-1)/abs(x-1), 0, 0]$
+
+/* Antiderivatives on both sides of 0 */
+
+map(lambda([f], block([F : integrate(f, x)],
+    map(lambda([s], radcan(subst(abs(x) = s*x, diff(F, x) - f))), [1, -1]))),
+  [1/(1+abs(x)^3), x*sqrt(1+abs(x)), (x-sqrt(x^6))/(x*(1-x^4)), abs(x)/sqrt(x^2+x)]);
+[[0, 0], [0, 0], [0, 0], [0, 0]]$
+
+/* Definite integrals across the zero of p */
+
+[integrate(x^2*abs(x), x, -1, 1), integrate(abs(x-1)/(x+1), x, 0, 2), integrate(sqrt(abs(x)), x, -1, 4),
+ integrate(x/abs(x), x, -1, 2), integrate(abs(x)/(1+x^2), x, -1, 2)];
+[1/2, 4*log(2)-2*log(3), 6, 1, log(5)/2+log(2)/2]$
+
+/* Not done: abs of a non-polynomial, two abs, p not linear, p maybe complex, domain : complex */
+
+[integrate(abs(sin(x)), x), integrate(abs(x)*abs(x-1), x), integrate(abs(x^2-1), x),
+ integrate(x^2*abs(x+sqrt(a)), x), block([domain : complex], integrate(x^2*abs(x), x))];
+['integrate(abs(sin(x)), x), 'integrate(abs(x)*abs(x-1), x), 'integrate(abs(x^2-1), x),
+ 'integrate(x^2*abs(x+sqrt(a)), x), 'integrate(x^2*abs(x), x)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
