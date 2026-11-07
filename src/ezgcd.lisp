@@ -57,10 +57,25 @@
   (do ((r))
       ((not (zerop (setq r (cmod (random 1000))))) r)))
 
+;; The next nonzero residue after N modulo MODULUS.
+(defun nextnon0 (n modulus)
+  (let ((m (cmod (1+ n))))
+    (if (zerop m) (cmod (1+ m)) m)))
+
+;; Return values for the variables VARL, chosen one at a time, at which the
+;; polynomial LCP does not vanish, or NIL if none are found. For each
+;; variable try 0, then each nonzero residue modulo TEMPPRIME once, starting
+;; at a random one. With a small modulus LCP can vanish at every residue.
 (defun getgoodvals (varl lcp)
-  (mapcar #'(lambda (v) (do ((val 0 (non0rand tempprime)) (temp))
+  (mapcar #'(lambda (v) (do ((val 0 (if (eql val 0)
+				      (non0rand tempprime)
+				      (nextnon0 val tempprime)))
+			     (n tempprime (1- n))
+			     (temp))
 			    ((not (pzerop (setq temp (pcsubsty val v lcp))))
-			     (setq lcp temp) val)))
+			     (setq lcp temp) val)
+			  (when (eql n 1)
+			    (return-from getgoodvals nil))))
 	  varl))
 
 (defun evmap (vals pl)
@@ -68,6 +83,7 @@
      (cond ((equal nsvals (length svalsl)) (return nil)))
      (cond (valflag (go newvals)))
      (setq vals (getgoodvals svars lcprod))
+     (cond ((null vals) (setq valflag t) (go newvals)))
      again (cond ((member vals svalsl :test #'equal)
 		 (setq vals (rand (length svars) tempprime))
 		 (go again)))
@@ -104,9 +120,13 @@
 		   (ptimesmerge (cdr pl1) (cdr pl2))))
 	(t nil)))
 
+;; MODULUS is rebound because the lifting below sets it. OLDMODULUS is the
+;; modulus of the gcd, NIL over the integers, and the content of the lifted
+;; factor has to be removed modulo it.
 (defun ez1call (builder factrs lc1 valist ovarlist)
   (prog (*prime plim nn* ne nn*-1 zl zfactr oldlc lcd0
-	 dlp limk genvar mult subval subvar)
+	 dlp limk genvar mult subval subvar
+	 (modulus modulus) (oldmodulus modulus))
      (declare (special subval subvar))
      (setq oldlc (caddr builder))
      (cond ((not (equal 1 lc1))
@@ -136,7 +156,11 @@
 			  maximize (multideg x)))
 	    (setq zfactr (z1 builder (car factrs)(cadr factrs)))
 	    (setq zfactr (restorelc zfactr (caddr builder)))
-	    (return (oldrep(cadr zfactr)))))
+	    (setq zfactr (oldrep (cadr zfactr)))
+	    ;; RESTORELC removes the content over the integers
+	    (return (if oldmodulus
+		      (cadr (fastcont (pmod zfactr)))
+		      zfactr))))
      (setq modulus plim lcd0 (caddar factrs))
      (setq mult (ctimes (pcsub lc1 svals svars)
 			(crecip lcd0)))
@@ -147,7 +171,7 @@
 		  maximize (multideg x)))
      (setq zfactr (z1 builder (car factrs) (cadr factrs)))
      (setq zfactr (pmod (oldrep (car zfactr))))
-     (return (cadr (let ((modulus nil))
+     (return (cadr (let ((modulus oldmodulus))
 		     (fastcont zfactr))))))
 
 (defun getd0 (tpl tvals)
@@ -281,7 +305,6 @@
 		      (list d0 cofact0) gcdlcs
 		      (reverse svals)
 		      (reverse svars)))
-     (setq modulus nil)
      end  (setq pcofactl nil temp pfl)
      (cond ((pminusp d) (setq d (pminus d))))
      loop1(cond (temp (setq cofact0 (eztestdivide (car temp) d)))
@@ -345,6 +368,10 @@
 
 (defun nonsqfrcase(pl vl)
   (prog (d f ptr)
+     ;; The square-free split below needs characteristic zero. Modulo p a
+     ;; factor such as x^p+s has derivative zero and gets lost.
+     (when modulus
+       (return (oldgcdcall pl)))
      (do ((dl pl (cdr dl))
 	  (pt 1 (1+ pt)))
 	 ((intersection (cdr vl) (listovars (car dl)) :test #'equal)
