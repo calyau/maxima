@@ -322,6 +322,7 @@ Bug fixes for numbered bugs:
 * \#5770 file_search_cache: true doesn't override a failed check, and auto uses the cache before checking
 * \#5772 integrate(f, x, b, minf) can be wrong: integrate(exp(x), x, 0, minf) is called divergent
 * \#5773 integrate() announces a principal value for (exp(x)-1)/x on [-1, 1]
+* \#5774 block(...) arguments are simplified when block is not evaluated
 * \#5775 carg(), realpart(), imagpart() and rectform() never return for some quotients with a radical
 * \#5776 integrate(x/(x^5-x-1)+1, x, 0, 1) returns false+1
 * \#5781 gcd with modulus set returns non-divisors and too small gcds, or hangs

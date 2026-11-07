@@ -198,13 +198,13 @@ def block_random(m_vars):
     m_vars = Stack({}, m_vars)
     m_vars.ins({})
     m_vars[\"c\"] = block_random(Stack({}, m_vars))
-    m_vars[\"c\"] = (6 + m_vars[\"c\"])
+    m_vars[\"c\"] = (m_vars[\"c\"] + 1 + 2 + 3)
     return(m_vars[\"c\"])
 def block_random(m_vars):
     m_vars = Stack({}, m_vars)
     m_vars.ins({})
     m_vars[\"e\"] = 20
-    m_vars[\"f\"] = (10 + m_vars[\"e\"])
+    m_vars[\"f\"] = (m_vars[\"e\"] + 10)
     return(m_vars[\"f\"])
 block_random(Stack({}, m_vars))"$
 
@@ -278,7 +278,7 @@ pytranslate('(for i in [1,2,3] do (print(i), print(i*2))));
 "
 for m_vars[\"i\"] in [1, 2, 3]:
     m_funcs[\"print\"](m_vars[\"i\"])
-    m_funcs[\"print\"]((2 * m_vars[\"i\"]))"$
+    m_funcs[\"print\"]((m_vars[\"i\"] * 2))"$
 
 /* Initial, increment and limit values specified */
 pytranslate('(for i from 1 step 3 thru 5 do print(i)));
@@ -290,7 +290,7 @@ pytranslate('(for i from 1 step 3 thru 5 do (print(i), a:20+i, print(i*a))));
 for m_vars[\"i\"] in range(1, 6, 3):
     m_funcs[\"print\"](m_vars[\"i\"])
     m_vars[\"a\"] = (20 + m_vars[\"i\"])
-    m_funcs[\"print\"]((m_vars[\"a\"] * m_vars[\"i\"]))"$
+    m_funcs[\"print\"]((m_vars[\"i\"] * m_vars[\"a\"]))"$
 
 /* Initial, increment and condition specified */
 /* while condition */
@@ -360,18 +360,18 @@ m_vars[\"i\"] = 5
 while not((m_vars[\"i\"] < 1)):
     
     m_vars[\"j\"] = m_vars[\"i\"]
-    while not((m_vars[\"j\"] < 1)):
+    while (m_vars[\"j\"] >= 1):
         
         m_vars[\"k\"] = m_vars[\"j\"]
-        while not((m_vars[\"k\"] < 1)):
+        while (m_vars[\"k\"] >= 1):
             m_funcs[\"print\"](m_vars[\"k\"], m_vars[\"j\"], m_vars[\"i\"])
-            m_vars[\"k\"] = (-1 + m_vars[\"k\"])
+            m_vars[\"k\"] = (m_vars[\"k\"] + (-1))
             m_vars[\"k\"] = (m_vars[\"k\"] + 0)
         del m_vars[\"k\"]
-        m_vars[\"j\"] = (-1 + m_vars[\"j\"])
+        m_vars[\"j\"] = (m_vars[\"j\"] + (-1))
         m_vars[\"j\"] = (m_vars[\"j\"] + 0)
     del m_vars[\"j\"]
-    m_vars[\"i\"] = (-1 + m_vars[\"i\"])
+    m_vars[\"i\"] = (m_vars[\"i\"] + (-1))
     m_vars[\"i\"] = (m_vars[\"i\"] + 0)
 del m_vars[\"i\"]"$
 

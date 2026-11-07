@@ -94,6 +94,8 @@
         (%signum simpsignum)
 	(%integrate simpinteg) (%limit simp-limit) 
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
+	(mprog simpmprog)
+	(mprogn simpmprogn)
 	(mqapply simpmqapply)
 	(%sum simpsum)
 	(%product simpprod)
@@ -1812,6 +1814,19 @@
   (declare (ignore vestigial simp-flag))
   (twoargcheck x)
   (cons '(mdefine simp) (cdr x)))
+
+;; The arguments of block and (...) are code. Simplifying them before they
+;; are evaluated can change what they compute: a local fpprec is ignored,
+;; and (i:i+1)-(i:i+1) loses its side effects. So, like SIMPLAMBDA, leave
+;; them alone.
+
+(defun simpmprog (x vestigial simp-flag)
+  (declare (ignore vestigial simp-flag))
+  (cons '(mprog simp) (cdr x)))
+
+(defun simpmprogn (x vestigial simp-flag)
+  (declare (ignore vestigial simp-flag))
+  (cons '(mprogn simp) (cdr x)))
 
 (defun simpmap (e z)
   (mapcar #'(lambda (u) (simpcheck u z)) e))
