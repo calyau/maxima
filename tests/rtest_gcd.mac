@@ -317,3 +317,16 @@ block([gcd : 'mod, x, y],
    block([modulus : 3], gcd(expand((x*y+1)*(x*y+x+1)), expand((x*y+1)*(x*y-x+2)))),
    block([modulus : 7], gcd(expand((x+y)*(x*y^6+1)), expand((x+y)*(x^2+y^6+1))))]);
 [y+x, (x*y+1)/(y+x^2), x*y+1, y+x]$
+
+
+/* Bug #5659: "The default gcd algorithm can give wrong results or hang, especially with a small modulus" */
+
+/* Without a modulus the default gcd works modulo ?\*alpha, 2305843009213693921 in SBCL. */
+block([P : ?\*alpha, u, x, y, z],
+  [gcd(x^2+1, x^2+1+P),
+   gcd(expand((P*x^2+1)*(x+2)), expand((P*x^2+1)*(x+3))) - P*x^2,
+   ratsimp((x^2+1)/(x^2+1+P)) - (x^2+1)/(x^2+1+P),
+   block([modulus : 3], unique(makelist(gcd(expand((x+1)*(y+1)), expand((x+1)*(x*y^2+1))), 12))),
+   block([modulus : 2], unique(makelist(gcd(expand((x+y)*(x*y+x+y)), expand(x*(x*y+x+y))), 3))),
+   block([modulus : 13], unique(makelist(gcd(expand(5*u*(-6*u-6)), expand(5*u*(2*z^2+u*(-6*z-4*y)-6))), 20)))]);
+[1, 1, 0, [x+1], [(x+1)*y+x], [u]]$

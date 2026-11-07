@@ -404,7 +404,8 @@
 	    (not (eq (car f) (car g))))
 	(merror "ZGCD: incorrect arguments."))
     (ptimes mon
-	    (do ((test))
+	    (do ((test)
+		 (tries 1 (1+ tries)))
 		(nil)
 	      (setq gcd (catch 'zgcd-fail (catch 'relprime (zgcd1 f g))))
 	      ;; For *WHICH-FACTOR* 2 or 3, GCD is a cofactor. TEST is the
@@ -419,7 +420,9 @@
 				(and h (testdivide f h) h))))))
 	      (cond ((not (null test))
 		     (return test))
-		    ((not (null modulus))
+		    ;; Without a modulus every try works modulo *ALPHA, so when
+		    ;; *ALPHA is unlucky for F and G, they all fail.
+		    ((or modulus (> tries 2))
 		     (return (let (($gcd '$red))
 			       (pgcd f g)))))))))
 
