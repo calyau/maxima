@@ -7508,6 +7508,24 @@ asinh((2*x^2+1)/sqrt(3))/2$
 [log(2)/2, (2*sqrt(3)*atan(5/sqrt(3))+log(7)+sqrt(3)*%pi)/6]$
 
 
+/* Bug #5773: "integrate() announces a principal value for (exp(x)-1)/x on [-1, 1]" */
+
+block([s : make_string_output_stream(), v],
+  v : with_stdout(s,
+    [integrate((exp(x)-1)/x, x, -1, 1), integrate(exp(x)/x-1/x, x, -1, 2),
+     integrate((exp(2*x)-exp(x))/x, x, -1, 1), integrate((x-1)/log(x), x, 0, 2)]),
+  [tokens(get_output_stream_string(s)),
+   map(lambda([e, q], is(abs(float(rectform(e)) - q) < 1e-12)),
+     v, [2.114501750751457, 4.480471109837465, 2.888633115958494, 1.922421314921558])]);
+[[], [true, true, true, true]]$
+
+/* A pole at 0 and one at 1/2, these two are principal values: */
+block([s : make_string_output_stream()],
+  with_stdout(s, integrate(exp(x)/x, x, -1, 1), integrate((exp(x)-1)/x+1/(x-1/2), x, -1, 1)),
+  tokens(get_output_stream_string(s)));
+["Principal", "Value", "Principal", "Value"]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

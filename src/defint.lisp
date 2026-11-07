@@ -156,6 +156,10 @@ in the interval of integration.")
   "When NIL, print a message that the principal value of the integral has
   been computed.")
 
+(defvar *pole-free-integrand* nil
+  "Non-NIL while DEFINT integrates an integrand that INITIAL-ANALYSIS has
+  found to have no pole in the interval of integration.")
+
 (defvar *nodiverg*
   nil
   "When non-NIL, a divergent integral will throw to `divergent.
@@ -202,6 +206,7 @@ in the interval of integration.")
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
 		 (orig-ll ll)  (orig-ul ul)
 		 (*pcprntd* nil)  (*nodiverg* nil)  ($logabs nil)  ; (limitp t)
+		 (*pole-free-integrand* nil)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
 		 ($m1pbranch ())) ;Try this out.
@@ -549,7 +554,8 @@ in the interval of integration.")
 				(eq ul '$inf))
 			   (eq ($sign (m+ ll ul))
 			       '$zero)))  0)
-		 (t (parse-integrand exp ivar ll ul))))
+		 (t (let ((*pole-free-integrand* $intanalysis))
+		      (parse-integrand exp ivar ll ul)))))
 	  ((eq pole '$unknown)  ())
 	  (t (principal-value-integral exp ivar ll ul pole)))))
 
@@ -657,7 +663,16 @@ in the interval of integration.")
 
 (defun principal-value-integral (exp ivar ll ul poles)
   (let ((anti-deriv nil))
-    (cond ((and (symmetric-intervalp ll ul) (oddfn exp ivar)) (principal) 0) ;odd integrand, symmetric interval
+    (cond ((and *pole-free-integrand*
+		(not *pcprntd*)
+		(not (assoc '$minf poles))
+		(not (assoc '$inf poles)))
+	   ;; This integrand is part of one in which INITIAL-ANALYSIS found
+	   ;; no pole, as exp(x)/x is part of (exp(x)-1)/x. Its finite poles
+	   ;; should cancel there, so the principal value is not announced.
+	   (let ((*pcprntd* t))
+	     (principal-value-integral exp ivar ll ul poles)))
+	  ((and (symmetric-intervalp ll ul) (oddfn exp ivar)) (principal) 0) ;odd integrand, symmetric interval
 	((not (null (setq anti-deriv (antideriv exp ivar))))
 	   (cond ((not (null poles))
 		  (multiple-value-bind (ignore new-ll new-ul)
