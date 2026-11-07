@@ -7493,6 +7493,21 @@ asinh((2*x^2+1)/sqrt(3))/2$
  ((3*asinh((2*x^2+1)/sqrt(3)))/8+(x^2*sqrt(x^4+x^2+1))/2+sqrt(x^4+x^2+1)/4)/2]$
 
 
+/* Bug #5772: "integrate(f, x, b, minf) can be wrong: integrate(exp(x), x, 0, minf) is called divergent" */
+
+[integrate(exp(x), x, 0, minf), integrate(exp(2*x), x, 1, minf),
+ integrate(exp(3*x), x, a, minf), integrate(exp(x)*(exp(x)+1), x, 0, minf)];
+[-1, -%e^2/2, -%e^(3*a)/3, -3/2]$
+
+/* x*exp(-x) and x^2*exp(-x) grow without bound as x tends to minf: */
+[errcatch(integrate(x*exp(-x), x, 0, minf)), errcatch(integrate(x^2*exp(-x), x, 0, minf))];
+[[], []]$
+
+/* Principal values: minus those from minf to 1 and from minf to 2: */
+[integrate(1/(x*(x^2+1)), x, 1, minf), integrate(1/(x^3-1), x, 2, minf)];
+[log(2)/2, (2*sqrt(3)*atan(5/sqrt(3))+log(7)+sqrt(3)*%pi)/6]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

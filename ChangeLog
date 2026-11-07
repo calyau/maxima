@@ -312,6 +312,7 @@ Bug fixes for numbered bugs:
 * \#5768 limit() misses values like 0, 1 or %e in disguise
 * \#5769 load() finds no packages with (some) ECL on Windows unless file_search_cache is false
 * \#5770 file_search_cache: true doesn't override a failed check, and auto uses the cache before checking
+* \#5772 integrate(f, x, b, minf) can be wrong: integrate(exp(x), x, 0, minf) is called divergent
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -340,7 +341,7 @@ Changes in the crosscompiled Windows installer:
 * Update CCL
 * Correct link to TCL/TK Website
 * ECL works now (basic support was introduced in the latest release,
-  now loading of packages works too.
+  now loading of packages works too).
 
 Other changes:
 --------------

@@ -951,7 +951,15 @@ in the interval of integration.")
                    ;;
                    ;; so that minf <= ll < ul
 		   (setq exp (m- exp))
-		   (rotatef ll ul)))
+		   (rotatef ll ul)
+                   ;; If that gives minf = ll < ul < inf, substitute
+                   ;; ivar -> -ivar as above: PRINCIPAL-VALUE-INTEGRAL
+                   ;; and WHOLE-INTSUBS order the limits again and keep
+                   ;; only the new limits, not the new EXP.
+                   (when (and (eq ll '$minf) (not (eq ul '$inf)))
+                     (setq exp (subin-var (m- ivar) exp ivar))
+                     (setq ll (m- ul))
+                     (setq ul '$inf))))
 	    t))
    ll ul))
 
