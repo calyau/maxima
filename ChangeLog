@@ -6,6 +6,7 @@ Bug fixes for numbered bugs:
 * \#2596 error in matrix exponentiation
 * \#3994 limits of some gamma_incomplete expressions
 * \#4020 various limit bugs with exp(%i*x)
+* \#4055 ratsimp/algebraic doesn't simplify expand(p^2)/p where p=x+sqrt(2)
 * \#4137 simplimplus bugs
 * \#4162 limit(exp(x^2+%i*x),x,inf)
 * \#4178 Infinite loop in Risch integration
@@ -252,6 +253,7 @@ Bug fixes for numbered bugs:
 * \#5657 linsolve returns a wrong solution for a system with c and sqrt(c)
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5659 The default gcd algorithm can give wrong results or hang, especially with a small modulus
+* \#5661 ratsimp with algebraic:true does not cancel common algebraic factors
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 * \#5663 jacobi_sn and jacobi_am lose many digits for larger arguments
 * \#5664 two minor tolerance test failures in tests/rtest16.mac

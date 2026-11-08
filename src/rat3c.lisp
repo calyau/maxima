@@ -61,8 +61,9 @@
 ; returns list (gcd xx yy alg)
 ; where x * y = gcd^2 * xx * yy / alg^2
 ; and alg is non-nil only when $algebraic is true
-(defun pgcdcofacts (x y)
-  (let ((a (pgcda x y t)))
+; With ALG, the gcd is one over the algebraic numbers also for $gcd = $spmod.
+(defun pgcdcofacts (x y &optional alg)
+  (let ((a (pgcda x y t alg)))
     (cond ((cdr a) a)
 	  ((equal (setq a (car a)) 1) (list 1 x y))
 	  ((and $algebraic (not (pcoefp a)))
@@ -76,7 +77,7 @@
 	  ((eq a y) (list a (pquotient x y) 1))
 	  (t (list a (pquotient x a) (pquotient y a))))))
 
-(defun pgcda (x y cofac? &aux a c)
+(defun pgcda (x y cofac? &optional alg &aux a c)
   (cond ((not $gcd) (list 1 x y))
 	((and $keepfloat (or (pfloatp x) (pfloatp y)))
 	 (cond ((or (pcoefp x) (pcoefp y)
@@ -103,7 +104,7 @@
 	((progn (desetq (a x) (ptermcont x))
 		(desetq (c y) (ptermcont y))
 		(not (and (equal a 1) (equal c 1))))
-	 (mapcar #'ptimes (monomgcdco a c cofac?) (pgcda x y cofac?)))
+	 (mapcar #'ptimes (monomgcdco a c cofac?) (pgcda x y cofac? alg)))
 	((and (not $algebraic) (not modulus)
 	      (desetq (a . c) (lin-var-find (nreverse (pdegreevector x))
 					    (nreverse (pdegreevector y))
@@ -113,7 +114,9 @@
 		  (if (cdr a) (rplacd a (nreverse (cdr a))))
 		  a)))
 	((eq $gcd '$spmod)
-	 (if (and (not cofac?) (or (palgp x) (palgp y)))
+	 ;; ZGCD ignores the algebraic relations, which several callers of
+	 ;; PGCDCOFACTS rely on: its cofactors are then exact quotients.
+	 (if (and (or (not cofac?) alg) (or (palgp x) (palgp y)))
 	   (let (($gcd '$subres)) (list (oldgcd x y)))
 	   (list (zgcd x y))))
 	((eq $gcd '$subres) (list (oldgcd x y)))

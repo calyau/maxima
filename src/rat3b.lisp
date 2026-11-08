@@ -194,12 +194,82 @@
 	((and $keepfloat (pcoefp y) (or $float (floatp y) (pfloatp x)))
 	 (cons (pctimes (quotient 1.0 y) x) 1))
 	(t (setq b (pgcdcofacts x y))
-	   (setq b (ratalgdenom (rplacd (cdr b) (caddr b))))
+	   (setq b (ratalgdenom (ratalgreduce (rplacd (cdr b) (caddr b)))))
 	   (cond ((and modulus (pcoefp (cdr b)))
 		  (cons (pctimes (crecip (cdr b)) (car b)) 1))
 		 ((pminusp (cdr b))
 		  (cons (pminus (car b)) (pminus (cdr b))))
 		 (t b)))))
+
+;; With $GCD = $SPMOD, PGCDCOFACTS ignores the algebraic relations, so
+;; RATREDUCE misses common factors like x-%i in x^2+1 and x-%i. The other
+;; values of $GCD do not. RATALGREDUCE cancels these factors in the quotient
+;; R = (X . Y) too, if Y contains algebraic numbers. A Y without them stays as
+;; it is, since it may have been made free of them on purpose, as RAINV,
+;; RATALGDENOM and %I-OUT-OF-DENOM do by multiplying with conjugates, which
+;; cancelling would undo.
+(defun ratalgreduce (r)
+  (let ((x (car r)) (y (cdr r)) b)
+    (if (or (not $algebraic) $ratfac (not (eq $gcd '$spmod))
+            (pcoefp x) (not (palgp y))
+            (not (algcommonp x y))
+            (null (setq b (ignore-rat-err (pgcdcofacts x y t))))
+            (equal (car b) 1))
+      r
+      (cons (cadr b) (caddr b)))))
+
+;; T if the polynomials X and Y, which have no common factor as plain
+;; polynomials, may have one with a free variable once the algebraic relations
+;; count. A free variable is neither algebraic nor in the relation of an
+;; algebraic variable. NIL saves RATALGREDUCE the gcd over the algebraic
+;; numbers, which can take very long. For each free variable V of both, the
+;; gcd of X and Y with the other free variables replaced by numbers has at
+;; least the degree in V of their gcd, as long as the numbers keep the degrees
+;; in V of X and Y. So degree 0 for one choice of numbers rules out V. A
+;; variable of high degree gets the value 1 and is not tested, since a larger
+;; number would get a huge power. A monomial has no such factor, since its
+;; free variables would be plain common factors. With a single free variable,
+;; the test would be the gcd itself.
+(defun algcommonp (x y)
+  (let* ((vars (pfreevars x y))
+         (low (remove-if #'(lambda (v)
+                             (> (max (pdegree x v) (pdegree y v)) 64))
+                         vars))
+         (common (remove-if-not #'(lambda (v)
+                                    (and (plusp (pdegree x v))
+                                         (plusp (pdegree y v))))
+                                low)))
+    (flet ((degree-0-at (v others k)
+             (let* ((vals (loop for w in others
+                                for i from 1
+                                collect (if (member w low) (+ (* 3 i) k 2) 1)))
+                    (xv (pcsubsty vals others x))
+                    (yv (pcsubsty vals others y))
+                    (g nil))
+               (and (= (pdegree xv v) (pdegree x v))
+                    (= (pdegree yv v) (pdegree y v))
+                    (setq g (ignore-rat-err (pgcd xv yv)))
+                    (zerop (pdegree g v))))))
+      (cond ((or (null common) (= (pnterms x) 1) (= (pnterms y) 1)) nil)
+            ((null (cdr vars)) t)
+            (t (loop for v in common
+                     for others = (remove v vars)
+                     thereis (not (or (degree-0-at v others 0)
+                                      (degree-0-at v others 1)))))))))
+
+;; The variables of the polynomials X and Y that are neither algebraic nor in
+;; the relation of an algebraic variable of X or Y, also through other
+;; relations.
+(defun pfreevars (x y)
+  (let ((vars (union (listovars x) (listovars y))) (tied ()))
+    (labels ((tie (v)
+               (unless (member v tied)
+                 (push v tied)
+                 (loop for (nil c) on (algv v) by #'cddr
+                       do (mapc #'tie (listovars c))))))
+      (dolist (v vars)
+        (when (algv v) (tie v))))
+    (set-difference vars tied)))
 
 (defun ptimes* (p q)
   (cond ($ratwtlvl (wtptimes p q 0))

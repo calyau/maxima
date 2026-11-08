@@ -420,3 +420,31 @@ block([gcd : spmod, P : ?\*alpha, f, g, x, y],
   g : expand((x+y+1)*(x+2*y)),
   [gcd(f, g), ratsimp(f/g - ratsimp(f/g))]);
 [1, 0]$
+
+
+/* Bug #5661: "ratsimp with algebraic:true does not cancel common algebraic factors" */
+
+[ratsimp((x^2+1)/(x-%i)), ratdisrep(rat((x^2+1)/(x-%i))), ratsimp((x^2-2)/(x-sqrt(2))),
+ ratsimp((x^2+1)/(%i*x+1)), ratsimp((x^2+y^2)/(x-%i*y)), ratsimp((x^4-2*x^2-1)/(x-sqrt(1+sqrt(2))))], algebraic;
+[x+%i, x+%i, x+sqrt(2), 1-%i*x, x+%i*y, x^3+sqrt(sqrt(2)+1)*x^2+(sqrt(2)-1)*x+(sqrt(2)-1)*sqrt(sqrt(2)+1)]$
+
+block([algebraic : true, r],
+  tellrat(a^2-2),
+  r : [ratsimp((x^2-2)/(x-a)), ratsimp((x^3+a*x^2-2*x-2*a)/(x^2-a*x-x+a))],
+  untellrat(a),
+  r);
+[x+a, (x^2+2*a*x+2)/(x-1)]$
+
+/* Also without algebraic : true, since ratsimp sets it for radicals: */
+ratsimp(x/(x+sqrt(2)) - 2*x^2/(x+sqrt(2)));
+-((2*x^2-x)/(x+sqrt(2)))$
+
+/* A denominator free of algebraic numbers stays so. integrate makes denominators free of %i: */
+ratsimp((x^2+%i*x+2)/(x^4+5*x^2+4)), algebraic;
+(x^2+%i*x+2)/(x^4+5*x^2+4)$
+
+/* With several parameters, the gcd over the algebraic numbers could take very long: */
+block([D : expand((x^2+c^2)*(d*x^2-1)*(e*x^4+d*x^2+1)),
+       N : expand((x^2+c^2)*(l1*(x^5+c*d*x^3+%i*e)+l2*(d*x^4-%i*c^2*x+1)+l3*(e*x^5+x^2-d)+l4*(c*x^3+e*d*x-%i*c)))],
+  is(block([algebraic : true], ratsimp(D/N)) = ratsimp(D/N)));
+true$
