@@ -331,6 +331,7 @@ Bug fixes for numbered bugs:
 * \#5779 risch() hangs for atan(c*x)/(e*x^2+d)^2
 * \#5780 gcd() with algebraic : true hangs for polynomials with several parameters
 * \#5781 gcd with modulus set returns non-divisors and too small gcds, or hangs
+* \#5782 Wrong sign of integrate() over (minf, inf) for denominators with non-real coefficients
 * \#5783 gcd:mod hangs on multivariate polynomials with a small modulus
 * \#5785 integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x) contains false
 * \#5787 gcd() with algebraic : true can return a non-divisor or miss a common factor

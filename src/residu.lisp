@@ -27,10 +27,6 @@
 ;; The regions are determined by functions REGION and REGION1, which
 ;; should return non-NIL if the root is in the given region.
 ;;
-;; The description below applies if *SEMIRAT* is NIL.  If *SEMIRAT* is
-;; non-NIL, somewhat different results are returned.  I (rtoy) am not
-;; exactly sure what *SEMIRAT* is intended to mean.
-;;
 ;; The first part of the list of the form ((r1 (x - r1)^d1) (r2 (x -
 ;; r2)^d2) ...) where r1, r2 are the roots, d1, d2 are the
 ;; multiplicity of each root, and x is the variable.
@@ -41,9 +37,9 @@
 ;;
 ;; The third part is a list of the simple roots in REGION.
 ;;
-;; Finally, the fourth part is NIL, unless *semirat* is T.
+;; Finally, the fourth part is a list of the roots in REGION1.
 (defun polelist (d region region1)
-  (prog (roots $breakup r rr ss r1 s pole wflag cf)
+  (prog (roots $breakup r r1 s pole wflag cf)
      (setq wflag t)
      (setq *leadcoef* (polyinx d var 'leadcoef))
      (setq roots (solvecase d))
@@ -55,15 +51,8 @@
 
    loop1
      (cond ((null roots)
-	    (cond ((and *semirat*
-			(> (+ (length s) (length r))
-			   (+ (length ss) (length rr))))
-		   ;; Return CF, repeated roots (*semirat*), simple
-		   ;; roots (*semirat*), roots in region 1.
-		   (return (list cf rr ss r1)))
-		  (t
-		   ;; Return CF, repeated roots, simple roots, roots in region 1.
-		   (return (list cf r s r1)))))
+	    ;; Return CF, repeated roots, simple roots, roots in region 1.
+	    (return (list cf r s r1)))
 	   (t
 	    ;; Set POLE to the actual root and set D to the
 	    ;; multiplicity of the root.
@@ -95,14 +84,7 @@
 		   (push pole r1))
 		  (t
 		   ;; Return NIL if we get here.
-		   (return nil))))
-	   (*semirat*
-	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
-	    ;; pole is not in REGION or REGION1, so push the pole onto
-	    ;; SS or RR depending if the pole is repeated or not.
-	    (cond ((equal d 1)
-		   (push pole ss))
-		  (t (push (list pole d) rr)))))
+		   (return nil)))))
      ;; Pop this root and multiplicity and move on.
      (setq roots (cddr roots))
      (go loop1)))
@@ -110,7 +92,7 @@
 ;; Like POLELIST, but dependency on VAR is explicit.  Use this instead
 ;; when possible.
 (defun polelist-var (var1 d region region1)
-  (prog (roots $breakup r rr ss r1 s pole wflag cf)
+  (prog (roots $breakup r r1 s pole wflag cf)
      (setq wflag t)
      (setq *leadcoef* (polyinx d var1 'leadcoef))
      (setq roots (solvecase-var d var1))
@@ -122,15 +104,8 @@
 
    loop1
      (cond ((null roots)
-	    (cond ((and *semirat*
-			(> (+ (length s) (length r))
-			   (+ (length ss) (length rr))))
-		   ;; Return CF, repeated roots (*semirat*), simple
-		   ;; roots (*semirat*), roots in region 1.
-		   (return (list cf rr ss r1)))
-		  (t
-		   ;; Return CF, repeated roots, simple roots, roots in region 1.
-		   (return (list cf r s r1)))))
+	    ;; Return CF, repeated roots, simple roots, roots in region 1.
+	    (return (list cf r s r1)))
 	   (t
 	    ;; Set POLE to the actual root and set D to the
 	    ;; multiplicity of the root.
@@ -162,14 +137,7 @@
 		   (push pole r1))
 		  (t
 		   ;; Return NIL if we get here.
-		   (return nil))))
-	   (*semirat*
-	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
-	    ;; pole is not in REGION or REGION1, so push the pole onto
-	    ;; SS or RR depending if the pole is repeated or not.
-	    (cond ((equal d 1)
-		   (push pole ss))
-		  (t (push (list pole d) rr)))))
+		   (return nil)))))
      ;; Pop this root and multiplicity and move on.
      (setq roots (cddr roots))
      (go loop1)))

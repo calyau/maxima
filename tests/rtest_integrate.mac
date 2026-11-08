@@ -7586,6 +7586,25 @@ block([algebraic : true, gcd : 'algebraic, logsimp : false, e],
 false$
 
 
+/* Bug #5782: "Wrong sign of integrate() over (minf, inf) for denominators with non-real coefficients" */
+
+[integrate((x-%i)/((x-2*%i)*(x^2+1)), x, minf, inf), integrate(1/((x-%i)*(x-2*%i)*(x+3*%i)), x, minf, inf),
+  integrate(1/((x-%i)^2*(x-2*%i)*(x+3*%i)^2), x, minf, inf)], gcd : subres;
+[2*%pi/3, %i*%pi/10, 7*%i*%pi/400]$
+
+[integrate((x-%i)/((x-2*%i)*(x^2+1)), x, minf, inf), integrate(1/((x-%i)*(x-2*%i)*(x+3*%i)), x, minf, inf),
+  integrate(1/((x-%i)^2*(x-2*%i)*(x+3*%i)^2), x, minf, inf)], gcd : 'algebraic;
+[2*%pi/3, %i*%pi/10, 7*%i*%pi/400]$
+
+trigsimp(rectform(integrate(1/((x-%e^%i)*(x-2*%i)*(x+3*%i)), x, minf, inf) + (2*%pi/5)/(%e^%i+3*%i)));
+0$
+
+/* Partial fractions whose only pole lies in the upper half plane contributed 0: */
+trigsimp(rectform(integrate((2*%i*x+1)/((x-%e^-%i)*(x-%i-2)*(x+%i-2)*(x+%i+2)), x, minf, inf)
+  - %pi*(4*%i-1)/((2+%i-%e^-%i)*(4+2*%i))));
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

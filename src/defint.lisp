@@ -1868,12 +1868,11 @@ in the interval of integration.")
 		     (t nil)))))))
 
 (defun mtorat (n d s ivar)
-  (let ((*semirat* t))
-    (cond ((and (null *dflag*)
-		(setq s (difapply ivar n d s #'(lambda (n d s)
-                                            (mtorat n d s ivar)))))
-	   s)
-	  (t (csemiup n d ivar)))))
+  (cond ((and (null *dflag*)
+	      (setq s (difapply ivar n d s #'(lambda (n d s)
+                                          (mtorat n d s ivar)))))
+	 s)
+	(t (csemiup n d ivar))))
 
 (defun zmtorat (n d s fn1 ivar)
   (prog (c)
@@ -1983,8 +1982,7 @@ in the interval of integration.")
 ;; keyhole contour.  This contour is basically an disk with a slit
 ;; along the positive real axis.  n/d must be a rational function.
 (defun keyhole (n d ivar)
-  (let* ((*semirat* ())
-	 (res (res-var ivar n d
+  (let* ((res (res-var ivar n d
 		       #'(lambda (j)
 		           ;; Ok if not on the positive real axis.
 		           (or (not (equal ($imagpart j) 0))

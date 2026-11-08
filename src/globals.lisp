@@ -597,10 +597,6 @@
 (defmvar nonintegerl nil
   "A non-integer-list for non-atoms found out to be `noninteger's")
 
-;; Not really sure what this is meant to do, but it's used by MTORAT,
-;; KEYHOLE, and POLELIST.
-(defvar *semirat* nil)
-
 ;;------------------------------------------------------------------------
 ;; From displa.lisp
 (defmvar $ttyoff nil
