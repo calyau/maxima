@@ -236,6 +236,19 @@
 	  (pplus (wtptimes (car x) (cdr y) 0)
 		 (wtptimes (car y) (cdr x) 0))
 	  (wtptimes (cdr x) (cdr y) 0)))
+	;; Where RADCAN1 takes no gcds, sums still get a cheap common multiple
+	;; of the denominators, so that common factors do not pile up: one of
+	;; them if it is a multiple of the other, else their lcm with algebraic
+	;; numbers taken as indeterminates.
+	((and *radcan-nogcd* (null $gcd)
+	      (not (equal 1 (cdr x))) (not (equal 1 (cdr y))))
+	 (setq q (let ((u (cdr x)) (v (cdr y)) w)
+		   (cond ((setq w (pquotientchk-safe v u)) (list u 1 w))
+			 ((setq w (pquotientchk-safe u v)) (list v w 1))
+			 (t (let (($gcd '$spmod) $algebraic)
+			      (pgcdcofacts u v))))))
+	 (cons (pplus (ptimes (car x) (caddr q)) (ptimes (car y) (cadr q)))
+	       (ptimes (car q) (ptimes (cadr q) (caddr q)))))
 	;; Multiplying the denominators squares their common factor. That is
 	;; fine for an algebraic number like 1+%i and a product of algebraic
 	;; variables like sqrt(s), whose squares are 2*%i and s. But PTIMES

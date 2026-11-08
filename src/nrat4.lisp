@@ -118,7 +118,7 @@
      (if ($ratp c) (setq dontdisrepit t))
      (if (and $radsubstflag
 		(prog2 (newvar b) (some #'mexptp varlist)))
-       (let (($factorflag t) *exp *exp2 *radsubst)
+       (let (($factorflag t) *exp *exp2 *radsubst *radcan-nogcd*)
 	 (setq a (fullratsimp a))
 	 (setq b (fullratsimp b))
 	 (setq c (fullratsimp c))
@@ -427,13 +427,18 @@
 	     (simplify (let (($expop 0) ($expon 0))
 			 (radcan1 (fr1 exp nil) *var)))))))
 
+;; With *RADCAN-NOGCD* true, as for a zero test, *EXP is not brought to lowest
+;; terms, which can take very long. The kernels are simplified as usual.
 (defun radcan1 (*exp *var)
   (cond ((atom *exp) *exp)
 	(t (let (($factorflag t) varlist genvar $ratfac $norepeat
 		 ($gcd (or $gcd (car *gcdl*)))
-		 (radcanp t))
+		 (radcanp t)
+		 ;; NIL in nested calls, where the caller's RADCANP is T.
+		 (*radcan-nogcd* (and *radcan-nogcd* (not radcanp))))
 	     (newvar *exp)
-	     (setq *exp (cdr (ratrep* *exp)))
+	     (setq *exp (cdr (let (($gcd (unless *radcan-nogcd* $gcd)))
+			       (ratrep* *exp))))
 	     (setq varlist
 		   (mapcar
 		    #'(lambda (x) (cond
@@ -448,7 +453,8 @@
 	       (when (and (mlogp x) (zerop1 (cadr x)))
 		 (merror (intl:gettext "log: encountered log(0)."))))
 	     (spc0 *var)
-	     (fr1 (rdis *exp) nil)))))
+	     (let (($gcd (unless *radcan-nogcd* $gcd)))
+	       (fr1 (rdis *exp) nil))))))
 
 (defun spc0 (*var)
   (prog (*v *loglist)
@@ -493,7 +499,7 @@
 	   zl)))
 
 (defun radsubst (a b)
-  (setq *exp (allsubst00 a b *exp))
+  (setq *exp (let (($gcd (unless *radcan-nogcd* $gcd))) (allsubst00 a b *exp)))
   (if *radsubst (setq *exp2 (allsubst00 a b *exp2))))
 
 (setq *var nil)

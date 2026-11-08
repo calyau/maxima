@@ -237,9 +237,10 @@
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
-              (zerop1 (radcan1 (sdiff e risch-var) risch-var))))))
+              (let ((d (sdiff e risch-var)) (*radcan-nogcd* t))
+                (zerop1 (radcan1 d risch-var)))))))
       ;; Strip locally constant parts (unsolved integrals survive this).
-      ;; ERRCATCH: In case of an error (occurs during test suite, treat the part
+      ;; ERRCATCH: In case of an error (occurs during test suite), treat the part
       ;; as non-constant - keeping is always safe, dropping is not.
       (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re))) 0 yyy-re))
             (yyy-im (if (car (errcatch (locally-const-p yyy-im))) 0 yyy-im)))

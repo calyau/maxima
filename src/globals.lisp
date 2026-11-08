@@ -1868,7 +1868,12 @@
 
 ;;------------------------------------------------------------------------
 ;; From nrat4.lisp
+
 (defvar radcanp nil)
+
+(defvar *radcan-nogcd* nil
+  "When true, RADCAN1 takes no gcds in the rational function it simplifies,
+  only in its kernels.")
 
 ;;------------------------------------------------------------------------
 ;; From specfn.lisp

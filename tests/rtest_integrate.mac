@@ -7550,6 +7550,42 @@ map(lambda([f, ivs],
 [[true, true, true], [true, true], [true, true]]$
 
 
+/* Bug #5779: "risch() hangs for atan(c*x)/(e*x^2+d)^2" */
+
+/* TRIGIN1 tests a part of a result for constancy with RADCAN1 of its derivative,
+   which hung for DD, from risch(atan(c*x)/(e*x^2+d)^2, x) with d > 0, e > 0: */
+block([dd : -(((2*c^2*((%i*c^2*d^2*e^2+(%i*c^4*d^4-%i)*e-%i*c^2*d^2)*log(e+2*c*sqrt(d)*sqrt(e)+c^2*d)+(-%i*c^2*d^2*e^2
+            +(-%i*c^4*d^4+%i)*e+%i*c^2*d^2)*log(e-2*c*sqrt(d)*sqrt(e)+c^2*d)+(-2*%i*c^2*d^2*log(sqrt(e)+c*sqrt(d))
+            +2*%i*c^2*d^2*log(c*sqrt(d)-sqrt(e)))*e^2+((-2*%i*c^4*d^4+2*%i)*log(sqrt(e)+c*sqrt(d))+(2*%i*c^4*d^4
+            -2*%i)*log(c*sqrt(d)-sqrt(e)))*e+2*%i*c^2*d^2*log(sqrt(e)+c*sqrt(d))-2*%i*c^2*d^2*log(c*sqrt(d)
+            -sqrt(e)))*x)/(c^2*x^2+1)+(%i*(-2*%i*c^4*d^4*e+2*%i*c^2*d^2)*sqrt(e))/(%i*sqrt(e)*x+sqrt(d))
+            -(%i*(2*%i*c^4*d^4*e-2*%i*c^2*d^2)*sqrt(e))/(sqrt(d)-%i*sqrt(e)*x)+sqrt(e)*((c*sqrt(d)*(2*c*d*e^2
+            +2*c*d))/(c*sqrt(d)*x+1)+(c*sqrt(d)*(-2*c*d*e^2-2*c*d))/(c*sqrt(d)*x-1))+(-2*c^2*d^2*e^3-2*c^4*d^4*e^2)/(x
+            +sqrt(d)*sqrt(e))+(2*c^2*d^2*e^3+2*c^4*d^4*e^2)/(x-sqrt(d)*sqrt(e)))/((16*c^2*d^3*e^2+(16*c^4*d^5-16*d)*e
+            -16*c^2*d^3)*sqrt(d)*sqrt(e))), r],
+  r : block([algebraic : true, gcd : 'algebraic, ?\*radcan\-nogcd\* : true], ?radcan1(dd, x)),
+  [is(r = 0), radcan(r - dd)]);
+[false, 0]$
+
+/* Zeros that need gcds in the argument of a logarithm or a sine: */
+[?radcan1(diff(x*(log((x^2+c^2)/(x-%i*c))-log(x+%i*c)), x), x),
+ ?radcan1(diff(sin((x^2-1)/(x-1))-sin(x+1), x), x)], algebraic : true, gcd : 'algebraic, ?\*radcan\-nogcd\* : true;
+[0, 0]$
+
+/* Sums still get the lcm of their denominators, of degree 8 here, not 36: */
+map(lambda([e], block([r : ?radcan1(e, x)], [hipow(expand(denom(r)), x), ratsimp(r - e)])),
+  [sum(sqrt(2)/(x+c)^k, k, 1, 8), sum(1/(x+sqrt(2))^k, k, 1, 8), sum(1/(x+%i*c)^k, k, 1, 8)]),
+  algebraic : true, gcd : 'algebraic, ?\*radcan\-nogcd\* : true;
+[[8, 0], [8, 0], [8, 0]]$
+
+/* RADCAN1 in the constancy test took very long here, finding the common denominators
+   of sums with the algebraic gcd: */
+block([algebraic : true, gcd : 'algebraic, logsimp : false, e],
+  e : ?radcan1(logarc(asin(x/sqrt(2))+asin((3*x+1)/(x-2))/(x^2+c*x+%i)), x),
+  block([?\*radcan\-nogcd\* : true], is(?radcan1(diff(e, x), x) = 0)));
+false$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
