@@ -391,3 +391,20 @@ block([a : sqrt(1+sqrt(c)), G, algebraic : true],
   G : (e-a)*x^2+(c-a)*x+2*a*e+2*c,
   block([gcd : 'subres], gcd(expand(G*(a*m+(1+a*e+2*a)*x)), expand(G*(e-c-2*a*e*x)))));
 (e-sqrt(sqrt(c)+1))*x^2+(c-sqrt(sqrt(c)+1))*x+2*sqrt(sqrt(c)+1)*e+2*c$
+
+
+/* Bug #5788: "ezgcd() and gcd:ez hang when the leading coefficients have a common factor"
+   The lifted gcd came out divided by an integer and failed the division test,
+   and then no evaluation point could lower the degree of the gcd. Evaluation
+   points are random, so several random states are tried. */
+
+block([s : make_random_state(false), d, e, l, n, x, P, Q, r],
+  P : expand((2+(-1-2*e)*x)*((d+2)+(1-d)*x)),
+  Q : expand((2+(-1-2*e)*x)*((2*l+n+2*d)+(n+2*d)*x)),
+  r : unique(makelist((set_random_state(make_random_state(k)),
+                       [ezgcd(P, Q), block([gcd : ez, algebraic : true], [gcd(P, Q), ratsimp(P/Q)])]),
+                      k, 1, 10)),
+  set_random_state(s),
+  r);
+[[[(2*e+1)*x-2, (d-1)*x-d-2, (-n-2*d)*x-n-2*l-2*d],
+  [(2*e+1)*x-2, -(((d-1)*x-d-2)/((n+2*d)*x+n+2*l+2*d))]]]$

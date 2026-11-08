@@ -17,7 +17,7 @@
 		      many* tempprime ovarlist valist
 		      zl *prime plim nn* ne nn*-1 dlp
 		      ez1skip svalsl nsvals
-		      lc1 oldlc limk))
+		      oldlc limk))
 
 (load-macsyma-macros ratmac)
 
@@ -120,21 +120,33 @@
 		   (ptimesmerge (cdr pl1) (cdr pl2))))
 	(t nil)))
 
+;; Lift BUILDER = G*H from the factors FACTRS = (G0 H0) of its value at the
+;; point VALIST of the variables OVARLIST, and return the primitive part of
+;; G. Z1 keeps the leading coefficient of the second factor at its value at
+;; the point, a constant C, so the first factor comes out as G*LC(H)/C.
+;; RESTORELC multiplies it by C and puts back the leading coefficient of
+;; BUILDER, which gives G*LC(H), and removes the content.
+;;
 ;; MODULUS is rebound because the lifting below sets it. OLDMODULUS is the
 ;; modulus of the gcd, NIL over the integers, and the content of the lifted
 ;; factor has to be removed modulo it.
-(defun ez1call (builder factrs lc1 valist ovarlist)
-  (prog (*prime plim nn* ne nn*-1 zl zfactr oldlc lcd0
-	 dlp limk genvar mult subval subvar
+;;
+(defun ez1call (builder factrs valist ovarlist)
+  (prog (*prime plim nn* ne nn*-1 zl zfactr oldlc
+	 dlp limk genvar subval subvar
 	 (modulus modulus) (oldmodulus modulus))
      (declare (special subval subvar))
      (setq oldlc (caddr builder))
-     (cond ((not (equal 1 lc1))
-	    (setq builder (ptimes builder lc1))))
      (setq genvar (append ovarlist (list (car builder))))
+     (setq nn* (1+ (setq ne (setq nn*-1 (length ovarlist)))))
+     (setq zl (completevector nil 1 nn* 0))
+     (fixvl valist ovarlist)
+     (setq builder (newrep builder))
      (cond (modulus
 	    (setq *prime modulus plim modulus limk -1)
 	    (go mod))
+	   ;; BUILDER is lifted in the shifted variables, where its
+	   ;; coefficients can be much larger, so its norm is taken there.
 	   (t (setq *prime (max (norm builder)
 				(maxcoefficient (car factrs))
 				(maxcoefficient (cadr factrs))))))
@@ -147,32 +159,16 @@
 			  (t (setq limk (1+ limk) newmodulus (* newmodulus newmodulus))
 			     (go again)))))
 	   (t (setq limk -1 *prime *alpha plim *alpha)))
-     mod  (setq nn* (1+ (setq ne (setq nn*-1 (length ovarlist)))))
-     (setq zl (completevector nil 1 nn* 0))
-     (fixvl valist ovarlist)
-     (cond ((equal 1 lc1)
-	    (setq modulus plim builder (newrep builder))
-	    (setq dlp  (loop for x in (cdr (oddelm builder))
-			  maximize (multideg x)))
-	    (setq zfactr (z1 builder (car factrs)(cadr factrs)))
-	    (setq zfactr (restorelc zfactr (caddr builder)))
-	    (setq zfactr (oldrep (cadr zfactr)))
-	    ;; RESTORELC removes the content over the integers
-	    (return (if oldmodulus
-		      (cadr (fastcont (pmod zfactr)))
-		      zfactr))))
-     (setq modulus plim lcd0 (caddar factrs))
-     (setq mult (ctimes (pcsub lc1 svals svars)
-			(crecip lcd0)))
-     (setq factrs (list (ptimes mult (car factrs))
-			(ptimes lcd0 (cadr factrs))))
-     (setq builder (newrep builder))
-     (setq dlp (loop for x in (cdr (oddelm builder))
-		  maximize (multideg x)))
-     (setq zfactr (z1 builder (car factrs) (cadr factrs)))
-     (setq zfactr (pmod (oldrep (car zfactr))))
-     (return (cadr (let ((modulus oldmodulus))
-		     (fastcont zfactr))))))
+     mod  (setq modulus plim)
+     (setq dlp  (loop for x in (cdr (oddelm builder))
+		   maximize (multideg x)))
+     (setq zfactr (z1 builder (car factrs)(cadr factrs)))
+     (setq zfactr (restorelc zfactr (caddr builder)))
+     (setq zfactr (oldrep (cadr zfactr)))
+     ;; RESTORELC removes the content over the integers
+     (return (if oldmodulus
+	       (cadr (fastcont (pmod zfactr)))
+	       zfactr))))
 
 (defun getd0 (tpl tvals)
   (prog (c)
@@ -191,7 +187,7 @@
 
 (defun ezgcd (pfl vl modulus)
   (prog (svars svals valflag tempprime pfcontl contgcd contcofactl
-	 pl nsvars nsvals svalsl lcprod gcdlcs lcpl evmapout
+	 pl nsvars nsvals svalsl lcprod evmapout
 	 pl0 d0 d degd0 degd0n d0n pl0n temp tryagain cofact0
 	 pcofactl ith builder var termcont tcontl $algebraic)
      (cond ((setq temp (numberinlistp pfl))
@@ -298,11 +294,8 @@
 		   (go callez1)))))
      (setq temp (cdr temp) ith (1+ ith)) (go next)
      callez1
-     (setq lcpl (mapcar #'caddr pl)
-	   gcdlcs (car (ezgcd lcpl svars modulus))
-	   lcpl nil)
      (setq d (ez1call builder
-		      (list d0 cofact0) gcdlcs
+		      (list d0 cofact0)
 		      (reverse svals)
 		      (reverse svars)))
      end  (setq pcofactl nil temp pfl)
@@ -459,4 +452,4 @@
 (declare-top (unspecial lcprod svals svars oldsvars oldsvals
 			valflag pl0 d0 degd0 var many* tempprime ovarlist valist
 			zl *prime plim ne nn*-1 dlp
-			ez1skip svalsl nsvals lc1 oldlc limk))
+			ez1skip svalsl nsvals oldlc limk))

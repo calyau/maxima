@@ -332,6 +332,7 @@ Bug fixes for numbered bugs:
 * \#5783 gcd:mod hangs on multivariate polynomials with a small modulus
 * \#5785 integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x) contains false
 * \#5787 gcd() with algebraic : true can return a non-divisor or miss a common factor
+* \#5788 ezgcd() and gcd:ez hang when the leading coefficients have a common factor
 
 Bug fixes for unnumbered bugs:
 ------------------------------
