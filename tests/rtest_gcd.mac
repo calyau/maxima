@@ -408,3 +408,15 @@ block([s : make_random_state(false), d, e, l, n, x, P, Q, r],
   r);
 [[[(2*e+1)*x-2, (d-1)*x-d-2, (-n-2*d)*x-n-2*l-2*d],
   [(2*e+1)*x-2, -(((d-1)*x-d-2)/((n+2*d)*x+n+2*l+2*d))]]]$
+
+
+/* Bug #5789: "gcd:spmod fails with: attempt to THROW to a tag that does not exist: BAD-POINT"
+   Modulo ?\*alpha, the first prime of the default gcd, f and g have the common
+   factor x+y+1, over the integers they have none. The primes after ?\*alpha then
+   found no gcd of the expected degree. */
+
+block([gcd : spmod, P : ?\*alpha, f, g, x, y],
+  f : expand((x+y+1)*(x-y) + P*x^2*y),
+  g : expand((x+y+1)*(x+2*y)),
+  [gcd(f, g), ratsimp(f/g - ratsimp(f/g))]);
+[1, 0]$

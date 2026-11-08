@@ -407,7 +407,12 @@
 	    (do ((test)
 		 (tries 1 (1+ tries)))
 		(nil)
-	      (setq gcd (catch 'zgcd-fail (catch 'relprime (zgcd1 f g))))
+	      ;; Without a modulus, ZGCD1 lifts the primes after *ALPHA
+	      ;; outside the catch in ZGCD-LIFT*. A bad point there, as when
+	      ;; *ALPHA is unlucky for F and G, fails the try.
+	      (setq gcd (catch 'zgcd-fail
+			  (catch 'bad-point
+			    (catch 'relprime (zgcd1 f g)))))
 	      ;; For *WHICH-FACTOR* 2 or 3, GCD is a cofactor. TEST is the
 	      ;; gcd only if it divides both F and G.
 	      (setq test

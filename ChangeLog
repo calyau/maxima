@@ -333,6 +333,7 @@ Bug fixes for numbered bugs:
 * \#5785 integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x) contains false
 * \#5787 gcd() with algebraic : true can return a non-divisor or miss a common factor
 * \#5788 ezgcd() and gcd:ez hang when the leading coefficients have a common factor
+* \#5789 gcd:spmod fails with: attempt to THROW to a tag that does not exist: BAD-POINT
 
 Bug fixes for unnumbered bugs:
 ------------------------------
