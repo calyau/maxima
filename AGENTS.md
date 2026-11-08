@@ -66,11 +66,13 @@ batch capture. `gnuplot` matters only for plots at runtime.
 `src/binary-<lisp>/` holds the **build**: `maxima.core` plus a `.fasl` per
 compiled source. Per Lisp, but **not** per Lisp *version* -- which is why a new
 SBCL version needs `make clean` (sec. 15).
-`binary/<version>/<lisp>/<lisp-version>/` (underscores, not dots) is the
-**runtime** objdir `*maxima-objdir*`, in the build tree for `./maxima-local`
-and under `~/.maxima` by default: fasls compiled from `share/` on demand,
-created lazily, so it is absent until something compiles. `./maxima-local -d`
-prints every resolved directory.
+`<base>/<version>/<lisp>/<lisp-version>/` (underscores, not dots) is the
+**runtime** objdir `*maxima-objdir*`: fasls compiled from `share/` on demand,
+created lazily, so it is absent until something compiles. `<base>` is
+`$MAXIMA_OBJDIR`, else `~/.maxima/binary` (`set-pathnames`, `src/init-cl.lisp`).
+**`./maxima-local` overrides any `MAXIMA_OBJDIR` you export**: `maxima-local.in`
+sets it to the build tree's `binary/`. `./maxima-local -d` prints every
+resolved directory.
 
 A build, and a test run, leave `git status` clean.
 
@@ -283,6 +285,11 @@ function**; for an edited body it was already true and stays true after a failed
 build -- test the behaviour instead.
 
 Never run two builds concurrently; they share the fasl output directory.
+Nor two `./maxima-local` processes of one tree that may load the same share
+package: they share the runtime objdir (sec. 2), so the first `load` in each
+compiles the same fasls at once and they race. Exporting `MAXIMA_OBJDIR` does
+not separate them. Run the workload once serially first. Later runs find the
+fasls newer than their sources and only load them.
 
 ---
 
