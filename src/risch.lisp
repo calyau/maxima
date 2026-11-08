@@ -636,7 +636,13 @@
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
-		       (genvar genvar)
+		       ;; Fresh gensyms. VARLIST and GENVAR pair up by
+		       ;; position, but TRYRISCH1 drops the last kernel of
+		       ;; VARLIST and keeps GENVAR. RFORM puts new kernels in
+		       ;; front of VARLIST, so with this GENVAR, RATREP* would
+		       ;; pair the kernels with other gensyms and change their
+		       ;; TELLRAT properties, which the caller still needs.
+		       (genvar nil)
 		       (rn (rform narg))	;; can add new vars to varlist
 		       (ro (rform (cadr olog)))
 		       (risch-var (caar ro))

@@ -7605,6 +7605,43 @@ trigsimp(rectform(integrate((2*%i*x+1)/((x-%e^-%i)*(x-%i-2)*(x+%i-2)*(x+%i+2)), 
 0$
 
 
+/* Bug #5790: "integrate() fails with a rat error for log(a+b*x^2)^3/x^4 when a*b > 0" */
+
+/* The second integral is Rubi 3.4 #101: */
+block([r],
+  assume(a*b > 0),
+  r : [integrate(log(a+b*x^2)^3/x^4, x), integrate(log(c*(a+b*x^2)^p)^3/x^4, x),
+       integrate(log(c*(a+b*x^2)^p)^3/x^2, x)],
+  forget(a*b > 0),
+  r);
+[2*b*'integrate(log(b*x^2+a)^2/(b*x^4+a*x^2), x)-log(b*x^2+a)^3/(3*x^3),
+ 'integrate(((b*(2*p^3+3*log(c)*p^2)*x^2+3*a*log(c)*p^2)*log(b*x^2+a)^2+(3*b*log(c)^2*p*x^2+3*a*log(c)^2*p)*log(b*x^2+a)
+   +b*log(c)^3*x^2+a*log(c)^3)/(b*x^6+a*x^4), x)-(p^3*log(b*x^2+a)^3)/(3*x^3),
+ 'integrate(((b*(6*p^3+3*log(c)*p^2)*x^2+3*a*log(c)*p^2)*log(b*x^2+a)^2+(3*b*log(c)^2*p*x^2+3*a*log(c)^2*p)*log(b*x^2+a)
+   +b*log(c)^3*x^2+a*log(c)^3)/(b*x^4+a*x^2), x)-(p^3*log(b*x^2+a)^3)/x]$
+
+/* Compare with quad_qags for a*b > 0 and a*b < 0. qv(e, lo, t) is e at x = t, with quad_qags
+   taking the integrals left from lo to t: */
+block([qv],
+  local(qv),
+  qv(e, lo, t) :=
+    if atom(e) then subst(x = t, e)
+    else if op(e) = nounify(integrate) then first(quad_qags(first(e), x, lo, t))
+    else apply(op(e), map(lambda([u], qv(u, lo, t)), args(e))),
+  map(lambda([s, vals, lo, hi],
+    block([fs : [log(a+b*x^2)^3/x^4, log(c*(a+b*x^2)^p)^3/x^4, log(c*(a+b*x^2)^p)^3/x^2], Fs],
+      assume(s),
+      Fs : map(lambda([f], integrate(f, x)), fs),
+      forget(s),
+      map(lambda([f, F],
+        block([G : subst(vals, F)],
+          is(abs(float(rectform(qv(G, lo, hi) - qv(G, lo, lo)))
+                 - first(quad_qags(subst(vals, f), x, lo, hi))) < 1e-10))),
+        fs, Fs))),
+    [a*b > 0, a*b < 0], [[a = 2, b = 3, c = 5, p = 3/2], [a = 2, b = -3, c = 5, p = 3/2]], [1/2, 1/5], [2, 7/10]));
+[[true, true, true], [true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
