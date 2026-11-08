@@ -193,6 +193,40 @@
       (setq gcd (if (null gcd) coef (pgcd coef gcd)))
       (if (equal gcd 1) (return (list 1 pol))))))
 
+;; The free variables of the polynomial U that are not in the polynomial V.
+;; Algebraic variables are not free, nor are those in their TELLRAT relations,
+;; also through other relations. If the main variable is not free, there are
+;; none: U and V are then not polynomials in it over the other variables.
+(defun oldgcd-free-vars (u v)
+  (let ((vu (listovars u)) (vv (listovars v)) (tied ()))
+    (labels ((tie (g)
+               (unless (member g tied)
+                 (push g tied)
+                 (loop for (nil c) on (algv g) by #'cddr
+                       do (mapc #'tie (listovars c))))))
+      (dolist (g (append vu vv))
+        (if (algv g) (tie g))))
+    (unless (member (p-var u) tied)
+      (remove-if #'(lambda (w) (or (member w vv) (member w tied))) vu))))
+
+;; Set when REDGCD or SUBRESGCD gives up.
+(defvar *prs-failed* nil)
+
+;; The gcd of the primitive polynomials U and V, computed as the gcd of V and
+;; the coefficients of U with respect to the free variables of U that V lacks.
+;; NIL if there are none, or if one of these gcds fails or gives up.
+(defun oldgcd-reduce (u v)
+  (let ((vars (oldgcd-free-vars u v)) (coefs (list u)) (h v) (*prs-failed* nil))
+    (when vars
+      (dolist (w vars)
+        (setq coefs (loop for c in coefs nconc (coefl (poly-in-var c w)))))
+      (setq h (ignore-rat-err
+                (dolist (c (stable-sort coefs #'< :key #'pnterms) h)
+                  (setq h (pgcd h c))
+                  (when (or (pcoefp h) (not (eq (p-var h) (p-var v))))
+                    (return 1)))))
+      (unless *prs-failed* h))))
+
 ;;*** THIS IS THE REDUCED POLYNOMIAL REMAINDER SEQUENCE GCD (COLLINS')
 
 (defun oldgcd (x y &aux u v s egcd)	;only called from pgcda
@@ -202,11 +236,18 @@
   (if (> egcd 1)
       (setq u (pexpon*// u egcd nil)
 	    v (pexpon*// v egcd nil)))
-  (if (> (p-le v) (p-le u)) (rotatef u v))
-  (setq s (case $gcd
-	    ($red (redgcd u v))
-	    ($subres (subresgcd u v))
-	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" $gcd))))
+  ;; Variables in only one of U and V do not occur in their gcd. Taking the
+  ;; content with respect to them first keeps them out of the PRS: the gcd
+  ;; replaces U or V, and the PRS then takes one step.
+  (cond ((setq s (oldgcd-reduce u v)) (setq u s))
+	((setq s (oldgcd-reduce v u)) (setq v s)))
+  (unless (eql s 1)
+    (if (> (p-le v) (p-le u)) (rotatef u v))
+    (setq s (case $gcd
+	      ($red (redgcd u v))
+	      ($subres (subresgcd u v))
+	      (t (merror "OLDGCD: found gcd = ~M; how did that happen?"
+			 $gcd)))))
   ;; Check for gcd that simplifies to 0. SourceForge bugs 831445 and 1313987
   (unless (ignore-rat-err (rainv s))
     (setq s 1))
@@ -217,8 +258,9 @@
 						    (pgcd (p-lc u) (p-lc v))))))
 		       egcd t)))
   (setq s (ptimeschk s (pgcd x y)))
+  ;; ALGNORMAL can fail on a gcd from OLDGCD-REDUCE. Then S stays as it is.
   (and $algebraic (not (pcoefp (setq u (leadalgcoef s))))
-       (not (equal u s)) (setq s (algnormal s)))
+       (not (equal u s)) (setq s (or (ignore-rat-err (algnormal s)) s)))
   (cond (modulus (monize s))
 	((pminusp s) (pminus s))
 	(t s)))
@@ -239,12 +281,19 @@
 	   (l (cdr p) (cddr l)))
 	  ((null l) (nreverse ans)))))
 
+;; X/Y for REDGCD and SUBRESGCD. PQUOTIENT ignores TELLRAT relations and can
+;; fail. Then they give up, and *PRS-FAILED* records that.
+(defun prs-quotient (x y)
+  (let ((q (pquotientchk-safe x y)))
+    (unless q (setq *prs-failed* t))
+    q))
+
 ;;polynomial gcd using reduced prs
 
 (defun redgcd (p q &aux (d 0))
   (loop until (zerop (pdegree q (p-var p)))
 	 do (psetq p q
-		   q (pquotientchk-safe (prem p q) (pexpt (p-lc p) d))
+		   q (prs-quotient (prem p q) (pexpt (p-lc p) d))
 		   d (+ (p-le p) 1 (- (p-le q))))
 	 (if (< d 1) (return 1))
 	 finally (return (if (pzerop q) p 1))))
@@ -260,7 +309,7 @@
 				(return 1)
 			      (pexpt h (1- d)))
 	 do (psetq p q
-		   q (pquotientchk-safe (prem p q) (ptimes g (ptimes h h^1-d))))
+		   q (prs-quotient (prem p q) (ptimes g (ptimes h h^1-d))))
 	 if (zerop (pdegree q (p-var p))) return (if (pzerop q) p 1)))
 
 ;;*** THIS COMPUTES PSEUDO REMAINDERS
@@ -486,9 +535,10 @@
 		(e (pdegree (p-lc p) var2) (max e (pdegree (pt-lc l) var2))))
 	       ((null l) e)))))
 
+;; The terms of P in the variable V, as a fresh list: EVERYSUBST2 changes it.
 (defun poly-in-var (p v)
   (cond ((or (pcoefp p) (pointergp v (p-var p))) (list 0 p))
-	((eq (p-var p) v) (p-terms p))
+	((eq (p-var p) v) (copy-list (p-terms p)))
 	((loop with ans
 		for (exp coef) on (p-terms p) by #'cddr
 		do (setq ans (ptptplus ans

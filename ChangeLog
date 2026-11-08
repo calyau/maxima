@@ -325,6 +325,7 @@ Bug fixes for numbered bugs:
 * \#5774 block(...) arguments are simplified when block is not evaluated
 * \#5775 carg(), realpart(), imagpart() and rectform() never return for some quotients with a radical
 * \#5776 integrate(x/(x^5-x-1)+1, x, 0, 1) returns false+1
+* \#5780 gcd() with algebraic : true hangs for polynomials with several parameters
 * \#5781 gcd with modulus set returns non-divisors and too small gcds, or hangs
 * \#5783 gcd:mod hangs on multivariate polynomials with a small modulus
 * \#5785 integrate((2+3*x)*sqrt(1-2*x)/(3+5*x)^(5/2), x) contains false
