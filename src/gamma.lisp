@@ -2178,10 +2178,9 @@
 ;; This relationship has serious round-off issues when z is small
 ;; because gamma_incomplete(1/2,z^2)/sqrt(%pi) is near 1.
 ;;
-;; complex-erf is for (lisp) complex numbers; bfloat-erf is for real
-;; bfloats, and complex-bfloat-erf is for complex bfloats.  Care is
-;; taken to return real results for real arguments and imaginary
-;; results for imaginary arguments
+;; complex-erf is for (lisp) complex numbers.  Care is taken to
+;; return real results for real arguments and imaginary results for
+;; imaginary arguments
 (defun complex-erf (z)
   (let ((result
           (*
@@ -2200,42 +2199,95 @@
       (t
         result))))
 
-;; bfhalf is a special variable--it automatically updates when $fpprec is changed
-(defun bfloat-erf (z)
-  ;; Warning!  This has round-off problems when abs(z) is very small.
-  ;; The argument is real, the result is real too
-    ($realpart
-      (mul
-        (simplify (list '(%signum) z))
-        (sub 1
-          (mul 
-            (div 1 (power ($bfloat '$%pi) *bfhalf*))
-            (bfloat-gamma-incomplete *bfhalf* ($bfloat (power z 2))))))))
-
-(defun complex-bfloat-erf (z)
-  ;; Warning!  This has round-off problems when abs(z) is very small.
-  (let* (($ratprint nil)
-         (result
-           (cmul
-             (cdiv (cpower (cpower z 2) *bfhalf*) z)
-             (sub 1
-               (cmul 
-                 (div 1 (power ($bfloat '$%pi) *bfhalf*))
-                 (complex-bfloat-gamma-incomplete 
-                   *bfhalf*
-                   ($bfloat (cpower z 2))))))))
-    (cond
-      ((zerop1 ($imagpart z))
-       ;; Pure real argument, the result is real
-       ($realpart result))
-      ((zerop1 ($realpart z))
-        ;; Pure imaginary argument, the result is pure imaginary
-        (mul '$%i ($imagpart result)))
-      (t
-       ;; A general complex result
-       result))))
-
 (in-package :bigfloat)
+
+;; Erf(z) by the series A&S 7.1.6 (DLMF 7.6.2,
+;; https://dlmf.nist.gov/7.6.E2) when abs(realpart(z))
+;; >= abs(imagpart(z)) and A&S 7.1.5 (DLMF 7.6.1,
+;; >https://dlmf.nist.gov/7.6.E1) otherwise.  The
+;; magnitudes of the terms of either series sum to about
+;; exp(abs(z)^2).  This choice makes the cancellation about
+;; 2*imagpart(z)^2/log(2) bits for 7.1.6 and 2*realpart(z)^2/log(2)
+;; bits for 7.1.5, which the caller must supply as extra precision.
+;;
+;; A&S 7.1.6/DLMF 7.6.2
+;;
+;;   erf z = 2/sqrt(%pi) * exp(-z^2)
+;;             * sum(2^n*z^(2*n+1)/(1*3...*(2*n+1)), n, 0, inf)
+;;         = 2*z/sqrt(%pi) * exp(-z^2)
+;;             * sum((2*z^2)^n/(1*3*...*(2*n+1)), n, 0, inf)
+;;
+;; A&S 7.1.5/DLMF 7.6.1
+;;
+;;   erf z = 2/sqrt(%pi)
+;;             * sum((-1)^n*z*(2*n+1)/(n!*(2*n+1)), n, 0, inf)
+;;         = 2*z/sqrt(%pi)
+;;             * sum((-1)^n*z*(2*n)/(n!*(2*n+1)), n, 0, inf)
+(defun bf-erf-series (z)
+  (let ((z^2 (* z z)))
+    (/ (* 2 z
+	  (if (>= (abs (realpart z)) (abs (imagpart z)))
+	      (* (exp (- z^2))
+		 (sum-power-series (* 2 z^2)
+				   #'(lambda (k)
+				       (/ (+ k k 1)))))
+	      (sum-power-series z^2
+				#'(lambda (k)
+				    (let ((2k (+ k k)))
+				      (- (/ (- 2k 1)
+					    k
+					    (+ 2k 1))))))))
+       (sqrt (%pi z)))))
+
+;; Erfc(z) by the asymptotic series A&S 7.1.23 (DLMF 7.12.1,
+;; https://dlmf.nist.gov/7.12.E1), valid for abs(arg(z)) < 3*%pi/4.
+;; The smallest term is about exp(-abs(z)^2), so this is accurate only
+;; when abs(z)^2/log(2) exceeds the precision in bits.
+;;
+;; A&S 7.1.23/DLMF 7.12.1:
+;;
+;;   erfc z ~ exp(-z^2)/sqrt(%pi) * sum((-1)^m*pochhammer(1/2,m)/z^(2*m+1), m, 0, inf)
+;;          = exp(-z^2)/z/sqrt(%pi) * sum((-1)^m*pochhammer(1/2,m)/z^(2*m), m, 0, inf)
+(defun bf-erfc-asymptotic (z)
+  (let ((z^2 (* z z)))
+    (/ (* (exp (- z^2))
+	  (sum-power-series (/ -1 (* 2 z^2))
+			    #'(lambda (k)
+				(- (* 2 k) 1))))
+       (* z (sqrt (%pi z))))))
+
+;; Erf(z), or erfc(z) if ERFCP is non-NIL, for a BIGFLOAT or
+;; COMPLEX-BIGFLOAT Z.  For realpart(z) < 0, erf(z) = -erf(-z) and
+;; erfc(z) = 2 - erfc(-z) = 1 + erf(-z), computed with the same extra
+;; precision as erf(-z).
+(defun bf-erf-or-erfc (z erfcp)
+  (let* ((negp (minusp (realpart z)))
+	 (z (if negp (- z) z))
+	 (x^2 (expt (realpart z) 2))
+	 (y^2 (expt (imagpart z) 2))
+	 (r^2 (+ x^2 y^2))
+	 (guard (+ 10 (integer-length maxima::fpprec)
+		   (max 0 (nth-value 1 (decode-float (+ 1 r^2)))))))
+    (if (> (/ r^2 (log 2d0)) (+ maxima::fpprec guard 8))
+	(with-extra-precision (guard (z))
+	  (let ((erfc (bf-erfc-asymptotic z)))
+	    ;; On the imaginary axis erfc(z) is 1 plus the asymptotic
+	    ;; series, so that erf(z) is pure imaginary.
+	    (when (zerop (realpart z))
+	      (setf erfc (+ 1 erfc)))
+	    (cond (erfcp (if negp (- 2 erfc) erfc))
+		  (negp (- erfc 1))
+		  (t (- 1 erfc)))))
+	(let ((loss (/ (* 2 (if (>= x^2 y^2) y^2 x^2)) (log 2d0))))
+	  ;; erfc(z) = 1 - erf(z) loses about realpart(z^2)/log(2) more
+	  ;; bits.
+	  (when (and erfcp (not negp) (> x^2 y^2))
+	    (setf loss (+ loss (/ (- x^2 y^2) (log 2d0)))))
+	  (with-extra-precision ((+ guard (values (ceiling loss))) (z))
+	    (let ((erf (bf-erf-series z)))
+	      (cond (erfcp (if negp (+ 1 erf) (- 1 erf)))
+		    (negp (- erf))
+		    (t erf))))))))
 
 ;; Erf(z) for all z.  Z must be a CL real or complex number or a
 ;; BIGFLOAT or COMPLEX-BIGFLOAT object.  The result will be of the
@@ -2244,7 +2296,7 @@
   (cond ((typep z 'cl:real)
 	 ;; Use Slatec derf, which should be faster than the series.
 	 (maxima::erf z))
-	((<= (abs z) 0.476936)
+	((and (typep z 'cl:complex) (<= (abs z) 0.476936))
 	 ;; Use the series A&S 7.1.5 for small x:
 	 ;; 
 	 ;; erf(z) = 2*z/sqrt(%pi) * sum((-1)^n*z^(2*n)/n!/(2*n+1), n, 0, inf)
@@ -2265,14 +2317,15 @@
 	 (etypecase z
 	   (cl:real (maxima::erf z))
 	   (cl:complex (maxima::complex-erf z))
-	   (bigfloat
-	    (bigfloat (maxima::$bfloat (maxima::$expand (maxima::bfloat-erf (maxima::to z))))))
-	   (complex-bigfloat
-	    (bigfloat (maxima::$bfloat (maxima::$expand (maxima::complex-bfloat-erf (maxima::to z))))))))))
+	   ((or bigfloat complex-bigfloat)
+	    (bf-erf-or-erfc z nil))))))
 
 (defun bf-erfc (z)
-  ;; Compute erfc(z) via 1 - erf(z) is not very accurate if erf(z) is
-  ;; near 1.  Wolfram says
+  ;; For a BIGFLOAT or COMPLEX-BIGFLOAT, use BF-ERF-OR-ERFC.
+  (when (typep z '(or bigfloat complex-bigfloat))
+    (return-from bf-erfc (bf-erf-or-erfc z t)))
+  ;; For a CL number, computing erfc(z) via 1 - erf(z) is not very
+  ;; accurate if erf(z) is near 1.  Wolfram says
   ;;
   ;; erfc(z) = 1 - sqrt(z^2)/z * (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2, z^2))
   ;;
@@ -2286,17 +2339,7 @@
   ;; erfc(z) = 1 + (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2,z^2))
   ;;         = 2 - 1/sqrt(pi)*gamma_incomplete(1/2,z^2)
   (flet ((gamma-inc (z)
-	   (etypecase z
-	     (cl:number
-	      (maxima::gamma-incomplete 0.5 z))
-	     (bigfloat
-	      (bigfloat:to (maxima::$bfloat
-			    (maxima::bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
-							     (maxima::to z)))))
-	     (complex-bigfloat
-	      (bigfloat:to (maxima::$bfloat
-			    (maxima::complex-bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
-								     (maxima::to z))))))))
+	   (maxima::gamma-incomplete 0.5 z)))
   (if (if (zerop (realpart z))
             (not (minusp (imagpart z)))
             (> (realpart z) 0))
