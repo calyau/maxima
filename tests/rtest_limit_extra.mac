@@ -106,7 +106,7 @@ ind$
 
 /* far too complex result, but it's not the fault of simplimln */
 limit(log((x-%i)/(x+%i)),x,2);
-log((5*%i+10)/(11*%i+2))$
+log(-((%i-2)/(%i+2)))$
 
 limit(log(-46 + %i*x),x,0,'minus);
 log(46) - %i*%pi$

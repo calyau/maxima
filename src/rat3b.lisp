@@ -24,6 +24,22 @@
 	       ((null p))
 	     (and (palgp (cadr p)) (return t))))))
 
+;; The largest product of powers of algebraic variables dividing P, like
+;; sqrt(s) for (x+1)*sqrt(s)
+(defun palgtermcont (p)
+  (degvecdisrep (mapcar #'(lambda (d v) (if (algv v) d 0))
+                        (pmindegvec p) genvar)))
+
+;; T if P is an algebraic number, like 1+%i or sqrt(2+sqrt(3)), but not
+;; sqrt(x). SEEN holds the variables being checked, in case their minimal
+;; polynomials refer to each other.
+(defun palgnump (p &optional seen)
+  (every #'(lambda (v)
+             (and (algv v)
+                  (not (member v seen))
+                  (every #'(lambda (c) (palgnump c (cons v seen)))
+                         (cdr (algv v)))))
+         (listovars p)))
 
 (defun ratdx (e *x*)
   (declare (special *x*))
@@ -213,14 +229,23 @@
 	($algebraic (ratreduce (pexpt (car x) n) (pexpt (cdr x) n)))
 	(t (cons (pexpt (car x) n) (pexpt (cdr x) n)))))
 
-(defun ratplus (x y &aux q n)
+(defun ratplus (x y &aux q n (m 1))
   (cond ($ratfac (facrplus x y))
 	($ratwtlvl
 	 (ratreduce
 	  (pplus (wtptimes (car x) (cdr y) 0)
 		 (wtptimes (car y) (cdr x) 0))
 	  (wtptimes (cdr x) (cdr y) 0)))
-	((and $algebraic (ralgp x) (ralgp y))
+	;; Multiplying the denominators squares their common factor. That is
+	;; fine for an algebraic number like 1+%i and a product of algebraic
+	;; variables like sqrt(s), whose squares are 2*%i and s. But PTIMES
+	;; turns (x+sqrt(2))^2 into x^2+2^(3/2)*x+2, where RATREDUCE misses
+	;; x+sqrt(2), so the last clause divides such factors out first.
+	((and $algebraic (ralgp x) (ralgp y)
+	      (or (not (palgp (cdr x))) (not (palgp (cdr y)))
+		  (progn (setq q (pgcdcofacts (cdr x) (cdr y))
+			       m (palgtermcont (car q)))
+			 (palgnump (pquotientchk (car q) m)))))
 	 (ratreduce
 	  (pplus (ptimeschk (car x) (cdr y))
 		 (ptimeschk (car y) (cdr x)))
@@ -232,14 +257,15 @@
 	((equal 1 (cdr y))
 	 (cond ((equal 0 (car y)) x)
 	       (t (cons (pplus (ptimes (car y) (cdr x)) (car x)) (cdr x)))))
-	(t (setq q (pgcdcofacts (cdr x) (cdr y)))
+	(t (or q (setq q (pgcdcofacts (cdr x) (cdr y))))
 	   (setq n (pplus (ptimes (car x)(caddr q))
 			  (ptimes (car y)(cadr q))))
 	   (if (cadddr q)		; denom factor from algebraic gcd
 	       (setq n (ptimes n (cadddr q))))
-	   (ratreduce n 
-		      (ptimes (car q)
-			      (ptimes (cadr q) (caddr q)))))))
+	   ;; Still square M, the common product of algebraic variables
+	   (ratreduce (ptimeschk m n)
+		      (ptimeschk m (ptimes (car q)
+					   (ptimes (cadr q) (caddr q))))))))
 
 (defun ratquotient (x y)
   (rattimes x (ratinvert y) t)) 

@@ -175,3 +175,13 @@ block([eqs, sol],
   sol : linsolve(eqs, [x, y, z]),
   ratsimp(subst(sol, map(lhs, eqs) - map(rhs, eqs))));
 [0, 0, 0]$
+
+
+/* Bug #5778: "ratsimp does not cancel a radical factor common to two denominators" */
+
+[ratsimp(x/(x + sqrt(2)) - 2*x^2/(x + sqrt(2))), ratsimp(-2/(sqrt(d)*x + x) - 2*x/(sqrt(d)*x + x)),
+ ratsimp(a/(%i*(x + sqrt(2))) + b/(%i*(x + sqrt(2))))];
+[-((2*x^2-x)/(x+sqrt(2))),-((2*x+2)/(sqrt(d)*x+x)),-((%i*b+%i*a)/(x+sqrt(2)))]$
+
+block([r : (x - 2*x^2)/(x + sqrt(2) + cos(y))], carg((r + %i)/(r - %i)));
+2*atan2(1,(x-2*x^2)/(cos(y)+x+sqrt(2)))-2*%pi*ceiling((2*atan2(1,(x-2*x^2)/(cos(y)+x+sqrt(2)))-%pi)/(2*%pi))$

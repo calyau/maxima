@@ -1135,7 +1135,7 @@ to_poly_solve([a=3+x,b=1-x,x=2],[x], 'parameters=[a,b]);
 %union(%if((a = 5) %and (b = - 1), [x = 2], %union()))$
 
 nicedummies(to_poly_solve(tan(a)=b,a, 'simpfuncs = ['ratsimp]));
-%union([a = -((%i*log(-((b^2+1)/(b^2+2*%i*b-1)))-2*%pi*%z0)/2)])$
+%union([a = -((%i*log(-((b-%i)/(b+%i)))-2*%pi*%z0)/2)])$
 
 nicedummies(to_poly_solve(sin(x) = sin(x - p[0]),x));
 %union([x = (2*%pi*%z0+p[0]-%pi)/2])$
