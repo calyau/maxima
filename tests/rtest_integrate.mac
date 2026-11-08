@@ -7642,6 +7642,20 @@ block([qv],
 [[true, true, true], [true, true, true]]$
 
 
+/* Bug #5791: "integrate() gives wrong results or errors for log(x)^2/(x^2-2*x-1) and similar" */
+
+[integrate(log(x)^2/(x^2-2*x-1), x), integrate(log(x)^3/(x^2-2*x-1), x),
+ integrate(log(x+1)^2/(x^2-2*x-1), x), integrate(log(x)^2/(x^2+x-1), x)];
+['integrate(log(x)^2/(x^2-2*x-1), x), 'integrate(log(x)^3/(x^2-2*x-1), x),
+ 'integrate(log(x+1)^2/(x^2-2*x-1), x), 'integrate(log(x)^2/(x^2+x-1), x)]$
+
+/* These stopped with a Lisp error: */
+map(lambda([f], block([F : integrate(f, x)],
+    [freeof(nounify(integrate), F), is(cabs(float(rectform(subst(x = 3, diff(F, x) - f)))) < 1e-12)])),
+  [log(x)^3/(x^2-2*x+3), log(x)^3/(x^2+2*x+5), log(x)^3/(x^2+x+2)]);
+[[true, true], [true, true], [true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

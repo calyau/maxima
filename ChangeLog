@@ -339,6 +339,7 @@ Bug fixes for numbered bugs:
 * \#5788 ezgcd() and gcd:ez hang when the leading coefficients have a common factor
 * \#5789 gcd:spmod fails with: attempt to THROW to a tag that does not exist: BAD-POINT
 * \#5790 integrate() fails with a rat error for log(a+b*x^2)^3/x^4 when a*b > 0
+* \#5791 integrate() gives wrong results or errors for log(x)^2/(x^2-2*x-1) and similar
 
 Bug fixes for unnumbered bugs:
 ------------------------------

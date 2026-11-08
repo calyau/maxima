@@ -516,9 +516,18 @@
 			      (or (alike1 (leadarg newfn) (leadarg form))
 				  (and (mlogp newfn)
 				       (logequiv form newfn risch-intvar))))
-			 (ratpl (rform coef)
-				(prog2 (rplaca a 0)
-				    (getfncoeff-impl (cdr a)))))
+			 ;; RFORM cannot add a coefficient with kernels that
+			 ;; VARLIST lacks, like log(1+sqrt(2)). TRYRISCH1 made
+			 ;; VARLIST shorter than GENVAR, so new kernels would
+			 ;; pair the others with the wrong gensyms.
+			 (if (let (vlist)
+			       (declare (special vlist))
+			       (newvar1 coef)
+			       vlist)
+			   (progn (setq risch-nogood t) 0)
+			   (ratpl (rform coef)
+				  (prog2 (rplaca a 0)
+				      (getfncoeff-impl (cdr a))))))
 			((do ((vl varlist (cdr vl)))
 			     ((null vl))
 			   (and (not (atom (car vl)))
