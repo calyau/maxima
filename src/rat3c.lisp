@@ -230,8 +230,10 @@
 ;;*** THIS IS THE REDUCED POLYNOMIAL REMAINDER SEQUENCE GCD (COLLINS')
 
 (defun oldgcd (x y &aux u v s egcd)	;only called from pgcda
-  (desetq (x  u) (oldcontent x))
-  (desetq (y  v) (oldcontent y))
+  ;; Primitive parts up to a factor free of the main variable are good
+  ;; enough here, but no content may stay in them.
+  (desetq (x  u) (oldcontent x t))
+  (desetq (y  v) (oldcontent y t))
   (setq egcd (gcd (pgcdexpon u) (pgcdexpon v)))
   (if (> egcd 1)
       (setq u (pexpon*// u egcd nil)
@@ -252,10 +254,12 @@
   (unless (ignore-rat-err (rainv s))
     (setq s 1))
   (unless (equal s 1)
-    (setq s (pexpon*// (primpart
-			(if $algebraic s
-			    (pquotient s (pquotient (p-lc s)
-						    (pgcd (p-lc u) (p-lc v))))))
+    (setq s (pexpon*// (second
+			(oldcontent
+			 (if $algebraic s
+			     (pquotient s (pquotient (p-lc s)
+						     (pgcd (p-lc u) (p-lc v)))))
+			 t))
 		       egcd t)))
   (setq s (ptimeschk s (pgcd x y)))
   ;; ALGNORMAL can fail on a gcd from OLDGCD-REDUCE. Then S stays as it is.
@@ -372,7 +376,7 @@
 	(t (setq x (contsort (cdr x)))
 	   (oldcontent2 (cdr x) (car x)))))
 
-(defun oldcontent (x)
+(defun oldcontent (x &optional scaled)
   (cond ((pcoefp x) (list x 1))
 	((null (p-red x))
 	 (list (p-lc x) (make-poly (p-var x) (p-le x) 1)))
@@ -382,10 +386,12 @@
 			   (t (cons (pcquotient x u) 1))))
 	     ;; With algebraic numbers, U can be a multiple of the content
 	     ;; and X/U a fraction. Then U is divided by the denominator if
-	     ;; that is exact, else X is kept whole.
+	     ;; that is exact. Else X is kept whole, or with SCALED, the
+	     ;; denominator, which is free of the main variable, is dropped.
 	     (cond ((equal (cdr v) 1) (setq v (car v)))
 		   ((setq w (pquotientchk-safe u (cdr v)))
 		    (setq u w v (car v)))
+		   (scaled (setq v (car v)))
 		   (t (setq u 1 v x)))
 	     (cond ((pminusp v) (list (pminus u) (pminus v)))
 		   (t (list u v)))))))

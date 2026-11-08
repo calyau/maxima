@@ -371,3 +371,23 @@ block([a : sqrt(1+sqrt(c)), P, Q, g, algebraic : true],
   g : gcd(P, Q),
   [freeof(l, g), hipow(g, x), remainder(P, g, x), remainder(Q, g, x)]);
 [true, 1, 0, 0]$
+
+
+/* Bug #5787: "gcd() with algebraic : true can return a non-divisor or miss a common factor" */
+
+block([t : (%i+1)*x+3*%i, algebraic : true],
+  [gcd(2*c*x-1, expand(t*(2*c*x-1)), x, c), gcd(expand(t*(2*c*x-1)), expand(t*(c*x+2)), x, c),
+   gcd(expand(t*(2*c*x-1)*(c+x)), expand(t*(2*c*x-1)*(c-x)), x, c)]);
+[2*c*x-1, 2*x+3*%i+3, c*(4*x^2+(6*%i+6)*x)-2*x-3*%i-3]$
+
+block([P : expand(((3-2*%i)*x-2*%i*c)*(e*x+(1+%i)*e-1)), Q : expand(((3-2*%i)*x-2*%i*c)*(3*x^2+%i*e*x+2*e+3*c)),
+       algebraic : true],
+  [gcd(P, Q), block([gcd : 'subres], gcd(P, Q)), block([gcd : 'subres], ratsimp(P/Q))]);
+[13*x+(4-6*%i)*c, 13*x+(4-6*%i)*c,
+ ((2*%i-3)*e*x+(-%i-5)*e-2*%i+3)/((6*%i-9)*x^2+(-3*%i-2)*e*x+(4*%i-6)*e+(6*%i-9)*c)]$
+
+/* The denominator that OLDCONTENT drops here contains c: */
+block([a : sqrt(1+sqrt(c)), G, algebraic : true],
+  G : (e-a)*x^2+(c-a)*x+2*a*e+2*c,
+  block([gcd : 'subres], gcd(expand(G*(a*m+(1+a*e+2*a)*x)), expand(G*(e-c-2*a*e*x)))));
+(e-sqrt(sqrt(c)+1))*x^2+(c-sqrt(sqrt(c)+1))*x+2*sqrt(sqrt(c)+1)*e+2*c$
