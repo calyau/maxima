@@ -132,7 +132,7 @@
 
 ;;; $permute permutes the elements of list (or set) lsm according
 ;;; to the permutation pm
-#-nil (defmfun $permute (pm lsm)
+(defmfun $permute_list (pm lsm)
   (check-perm pm "permute") 
 ;  (check-list-or-set lsm "permute")
   (check-list-length lsm ($length pm) "permute")
@@ -141,13 +141,13 @@
       (setq result (cons (nth j lsm) result)))
     (cons (car lsm) result)))
 
-(defmfun $array_permute (pm lsm)
+(defmfun $permute_array (pm lsm)
   (let ((result (make-array (length lsm))))
     (dotimes (j (length pm))
       (setf (aref result j) (aref lsm (aref pm j))))
     result))
 
-(defmfun $permute_via_array_permute (pm lsm)
+(defmfun $permute_via_permute_array (pm lsm)
   (let*
     ((n (1- (length pm)))
      (pm-array (make-array n))
@@ -157,16 +157,18 @@
        (pm (rest pm) (rest pm))
        (lsm (rest lsm) (rest lsm)))
       ((= i n)
-       (let ((result) (result-array ($array_permute pm-array lsm-array)))
+       (let ((result) (result-array ($permute_array pm-array lsm-array)))
          (dotimes (i n) (push (aref result-array i) result))
          (cons '(mlist) (reverse result))))
       (setf (aref pm-array i) (1- (car pm))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
       (setf (aref lsm-array i) (car lsm)))))
 
-#+nil (defmfun $permute (pm lsm) ($permute_via_array_permute pm lsm))
+#-nil (defmfun $permute (pm lsm) ($permute_list pm lsm))
+
+#+nil (defmfun $permute (pm lsm) ($permute_via_permute_array pm lsm))
 
 ;;; $permult multiplies permutation pm by the permutations in list lmpm
-#-nil (defmfun $permult (pm &rest lmpm)
+(defmfun $permult_list (pm &rest lmpm)
   (check-perm pm "permult") 
   (let ((n ($length pm)) (rm (copy-list pm)))
     ;; multiplies the current product, rm, by each of the permutations in lmpm
@@ -179,9 +181,11 @@
            (setf (nth j rm) (nth (nth j rm) qm))))
     rm))
 
-#+nil (defmfun $permult (pm &rest lmpm) (apply '$permult_via_array_permult pm lmpm))
+#-nil (defmfun $permult (pm &rest lmpm) (apply '$permult_list pm lmpm))
+
+#+nil (defmfun $permult (pm &rest lmpm) (apply '$permult_via_permult_array pm lmpm))
   
-(defmfun $permult_via_array_permult (pm &rest lmpm)
+(defmfun $permult_via_permult_array (pm &rest lmpm)
   (let*
     ((n (1- (length pm)))
      (pm-array (make-array n))
@@ -191,7 +195,7 @@
        (pm (rest pm) (rest pm))
        (lmpm-list-tuples (apply 'mapcar 'list (mapcar 'rest lmpm)) (rest lmpm-list-tuples)))
       ((= i n)
-       (let ((result) (result-array (apply '$array_permult pm-array lmpm-arrays)))
+       (let ((result) (result-array (apply '$permult_array pm-array lmpm-arrays)))
          (dotimes (i n) (push (1+ (aref result-array i)) result))
          (cons '(mlist) (reverse result))))
       ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
@@ -199,16 +203,16 @@
       (let ((lmpm-1 (car lmpm-list-tuples)))
         (mapcar (lambda (a x) (setf (aref a i) x)) lmpm-arrays lmpm-1)))))
 
-(defmfun $array_permult (pm &rest lmpm)
+(defmfun $permult_array (pm &rest lmpm)
   (if lmpm
     (let ((product-perm pm))
       (dolist (pm1 lmpm)
-        (setq product-perm ($array_permute product-perm pm1)))
+        (setq product-perm ($permute_array product-perm pm1)))
       product-perm)
     (copy-seq pm)))
 
 ;;; $perm_inverse computes the inverse of permutation p
-#-nil (defmfun $perm_inverse (pm)
+(defmfun $perm_inverse_list (pm)
       (check-perm pm "perm_inverse") 
   (let ((inverse (copy-list pm)))
     ;; if the element pm[j] of the permutation is equal to i, then
@@ -217,13 +221,13 @@
       (setf (nth (nth (1+ j) pm) inverse) (1+ j)))
     inverse))
 
-(defmfun $array_perm_inverse (pm)
+(defmfun $perm_inverse_array (pm)
   (let ((inverse (copy-seq pm)))
     (dotimes (j (length pm))
       (setf (aref inverse (aref pm j)) j))
     inverse))
 
-(defmfun $perm_inverse_via_array_perm_inverse (pm)
+(defmfun $perm_inverse_via_perm_inverse_array (pm)
   (let*
     ((n (1- (length pm)))
      (pm-array (make-array n)))
@@ -231,12 +235,14 @@
       ((i 0 (1+ i))
        (pm (rest pm) (rest pm)))
       ((= i n)
-       (let ((result) (result-array ($array_perm_inverse pm-array)))
+       (let ((result) (result-array ($perm_inverse_array pm-array)))
          (dotimes (i n) (push (1+ (aref result-array i)) result))
          (cons '(mlist) (reverse result))))
       (setf (aref pm-array i) (1- (car pm)))))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
 
-#+nil (defmfun $perm_inverse (pm) ($perm_inverse_via_array_perm_inverse pm))
+#-nil (defmfun $perm_inverse (pm) ($perm_inverse_list pm))
+
+#+nil (defmfun $perm_inverse (pm) ($perm_inverse_via_perm_inverse_array pm))
 
 ;;; $apply_cycles permutes the elements of list (or set) lsm according to the
 ;;; list of cycles lmcm, applying the cycles on the end of the list first
@@ -510,22 +516,27 @@
 ;;; $random_perm generates a random permutation of degree n, using algorithm
 ;;; 5.4 from Reingold, Nievergelt and Deo. Combinatorial algorithms: theory and
 ;;; practice. 1977
-(defmfun $random_perm (n)
+
+(defmfun $random_perm_list (n)
   (check-pos-integer n "random_perm")
   (let ((pm (cons '(mlist) (loop for i from 1 to n collecting i))))
     (loop for i from n downto 2 do
          (rotatef (nth i pm) (nth (1+ ($random i)) pm)))
     pm))
 
-(defmfun $array_random_perm (n)
-  (check-pos-integer n "array_random_perm")
+(defmfun $random_perm_array (n)
+  (check-pos-integer n "random_perm_array")
   (let ((pm (make-array n :element-type 'fixnum)))
     (dotimes (i n) (setf (aref pm i) i))
     (loop for i from (1- n) downto 1 do
          (rotatef (aref pm i) (aref pm ($random (1+ i)))))
     pm))
 
-(defmfun $random_perm_via_array_random_perm (n)
-  (let ((array-pm ($array_random_perm n)) list-pm)
+(defmfun $random_perm_via_random_perm_array (n)
+  (let ((array-pm ($random_perm_array n)) list-pm)
     (dotimes (i n) (push (1+ (aref array-pm i)) list-pm))
     (cons '(mlist) (reverse list-pm))))
+
+#+nil (defmfun $random_perm (n) ($random_perm_via_random_perm_array n))
+
+#-nil (defmfun $random_perm (n) ($random_perm_list n))
