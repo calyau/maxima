@@ -163,9 +163,9 @@
       (setf (aref pm-array i) (1- (car pm))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
       (setf (aref lsm-array i) (car lsm)))))
 
-#-nil (defmfun $permute (pm lsm) ($permute_list pm lsm))
+#+nil (defmfun $permute (pm lsm) ($permute_list pm lsm))
 
-#+nil (defmfun $permute (pm lsm) ($permute_via_permute_array pm lsm))
+#-nil (defmfun $permute (pm lsm) ($permute_via_permute_array pm lsm))
 
 ;;; $permult multiplies permutation pm by the permutations in list lmpm
 (defmfun $permult_list (pm &rest lmpm)
@@ -181,9 +181,9 @@
            (setf (nth j rm) (nth (nth j rm) qm))))
     rm))
 
-#-nil (defmfun $permult (pm &rest lmpm) (apply '$permult_list pm lmpm))
+#+nil (defmfun $permult (pm &rest lmpm) (apply '$permult_list pm lmpm))
 
-#+nil (defmfun $permult (pm &rest lmpm) (apply '$permult_via_permult_array pm lmpm))
+#-nil (defmfun $permult (pm &rest lmpm) (apply '$permult_via_permult_array pm lmpm))
   
 (defmfun $permult_via_permult_array (pm &rest lmpm)
   (let*
@@ -201,7 +201,7 @@
       ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
       (setf (aref pm-array i) (1- (car pm)))
       (let ((lmpm-1 (car lmpm-list-tuples)))
-        (mapcar (lambda (a x) (setf (aref a i) x)) lmpm-arrays lmpm-1)))))
+        (mapcar (lambda (a x) (setf (aref a i) (1- x))) lmpm-arrays lmpm-1)))))
 
 (defmfun $permult_array (pm &rest lmpm)
   (if lmpm
@@ -240,9 +240,9 @@
          (cons '(mlist) (reverse result))))
       (setf (aref pm-array i) (1- (car pm)))))) ;; 0-based indexing for Lisp array vs 1-based indexing for Maxima list
 
-#-nil (defmfun $perm_inverse (pm) ($perm_inverse_list pm))
+#+nil (defmfun $perm_inverse (pm) ($perm_inverse_list pm))
 
-#+nil (defmfun $perm_inverse (pm) ($perm_inverse_via_perm_inverse_array pm))
+#-nil (defmfun $perm_inverse (pm) ($perm_inverse_via_perm_inverse_array pm))
 
 ;;; $apply_cycles permutes the elements of list (or set) lsm according to the
 ;;; list of cycles lmcm, applying the cycles on the end of the list first
@@ -537,6 +537,6 @@
     (dotimes (i n) (push (1+ (aref array-pm i)) list-pm))
     (cons '(mlist) (reverse list-pm))))
 
-#+nil (defmfun $random_perm (n) ($random_perm_via_random_perm_array n))
+#-nil (defmfun $random_perm (n) ($random_perm_via_random_perm_array n))
 
-#-nil (defmfun $random_perm (n) ($random_perm_list n))
+#+nil (defmfun $random_perm (n) ($random_perm_list n))
