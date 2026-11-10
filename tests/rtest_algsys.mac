@@ -742,5 +742,12 @@ block([%rnum:0],
   r3=0,r4=d5]];
 
 
+/* Bug #5794: "algsys([x^5 - sqrt(2)*x - 1], [x]) can't reduce a polynomial in one variable" */
+
+block([eqn : x^5 - sqrt(2)*x - 1],
+  round(1e6 * float(abs(map(lambda([s], subst(s, eqn)), algsys([eqn], [x]))))));
+[0, 0, 0, 0, 0]$
+
+
 (kill(eqt,eqs,F,G,p,p1,p2,s),done)$
 done;

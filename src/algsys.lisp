@@ -741,6 +741,11 @@
 ;;; $REALONLY is set). Otherwise, calls $ALLROOTS.
 (defun callapprs (poly)
   (unless (punivarp poly)
+    ;; Try to convert non-numerical constant coefficients to floats.
+    (let ((float-poly (numer (pdis poly))))
+      (when float-poly
+        (setq poly (cadr (ratf float-poly))))))
+  (unless (punivarp poly)
     (merror (intl:gettext "algsys: Couldn't reduce system to a polynomial in one variable.")))
   (let ($dispflag)
     (if $realonly

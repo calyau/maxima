@@ -340,6 +340,7 @@ Bug fixes for numbered bugs:
 * \#5789 gcd:spmod fails with: attempt to THROW to a tag that does not exist: BAD-POINT
 * \#5790 integrate() fails with a rat error for log(a+b*x^2)^3/x^4 when a*b > 0
 * \#5791 integrate() gives wrong results or errors for log(x)^2/(x^2-2*x-1) and similar
+* \#5794 algsys([x^5 - sqrt(2)*x - 1], [x]) can't reduce a polynomial in one variable
 
 Bug fixes for unnumbered bugs:
 ------------------------------
