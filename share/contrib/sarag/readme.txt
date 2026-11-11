@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                       Version 1.3
+                      Version 1.3.1
 
 ---------------------------------------------------------------
 maintained and developed by Fabrizio Caruso 
@@ -30,7 +30,7 @@ by Mathieu Kohli.
 ---------------------------------------------------------------
 
 Please report bugs to: 
-caruso@science.unitn.it
+fabrizio_caruso@hotmail.com
 marie-francoise.roy@univ-rennes1.fr
 
 ---------------------------------------------------------------

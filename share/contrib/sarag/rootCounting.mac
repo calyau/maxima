@@ -659,7 +659,7 @@ modifiedSignChangesDiff(seq,var,a,b) :=
 /* W(SR(P,Q);a,b) = Ind(Q/P;a,b) */
 
 sSubResCauchyIndexBetween(num,den,var,a,b) :=
-  modifiedSignChangesDiff(sSubResPol(den,sPsRem(num,den,var),var),var,a,b);
+  if subst(a,var,den)=0 then "lower value cannot be a root of the denominator" else if subst(b,var,den)=0 then "upper value cannot be a root of the denominator" else modifiedSignChangesDiff(sSubResPol(den,sPsRem(num,den,var),var),var,a,b);
 
 /* Tarski Query by subresultants */
 /* Corallary 9.32 */

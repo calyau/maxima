@@ -60,7 +60,7 @@ SARAG 1.1
 August 3rd 2009
 
 
-by Fabrizio Caruso (caruso@dm.unipi.it)
+by Fabrizio Caruso (fabrizio_caruso@hotmail.com)
 with a contribution by Richard Leroy
 (multivariate certificate of positivity)
 
