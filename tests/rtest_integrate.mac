@@ -7754,6 +7754,20 @@ block([nv, qc, chk],
   [true, true], [true, true]]]$
 
 
+/* Bug #5797: "integrate() hangs on some definite integrals of powers of cos(x)" */
+
+block([J : first(quad_qags(sqrt(-cos(x))/cos(x)^2, x, 2, 4)), I1, I2],
+  I1 : integrate(sqrt(-cos(x))/cos(x)^2, x, 2, 4),
+  I2 : integrate((b*cos(x))^(3/2)*sec(x)^3, x, 2, 4),
+  [is(cabs(float(rectform(I1)) - J) < 1e-9),
+   is(cabs(float(rectform(subst(b = 3, I2) - 3^(3/2)*%i*J))) < 1e-9),
+   is(cabs(float(rectform(subst(b = -3, I2) + 3^(3/2)*J))) < 1e-9)]);
+[true, true, true]$
+
+[integrate(sec(x)^2, x, 2, 3), integrate(1/sin(x)^2, x, 1, 2)];
+[tan(3)-tan(2), 1/tan(1)-1/tan(2)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

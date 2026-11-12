@@ -2260,6 +2260,17 @@ in the interval of integration.")
 		    (cond (ans (m*t '((rat) 1. 4.) ans))
 			  (t nil)))))))))
 
+;; Does SC have a pole in [0, B]? The assumptions in force can be those of
+;; another interval, so assume 0 < IVAR < B meanwhile.
+(defun intsc-pole-p (sc b ivar)
+  (let ((old-assumptions *defint-assumptions*))
+    (unwind-protect
+      (progn
+        (make-defint-assumptions 'noask ivar 0 b)
+        (consp (poles-in-interval sc ivar 0 b)))
+      (restore-defint-assumptions old-assumptions *defint-assumptions*)
+      (setq *defint-assumptions* old-assumptions))))
+
 ;;; Do integrals of sin and cos. this routine makes sure lower limit
 ;;; is zero.
 (defun intsc1 (a b e ivar)
@@ -2327,6 +2338,18 @@ in the interval of integration.")
        (if (ratgreaterp (car b) (car l))		; if q > p
 	   (setq l (cons (add 1 (car l))		;   p += 1
 			 (add (mul -1 %pi2) (cdr l))))) ;   d -= 2*%pi
+       
+       ;; With d > 0, so q = p, integrate(f,x,0,c) - integrate(f,x,0,d)
+       ;; also integrates f over [0, d], outside of [a, b]. A pole of f
+       ;; there makes both integrals diverge, which only shows in limits
+       ;; of the antiderivative at the pole, and those can take forever.
+       ;; So substitute x+a for x, as the last resort below does, and
+       ;; integrate over [a, b] alone.
+       (when (and $intanalysis
+                  (eq ($sign (cdr l)) '$pos)
+                  (intsc-pole-p e (cdr l) ivar))
+         (return (intsc (maxima-substitute (m+ a ivar) ivar e)
+                        limit-diff ivar)))
        
        ;; Compute -integrate(f,x,0,d)
        (setq int-zero-to-d
