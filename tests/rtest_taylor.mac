@@ -916,6 +916,18 @@ block ([x, y],
 [x - x^3/6, 1]$
 
 
+/* Bug #5796: "limit() does not return at branch points of elliptic_e and elliptic_f" */
+
+map('ratdisrep, [taylor(elliptic_e(%pi/4-g/2,2), g, 0, 4),
+                 taylor(elliptic_f(%pi/4-g/2,2), g, 0, 3),
+                 taylor(elliptic_e(x,2), x, %pi/4, 1),
+				 taylor(elliptic_e(x,2), x, %pi/4, 2)]);
+[elliptic_e(%pi/4,2)-g^(3/2)/3+g^(7/2)/84,
+ elliptic_f(%pi/4,2)-sqrt(g)-g^(5/2)/60,
+ elliptic_e(%pi/4,2),
+ elliptic_e(%pi/4,2)+2*%i*sqrt(2)*(x-%pi/4)^(3/2)/3]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

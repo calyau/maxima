@@ -1878,6 +1878,20 @@ limit((cos(x)^2 + x*sin(x)^2)^(1/(x-1)), x, 1, plus);
 %e^sin(1)^2$
 
 
+/* Bug #5796: "limit() does not return at branch points of elliptic_e and elliptic_f" */
+
+[limit((1 - elliptic_e(x/2,2)*sqrt(cos(x)))/cos(x), x, %pi/2, minus),
+ limit(sin(x)/cos(x) - elliptic_e(x/2,2)/sqrt(cos(x)), x, %pi/2, minus),
+ limit((sin(x)/sqrt(cos(x)) - elliptic_e(x/2,2))/sqrt(cos(x)), x, %pi/2, minus)];
+[inf, inf, inf]$
+
+limit((sin(x)/sqrt(cos(x)) - elliptic_f(x/2,2))/sqrt(cos(x)), x, %pi/2, minus);
+inf$
+
+limit((1 - elliptic_e(x/2,2)*sqrt(cos(x)))/cos(x), x, %pi/2, plus);
+minf$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

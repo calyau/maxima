@@ -2684,6 +2684,49 @@
 	(taylor2 (diff-expand `((,func) . ,arg)
 			      tlist)))))
 
+;; For elliptic_e(phi,m) and elliptic_f(phi,m) at a point where
+;; 1-m*sin(phi)^2 vanishes, the derivative wrt phi has a square root
+;; zero (E) or pole (F) there, so DIFF-EXPAND finds a singular
+;; derivative. The function is then its value at the point plus the
+;; integral of its derivative, so integrate the Puiseux series of the
+;; derivative term by term. At any other point, or when no term of the
+;; integral is within the truncation, return NIL: TAYLOR2 goes on to
+;; DIFF-EXPAND.
+(defun elliptic-ef-trans (arg func)
+  (let* ((phi (car arg))
+         (m (cadr arg))
+         (datum (car tlist))
+         (x (datum-var datum))
+         (pt (exp-pt datum))
+         (phi0 (and (null (cdr tlist))
+                    (symbolp x)
+                    (not (member pt '($inf $minf $infinity)))
+                    (mfree m tvars)
+                    (not (mfree phi tvars))
+                    (no-err-sub-var pt phi x)))
+         (ds nil)
+         (trunc nil)
+         (terms nil))
+    (when (and phi0
+               (not (eq phi0 t))
+               (zerop1 (sratsimp (sub 1 (mul m (power (ftake '%sin phi0) 2)))))
+               (psp (setq ds (taylor2 (sdiff (ftake func phi m) x))))
+               (eq (gvar ds) (int-gvar datum))
+               (every #'(lambda (tm)
+                          (and (pscoefp (c tm)) (e> (e tm) (rcmone))))
+                      (terms ds)))
+      ;; c*x^e integrates to c/(e+1)*x^(e+1).
+      (setq trunc (emin (current-trunc datum) (e1+ (trunc-lvl ds))))
+      (dolist (tm (terms ds))
+        (let ((e1 (e1+ (e tm))))
+          (unless (e> e1 trunc)
+            (push (term e1 (pstimes (cons (cdr e1) (car e1)) (c tm))) terms))))
+      (when terms
+        (psplus (taylor2 (ftake func phi0 m))
+                (make-ps (gvar-o ds) (list trunc) (nreverse terms)))))))
+
+(defprop %elliptic_e elliptic-ef-trans tay-trans)
+(defprop %elliptic_f elliptic-ef-trans tay-trans)
 
 ;;; Not done properly yet
 ;;;
