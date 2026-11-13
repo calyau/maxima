@@ -376,3 +376,25 @@ listarray (h2[blurf]);
 
 (reset(use_fast_arrays),1);
 1;
+
+
+/* Bug #5011: "A float array subscript is stored under a different key than it is read back with" */
+
+block([i : 9],
+  local(w),
+  w[i/7.0] : 1,
+  w[(i + 1)/7.0] : 2,
+  [w[i/7.0], w[(i + 1)/7.0], w[9/7.0], w[10/7.0]]);
+[1, 2, 1, 2]$
+
+block([i : 9],
+  local(w),
+  [w[i/7.0], w[(i + 1)/7.0]] : [1, 2],
+  [w[i/7.0], w[(i + 1)/7.0]]);
+[1, 2]$
+
+block([use_fast_arrays : true, i : 9, w],
+  w[i/7.0] : 1,
+  w[(i + 1)/7.0] : 2,
+  [w[i/7.0], w[(i + 1)/7.0]]);
+[1, 2]$

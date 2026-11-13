@@ -678,7 +678,13 @@ wrapper for this."
 ;;works with the defms
 (defmspec msetq (l)
   (twoargcheck l)
-  (mset (simplifya (cadr l) nil) (meval (caddr l))))
+  ;; Don't simplify the target at this point.
+  ;; MSET evaluates the parts of the target (subscripts, list elements),
+  ;; and evaluation simplifies them. Simplifying the target here,
+  ;; before evaluation, can change values: i/7.0 becomes 0.14285714285714285*i,
+  ;; which for i = 9 is not the same float as 9/7.0, so w[i/7.0] would not find
+  ;; the element stored by w[i/7.0] : 42.
+  (mset (cadr l) (meval (caddr l))))
 
 (defun mset (x y)
   (prog ()
