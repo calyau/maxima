@@ -417,6 +417,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 			 :action #'(lambda (string)
 				     (declare (special $batch_answers_from_file))
 				     (setf $batch_answers_from_file t
+					   *answers-from-file* t
 					   input-stream (make-string-input-stream string))
 				     ;; see RETRIEVE in macsys.lisp
 				     (setf *standard-input* input-stream)

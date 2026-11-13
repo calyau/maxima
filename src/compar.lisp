@@ -822,12 +822,15 @@
 (setq limitp nil)
 
 (defmfun $askequal (a b)
-  (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
+  (let ((answer (meqp (sratsimp a) (sratsimp b))) ; presumably handles mbags and extended reals.
+	(question `((mtext) ,(intl:gettext "Is ") ,a
+		    ,(intl:gettext " equal to ") ,b ,(intl:gettext "?"))))
     (cond ((eq answer t) '$yes)
 	  ((eq answer nil) '$no)
 	  (t
-	   (setq answer (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?"))
-                              (if $ask_hide_prompt 'noprint)))
+	   (setq answer (retrieve question
+                              (if $ask_hide_prompt 'noprint)
+                              (list '($equal) a b)))
 	   (cond ((member answer '($no |$n| |$N|) :test #'eq)
 		  (tdpn (sub b a))
 		  '$no)
@@ -835,6 +838,7 @@
 		  (tdzero (sub a b))
 		  '$yes)
 		 (t  
+		  (invalid-answer question answer)
 		  (mtell (intl:gettext "Acceptable answers are yes, y, Y, no, n, N. ~%"))
 		  ($askequal a b)))))))
 	   
@@ -1072,20 +1076,24 @@ such, a nonzero sign should be regarded as positive.
 When calling ENSURE-SIGN, set the special variable SIGN to the best current
 guess for the sign of EXPR. The function returns the sign, calls one of (TDPOS
 TDNEG TDZERO TDPN) to store it, and also sets SIGN."
-  (loop
-     (let ((new-sign (match-sign sign domain expr squared)))
-       (when new-sign (return new-sign)))
-     (setf sign (retrieve
-                 (list '(mtext)
-                       "Is " expr
-                       (or (second
-                            (assoc domain
-                                   '(($znz " zero or nonzero?")
-                                     ($pz  " positive or zero?")
-                                     ($nz  " negative or zero?")
-                                     ($pn  " positive or negative?"))))
-                           " positive, negative or zero?"))
-                 (if $ask_hide_prompt 'noprint)))))
+  (let ((question (list '(mtext)
+                        "Is " expr
+                        (or (second
+                             (assoc domain
+                                    '(($znz " zero or nonzero?")
+                                      ($pz  " positive or zero?")
+                                      ($nz  " negative or zero?")
+                                      ($pn  " positive or negative?"))))
+                            " positive, negative or zero?")))
+        (subject (list (if (eq domain '$znz) '($zero) '($sign)) expr))
+        (asked nil))
+    (loop
+       (let ((new-sign (match-sign sign domain expr squared)))
+         (when new-sign (return new-sign)))
+       (when asked
+         (invalid-answer question sign))
+       (setf sign (retrieve question (if $ask_hide_prompt 'noprint) subject)
+             asked t))))
 
 ;; During one evaluation phase asksign writes answers from the user into the
 ;; global context '$initial. These facts are removed by clearsign after

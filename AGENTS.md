@@ -204,10 +204,12 @@ display2d:false$ diff(sin(x)/x,x);   =>  cos(x)/x-sin(x)/x^2
 **Interactive prompts eat the next statement**: `asksign`/`askinteger`/`read`
 take it as their answer. `retrieve` reads it with `mread-noprompt`, so it needs
 its own `;`/`$` but may sit on the same line (`asksign(a); pos; 2+2;` works). A
-mid-script `asksign` silently eats your next expression and shifts the rest.
-Exhausting input gives `RETRIEVE: End of file encountered.` -- a useful signal
-the code asked more than expected. `is(a>0)` does **not** ask; it returns
-`unknown`.
+mid-script `asksign` eats your next expression: one it cannot use is an error
+(`invalid-answer`, `src/macsys.lisp`), one it can use shifts the rest
+silently. Exhausting input gives `RETRIEVE: End of file encountered.` -- a
+useful signal the code asked more than expected. `is(a>0)` does **not** ask;
+it returns `unknown`. `with_answers` answers questions anywhere, and test
+files must use it (sec. 5).
 
 Most `MAXIMA_*` env vars are read by `set-pathnames` (`src/init-cl.lisp`); the
 *internal* Lisp directory variables are documented in
@@ -326,13 +328,9 @@ test asserting on labelled output fails under them. **`--quiet` is fine.**
 ### `batch(f, 'test)` is NOT `run_testsuite(tests=[f])`
 
 A file with registered known failures reports every one of them under bare
-`batch` and none under the suite, which tolerates them by number. Answers come
-from the file only when `$batch_answers_from_file` is true -- `run_testsuite`
-binds it and `--batch-string` forces it globally (`src/init-cl.lisp`) -- but it
-is nil for `-b file` and interactive sessions, where the question goes to the
-terminal; at EOF that problem fails with `RETRIEVE: End of file encountered.`,
-and the answer left in the file shifts every later pair. **Never conclude "I
-broke this" from bare `batch`.**
+`batch` and none under the suite, which tolerates them by number. Both take
+answers only from `with_answers` and ignore `$batch_answers_from_file`.
+**Never conclude "I broke this" from bare `batch`.**
 
 ### The accounting rule
 
@@ -411,19 +409,31 @@ abs(x)$
 - **Evaluation trap**: Maxima *evaluates* input, only *simplifies* expected
   output -- `makelist(sin(k*%pi),k,1,5);` / `makelist(0,k,1,5)$` fails. Write
   `''(makelist(0,k,1,5))$` or literal `[0,0,0,0,0]$`.
-- **Answers go on the input line**, before the expected value; `retrieve` eats
-  them off the file stream -- not problems. Asking twice needs two answers; a
-  wrong count shifts the whole answer stream:
+- **Answer questions with `with_answers`**, in the order they are asked, each
+  answer with the subject of its question:
 
   ```maxima
-  [asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; p;
-  [pos, pos, pos];
+  with_answers([sign(foo) = p], [asksign(foo), sign(foo), sign(foo)]);
+  [pos, pos, pos]$
   ```
 
-  An unanswered question still prints, then takes the next statement as its
-  answer. If that leaves an input without an expected value,
-  `batch: missing expected result in test script.` aborts the whole
-  `run_testsuite` call: later files never run and no summary prints.
+  In a test file nothing reads the file but `test-batch` (`src/mload.lisp`),
+  so a question outside `with_answers` fails its problem, even when the code
+  that asked catches the error (`laplace` does, around `defint`).
+  `with_answers` itself fails on a wrong subject, an invalid answer, too few
+  answers or unused ones (`with-answers-answer`, `src/macsys.lisp`). For a
+  missing, wrong or invalid answer the error gives the subject to use, as in
+  `The missing answer is sign(a) = ...`, so copy it from there: a subject is
+  what the question shows, not the argument, and `asksign(-a^3)` asks about
+  `a`.
+  `read`, `readonly` and `entermatrix` take their name as subject
+  (`read = 1+2`).
+  Questions answered this way are not printed, so `ask_hide_prompt` is not
+  needed. Dropping a statement's `, ask_hide_prompt` also drops a second
+  evaluation: `u, flag;` evaluates `u` twice (`ev`), `u;` once. An old-style
+  bare answer after the input fails at the first question and shifts the
+  rest of the file. A file that ends without an expected value fails its
+  last problem, and `run_testsuite` goes on with the next file.
 
 - **Bigfloat literals convert at READ time** with the ambient `fpprec`, not the
   one in force when the statement runs:

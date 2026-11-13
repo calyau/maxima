@@ -75,11 +75,8 @@ include this data into testsuite.lisp. To illustrate, the tests
 are known bugs, append ((mlist) "rtest_abs" 42 43) to the file 
 list in testsuite.lisp.
 
-Finally, build Maxima and run the test suite. If a test triggers an `asksign`, 
-unfortunately, Maxima doesn't print the 'asksign` question and it might appear 
-to stall while waiting for input. When Maxima appears to be stalled, enter a 
-bogus expression such as `[;`. Doing so will allow you discover the test that 
-triggers the 'asksign.' 
+Finally, build Maxima and run the test suite. A test that asks a question
+outside with_answers fails, and its report shows the question. See (9)(h).
 
 Once your test file runs to completion, commit it.
 
@@ -149,3 +146,23 @@ Of course, to test a function such as factor, you do not want to apply ratsimp.
 simplifications (ratsimp, factor, radcan, ...) to make the expected result 
 nicer. Such simplifications can hide changes that might be useful for a developer to 
 know about. Of course, the simplification functions need their own testing. 
+
+(h) If the input asks questions, as asksign does, answer them with
+with_answers. Its first argument lists the answers in the order the
+questions are asked, each with the subject of its question:
+
+  with_answers([sign(x) = pos], asksign(x));
+  pos$
+
+  with_answers([sign(a) = zero, sign(b) = pos], limit(a*x^2+b*x+c, x, inf));
+  inf$
+
+The problem fails if it asks a question outside with_answers, and
+with_answers fails if a question has another subject, an answer is not
+valid, or there are too few or too many answers. For a missing, wrong or
+invalid answer, the message gives the answer to put into the list, as in
+"The missing answer is sign(x) = ...". Either way the rest of the file
+runs as usual, since questions never read from the file itself.
+read(), readonly() and entermatrix() take their input from with_answers
+too, with their names as subjects, as in read = 1+2. See ? with_answers
+for the subjects and for answers given as strings.

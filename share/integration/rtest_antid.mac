@@ -56,7 +56,7 @@ ratsimp(antidiff(antidiff(g, x, u(x)), x, u(x)));
 (assume(notequal(a,0)), done);
 done;
 
-antidiff(diff(f(x) * (1 + f(x))^a,x), x, f(x)), ask_hide_prompt; no;
+with_answers([equal(1/a,-1) = no], antidiff(diff(f(x) * (1 + f(x))^a,x), x, f(x)));
 'integrate((((a+1)*f(x)*(f(x)+1)^a
                    +(-(%e^(a*log(f(x)+1))*a)-%e^(a*log(f(x)+1)))*f(x))
                    *'diff(f(x),x,1))

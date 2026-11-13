@@ -77,7 +77,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%indices appears on the other side of the equation. To avoid array name~
 ~%conflicts, choose a new name for this object:~%"
 				      (ishow lhs))
-                               (cond ((not (symbolp (setq name (retrieve nil nil))))
+                               (cond ((not (symbolp (setq name (retrieve nil nil '$ic_convert))))
 				      (merror "Name not an atom")))
 			       (setq lhs (cons (ncons name) (cdr lhs))))))))
 	     (return (do ((free free (cdr free))

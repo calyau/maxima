@@ -86,18 +86,21 @@
 ;;; Returns only $yes, $no or $unknown.
 (defun ask-prop (object property fun-or-number)
   (if fun-or-number (setq fun-or-number (list " " fun-or-number)))
-  (do ((end-flag) (answer))
+  (do ((end-flag) (answer)
+       (question `((mtext) "Is " ,object 
+		   ,(if (member (char (symbol-name property) 0)
+				'(#\a #\e #\i #\o #\u) :test #'char-equal)
+			" an "
+			" a ")
+		   ,property ,@fun-or-number "?"))
+       (subject (list (list (intern (concatenate 'string "$" (symbol-name property))
+                                    :maxima))
+                      object)))
       (end-flag (cond ((member answer '($yes |$Y| |$y|) :test #'eq) '$yes)
 		      ((member answer '($no |$N| |$n|) :test #'eq) '$no)
 		      ((member answer '($unknown $uk) :test #'eq) '$unknown)))
-    (setq answer (retrieve
-		  `((mtext) "Is " ,object 
-		    ,(if (member (char (symbol-name property) 0)
-				 '(#\a #\e #\i #\o #\u) :test #'char-equal)
-			 " an "
-			 " a ")
-		    ,property ,@fun-or-number "?")
-		  (if $ask_hide_prompt 'noprint)))
+    (setq answer (retrieve question (if $ask_hide_prompt 'noprint) subject))
     (cond ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
 	   (setq end-flag t))
-	  (t (mtell "~%Acceptable answers are: yes, y, Y, no, n, N, unknown, uk~%")))))
+	  (t (invalid-answer question answer)
+	     (mtell "~%Acceptable answers are: yes, y, Y, no, n, N, unknown, uk~%")))))

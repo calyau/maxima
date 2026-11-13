@@ -177,10 +177,21 @@ these additional tests are run as a part of the testsuite.  If
 Of course, the actual set of test that are run can be controlled by
 the @code{tests} option. The default is @code{false}.
 @item answers_from_file
-Read answers to interactive questions from the source file. May only be
-@code{false} or @code{true} (default). See also
-@mrefdot{batch_answers_from_file}
+Has no effect. It is accepted for compatibility.
 @end table
+
+A test file is a sequence of problems, each an input followed by its
+expected result. If the input asks questions, as @mref{asksign} does,
+it must answer them with @mrefcomma{with_answers} for example
+
+@example
+with_answers([sign(x) = pos], asksign(x));
+pos$
+@end example
+
+A problem that asks a question outside @code{with_answers} fails, even
+if the code that asked the question catches the error. Questions never
+read from the test file itself, so the problems after it run as usual.
 
 For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
 runs just test @code{rtest5} and displays the test that are marked as

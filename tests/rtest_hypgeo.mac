@@ -2290,14 +2290,16 @@ block(local(s),
 %e^(%i*s)/s$
 
 /* An unknown sign of the shift is asked for, as laplace does. */
-block(local(s),
- assume(s > 0),
- specint(unit_step(t+a)*exp(-s*t), t)), ask_hide_prompt; pos;
+with_answers([sign(a) = pos],
+  block(local(s),
+    assume(s > 0),
+    specint(unit_step(t+a)*exp(-s*t), t)));
 1/s$
 
-block(local(s),
- assume(s > 0),
- specint(unit_step(t+a)*exp(-s*t), t)), ask_hide_prompt; neg;
+with_answers([sign(a) = neg],
+  block(local(s),
+    assume(s > 0),
+    specint(unit_step(t+a)*exp(-s*t), t)));
 %e^(a*s)/s$
 
 
@@ -2354,9 +2356,10 @@ block(local(s, z),
 [true, true, true, true, true]$
 
 /* An unknown sign is asked for: */
-block(local(s, w),
- assume(s > 0),
- specint(log(t+w)*exp(-s*t), t)), ask_hide_prompt; pos;
+with_answers([sign(w) = pos],
+  block(local(s, w),
+    assume(s > 0),
+    specint(log(t+w)*exp(-s*t), t)));
 (%e^(s*w)*expintegral_e1(s*w)+log(w))/s$
 
 

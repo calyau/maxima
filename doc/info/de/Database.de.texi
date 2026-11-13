@@ -1049,6 +1049,8 @@ versuchen zu entscheiden, ob @var{expr} eine gerade oder ungerade ganze Zahl
 repr@"asentiert.  Kann Maxima dies nicht entscheiden, wird der Nutzer gefragt.
 Die Antwort wird dem aktuellen Kontext hinzugef@"ugt.
 
+Siehe auch die Funktion @mrefdot{with_answers}
+
 Beispiele:
 
 @example
@@ -1080,6 +1082,8 @@ Frage zu entscheiden.  Die Antworten des Nutzers werden f@"ur die laufende
 Auswertung dem aktuellen Kontext hinzugef@"ugt.  Der R@"uckgabewert der 
 Funktion @code{asksign} ist @code{pos}, @code{neg} oder @code{zero} f@"ur einen
 positiven, negativen oder den Wert Null.
+
+Siehe auch die Funktion @mrefdot{with_answers}
 @end deffn
 
 @c --- 26.08.2010 DK -----------------------------------------------------------
@@ -1694,6 +1698,111 @@ Erzeugt einen neuen Kontext, mit dem Namen @code{name}, der den Kontext
 existieren.
 
 Wird @var{context} nicht angegeben, wird der aktuelle Kontext angenommen.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{with_answers}
+@deffn {Funktion} with_answers ([@var{answer_1}, @dots{}, @var{answer_m}], @var{expr_1}, @dots{}, @var{expr_n})
+
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} nacheinander aus und
+gibt den Wert von @var{expr_n} zur@"uck. Die Fragen, die bei der Auswertung
+gestellt werden, wie zum Beispiel von den Funktionen @mrefcomma{asksign}
+@mref{askinteger} und @code{askequal}, werden in der Reihenfolge, in der sie
+gestellt werden, mit @var{answer_1}, @dots{}, @var{answer_m} beantwortet und
+nicht ausgegeben.
+
+Die Liste der Antworten wird nicht ausgewertet. Jede Antwort hat eine der
+folgenden Formen:
+
+@table @code
+@item @var{subject} = @var{answer}
+Die Frage muss den Gegenstand @var{subject} haben.
+@item @var{answer}
+Die Frage kann einen beliebigen Gegenstand haben.
+@item "@var{text}"
+Eine Zeichenkette enth@"alt die Antwort so, wie der Nutzer sie eingeben w@"urde.
+Sie kann auch die rechte Seite von @code{@var{subject} = @var{answer}} sein.
+@end table
+
+Als Antwort ist alles m@"oglich, was auch der Nutzer eingeben k@"onnte, zum
+Beispiel @code{pos}, @code{p} oder @code{positive} f@"ur ein Vorzeichen. Die
+m@"oglichen Gegenst@"ande sind:
+
+@table @code
+@item sign(@var{x})
+Ist @var{x} positiv, negativ oder null? Auch die Fragen, ob @var{x} positiv
+oder null ist, ob @var{x} negativ oder null ist und ob @var{x} positiv oder
+negativ ist, haben diesen Gegenstand.
+@item zero(@var{x})
+Ist @var{x} null oder von null verschieden?
+@item integer(@var{x})
+Ist @var{x} eine ganze Zahl?
+@item even(@var{x}), odd(@var{x})
+Ist @var{x} eine gerade Zahl? Ist @var{x} eine ungerade Zahl?
+@item equal(@var{a}, @var{b})
+Ist @var{a} gleich @var{b}?
+@item stronger(@var{a}, @var{b})
+Ist @var{a} st@"arker als @var{b}? Diese Frage stellt die Funktion
+@mrefdot{taylor}
+@item read, readonly, entermatrix
+Die Fragen der Funktionen @mrefcomma{read} @mref{readonly} und
+@mref{entermatrix} haben den Namen der Funktion als Gegenstand, wie in
+@code{read = 1+2}. Dasselbe gilt f@"ur die Fragen der Funktionen
+@code{entertensor} und @code{ic_convert} aus dem Paket @code{itensor}.
+@end table
+
+Der Gegenstand einer Frage ist das, wonach gefragt wird. Das ist nicht immer das
+Argument der Funktion, die die Frage stellt. So fragt @code{asksign(-a^3)}, ob
+@code{a} positiv, negativ oder null ist. Die Gegenst@"ande werden nach der
+Vereinfachung verglichen.
+
+Um @code{read} oder @code{readonly} mit einer Gleichung zu beantworten, wird die
+Gleichung als Zeichenkette geschrieben oder mit dem Gegenstand und in Klammern
+angegeben, wie in @code{read = (x = 1)}.
+
+Maxima meldet einen Fehler, wenn eine Antwort den falschen Gegenstand hat oder
+keine g@"ultige Antwort auf ihre Frage ist, wenn eine Frage gestellt wird,
+nachdem alle Antworten verbraucht sind, oder wenn am Ende Antworten @"ubrig
+bleiben. @code{with_answers} meldet einen solchen Fehler auch dann, wenn der
+Code, der die Frage gestellt hat, den Fehler abf@"angt. Bei einer fehlenden,
+falschen oder ung@"ultigen Antwort gibt die Fehlermeldung den Gegenstand der
+Frage in der Form an, die die Liste der Antworten erwartet, wie in
+@code{The missing answer is sign(b) = ...}. Bei geschachtelten Aufrufen von
+@code{with_answers} beantwortet der innerste Aufruf alle Fragen.
+
+In Testdateien, die mit der Funktion @mref{run_testsuite} oder mit der Funktion
+@mref{batch} und der Option @code{test} ausgef@"uhrt werden, muss jede Frage mit
+@code{with_answers} beantwortet werden.
+
+Beispiele:
+
+@c ===beg===
+@c with_answers([sign(a) = pos, integer(b) = yes], [asksign(a), askinteger(b)]);
+@c with_answers([zero(c) = nonzero], asksign(-c^2));
+@c with_answers(["x = 1"], read("Enter an equation:"));
+@c errcatch(with_answers([sign(b) = pos], asksign(a)));
+@c ===end===
+@example
+@group
+(%i1) with_answers([sign(a) = pos, integer(b) = yes], [asksign(a), askinteger(b)]);
+(%o1)                      [pos, yes]
+@end group
+@group
+(%i2) with_answers([zero(c) = nonzero], asksign(-c^2));
+(%o2)                          neg
+@end group
+@group
+(%i3) with_answers(["x = 1"], read("Gleichung eingeben:"));
+(%o3)                         x = 1
+@end group
+@group
+(%i4) errcatch(with_answers([sign(b) = pos], asksign(a)));
+with_answers: sign(b) = pos does not fit the question
+Is a positive, negative or zero?
+The answer must be sign(a) = ...
+(%o4)                          []
+@end group
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------

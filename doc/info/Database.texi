@@ -1210,7 +1210,7 @@ the user-provided answer is removed from the database.
 whether the answer was determined from the @code{assume} database
 or provided by the user.
 
-See also @mrefdot{equal}
+See also @mref{equal} and @mrefdot{with_answers}
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}
@@ -1240,6 +1240,8 @@ and attempt to install the information in the database if possible.
 likewise attempt to determine if @var{expr} is an even integer or odd integer,
 respectively.
 
+See also @mrefdot{with_answers}
+
 @opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
@@ -1257,6 +1259,8 @@ user the necessary questions to complete its deduction.  The user's
 answer is recorded in the data base for the duration of the current
 computation.  The return value of @code{asksign} is one of @code{pos},
 @code{neg}, or @code{zero}.
+
+See also @mrefdot{with_answers}
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}
@@ -1939,6 +1943,105 @@ If @var{name} is not specified, a new name is created (via @code{gensym}) and re
 
 @code{supcontext} evaluates its argument.
 @code{supcontext} returns @var{name} (if specified) or the new context name.
+
+@opencatbox{Categories:}
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{with_answers}
+@deffn {Function} with_answers ([@var{answer_1}, @dots{}, @var{answer_m}], @var{expr_1}, @dots{}, @var{expr_n})
+
+Evaluates @var{expr_1}, @dots{}, @var{expr_n} in order and returns the value of
+@var{expr_n}. The questions that the evaluation asks, as @mrefcomma{asksign}
+@mref{askinteger} and @mref{askequal} do, are answered by @var{answer_1},
+@dots{}, @var{answer_m} in the order they are asked, and are not printed.
+
+The list of answers is not evaluated. Each answer has one of these forms:
+
+@table @code
+@item @var{subject} = @var{answer}
+The question must be about @var{subject}.
+@item @var{answer}
+The question can be about anything.
+@item "@var{text}"
+A string is an answer as it would be typed. It can also be the right side of
+@code{@var{subject} = @var{answer}}.
+@end table
+
+An answer is one that the user could type, for example @code{pos}, @code{p} or
+@code{positive} for a sign. The subjects are:
+
+@table @code
+@item sign(@var{x})
+Is @var{x} positive, negative or zero? The questions whether @var{x} is
+positive or zero, negative or zero, or positive or negative have this subject
+too.
+@item zero(@var{x})
+Is @var{x} zero or nonzero?
+@item integer(@var{x})
+Is @var{x} an integer?
+@item even(@var{x}), odd(@var{x})
+Is @var{x} an even number? Is @var{x} an odd number?
+@item equal(@var{a}, @var{b})
+Is @var{a} equal to @var{b}?
+@item stronger(@var{a}, @var{b})
+Is @var{a} stronger than @var{b}? @mref{taylor} asks this.
+@item read, readonly, entermatrix
+The questions of @mrefcomma{read} @mref{readonly} and @mref{entermatrix} have
+the name of the function as their subject, as in @code{read = 1+2}. So do those
+of @code{entertensor} and @code{ic_convert} in the @code{itensor} package.
+@end table
+
+A subject is what the question is about, which is not always the argument of
+the function that asks it: @code{asksign(-a^3)} asks whether @code{a} is
+positive, negative or zero. Subjects are compared after simplification.
+
+To answer @code{read} or @code{readonly} with an equation, write the equation as
+a string, or give the subject and put the equation in parentheses, as in
+@code{read = (x = 1)}.
+
+It is an error if an answer has the wrong subject or is not a valid answer to
+its question, if a question is asked after all the answers are used, and if
+answers are left over at the end. @code{with_answers} reports such an error
+even when the code that asked the question catches it. For a missing, wrong or
+invalid answer, the message gives the subject of the question in the form that
+the list takes, as in @code{The missing answer is sign(b) = ...}. Within
+nested calls of @code{with_answers}, the innermost one answers all questions.
+
+In test files, as run by @mref{run_testsuite} or by @mref{batch} with the
+option @code{test}, every question must be answered by @code{with_answers}.
+
+Examples:
+
+@c ===beg===
+@c with_answers([sign(a) = pos, integer(b) = yes], [asksign(a), askinteger(b)]);
+@c with_answers([zero(c) = nonzero], asksign(-c^2));
+@c with_answers(["x = 1"], read("Enter an equation:"));
+@c errcatch(with_answers([sign(b) = pos], asksign(a)));
+@c ===end===
+@example maxima
+@group
+(%i1) with_answers([sign(a) = pos, integer(b) = yes], [asksign(a), askinteger(b)]);
+(%o1)                      [pos, yes]
+@end group
+@group
+(%i2) with_answers([zero(c) = nonzero], asksign(-c^2));
+(%o2)                          neg
+@end group
+@group
+(%i3) with_answers(["x = 1"], read("Enter an equation:"));
+(%o3)                         x = 1
+@end group
+@group
+(%i4) errcatch(with_answers([sign(b) = pos], asksign(a)));
+with_answers: sign(b) = pos does not fit the question
+Is a positive, negative or zero?
+The answer must be sign(a) = ...
+(%o4)                          []
+@end group
+@end example
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}

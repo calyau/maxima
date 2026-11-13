@@ -261,8 +261,13 @@
   (format *debug-io* "~%Merrbreak:~A" arg)
   (mbreak-loop))
 
-(defun retrieve (msg flag &aux (print? nil))
+;; SUBJECT is what the question is about, as a form like (($SIGN) X), or
+;; the name of the function that asks, like $ENTERMATRIX. with_answers
+;; checks its answers against it. NIL means no subject.
+(defun retrieve (msg flag &optional subject &aux (print? nil))
   (declare (special msg flag print?))
+  (when *with-answers*
+    (return-from retrieve (with-answers-answer msg subject)))
   (or (eq flag 'noprint) (setq print? t))
   (cond ((not print?)
 	 (setq print? t)
@@ -283,6 +288,180 @@
     (if (null res) (merror "RETRIEVE: End of file encountered.")
 	res)))
 
+;; Callers of RETRIEVE call this with their question MSG and the ANSWER they
+;; got when they cannot use it, before they ask again. Asking again is no
+;; use when the answers come from with_answers or a file: it would take the
+;; next answer, meant for another question, or the statements that follow.
+;; So signal an error instead.
+(defun invalid-answer (msg answer)
+  (cond ((and *with-answers* (with-answers-subject *with-answers*))
+         (with-answers-fail
+          (intl:gettext "with_answers: ~:M is not a valid answer to the question~%~M~%~
+                         The answer must be ~:M = ...")
+          (with-answers-answered *with-answers*) msg
+          (with-answers-subject *with-answers*)))
+        (*with-answers*
+         (with-answers-fail
+          (intl:gettext "with_answers: ~:M is not a valid answer to the question~%~M")
+          answer msg))
+        (*answers-from-file*
+         (merror (intl:gettext "~M~%Invalid answer read from the batch input: ~M")
+                 msg answer))))
+
+;; with_answers(answers, expr_1, ..., expr_n) evaluates the expressions
+;; and answers the questions they ask from the list ANSWERS, in order. An
+;; answer is subject = answer, where the subject says what the question
+;; must be about, or a bare answer. A subject is a form like sign(x), or
+;; the name of the function that asks, as in read = 1. A string is an
+;; answer as it would be typed, so that "x = 1" answers read() with an
+;; equation.
+;;
+;; While with_answers runs, *WITH-ANSWERS* holds one of these.
+(defstruct with-answers
+  entries               ; the answers not used yet, each a list
+                        ; (ELEMENT SUBJECT ANSWER)
+  failure               ; the first failure, as arguments to MERROR
+  answered              ; the element of the answer given last
+  subject               ; the subject of the question it answered
+  test-file)            ; true when TEST-BATCH set it up, without answers
+
+;; The kinds of subject written as forms, with their number of arguments.
+;; Any other symbol on the left side is the name of a function that asks.
+(defvar *answer-subjects*
+  '(($sign . 1) ($zero . 1) ($integer . 1) ($even . 1) ($odd . 1)
+    ($equal . 2) ($stronger . 2)))
+
+;; Read the answer in the string S, as if it were typed.
+(defun read-answer-string (s)
+  (let ((text (string-trim '(#\space #\tab #\newline #\return) s))
+        (*mread-prompt* nil))
+    (unless (and (plusp (length text))
+                 (member (char text (1- (length text))) '(#\; #\$)))
+      (setq text (concatenate 'string text ";")))
+    (with-input-from-string (stream text)
+      (let ((answer (mread stream 'eof)))
+        (when (or (eq answer 'eof) (not (eq (mread stream 'eof) 'eof)))
+          (merror (intl:gettext "with_answers: the string ~S must hold exactly one answer.")
+                  s))
+        (third answer)))))
+
+;; Turn an element of the list of answers into (ELEMENT SUBJECT ANSWER).
+(defun with-answers-entry (element)
+  (cond ((stringp element)
+         (list element nil (read-answer-string element)))
+        ((and (consp element) (eq (caar element) 'mequal))
+         (let ((lhs (cadr element))
+               (rhs (caddr element)))
+           (unless (or (and (symbolp lhs) lhs (not (eq lhs t)))
+                       (and (consp lhs)
+                            (consp (car lhs))
+                            (not (member 'array (cdar lhs)))
+                            (eql (cdr (assoc (caar lhs) *answer-subjects*))
+                                 (length (cdr lhs)))))
+             (merror (intl:gettext "with_answers: the left side of ~M is not a subject.~%~
+                                    A subject is sign(x), zero(x), integer(x), even(x), odd(x),~%~
+                                    equal(a, b), stronger(a, b) or the name of the function~%~
+                                    that asks. To give an equation as an answer, write it as~%~
+                                    a string.")
+                     element))
+           (list element
+                 (if (symbolp lhs)
+                   lhs
+                   (cons (list (caar lhs))
+                         (mapcar #'(lambda (x) (simplifya x nil)) (cdr lhs))))
+                 (if (stringp rhs) (read-answer-string rhs) rhs))))
+        (t
+         (list element nil element))))
+
+;; Remember the first failure and signal it. Code that asked the question
+;; may catch the error, but $WITH_ANSWERS or TEST-BATCH reports it anyway.
+(defun with-answers-fail (&rest merror-args)
+  (let ((wa *with-answers*))
+    (unless (with-answers-failure wa)
+      (setf (with-answers-failure wa) merror-args))
+    (apply #'merror merror-args)))
+
+;; True if the subject GIVEN in an answer fits SUBJECT, the question's.
+(defun answer-subject-fits-p (given subject)
+  (if (symbolp given)
+    (eq given subject)
+    (and (consp subject)
+         (eq (caar given) (caar subject))
+         (= (length given) (length subject))
+         (every #'like (cdr given) (cdr subject)))))
+
+;; Return the next answer to the question MSG about SUBJECT.
+(defun with-answers-answer (msg subject)
+  (let ((wa *with-answers*))
+    ;; A question without a prompt is shown as the function that asks it.
+    (when (and (member msg '(nil "") :test #'equal) (symbolp subject) subject)
+      (setq msg (list '(mtext) subject "()")))
+    ;; Once something did not fit, every further question fails as well.
+    (when (with-answers-failure wa)
+      (apply #'merror (with-answers-failure wa)))
+    (let ((entry (pop (with-answers-entries wa))))
+      ;; INVALID-ANSWER reports these if the caller rejects the answer.
+      (setf (with-answers-answered wa) (first entry)
+            (with-answers-subject wa) subject)
+      ;; The messages show subjects in 1-D form, ready to be copied into the
+      ;; list of answers.
+      (cond ((null entry)
+             (cond ((and (with-answers-test-file wa) subject)
+                    (with-answers-fail
+                     (intl:gettext "~M~%A question in a test file needs an answer from with_answers.~%~
+                                    The missing answer is ~:M = ...")
+                     msg subject))
+                   ((with-answers-test-file wa)
+                    (with-answers-fail
+                     (intl:gettext "~M~%A question in a test file needs an answer from with_answers.")
+                     msg))
+                   (subject
+                    (with-answers-fail
+                     (intl:gettext "with_answers: no answer left for the question~%~M~%~
+                                    The missing answer is ~:M = ...")
+                     msg subject))
+                   (t
+                    (with-answers-fail
+                     (intl:gettext "with_answers: no answer left for the question~%~M")
+                     msg))))
+            ((null (second entry))
+             (third entry))
+            ((null subject)
+             (with-answers-fail
+              (intl:gettext "with_answers: ~:M has a subject, but the question~%~M~%~
+                             has none. To give an equation as an answer, write it as a string.")
+              (first entry) msg))
+            ((not (answer-subject-fits-p (second entry) subject))
+             (if (symbolp (second entry))
+               (with-answers-fail
+                (intl:gettext "with_answers: ~:M does not fit the question~%~M~%~
+                               The answer must be ~:M = ... To give an equation as an answer,~%~
+                               write it as a string.")
+                (first entry) msg subject)
+               (with-answers-fail
+                (intl:gettext "with_answers: ~:M does not fit the question~%~M~%~
+                               The answer must be ~:M = ...")
+                (first entry) msg subject)))
+            (t
+             (third entry))))))
+
+(defmspec $with_answers (form)
+  (let ((answers (cadr form))
+        (exprs (cddr form)))
+    (unless (and ($listp answers) exprs)
+      (merror (intl:gettext "with_answers: expected a list of answers and at least one expression.")))
+    (let ((wa (make-with-answers
+               :entries (mapcar #'with-answers-entry (cdr answers))))
+          value)
+      (let ((*with-answers* wa))
+        (setq value (mevaln exprs)))
+      (when (with-answers-failure wa)
+        (apply #'merror (with-answers-failure wa)))
+      (when (with-answers-entries wa)
+        (merror (intl:gettext "with_answers: these answers were not used: ~:M")
+                (cons '(mlist) (mapcar #'first (with-answers-entries wa)))))
+      value)))
+
 (defmfun $eval_string_lisp (string)
   (unless (stringp string)
     (merror (intl:gettext "eval_string_lisp: Expected a string, got ~M.") string))
@@ -296,17 +475,24 @@
            (cons (list 'mlist 'simp) values))))))
 
 (defmfun $read (&rest l)
-  (meval (apply #'$readonly l)))
+  (meval (read-input '$read l)))
 
 (defmfun $readonly (&rest l)
+  (read-input '$readonly l))
+
+;; Read an expression after printing the prompt L, for read() or readonly(),
+;; whose name SUBJECT is the subject of the question for with_answers.
+(defun read-input (subject l)
   (let ((*mread-prompt*
 	 (if l
 	     (string-right-trim '(#\n)
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
     (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
-    (third (mread #+(or sbcl cmu) *standard-input*
-                  #-(or sbcl cmu) *query-io*))))
+    (if *with-answers*
+      (with-answers-answer *mread-prompt* subject)
+      (third (mread #+(or sbcl cmu) *standard-input*
+                    #-(or sbcl cmu) *query-io*)))))
 
 (defmfun $bug_report ()
   (if $maxima_frontend

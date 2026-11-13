@@ -1,15 +1,4 @@
-/* Test askinteger and asksign
- *
- * Note:
- * This test file is intended to be run with `batch_answers_from_file' to true.
- *
- * Sample Usage:
- *
- * maxima --batch-string='batch_answers_from_file:true; batch("tests/rtest_ask1.mac", test);'
- *
- * Note that setting `batch_answers_from_file' to true is not needed when `batch(...,test)'
- * is executed via the `batch-string' command-line option. It is needed if the test is done
- * from within a Maxima session.
+/* Test askinteger and asksign, and with_answers, which answers their questions.
  */
 
 (kill(all),0);
@@ -25,25 +14,25 @@
  * Nicked from mailing list circa 2013-08-28
  */
  
-integrate(sin(omega*t)*exp(-s*t),t,0,inf), ask_hide_prompt; p;
+with_answers([sign(s) = p], integrate(sin(omega*t)*exp(-s*t),t,0,inf));
 omega/(s^2+omega^2);
 
-[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; p;
+with_answers([sign(foo) = p], [asksign (foo), sign (foo), sign (foo)]);
 [pos, pos, pos];
 
-[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; n;
+with_answers([sign(foo) = n], [asksign (foo), sign (foo), sign (foo)]);
 [neg, neg, neg];
 
-[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; z;
+with_answers([sign(foo) = z], [asksign (foo), sign (foo), sign (foo)]);
 [zero, zero, zero];
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; p;
+with_answers([sign(a) = p], limit((exp(a*x)-1)/(exp(a*x)+1),x,inf));
 1;
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; n;
+with_answers([sign(a) = n], limit((exp(a*x)-1)/(exp(a*x)+1),x,inf));
 -1;
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; z;
+with_answers([sign(a) = z], limit((exp(a*x)-1)/(exp(a*x)+1),x,inf));
 0;
 
 /* mailing list 2017-11-25: "bug in Laplace transform"
@@ -51,193 +40,271 @@ limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; z;
  * so include some cases to handle that and then the Laplace transform.
  */
 
-asksign (a^2), ask_hide_prompt; z;
+with_answers([zero(a) = z], asksign (a^2));
 zero;
 
-asksign (a^2), ask_hide_prompt; nz;
+with_answers([zero(a) = nz], asksign (a^2));
 pos;
 
-asksign (a^3), ask_hide_prompt; p;
+with_answers([sign(a) = p], asksign (a^3));
 pos;
 
-asksign (a^3), ask_hide_prompt; n;
+with_answers([sign(a) = n], asksign (a^3));
 neg;
 
-asksign (a^3), ask_hide_prompt; z;
+with_answers([sign(a) = z], asksign (a^3));
 zero;
 
-asksign (-a^2), ask_hide_prompt; z;
+with_answers([zero(a) = z], asksign (-a^2));
 zero;
 
-asksign (-a^2), ask_hide_prompt; nz;
+with_answers([zero(a) = nz], asksign (-a^2));
 neg;
 
-asksign (-a^3), ask_hide_prompt; p;
+with_answers([sign(a) = p], asksign (-a^3));
 neg;
 
-asksign (-a^3), ask_hide_prompt; n;
+with_answers([sign(a) = n], asksign (-a^3));
 pos;
 
-asksign (-a^3), ask_hide_prompt; z;
+with_answers([sign(a) = z], asksign (-a^3));
 zero;
 
-asksign (a^4), ask_hide_prompt; z;
+with_answers([zero(a) = z], asksign (a^4));
 zero;
 
-asksign (a^4), ask_hide_prompt; nz;
+with_answers([zero(a) = nz], asksign (a^4));
 pos;
 
-asksign (a^5), ask_hide_prompt; p;
+with_answers([sign(a) = p], asksign (a^5));
 pos;
 
-asksign (a^5), ask_hide_prompt; n;
+with_answers([sign(a) = n], asksign (a^5));
 neg;
 
-asksign (a^5), ask_hide_prompt; z;
+with_answers([sign(a) = z], asksign (a^5));
 zero;
 
-asksign (-a^4), ask_hide_prompt; z;
+with_answers([zero(a) = z], asksign (-a^4));
 zero;
 
-asksign (-a^4), ask_hide_prompt; nz;
+with_answers([zero(a) = nz], asksign (-a^4));
 neg;
 
-asksign (-a^5), ask_hide_prompt; p;
+with_answers([sign(a) = p], asksign (-a^5));
 neg;
 
-asksign (-a^5), ask_hide_prompt; n;
+with_answers([sign(a) = n], asksign (-a^5));
 pos;
 
-asksign (-a^5), ask_hide_prompt; z;
+with_answers([sign(a) = z], asksign (-a^5));
 zero;
 
-asksign (a*b^2), ask_hide_prompt; p;
+with_answers([sign(a*b^2) = p], asksign (a*b^2));
 pos;
 
-asksign (a*b^2), ask_hide_prompt; n;
+with_answers([sign(a*b^2) = n], asksign (a*b^2));
 neg;
 
-asksign (a*b^2), ask_hide_prompt; z;
+with_answers([sign(a*b^2) = z], asksign (a*b^2));
 zero;
 
-asksign (a*b^3), ask_hide_prompt; p;
+with_answers([sign(a*b) = p], asksign (a*b^3));
 pos;
 
-asksign (a*b^3), ask_hide_prompt; n;
+with_answers([sign(a*b) = n], asksign (a*b^3));
 neg;
 
-asksign (a*b^3), ask_hide_prompt; z;
+with_answers([sign(a*b) = z], asksign (a*b^3));
 zero;
 
-asksign (-a*b^2), ask_hide_prompt; p;
+with_answers([sign(a*b^2) = p], asksign (-a*b^2));
 neg;
 
-asksign (-a*b^2), ask_hide_prompt; n;
+with_answers([sign(a*b^2) = n], asksign (-a*b^2));
 pos;
 
-asksign (-a*b^2), ask_hide_prompt; z;
+with_answers([sign(a*b^2) = z], asksign (-a*b^2));
 zero;
 
-asksign (-a*b^3), ask_hide_prompt; p;
+with_answers([sign(a*b) = p], asksign (-a*b^3));
 neg;
 
-asksign (-a*b^3), ask_hide_prompt; n;
+with_answers([sign(a*b) = n], asksign (-a*b^3));
 pos;
 
-asksign (-a*b^3), ask_hide_prompt; z;
+with_answers([sign(a*b) = z], asksign (-a*b^3));
 zero;
 
-asksign (a*b^4), ask_hide_prompt; p;
+with_answers([sign(a*b^2) = p], asksign (a*b^4));
 pos;
 
-asksign (a*b^4), ask_hide_prompt; n;
+with_answers([sign(a*b^2) = n], asksign (a*b^4));
 neg;
 
-asksign (a*b^4), ask_hide_prompt; z;
+with_answers([sign(a*b^2) = z], asksign (a*b^4));
 zero;
 
-asksign (-a*b^4), ask_hide_prompt; p;
+with_answers([sign(a*b^2) = p], asksign (-a*b^4));
 neg;
 
-asksign (-a*b^4), ask_hide_prompt; n;
+with_answers([sign(a*b^2) = n], asksign (-a*b^4));
 pos;
 
-asksign (-a*b^4), ask_hide_prompt; z;
+with_answers([sign(a*b^2) = z], asksign (-a*b^4));
 zero;
 
-asksign (a^2*b^2), ask_hide_prompt; z;
+with_answers([zero(a*b) = z], asksign (a^2*b^2));
 zero;
 
-asksign (a^2*b^2), ask_hide_prompt; nz;
+with_answers([zero(a*b) = nz], asksign (a^2*b^2));
 pos;
 
-asksign (a^2*b^3), ask_hide_prompt; p;
+with_answers([sign(a^2*b) = p], asksign (a^2*b^3));
 pos;
 
-asksign (a^2*b^3), ask_hide_prompt; n;
+with_answers([sign(a^2*b) = n], asksign (a^2*b^3));
 neg;
 
-asksign (a^2*b^3), ask_hide_prompt; z;
+with_answers([sign(a^2*b) = z], asksign (a^2*b^3));
 zero;
 
-asksign (-a^2*b^2), ask_hide_prompt; z;
+with_answers([zero(a*b) = z], asksign (-a^2*b^2));
 zero;
 
-asksign (-a^2*b^2), ask_hide_prompt; nz;
+with_answers([zero(a*b) = nz], asksign (-a^2*b^2));
 neg;
 
-asksign (-a^2*b^3), ask_hide_prompt; p;
+with_answers([sign(a^2*b) = p], asksign (-a^2*b^3));
 neg;
 
-asksign (-a^2*b^3), ask_hide_prompt; n;
+with_answers([sign(a^2*b) = n], asksign (-a^2*b^3));
 pos;
 
-asksign (-a^2*b^3), ask_hide_prompt; z;
+with_answers([sign(a^2*b) = z], asksign (-a^2*b^3));
 zero;
 
-asksign (a^2*b^4), ask_hide_prompt; z;
+with_answers([zero(a*b) = z], asksign (a^2*b^4));
 zero;
 
-asksign (a^2*b^4), ask_hide_prompt; nz;
+with_answers([zero(a*b) = nz], asksign (a^2*b^4));
 pos;
 
-asksign (a^2*b^5), ask_hide_prompt; p;
+with_answers([sign(a^2*b) = p], asksign (a^2*b^5));
 pos;
 
-asksign (a^2*b^5), ask_hide_prompt; n;
+with_answers([sign(a^2*b) = n], asksign (a^2*b^5));
 neg;
 
-asksign (a^2*b^5), ask_hide_prompt; z;
+with_answers([sign(a^2*b) = z], asksign (a^2*b^5));
 zero;
 
-asksign (-a^2*b^4), ask_hide_prompt; z;
+with_answers([zero(a*b) = z], asksign (-a^2*b^4));
 zero;
 
-asksign (-a^2*b^4), ask_hide_prompt; nz;
+with_answers([zero(a*b) = nz], asksign (-a^2*b^4));
 neg;
 
-asksign (-a^2*b^5), ask_hide_prompt; p;
+with_answers([sign(a^2*b) = p], asksign (-a^2*b^5));
 neg;
 
-asksign (-a^2*b^5), ask_hide_prompt; n;
+with_answers([sign(a^2*b) = n], asksign (-a^2*b^5));
 pos;
 
-asksign (-a^2*b^5), ask_hide_prompt; z;
+with_answers([sign(a^2*b) = z], asksign (-a^2*b^5));
 zero;
 
 /* here's the Laplace transform that exposed the bug */
 
-laplace (delta (t - x^2), t, s), ask_hide_prompt; z;
+with_answers([zero(x) = z], laplace (delta (t - x^2), t, s));
 1;
 
-laplace (delta (t - x^2), t, s), ask_hide_prompt; nz;
+with_answers([zero(x) = nz], laplace (delta (t - x^2), t, s));
 exp(-s*x^2);
 
 /* Test READ and READONLY
    See SF Bug #4677 */
 
-read("Enter the sum of 1+2.");1+2;
+with_answers([read = 1+2], read("Enter the sum of 1+2."));
 3;
 
-readonly("Enter the number 2.");2;
+with_answers([readonly = 2], readonly("Enter the number 2."));
 2;
+
+
+/* Tests for with_answers() */
+
+with_answers([sign(a) = pos], asksign(a));
+pos$
+
+with_answers([neg], asksign(a));
+neg$
+
+with_answers([sign(a) = "pos"], asksign(a));
+pos$
+
+with_answers([sign(a) = pos, sign(b) = neg], asksign(a), asksign(b));
+neg$
+
+/* Subjects are simplified before they are compared, and asksign(-a^3) asks about a. */
+with_answers([sign(x - 1) = pos, sign(a) = neg], [asksign(x - 1), asksign(-a^3)]);
+[pos, pos]$
+
+block([b, c],
+  local(b),
+  with_answers([sign(a) = pos, integer(b) = yes, even(b) = no, zero(c) = nonzero],
+    [asksign(a), askinteger(b), askinteger(b, even), asksign(c^2)]));
+[pos, yes, no, pos]$
+
+with_answers([equal(a, b) = no], askequal(a, b));
+no$
+
+/* A string is an answer as it would be typed: */
+with_answers(["x = 1"], read());
+x = 1$
+
+/* read, readonly and entermatrix have their names as subjects: */
+
+with_answers([read = (x = 1), readonly = "x = 1"], [read(), readonly()]);
+[x = 1, x = 1]$
+
+with_answers([entermatrix = 2, 1, 2, 3], entermatrix(2, 2));
+matrix([1, 2], [2, 3])$
+
+/* An inner list answers the questions inside it: */
+with_answers([sign(a) = pos], [asksign(a), with_answers([sign(b) = neg], asksign(b))]);
+[pos, neg]$
+
+/* A wrong subject, an invalid answer, too few answers and unused answers are errors: */
+
+[errcatch(with_answers([sign(b) = pos], asksign(a))),
+ errcatch(with_answers([sign(a) = maybe], asksign(a))),
+ errcatch(with_answers([sign(a) = pos], [asksign(a), asksign(b)])),
+ errcatch(with_answers([sign(a) = pos, sign(b) = pos], asksign(a)))];
+[[], [], [], []]$
+
+(errcatch(with_answers([sign(b) = pos], asksign(a))), last(error));
+sign(a)$
+
+(errcatch(with_answers([sign(a) = pos], [asksign(a), asksign(b)])), last(error));
+sign(b)$
+
+(errcatch(with_answers([maybe], asksign(x - 1))), last(error));
+sign(x - 1)$
+
+/* An inner list does not hand its questions on to an outer one: */
+errcatch(with_answers([sign(b) = neg], with_answers([sign(a) = pos], [asksign(a), asksign(b)])));
+[]$
+
+/* laplace catches the error inside defint, but with_answers reports it anyway: */
+errcatch(with_answers([sign(b) = neg], laplace(1/(t + a), t, s)));
+[]$
+
+[errcatch(with_answers([sign(a) = pos], read())),
+ errcatch(with_answers([readonly = 2], read())),
+ errcatch(with_answers([x = 1], read())),
+ errcatch(with_answers([a + b = 1], read())),
+ errcatch(with_answers(["1; 2"], read())),
+ errcatch(with_answers(pos, asksign(a))),
+ errcatch(with_answers([pos]))];
+[[], [], [], [], [], [], []]$

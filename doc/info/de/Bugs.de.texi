@@ -83,6 +83,22 @@ Testdateien k@"onnen auch von der Funktion @mref{batch} mit der Option
 @code{test} ausgef@"uhrt werden.  Siehe die Dokumentation der Funktion
 @code{batch} auch f@"ur ein Beispiel, wie eine Testdatei aufgebaut ist.
 
+Eine Testdatei ist eine Folge von Tests, die jeweils aus einer Eingabe und dem
+erwarteten Ergebnis bestehen. Werden bei der Auswertung der Eingabe Fragen
+gestellt, wie zum Beispiel von der Funktion @mrefcomma{asksign} m@"ussen diese
+wie im folgenden Beispiel mit der Funktion @mref{with_answers} beantwortet
+werden:
+
+@example
+with_answers([sign(x) = pos], asksign(x));
+pos$
+@end example
+
+Ein Test, der eine Frage au@ss{}erhalb von @code{with_answers} stellt, schl@"agt
+fehl, auch wenn der Code, der die Frage gestellt hat, den Fehler abf@"angt. Die
+Antworten werden nie aus der Testdatei selbst gelesen, so dass die folgenden
+Tests wie gewohnt ausgef@"uhrt werden.
+
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
 
 Beispiele:

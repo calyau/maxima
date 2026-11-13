@@ -1933,6 +1933,15 @@
   boolean
   :properties ((evflag t)))
 
+(defvar *answers-from-file* nil
+  "True while the answers to questions come from a batch file, a test file
+or a --batch-string, rather than from a user.")
+
+(defvar *with-answers* nil
+  "While with_answers evaluates its expressions, the WITH-ANSWERS structure
+that holds the answers to their questions. TEST-BATCH binds one without
+answers for each problem.")
+
 ;;------------------------------------------------------------------------
 
 (defvar *fact-removed* nil

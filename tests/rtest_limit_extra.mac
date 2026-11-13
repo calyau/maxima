@@ -1775,9 +1775,10 @@ infinity$
 
 /* Bug \#5401: "limit(b^(-1.0*x),x,inf) gives 0 for a symbolic base b" */
 
-block([r], assume(a > 0),
-  r : [limit(a^(-1.0*x), x, inf), limit(a^(-x), x, inf)],
-  forget(a > 0), r), ask_hide_prompt; neg;
+with_answers([sign(a-1) = neg],
+  block(local(a),
+    assume(a > 0),
+    [limit(a^(-1.0*x), x, inf), limit(a^(-x), x, inf)]));
 [inf, inf]$
 
 /* Bug \#5400: "limit(erf((2+%i)/x),x,0,plus) gives -1 instead of 1" */

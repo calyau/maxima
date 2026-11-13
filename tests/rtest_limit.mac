@@ -1312,19 +1312,19 @@ subst([h=0,x=0], taylor(asin(x+h)-asin(x),h,0,1));
 
 /* Bug #5170: "limit(a*x+b, x, inf) = 0 when answering that a=0" */
 
-limit(a*x+b, x, inf), ask_hide_prompt; zero;
+with_answers([sign(a) = zero], limit(a*x+b, x, inf));
 b;
 
-limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; zero;
+with_answers([sign(a) = zero, sign(b) = zero], limit(a*x^2+b*x+c, x, inf));
 c;
 
-limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; pos;
+with_answers([sign(a) = zero, sign(b) = pos], limit(a*x^2+b*x+c, x, inf));
 inf;
 
-limit(a*x^2+b*x+c, x, minf), ask_hide_prompt; zero; pos;
+with_answers([sign(a) = zero, sign(b) = pos], limit(a*x^2+b*x+c, x, minf));
 minf;
 
-limit(a*b*x+c, x, inf), ask_hide_prompt; zero;
+with_answers([sign(a*b) = zero], limit(a*b*x+c, x, inf));
 c;
 
 
@@ -1414,27 +1414,27 @@ infinity$
 
 /* Bug #5173: "assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)" */
 
-block([a, b],
+with_answers([sign(a) = neg], block([a, b],
  local(a, b),
  assume(a <= 0, b < 0),
  [limit(log(a + %i*x), x, 0, plus), limit(log(a - %i*x), x, 0, plus),
-  limit(log(b + %i*x), x, 0, plus), limit(log(b - %i*x), x, 0, plus)]), ask_hide_prompt; neg;
+  limit(log(b + %i*x), x, 0, plus), limit(log(b - %i*x), x, 0, plus)]));
 [log(-a) + %i*%pi, log(-a) - %i*%pi,
  log(-b) + %i*%pi, log(-b) - %i*%pi];
 
 
 /* Bug #5171: "limits of the form inf * constant" */
 
-limit(x*log(a), x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], limit(x*log(a), x, inf));
 inf;
 
-limit(x*log(a), x, inf), ask_hide_prompt; neg;
+with_answers([sign(log(a)) = neg], limit(x*log(a), x, inf));
 minf;
 
-limit(x*log(a), x, inf), ask_hide_prompt; zero;
+with_answers([sign(log(a)) = zero], limit(x*log(a), x, inf));
 0;
 
-limit(x*log(a), x, minf), ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], limit(x*log(a), x, minf));
 minf;
 
 limit(x*log(-1), x, inf);
@@ -1443,34 +1443,34 @@ infinity;
 limit(%i*x, x, inf);
 infinity;
 
-limit(x^k, k, inf), ask_hide_prompt; pos; pos;
+with_answers([sign(abs(x)-1) = pos, sign(x-1) = pos], limit(x^k, k, inf));
 inf;
 
-limit(x^k, k, inf), ask_hide_prompt; pos; neg;
+with_answers([sign(abs(x)-1) = pos, sign(x-1) = neg], limit(x^k, k, inf));
 infinity;
 
-limit(x^k, k, minf), ask_hide_prompt; pos; pos;
+with_answers([sign(abs(x)-1) = pos, sign(x-1) = pos], limit(x^k, k, minf));
 0;
 
-limit(x*log(a)^2, x, inf), ask_hide_prompt; pos;
+with_answers([zero(log(a)) = pos], limit(x*log(a)^2, x, inf));
 inf;
 
-limit(x*log(a)^2, x, inf), ask_hide_prompt; zero;
+with_answers([zero(log(a)) = zero], limit(x*log(a)^2, x, inf));
 0;
 
-limit(-x*log(a)^2, x, inf), ask_hide_prompt; pos;
+with_answers([zero(log(a)) = pos], limit(-x*log(a)^2, x, inf));
 minf;
 
-limit(x*(log(a) + log(b)), x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(b)+log(a)) = pos], limit(x*(log(a) + log(b)), x, inf));
 inf;
 
-limit(x*sqrt(a), x, inf), ask_hide_prompt; pos;
+with_answers([sign(a) = pos], limit(x*sqrt(a), x, inf));
 inf;
 
-limit(a^x*b^x, x, inf), ask_hide_prompt; pos; pos;
+with_answers([sign(abs(a)*abs(b)-1) = pos, sign(a*b-1) = pos], limit(a^x*b^x, x, inf));
 inf;
 
-limit(a^x*b^x, x, inf), ask_hide_prompt; neg; neg;
+with_answers([sign(abs(a)*abs(b)-1) = neg, sign(a*b) = neg], limit(a^x*b^x, x, inf));
 0;
 
 limit(x*acos(2), x, inf);
@@ -1479,28 +1479,28 @@ infinity;
 
 /* Unreported: "tlimit never asks the sign questions that limit asks" */
 
-tlimit(x*log(a), x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], tlimit(x*log(a), x, inf));
 inf;
 
-tlimit(x*log(a), x, inf), ask_hide_prompt; neg;
+with_answers([sign(log(a)) = neg], tlimit(x*log(a), x, inf));
 minf;
 
-tlimit(x*log(a), x, inf), ask_hide_prompt; zero;
+with_answers([sign(log(a)) = zero], tlimit(x*log(a), x, inf));
 0;
 
-tlimit(a^x, x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], tlimit(a^x, x, inf));
 inf;
 
-tlimit(a^x, x, inf), ask_hide_prompt; neg;
+with_answers([sign(log(a)) = neg], tlimit(a^x, x, inf));
 0;
 
-tlimit(a^x/x, x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], tlimit(a^x/x, x, inf));
 inf;
 
-tlimit(a^x*b^x, x, inf), ask_hide_prompt; pos;
+with_answers([sign(log(b)+log(a)) = pos], tlimit(a^x*b^x, x, inf));
 inf;
 
-tlimit(x^k, k, inf), ask_hide_prompt; pos;
+with_answers([sign(log(x)) = pos], tlimit(x^k, k, inf));
 inf;
 
 

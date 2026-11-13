@@ -253,24 +253,30 @@ Default value: @code{false}
 If @code{true}, then @code{batch} reads answers to interactive questions
 from its input file or stream.
 
-Example: Maxima's interactive testsuite includes something like
-following.
+Example:
 
 @example maxima
-[asksign (foo), sign (foo), sign (foo)];
+asksign (foo);
 p;
-[pos, pos, pos];
 @end example
 
 The first line makes Maxima ask a question; when
 @code{batch_answers_from_file} is @code{true}, the second line is read
-as the answer to the question; and the third line provides the expected
-result.
+as the answer to the question.
+
+When an answer read from the file is not one the question accepts,
+Maxima signals an error instead of asking again, which would read the
+statements that follow as further answers.
+
+@mref{with_answers} answers questions in batch files too, and within
+its scope it takes precedence over @code{batch_answers_from_file}. Test
+files, as run by @mref{run_testsuite} or by @code{batch} with the option
+@code{test}, ignore @code{batch_answers_from_file}: their questions must
+be answered with @code{with_answers}.
 
 The command-line option @code{--batch-string} binds
-@code{batch_answers_from_file} to @code{true}. The @code{run_testsuite}
-function, as a default, also binds @code{batch_answers_from_file} to
-@code{true}. See also @mref{command_line_options} and @mrefdot{run_testsuite}
+@code{batch_answers_from_file} to @code{true}. See also
+@mref{command_line_options} and @mrefdot{with_answers}
 
 @opencatbox{Categories:}
 @category{File input}

@@ -1389,12 +1389,13 @@
 
 (defun stronger-datum? (d1 d2)
    (setq d1 (datum-var d1) d2 (datum-var d2))
-   (do ((end-flag) (answer))
+   (do ((end-flag) (answer)
+	(question `((mtext) |Is  | ,d1 | stronger than | ,d2 |?|)))
        (end-flag (member answer '($yes $y) :test #'eq))
-      (setq answer (retrieve `((mtext) |Is  | ,d1 | stronger than | ,d2 |?|)
-			     nil))
+      (setq answer (retrieve question nil (list '($stronger) d1 d2)))
       (if (member answer '($yes $y $no $n) :test #'eq) (setq end-flag 't)
-	 (mtell "~%Acceptable answers are: yes, y, no, n~%"))))
+	 (progn (invalid-answer question answer)
+		(mtell "~%Acceptable answers are: yes, y, no, n~%")))))
 
 (defun datum-lim (datum)
    (if (not (tvar? (datum-var datum)))

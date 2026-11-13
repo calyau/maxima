@@ -321,7 +321,8 @@
        (*query-io* (if $batch_answers_from_file
 		       (make-two-way-stream in-stream (make-string-output-stream)) *query-io*))
        (*standard-input* (if $batch_answers_from_file
-			     in-stream *standard-input*)))
+			     in-stream *standard-input*))
+       (*answers-from-file* (or $batch_answers_from_file *answers-from-file*)))
       (when (not *maxima-quiet*)
         (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep))
       (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))
@@ -512,7 +513,6 @@
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
-  (declare (special $batch_answers_from_file))
   (let (result
 	next-result
 	next
@@ -540,6 +540,7 @@
 	(test-end-real-time 0)
 	(*query-io* *query-io*)
 	(*standard-input* *standard-input*)
+	answers
     (filename-basename (unix-like-basename filename)))
     
     (cond (*collect-errors*
@@ -556,9 +557,10 @@
     (unwind-protect 
 	(progn
 	  (setq strm (open filename :direction :input))
-	  (when $batch_answers_from_file
-	    (setq *query-io* (make-two-way-stream strm out)
-		  *standard-input* strm))
+	  ;; Questions get their answers from with_answers only, see ANSWERS
+	  ;; below, and nothing else that reads input may read the test file.
+	  (setq *query-io* (make-two-way-stream (make-string-input-stream "") out)
+		*standard-input* (make-string-input-stream ""))
 	  (setq start-real-time (get-internal-real-time))
 	  (setq start-run-time (get-internal-run-time))
 	  (while (not (eq 'eof (setq expr (mread strm 'eof))))
@@ -572,12 +574,16 @@
 	    (setf tmp-output (make-string-output-stream))
 	    (setf save-output *standard-output*)
 	    (setf *standard-output* tmp-output)
+	    ;; A question outside with_answers fails the problem, even if
+	    ;; the code that asked it catches the error.
+	    (setq answers (make-with-answers :test-file t))
 	  
 	    (unwind-protect
 		 (progn
 		   (setq test-start-run-time (get-internal-run-time))
 		   (setq test-start-real-time (get-internal-real-time))
-		   (let (($errormsg t))
+		   (let (($errormsg t)
+			 (*with-answers* answers))
 		     (setq result (meval* `(($errcatch) ,(third expr)))))
 		   (setq result (if ($emptyp result) 'error-catch (second result)))
 		   (setq test-end-run-time (get-internal-run-time))
@@ -586,10 +592,21 @@
 	      (setf *standard-output* save-output))
 
 	    (setq next (mread strm 'eof))
-	    (if (eq next 'eof) (merror (intl:gettext "batch: missing expected result in test script.")))
+	    (when (eq next 'eof)
+	      (unless show-all
+		(print-test-batch-problem out filename-basename i problem-lineno (third expr)))
+	      (format out (intl:gettext "~%~%Result:~%"))
+	      (format out "~a" (get-output-stream-string tmp-output))
+	      (displa $%)
+	      (format t (intl:gettext
+			 "~%batch: missing expected result in test script.~%"))
+	      (push i all-differences)
+	      (return))
 	  
 	    (setq next-result (third next))
-	    (let* ((correct (batch-equal-check next-result result))
+	    (let* ((failure (with-answers-failure answers))
+		   (equal-result (batch-equal-check next-result result))
+		   (correct (and equal-result (not failure)))
 		   (expected-error (member i expected-errors))
 		   (pass (or correct expected-error)))
 	      (when (or show-all (not pass) (and correct expected-error)
@@ -599,6 +616,10 @@
 		(format out (intl:gettext "~%~%Result:~%"))
 		(format out "~a" (get-output-stream-string tmp-output))
 		(displa $%)
+		(when failure
+		  (format t "~%")
+		  (apply #'mtell failure)
+		  (format t "~%"))
 		(when (eq showtime '$all)
 		  (format out (intl:gettext "~%Time:  ~,3F sec (~,3F elapsed)")
 			  (float (/ (- test-end-run-time test-start-run-time)
@@ -620,9 +641,10 @@
                                     The correct result is:~%")
 			       (lisp-implementation-type))
 		       (displa next-result)))
-		    (t (format t (intl:gettext "~%This differed from the expected result:~%"))
-		     (push i all-differences)
-		     (displa next-result)
+		    (t (push i all-differences)
+		     (unless equal-result
+		       (format t (intl:gettext "~%This differed from the expected result:~%"))
+		       (displa next-result))
 		     (cond ((and *collect-errors* error-log)
                (let ((*print-base* 10))
 			    (format error-log (intl:gettext "/* Problem ~A~A */~%")
@@ -1647,7 +1669,7 @@
 		      :test #'string=))
 	   (mwarning "Unknown test: " test)))))
   
-(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug (answers_from_file t))
+(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug (answers_from_file t answers-from-file-p))
   "Run the testsuite.  Options are
   tests                List of tests to run
   display_all          Display output from each test entry
@@ -1655,8 +1677,9 @@
   time                 Display time to run each test entry
   share_tests          Whether to include the share testsuite or not
   debug                Set to enable some debugging prints
-  answers_from_file    Read interactive answers from source file.
+  answers_from_file    No effect, accepted for compatibility.
 "
+  (declare (ignore answers_from_file))
   (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
@@ -1672,8 +1695,8 @@
       (merror (intl:gettext "run_testsuite: time must be true, false, or all; found: ~M") time))
     (unless (member share_tests '(t nil $only))
       (merror (intl:gettext "run_testsuite: share_tests must be true, false or only: found ~M") share_tests))
-    (unless (member answers_from_file '(t nil))
-      (merror (intl:gettext "run_testsuite: answers_from_file must be true or false only; found ~M") answers_from_file))
+    (when answers-from-file-p
+      (mwarning (intl:gettext "run_testsuite: answers_from_file has no effect. Questions in test files are answered with with_answers.")))
     
     (setq *collect-errors* nil)
 
@@ -1702,11 +1725,9 @@
 	     (test-count 0)
 	     (total-count 0)
 	     (error-count 0)
-	     ($batch_answers_from_file answers_from_file)
 	     filename
 	     diff
 	     upass)
-	(declare (special $batch_answers_from_file))
 	(validate-given-tests tests share_tests)
 
 	(when debug
@@ -1757,9 +1778,6 @@
 			(or
 			  (errset
 			    (progn
-			      ;; Set $BATCH_ANSWERS_FROM_FILE here (again) before each test,
-			      ;; because some tests call reset(), which resets it to NIL.
-			      (setq $batch_answers_from_file answers_from_file)
 			      (multiple-value-setq (filename diff upass test-count)
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs

@@ -697,8 +697,10 @@
      (setq row 0)
      (unless (= rows columns) (setq sym nil) (go oloop))
      quest (format t "~%Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General~%")
-     (setq sym (retrieve "Answer 1, 2, 3 or 4 : " nil))
-     (unless (member sym '(1 2 3 4)) (go quest))
+     (setq sym (retrieve "Answer 1, 2, 3 or 4 : " nil '$entermatrix))
+     (unless (member sym '(1 2 3 4))
+       (invalid-answer "Answer 1, 2, 3 or 4 : " sym)
+       (go quest))
      oloop (cond ((> (incf row) rows)
 		 (format t "~%Matrix entered.~%")
 		 (return (cons '($matrix) (mxc matrix)))))
@@ -708,7 +710,7 @@
 	      (setq matrix
 		    (nconc matrix
 			   (ncons (onen row columns 
-					(meval (retrieve prompt nil)) 0)))))
+					(meval (retrieve prompt nil '$entermatrix)) 0)))))
 	    (go oloop))
 	   ((equal sym 2)
 	    (setq column (1- row))
@@ -732,7 +734,7 @@
 		 (setq matrix (nconc matrix (ncons vector)))
 		 (go oloop)))
      (let ((prompt (format nil "Row ~a Column ~a: " row column)))
-       (setq vector (nconc vector (ncons (meval (retrieve prompt nil))))))
+       (setq vector (nconc vector (ncons (meval (retrieve prompt nil '$entermatrix))))))
      (go iloop)))
 
 (declare-top (special sn* sd* rsn*))

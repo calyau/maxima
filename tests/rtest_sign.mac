@@ -1889,7 +1889,7 @@ contexts;
 (assume(notequal(x, 0)), 0);
 0;
 
-limit(sqrt(x^2 + a), a, 0), ask_hide_prompt; pos;
+with_answers([sign(x) = pos], limit(sqrt(x^2 + a), a, 0));
 x;
 
 facts();
@@ -2219,37 +2219,37 @@ initial;
 
 /* Bug #3676: "asksign(x*cos(y) - x) --> incorrect result, without assume(x > 0)" */
 
-[asksign(x*cos(y) - x), sign(x)], ask_hide_prompt; p;
+with_answers([sign(x*(cos(y)-1)) = p], [asksign(x*cos(y) - x), sign(x)]);
 [pos, pnz];
 
-[asksign(x*(cos(y) - 1)), sign(x)], ask_hide_prompt; n;
+with_answers([sign(x*(cos(y)-1)) = n], [asksign(x*(cos(y) - 1)), sign(x)]);
 [neg, pnz];
 
-[asksign(x*sin(y) - x), sign(x)], ask_hide_prompt; p;
+with_answers([sign(x*(sin(y)-1)) = p], [asksign(x*sin(y) - x), sign(x)]);
 [pos, pnz];
 
 
 /* Bug #3677: "asksign(x*cos(y) - x) --> "Is 1 zero or nonzero?" with assume(x > 0)" */
 
-block([r], assume(x > 0), r: asksign(x*cos(y) - x), forget(x > 0), r), ask_hide_prompt; neg;
+with_answers([sign(cos(y)-1) = neg], block(local(x), assume(x > 0), asksign(x*cos(y) - x)));
 neg;
 
-block([r], assume(x > 0), r: asksign(x*cos(y) - x), forget(x > 0), r), ask_hide_prompt; zero;
+with_answers([sign(cos(y)-1) = zero], block(local(x), assume(x > 0), asksign(x*cos(y) - x)));
 zero;
 
-block([r], assume(x2 > 0), r: asksign(4*x2^2*cos(y)^2 - 4*x2^2), forget(x2 > 0), r), ask_hide_prompt; neg;
+with_answers([sign((cos(y)-1)*(cos(y)+1)) = neg], block(local(x), assume(x > 0), asksign(4*x^2*cos(y)^2 - 4*x^2)));
 neg;
 
 
 /* Bug #3999: "asksign(cos^2 - 1)" */
 
-asksign(cos(phi) - 1), ask_hide_prompt; n;
+with_answers([sign(cos(phi)-1) = n], asksign(cos(phi) - 1));
 neg;
 
-asksign(cos(phi)^2 - 1), ask_hide_prompt; n;
+with_answers([sign(cos(phi)^2-1) = n], asksign(cos(phi)^2 - 1));
 neg;
 
-[asksign((cos(x) - 1)*phi^3), sign(phi)], ask_hide_prompt; n;
+with_answers([sign(phi*(cos(x)-1)) = n], [asksign((cos(x) - 1)*phi^3), sign(phi)]);
 [neg, pnz];
 
 block([r],
@@ -2274,22 +2274,22 @@ pnz;
 
 /* Bug #5175: "asksign(log(x)) records the wrong fact" */
 
-[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; pos;
+with_answers([sign(log(a)) = pos], [asksign(log(a)), sign(log(a)), facts()]);
 [pos, pos, [log(a) > 0]];
 
-[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; neg;
+with_answers([sign(log(a)) = neg], [asksign(log(a)), sign(log(a)), facts()]);
 [neg, neg, [0 > log(a)]];
 
-[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; zero;
+with_answers([sign(log(a)) = zero], [asksign(log(a)), sign(log(a)), facts()]);
 [zero, zero, [equal(log(a), 0)]];
 
-block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), is(a > 1), facts()]), ask_hide_prompt; pos;
+with_answers([sign(a-1) = pos], block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), is(a > 1), facts()]));
 [pos, pos, true, [a > 0, a > 1]];
 
-block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]), ask_hide_prompt; neg;
+with_answers([sign(a-1) = neg], block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]));
 [neg, neg, [a > 0, 1 > a]];
 
-block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]), ask_hide_prompt; zero;
+with_answers([sign(a-1) = zero], block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]));
 [zero, zero, [a > 0, equal(a, 1)]];
 
 
@@ -2477,13 +2477,13 @@ block([a, b],
 
 /* Bug #5235: "asksign(log(x) - log(x-y)) gives wrong answer" */
 
-[asksign(log(x) - log(x-y)), facts()], ask_hide_prompt; pos;
+with_answers([sign(y) = pos], [asksign(log(x) - log(x-y)), facts()]);
 [pos, [y > 0]];
 
-asksign(log(x) - log(x-y)), ask_hide_prompt; neg;
+with_answers([sign(y) = neg], asksign(log(x) - log(x-y)));
 neg;
 
-asksign(log(x-y) - log(x)), ask_hide_prompt; pos;
+with_answers([sign(y) = pos], asksign(log(x-y) - log(x)));
 neg;
 
 
@@ -2525,13 +2525,13 @@ pz;
 block([x], local(x), assume(notequal(x, 0)), sign(x*atan(x)));
 pos;
 
-asksign(x*atan(x)), ask_hide_prompt; zero;
+with_answers([zero(x) = zero], asksign(x*atan(x)));
 zero;
 
-asksign(x*atan(x)), ask_hide_prompt; nonzero;
+with_answers([zero(x) = nonzero], asksign(x*atan(x)));
 pos;
 
-asksign(-x*atan(x)), ask_hide_prompt; nonzero;
+with_answers([zero(x) = nonzero], asksign(-x*atan(x)));
 neg;
 
 
@@ -2893,10 +2893,11 @@ block([x],
 
 /* Bug #5311: "asksign asks about, and records an answer for, a different expression after SIGN-SHIFT" */
 
-block([b],
- local(b),
- assume(b > 3),
- [asksign(b - 5), is(b > 5)]), ask_hide_prompt; p;
+with_answers([sign(b-5) = p],
+  block([b],
+    local(b),
+    assume(b > 3),
+    [asksign(b - 5), is(b > 5)]));
 [pos, true]$
 
 
@@ -2972,25 +2973,28 @@ block([j],
 
 /* Bug #5307: "asksign(b^n) asks "Is 1 zero or nonzero?" for b < 0 and n # 0" */
 
-block([c, n],
- local(c, n),
- assume(c < 0, notequal(n, 0)),
- [asksign(c^n), is(c^n > 0)]), ask_hide_prompt; p;
+with_answers([sign(c^n) = p],
+  block([c, n],
+    local(c, n),
+    assume(c < 0, notequal(n, 0)),
+    [asksign(c^n), is(c^n > 0)]));
 [pos, true]$
 
-block([c, n, y],
- local(c, n, y),
- assume(c < 0, notequal(n, 0)),
- [asksign (y*c^n), is (y*c^n > 0)]), ask_hide_prompt; p;
+with_answers([sign(c^n*y) = p],
+  block([c, n, y],
+    local(c, n, y),
+    assume(c < 0, notequal(n, 0)),
+    [asksign (y*c^n), is(y*c^n > 0)]));
 [pos, true]$
 
 
 /* Bug #5308: "asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0" */
 
-block([d, m],
- local(d, m),
- assume(d <= 0, m < 0),
- [asksign(d^m), is(d^m < 0)]), ask_hide_prompt; n;
+with_answers([sign(d^m) = n],
+  block([d, m],
+    local(d, m),
+    assume(d <= 0, m < 0),
+    [asksign(d^m), is(d^m < 0)]));
 [neg, true]$
 
 
@@ -3192,9 +3196,10 @@ block([a, b, c, d, h, k],
 [[a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], [true, true, true, true, true],
  [a > 1, b > c, d > 1, equal(h, -1), notequal(k, 2)], []]$
 
-block([u],
-  local(u),
-  [asksign(1/(u-1)), sign(u-1), sign(u)]), ask_hide_prompt; pos;
+with_answers([sign(1/(u-1)) = pos],
+  block([u],
+    local(u),
+    [asksign(1/(u-1)), sign(u-1), sign(u)]));
 [pos, pos, pos]$
 
 
@@ -3408,15 +3413,18 @@ block([r],
   [r, contexts]);
 [[[false, [redundant], done], true, [kind(n, integer)]], [initial, global]]$
 
-(supcontext(c1, global), asksign(y)), ask_hide_prompt; pos;
+with_answers([sign(y) = pos],
+  supcontext(c1, global),
+  asksign(y));
 pos$
 
-(context : initial,
+with_answers([sign(y) = pos],
+  context : initial,
   killcontext(c1),
   newcontext(b),
   assume(y > 0),
   context : initial,
-  [is(y > 0), asksign(y), forget(y > 0)]), ask_hide_prompt; pos;
+  [is(y > 0), asksign(y), forget(y > 0)]);
 [unknown, pos, [y > 0]]$
 
 block([r],
