@@ -2096,13 +2096,14 @@
   (let ((precision (caddar l))
 	(mantissa (cadr l))
 	(exponent (caddr l))
-	(fpprec (float-digits 1f0))
+	;; Binds FPPREC alone: keep this fp-level.
+	(maxima::fpprec (float-digits 1f0))
 	(maxima::*m 0))
     ;; Round the mantissa to the number of bits of precision of the
     ;; machine, and then convert it to a floating point fraction.  We
     ;; have 0.5 <= mantissa < 1
     (setq mantissa (maxima::quotient (maxima::fpround mantissa)
-				     (expt 2f0 fpprec)))
+				     (expt 2f0 maxima::fpprec)))
     ;; Multiply the mantissa by the exponent portion.  I'm not sure
     ;; why the exponent computation is so complicated.
     ;;
@@ -2110,7 +2111,7 @@
     ;; would overflow.  We have to do it this way.  0.5 <= mantissa <
     ;; 1.  The largest double-float is .999999 * 2^128.  So if the
     ;; exponent is 128 or higher, we have an overflow.
-    (let ((e (+ exponent (- precision) maxima::*m fpprec)))
+    (let ((e (+ exponent (- precision) maxima::*m maxima::fpprec)))
       (if (>= (abs e) 129)
 	  (maxima::merror (intl:gettext "FP2SINGLE: floating point overflow converting ~:M to float.") l)
 	  (cl:scale-float mantissa e)))))
