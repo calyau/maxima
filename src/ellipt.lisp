@@ -2984,8 +2984,23 @@ first kind:
   ;; diff wrt m
   #$$(elliptic_e(phi,m)-elliptic_f(phi,m))/(2*m)$)
 		    
+;; elliptic_f and elliptic_e are quasi-periodic in phi:
+;;
+;;   elliptic_f(phi, m) = elliptic_f(phi-k*%pi, m) + 2*k*elliptic_kc(m)
+;;   elliptic_e(phi, m) = elliptic_e(phi-k*%pi, m) + 2*k*elliptic_ec(m)
+;;
+;; for any integer k. Return k = round(PHI/%pi) if it is not 0 and PHI is
+;; a number or a rational multiple of %pi, where these identities keep the
+;; expression small, else NIL.
+;;
+(defun elliptic-period-count (phi)
+  (let ((r (div phi '$%pi)))
+    (when (or ($numberp phi) (integerp r) (ratnump r))
+      (let ((k ($round r)))
+        (and (integerp k) (not (zerop k)) k)))))
+
 (def-simplifier elliptic_f (phi m)
-  (let (args)
+  (let (args periods)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (to (elliptic-f ($float phi) ($float m))))
@@ -3019,15 +3034,18 @@ first kind:
 		 (t
 		  (merror (intl:gettext "elliptic_f: elliptic_f(~:M, ~:M) is undefined.")
 					phi m))))
-	  ((alike1 phi (div '$%pi 2))
-	   ;; Complete elliptic integral
-	   (ftake '%elliptic_kc m))
+	  ((alike1 phi (div '$%pi -2))
+	   (neg (ftake '%elliptic_kc m)))
+	  ((setf periods (elliptic-period-count phi))
+	   ;; Quasi-periodicity, see ELLIPTIC-PERIOD-COUNT
+	   (add (ftake '%elliptic_f (sub phi (mul periods '$%pi)) m)
+		(mul 2 periods (ftake '%elliptic_kc m))))
 	  (t
 	   ;; Nothing to do
 	   (give-up)))))
 
 (def-simplifier elliptic_e (phi m)
-  (let (args)
+  (let (args periods)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (complexify (elliptic-e ($float phi) ($float m))))
@@ -3066,21 +3084,12 @@ first kind:
 	  ((alike1 phi (div '$%pi 2))
 	   ;; Complete elliptic integral
 	   (ftake '%elliptic_ec m))
-	  ((and ($numberp phi)
-		(let ((r ($round (div phi '$%pi))))
-		  (and ($numberp r)
-		       (not (zerop1 r)))))
-	   ;; Handle the case where phi is a number where we can apply
-	   ;; the periodicity property without blowing up the
-	   ;; expression.
-	   (add (ftake '%elliptic_e
-		       (add phi
-			    (mul (mul -1 '$%pi)
-				 (ftake '%round (div phi '$%pi))))
-		       m)
-		(mul 2
-		     (mul (ftake '%round (div phi '$%pi))
-			  (ftake '%elliptic_ec m)))))
+	  ((alike1 phi (div '$%pi -2))
+	   (neg (ftake '%elliptic_ec m)))
+	  ((setf periods (elliptic-period-count phi))
+	   ;; Quasi-periodicity, see ELLIPTIC-PERIOD-COUNT
+	   (add (ftake '%elliptic_e (sub phi (mul periods '$%pi)) m)
+		(mul 2 periods (ftake '%elliptic_ec m))))
 	  (t
 	   ;; Nothing to do
 	   (give-up)))))

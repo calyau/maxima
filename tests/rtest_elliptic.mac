@@ -2238,6 +2238,24 @@ elliptic_f(asin(sqrt((u^2-1)/(u^2-m))), m)$
 make_elliptic_f(inverse_jacobi_ds(u, m));
 elliptic_f(asin(1/sqrt(u^2+m)), m)$
 
+
+/* Bug #5798: "elliptic_f() lacks the quasi-periodicity simplification of elliptic_e()" */
+
+[elliptic_f(3*%pi/2, m), elliptic_f(-%pi/2, m), elliptic_f(%pi, m), elliptic_f(5*%pi/4, m), elliptic_f(-7/2, m)];
+[3*elliptic_kc(m), -elliptic_kc(m), 2*elliptic_kc(m), elliptic_f(%pi/4, m)+2*elliptic_kc(m), elliptic_f(%pi-7/2, m)-2*elliptic_kc(m)]$
+
+[elliptic_e(3*%pi/2, m), elliptic_e(-%pi/2, m), elliptic_e(%pi, m), elliptic_e(5*%pi/4, m), elliptic_e(4, 2)];
+[3*elliptic_ec(m), -elliptic_ec(m), 2*elliptic_ec(m), elliptic_e(%pi/4, m)+2*elliptic_ec(m), elliptic_e(4-%pi, 2)+2*elliptic_ec(2)]$
+
+[closeto(elliptic_f(float(5*%pi/4), 2.0) - float(elliptic_f(5*%pi/4, 2)), 1e-14),
+ closeto(elliptic_f(-3.5, 0.7) - float(elliptic_f(-7/2, 7/10)), 1e-14),
+ closeto(elliptic_e(float(7*%pi/3), 3.0) - float(elliptic_e(7*%pi/3, 3)), 1e-14)];
+[true, true, true]$
+
+[integrate(1/sqrt(cos(x)), x, 0, 3*%pi), integrate(sqrt(cos(x)), x, 0, 5*%pi/2)];
+[6*elliptic_kc(2), 2*elliptic_e(%pi/4, 2)+4*elliptic_ec(2)]$
+
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 

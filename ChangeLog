@@ -346,6 +346,7 @@ Bug fixes for numbered bugs:
 * \#5794 algsys([x^5 - sqrt(2)*x - 1], [x]) can't reduce a polynomial in one variable
 * \#5796 limit() does not return at branch points of elliptic_e and elliptic_f
 * \#5797 integrate() hangs on some definite integrals of powers of cos(x)
+* \#5798 elliptic_f() lacks the quasi-periodicity simplification of elliptic_e()
 
 Bug fixes for unnumbered bugs:
 ------------------------------
