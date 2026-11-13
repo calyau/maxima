@@ -1452,6 +1452,27 @@ Kontext enth@"alt die Aussage @code{[a>0]}.  Der Kontext kann mit der Funktion
 @end example
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{csign}
+@deffn {Funktion} csign (@var{expr})
+
+Versucht das Vorzeichen des Ausdrucks @var{expr} auf Grundlage der Fakten der
+aktuellen Datenbank zu finden, ohne anzunehmen, dass @var{expr} reellwertig ist.
+@code{csign} gibt eine der folgenden Antworten zur@"uck: @code{pos} (positiv),
+@code{neg} (negativ), @code{zero} (null), @code{pz} (positiv oder null),
+@code{nz} (negativ oder null), @code{pn} (positiv oder negativ), @code{pnz}
+(positiv, negativ oder null), @code{imaginary} (rein imagin@"ar) oder
+@code{complex} (komplex, f@"ur den Fall, dass nichts bekannt ist).
+
+Obwohl @code{csign} nicht annimmt, dass @var{expr} reellwertig ist, nimmt die
+Funktion weiterhin an, dass Variablen reell sind, sofern sie nicht anders
+deklariert wurden. Daher gibt @code{csign(z)} den Wert @code{pnz} zur@"uck,
+wenn nicht zuvor @code{declare(z,complex)} oder @code{declare(z,imaginary)}
+ausgewertet wurde.
+
+Siehe auch @mrefdot{sign}
+@end deffn
+
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{deactivate}
 @deffn {Funktion} deactivate (@var{context_1}, @dots{}, @var{context_n})
