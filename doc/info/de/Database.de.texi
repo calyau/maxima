@@ -1762,9 +1762,6 @@ Ist @var{x} eine ganze Zahl?
 Ist @var{x} eine gerade Zahl? Ist @var{x} eine ungerade Zahl?
 @item equal(@var{a}, @var{b})
 Ist @var{a} gleich @var{b}?
-@item stronger(@var{a}, @var{b})
-Ist @var{a} st@"arker als @var{b}? Diese Frage stellt die Funktion
-@mrefdot{taylor}
 @item read, readonly, entermatrix
 Die Fragen der Funktionen @mrefcomma{read} @mref{readonly} und
 @mref{entermatrix} haben den Namen der Funktion als Gegenstand, wie in

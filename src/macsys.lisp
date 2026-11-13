@@ -329,7 +329,7 @@
 ;; Any other symbol on the left side is the name of a function that asks.
 (defvar *answer-subjects*
   '(($sign . 1) ($zero . 1) ($integer . 1) ($even . 1) ($odd . 1)
-    ($equal . 2) ($stronger . 2)))
+    ($equal . 2)))
 
 ;; Read the answer in the string S, as if it were typed.
 (defun read-answer-string (s)
@@ -360,9 +360,8 @@
                                  (length (cdr lhs)))))
              (merror (intl:gettext "with_answers: the left side of ~M is not a subject.~%~
                                     A subject is sign(x), zero(x), integer(x), even(x), odd(x),~%~
-                                    equal(a, b), stronger(a, b) or the name of the function~%~
-                                    that asks. To give an equation as an answer, write it as~%~
-                                    a string.")
+                                    equal(a, b) or the name of the function that asks. To give~%~
+                                    an equation as an answer, write it as a string.")
                      element))
            (list element
                  (if (symbolp lhs)

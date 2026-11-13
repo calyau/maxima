@@ -1986,8 +1986,6 @@ Is @var{x} an integer?
 Is @var{x} an even number? Is @var{x} an odd number?
 @item equal(@var{a}, @var{b})
 Is @var{a} equal to @var{b}?
-@item stronger(@var{a}, @var{b})
-Is @var{a} stronger than @var{b}? @mref{taylor} asks this.
 @item read, readonly, entermatrix
 The questions of @mrefcomma{read} @mref{readonly} and @mref{entermatrix} have
 the name of the function as their subject, as in @code{read = 1+2}. So do those
