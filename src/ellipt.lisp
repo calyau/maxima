@@ -3034,6 +3034,9 @@ first kind:
 		 (t
 		  (merror (intl:gettext "elliptic_f: elliptic_f(~:M, ~:M) is undefined.")
 					phi m))))
+	  ((alike1 phi (div '$%pi 2))
+	   ;; Complete elliptic integral
+	   (ftake '%elliptic_kc m))
 	  ((alike1 phi (div '$%pi -2))
 	   (neg (ftake '%elliptic_kc m)))
 	  ((setf periods (elliptic-period-count phi))

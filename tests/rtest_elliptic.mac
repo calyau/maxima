@@ -2255,6 +2255,9 @@ elliptic_f(asin(1/sqrt(u^2+m)), m)$
 [integrate(1/sqrt(cos(x)), x, 0, 3*%pi), integrate(sqrt(cos(x)), x, 0, 5*%pi/2)];
 [6*elliptic_kc(2), 2*elliptic_e(%pi/4, 2)+4*elliptic_ec(2)]$
 
+[elliptic_f(%pi/2, m), diff(elliptic_f(%pi/2, x), x)];
+[elliptic_kc(m), (elliptic_ec(x)-(1-x)*elliptic_kc(x))/(2*(1-x)*x)]$
+
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
