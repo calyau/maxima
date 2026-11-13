@@ -197,28 +197,29 @@
 ;;; WITH-EXTRA-PRECISION - Internal
 ;;;
 ;;;   Executes the body BODY with extra precision.  The precision is
-;;; increased by EXTRA, and the list of variables given in VARLIST have
-;;; the precision increased.  The precision of the first value of the
-;;; body is then reduced back to the normal precision.
+;;; increased by at least EXTRA bits, with MAXIMA::BIND-FPPREC, so that
+;;; $FPPREC and the bigfloat constants that depend on FPPREC follow it,
+;;; and the list of variables given in VARLIST have the precision
+;;; increased.  The precision of the first value of the body is then
+;;; reduced back to the normal precision.
 (defmacro with-extra-precision ((extra (&rest varlist)) &body body)
-  (let ((result (gensym))
-	(old-fpprec (gensym)))
+  (let ((result (gensym)))
     `(let ((,result
-	     (let ((,old-fpprec maxima::fpprec))
-	       (unwind-protect
-		    (let ((maxima::fpprec (cl:+ maxima::fpprec ,extra)))
-		      (let ,(mapcar #'(lambda (v)
-					;; Could probably do this in a faster
-					;; way, but conversion to a maxima
-					;; form automatically increases the
-					;; precision of the bigfloat to the
-					;; new precision.  Conversion of that
-					;; to a bigfloat object preserves the
-					;; precision.
-					`(,v (bigfloat:to (maxima::to ,v))))
-			     varlist)
-			,@body))
-		 (setf maxima::fpprec ,old-fpprec)))))
+             ;; BIND-FPPREC takes decimal digits. As 30103/100000 > log10(2),
+             ;; these give at least EXTRA more bits.
+             (maxima::bind-fpprec
+                 (cl:ceiling (cl:* (cl:+ maxima::fpprec ,extra) 30103) 100000)
+               (let ,(mapcar #'(lambda (v)
+                                 ;; Could probably do this in a faster
+                                 ;; way, but conversion to a maxima
+                                 ;; form automatically increases the
+                                 ;; precision of the bigfloat to the
+                                 ;; new precision.  Conversion of that
+                                 ;; to a bigfloat object preserves the
+                                 ;; precision.
+                                 `(,v (bigfloat:to (maxima::to ,v))))
+                             varlist)
+                 ,@body))))
        ;; Conversion of the result to a maxima number adjusts the
        ;; precision appropriately.
        (bigfloat:to (maxima::to ,result)))))
