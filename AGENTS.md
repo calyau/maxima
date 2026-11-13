@@ -578,6 +578,35 @@ machine precision, and a rational gives a *single* float); and
 **returns the converted Lisp integer** (or nil) -- callers ignoring it keep the
 original bigfloat.
 
+**Changing bigfloat precision**: never bind `fpprec` directly outside the
+bigfloat kernel (below). `fpprec` (bits) has dependents, `$fpprec` (digits)
+and the constants `*bigfloatzero*`, `*bigfloatone*`, `*bfhalf*` and
+`*bfmhalf*`, which `fpprec1` (`src/float.lisp`) sets together. A bare
+`(let ((fpprec n)) ...)` leaves them at the old precision, and code inside then
+mixes precisions: under `(let ((fpprec 200)) ...)`,
+`(fpplus (cdr *bfhalf*) (cdr *bfhalf*))` is 2^-144, not 1. Maxima code inside
+that binds `fpprec` does worse. On exit `mset` restores `$fpprec`, whose assign
+function `fpprec1` then resets `fpprec` from the stale value for the rest of the
+computation, as bigfloat `gamma` does through `bffac(z, fpprec)`
+(`share/numeric/bffac.mac`). Use `bind-fpprec` (`src/float.lisp`), which takes
+decimal digits and binds them all, e.g.
+`(bind-fpprec (fpprec-with-guard-digits) ...)` for a result rounded once to the
+caller's precision (at least 8 + `integer-length(fpprec)` guard bits). In the
+`bigfloat` package use `with-extra-precision` (`src/numeric.lisp`), which also
+converts its variables to the new precision and the result back. **The
+kernel** is the fp-level code, which computes on raw fp lists,
+`(mantissa exponent)` pairs that mean something only at the current `fpprec`:
+the `fp*` functions of `src/float.lisp` (`fpplus`, `fptimes*`, `fpround`,
+`fpexp`, `fproot`, `fp2flo`, `fpformat`, ...), its constant routines (`comppi`,
+`compe`, ...), `bcons`, `bigfloatp`, `fpend`, and `intofp` or `$bfloat` of a
+number. It needs exact bit counts (`fp2flo` rounds to 53 bits) and runs in
+inner loops, so it may bind `fpprec` alone, but only where everything the
+binding covers is kernel code or plain Lisp arithmetic, never `meval` or the
+simplifier (`add`, `mul`, `power`, `take`, `$bfloat` of an expression, ...),
+and reads the constants only through `bigfloatp` or `fpone`, which check their
+precision. Each such binding, in `src/` or `share/`, carries the comment
+`;; Binds FPPREC alone: keep this fp-level.`
+
 **CRE**: `((mrat simp varlist genvar) numerator . denominator)`, e.g.
 `($rat '((mplus) 1 ((mexpt) $x 2)))` ->
 `((MRAT SIMP ($X) (#:G544)) (#:G544 2 1 0 1) . 1)` -- the gensym counter varies

@@ -117,6 +117,17 @@
 
 ;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
 ;; VAL is evaluated before FPPREC is rebound, so it may depend on FPPREC.
+;;
+;; Change the precision only with BIND-FPPREC, which keeps $FPPREC and the
+;; constants that FPPREC1 sets in step with FPPREC. Under a binding of FPPREC
+;; alone they keep the old precision. Code there that reads them goes wrong,
+;; and so does Maxima code that binds fpprec: on exit, FPPREC1 recomputes
+;; FPPREC from the stale $FPPREC. So FPPREC alone is bound only around
+;; fp-level code, which computes on raw fp lists: functions such as FPPLUS,
+;; FPTIMES*, FPROUND and FPEXP, BCONS, BIGFLOATP, FPEND, and INTOFP or $BFLOAT
+;; of a number. It reads the constants only through BIGFLOATP or FPONE, which
+;; check their precision. Such a binding carries the comment "Binds FPPREC
+;; alone: keep this fp-level."
 (defmacro bind-fpprec (val &body exprs)
   `(let (($fpprec ,val) fpprec *bigfloatzero* *bigfloatone* *bfhalf* *bfmhalf*)
      (fpprec1 nil $fpprec)
@@ -139,15 +150,16 @@
 
 (defun fpscan (lft rt exp &aux (*read-base* 10.) (*m 1) (*cancelled 0))
   (setq exp (readlist exp))
-  (bigfloatp
-   (let ((fpprec (+ 4 fpprec (integer-length exp)
-		    (floor (1+ (* #.(/ (log 10.0) (log 2.0)) (length lft))))))
-	 $float temp)
-     (setq temp (add (readlist lft)
-		     (div (readlist rt) (expt 10. (length rt)))))
-     ($bfloat (cond ((> (abs exp) 1000.)
-		     (cons '(mtimes) (list temp (list '(mexpt) 10. exp))))
-		    (t (mul2 temp (power 10. exp))))))))
+  (let ((bits (+ 4 fpprec (integer-length exp)
+		 (floor (1+ (* #.(/ (log 10.0) (log 2.0)) (length lft)))))))
+    (bigfloatp
+     (bind-fpprec (ceiling (* bits 30103) 100000)
+       (let ($float temp)
+	 (setq temp (add (readlist lft)
+			 (div (readlist rt) (expt 10. (length rt)))))
+	 ($bfloat (cond ((> (abs exp) 1000.)
+			 (cons '(mtimes) (list temp (list '(mexpt) 10. exp))))
+			(t (mul2 temp (power 10. exp))))))))))
 
 (defun dim-bigfloat (form result)
   (let (($lispdisp nil))
@@ -171,6 +183,7 @@
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
 	 (let* ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
+		;; Binds FPPREC alone: keep this fp-level.
 		(fpprec (+ extradigs (decimalsin (- (bigfloat-prec l) 2))))
 	        (*m 1)
 	        (*cancelled 0))
@@ -699,6 +712,7 @@
   (let ((precision (bigfloat-prec l))
 	(mantissa (cadr l))
 	(exponent (caddr l))
+	;; Binds FPPREC alone: keep this fp-level.
 	(fpprec machine-mantissa-precision)
 	(*m 0))
     ;; Round the mantissa to the number of bits of precision of the
@@ -919,6 +933,7 @@
   (*fpatan (car x) (cdr x)))
 
 (defun *fpatan (a y)
+  ;; Binds FPPREC alone: keep this fp-level.
   (fpend (let ((fpprec (+ 8. fpprec)))
 	   (if (null y)
 	       (if ($bfloatp a) (fpatan (cdr ($bfloat a)))
@@ -1039,6 +1054,7 @@
 
 (defun tanbigfloat (a)
   (setq a (car a))
+  ;; Binds FPPREC alone: keep this fp-level.
   (fpend (let ((fpprec (+ 8. fpprec)))
 	   (cond (($bfloatp a)
 		  (setq a (cdr ($bfloat a)))
@@ -1229,6 +1245,7 @@
 		    (setq s (fpexp1 (fpdifference x (intofp r))))
 		    (fptimes* s
 			      (cdr (bigfloatp
+				    ;; Binds FPPREC alone: keep this fp-level.
 				    (let ((fpprec (+ fpprec (integer-length r) -1))
 					  (r r))
 				      (bcons (fpexpt (fpe) r))))))))))) ; patch for full precision %E
@@ -1354,6 +1371,7 @@
 ;; Taylor: %e = sum(s[i] ,i,0,inf) where s[i] = 1/i!
 ;;
 (defun compe (prec) 
+  ;; Binds FPPREC alone: keep this fp-level.
   (let ((fpprec prec))
     (multiple-value-bind (tt qq) (split-taylor-e 0 (taylor-e-size prec))
       (fpquotient (intofp tt) (intofp qq)) )))
@@ -1407,6 +1425,7 @@
 ;;       and A = 545140134, B = 13591409, C = 640320
 ;;
 (defun comppi (prec) 
+  ;; Binds FPPREC alone: keep this fp-level.
   (let ((fpprec prec)
         nr n d oldn tt qq n*qq )
     ;; STEP 1:
@@ -1515,6 +1534,7 @@
 ;; (Corollary 2, Remark 2, Brent/Johansson http://arxiv.org/pdf/1312.0039v1.pdf)
 ;;
 (defun comp-bf%gamma (prec)
+  ;; Binds FPPREC alone: keep this fp-level.
   (let* ((fpprec prec)
          (n (ceiling (* 1/8 (+ (* prec (log 2.0)) (log 24.0)))))
          (n2 (* n n))
@@ -1625,6 +1645,7 @@
 ;;
 (defun comp-log2 ()
   (let ((res
+         ;; Binds FPPREC alone: keep this fp-level.
          (let ((fpprec (+ fpprec 12)))
            (fpplus 
              (fpdifference (n*atanh-1/k 18 26) (n*atanh-1/k 2 4801))
@@ -1677,6 +1698,7 @@
     ((= 2 n) (comp-log2))
     (t
       (let ((res 
+             ;; Binds FPPREC alone: keep this fp-level.
              (let ((fpprec (+ fpprec 10))
                    (k (integer-length n)) )
                ;; choose k so that |n/2^k - 1| is as small as possible:
@@ -1746,11 +1768,12 @@
 ;;
 ;;
 (defun fpphi1 ()
+  ;; Binds FPPREC alone: keep this fp-level.
   (let* ((phi (let ((fpprec (+ fpprec 2)))
                 ;; Use couple of extra bits to compute %phi =
                 ;; (1+sqrt(5))/2.
-                (cdr ($bfloat (div (add 1 (power 5 1//2))
-                                   2))))))
+                (fpquotient (fpplus (fpone) (fproot (bcons (intofp 5)) 2))
+                            (intofp 2)))))
     ;; Round value that has extra bits to the current number of bits
     ;; in a bfloat.
     (bcons (list (fpround (car phi))
@@ -1885,6 +1908,7 @@
 	   (t
 	    (let ((extrabits (max 1 (+ (caddr n) (integer-length (caddr p))))))
 	      (setq p
+		    ;; Binds FPPREC alone: keep this fp-level.
 		    (let ((fpprec (+ extrabits fpprec)))
 		      (fpexp (fptimes* (cdr (bigfloatp n)) (fplog (cdr (bigfloatp p)))))))
 	      (setq p (list (fpround (car p)) (+ (- extrabits) *m (cadr p))))
@@ -1911,6 +1935,7 @@
       '(0 0)
       (progn
 	(let* ((ofprec fpprec)
+	       ;; Binds FPPREC alone: keep this fp-level.
 	       (fpprec (+ fpprec 2))	;assumes a>0 n>=2
 	       (bk (fpexpt (intofp 2) (1+ (quotient (cadr (setq a (cdr (bigfloatp a)))) n)))))
 	  (do ((x bk (fpdifference x
@@ -1979,12 +2004,14 @@
 	(simplify (list '(mexpt) a -1)))))
 
 (defun *fpexp (a)
+  ;; Binds FPPREC alone: keep this fp-level.
   (fpend (let ((fpprec (+ 8. fpprec)))
            (if ($bfloatp a)
                (fpexp (cdr (bigfloatp a)))
 	       (list '(mexpt) '$%e a)))))
 
 (defun *fpsin (a fl)
+  ;; Binds FPPREC alone: keep this fp-level.
   (fpend (let ((fpprec (+ 8. fpprec)))
 	   (cond (($bfloatp a) (fpsin (cdr ($bfloat a)) fl))
 		 (fl (list '(%sin) a))
@@ -2039,6 +2066,7 @@
      (return
        (cdr
 	(bigfloatp
+	 ;; Binds FPPREC alone: keep this fp-level.
 	 (let ((fpprec (max fpprec (+ fpprec (cadr x))))
 	       (xt (bcons x))
 	       (*cancelled 0)
@@ -2096,6 +2124,7 @@
       (cons (- (car x)) (cdr x))))
 
 (defun fpentier (f)
+  ;; Binds FPPREC alone: keep this fp-level.
   (let ((fpprec (bigfloat-prec f)))
     (fpintpart (cdr f))))
 
@@ -2170,6 +2199,7 @@
 		0))
 	 
 	 (result
+	   ;; Binds FPPREC alone: keep this fp-level.
 	   (let ((fpprec (+ fpprec extra-precision-bits)))
 	     (bcons (fpplus (fplog1p (fpdifference (list (ash (car x)
                                                               extra-precision-bits)

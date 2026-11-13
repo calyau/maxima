@@ -445,14 +445,15 @@
 	    ;; bfloat(1234)*10b0^(1000-3).  Extra precision is used
 	    ;; during the bfloat computations.
 	    (let* ((extra-prec (+ *fast-bfloat-extra-bits* (ceiling (log exp 2e0))))
+		   ;; Binds FPPREC alone: keep this fp-level.
 		   (fpprec (+ fpprec extra-prec))
 		   (mant (+ (* int-part (expt 10 frac-len)) frac-part))
-		   (bf-mant (bcons (intofp mant)))
-		   (p (power (bcons (intofp 10))
-			     (- (if (char= exp-sign #\-)
-				    (- exp)
-				    exp)
-				frac-len)))
+		   (bf-mant (intofp mant))
+		   (p (fpexpt (intofp 10)
+			      (- (if (char= exp-sign #\-)
+				     (- exp)
+				     exp)
+				 frac-len)))
 		   ;; Compute the product using extra precision.  This
 		   ;; helps to get the last bit correct (but not
 		   ;; always).  If we didn't do this, then bf-mant and
@@ -460,7 +461,8 @@
 		   ;; then the product is rounded again.  Doing it
 		   ;; this way, we still have 3 roundings, but bf-mant
 		   ;; and p aren't rounded too soon.
-		   (result (mul bf-mant p)))
+		   (result (bcons (fptimes* bf-mant p))))
+	      ;; Binds FPPREC alone: keep this fp-level.
 	      (let ((fpprec (- fpprec extra-prec)))
 		;; Now round the product back to the desired precision.
 		(bigfloatp result)))

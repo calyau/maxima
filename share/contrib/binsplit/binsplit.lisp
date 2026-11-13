@@ -37,6 +37,7 @@
 
 (defun bs-asincos (x fn)
   (let ((phi ;; phi = carg(z), where ..
+         ;; Binds FPPREC alone: keep this fp-level.
          (let* ((fpprec (+ fpprec 12)) ;; needs testing
                 (x (cdr (bigfloatp x)))
                 (xx (fptimes* x x))
@@ -87,7 +88,7 @@
       (let ((e 0) phi) 
         ;; bs-carg11 needs im-z < 1/2  (i.e. phi < pi/6)
         ;; when im-z >= 1/2 bisect phi by taking the complex sqrt
-        (when (not (fplessp im-z (cdr *bfhalf*)))
+        (when (not (fplessp im-z (cdr (bigfloatp *bfhalf*))))
           (multiple-value-setq (re-z im-z) (complex-sqrt (bcons re-z) (bcons im-z)))
           (setq e 1) )
         (setq phi (bs-carg11 (list re-z im-z) prec))
@@ -179,6 +180,7 @@
               ((eql fn 'cot) dx) ))
       (t
         (let ((res
+               ;; Binds FPPREC alone: keep this fp-level.
                (let* ((fpprec (+ fpprec 12)) ;; needs testing
                       (x (cdr (bigfloatp x))) )
                  (bcons 
@@ -253,6 +255,7 @@
   (setq x (bigfloatp x))
   (let* ((extra (1+ (- (caddr x))))
          (res 
+           ;; Binds FPPREC alone: keep this fp-level.
            (let ((fpprec (+ fpprec extra)))
              (bcons (fpdifference (cdr (bs-exp x)) (fpone))) )))
     (bigfloatp res) ))
@@ -265,6 +268,7 @@
 
 (defun bs-exp (x) ;; assume 0 <= x < 1
   (let ((exp1 
+         ;; Binds FPPREC alone: keep this fp-level.
          (let* ((fpprec (+ fpprec 12)) ;; needs testing
                 (x (cdr (bigfloatp x)))
                 (mant (car x)) (e (cadr x)) 
@@ -331,6 +335,7 @@
   (setq eps (bigfloatp eps))
   (let ((res 
          (let* ((extra (1+ (- (caddr eps)))) ;; give |e-1| extra bits
+               ;; Binds FPPREC alone: keep this fp-level.
                (fpprec (+ fpprec extra))
                ;; x = 1 + eps = m*2^e = 2^(e-1) + ...
                (x (bcons (fpplus (cdr (bigfloatp eps)) (fpone)))) ) 
@@ -347,6 +352,7 @@
 
 (defun bs-log (x) ;; assume x > 0
   (let ((res 
+         ;; Binds FPPREC alone: keep this fp-level.
          (let* ((fpprec (+ fpprec 12)) ;; needs more testing
                 (x (cdr (bigfloatp x)))
                 (m (car x)) (k (cadr x)) ;; mantissa, exponent

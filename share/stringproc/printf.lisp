@@ -486,6 +486,7 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
            (ms* (len ie) (make-string len :initial-element ie)) )  ;;   some parts of the code 
           (declare (inline cs* ms*))
 ;;
+    ;; Binds FPPREC alone: keep this fp-level.
     (let ((fpprec (caddar bf))) ;; keep old fpprec in case it differs to current fpprec
       (and xp (not (zerop xp))
         (setq bf (bcons (if (minusp xp) 
@@ -494,8 +495,10 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
 ;;    
       (and dd
         (let ((m (intofp (expt 10. dd))))
+          ;; The fp list BF = (m e) is m*2^(e-FPPREC), which ROUND
+          ;; rounds to an integer, ties to even, as round() does.
           (setq bf (fptimes* (cdr bf) m)
-                bf (meval `((%round) ,(bcons bf)))
+                bf (round (* (car bf) (expt 2 (- (cadr bf) fpprec))))
                 bf (bcons (fpquotient (intofp bf) m)) )))) 
 ;;  
     (let* ((s (string-left-trim "-" ($sconcat bf)))

@@ -4078,7 +4078,7 @@
            ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
            ;; and emporarily give some extra precision but avoid fpprec dependency.
            ;; Is this workaround correct for complex values?
-           (let ((fpprec 70))
+           (bind-fpprec 21
              ($float (take '(%beta_incomplete_regularized) ($bfloat a) ($bfloat b) z)) )
            ($rectform (div ibeta beta)) )))
            
