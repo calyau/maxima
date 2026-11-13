@@ -308,3 +308,7 @@ errcatch(with_answers([sign(b) = neg], laplace(1/(t + a), t, s)));
  errcatch(with_answers(pos, asksign(a))),
  errcatch(with_answers([pos]))];
 [[], [], [], [], [], [], []]$
+
+/* The messages show the prompt of read without the newline that print ends it with: */
+(errcatch(with_answers([sign(a) = pos], read("Enter:"))), error[3]);
+"Enter:"$

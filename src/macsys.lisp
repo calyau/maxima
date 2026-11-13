@@ -488,11 +488,16 @@
 	     (string-right-trim '(#\n)
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
+    ;; The messages of with_answers show the prompt without the newline that
+    ;; $PRINT ends it with.
+    (when *with-answers*
+      (return-from read-input
+        (with-answers-answer
+         (string-right-trim '(#\space #\tab #\newline #\return) *mread-prompt*)
+         subject)))
     (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
-    (if *with-answers*
-      (with-answers-answer *mread-prompt* subject)
-      (third (mread #+(or sbcl cmu) *standard-input*
-                    #-(or sbcl cmu) *query-io*)))))
+    (third (mread #+(or sbcl cmu) *standard-input*
+                  #-(or sbcl cmu) *query-io*))))
 
 (defmfun $bug_report ()
   (if $maxima_frontend
