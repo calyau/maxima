@@ -590,9 +590,11 @@
        (do* ((b-list descending-powers (rest b-list))
              (k 0 (1+ k))
              (n-choose-k 1 (truncate (* n-choose-k (- (1+ n) k)) k))
+             ;; REST^2 is multiplied out: a recursive (PEXPT REST 2) would
+             ;; go one level deep per term and build a sum on each level.
              (rest-pow 1 (case k
                            (1 rest)
-                           (2 (pexpt rest 2))
+                           (2 (ptimes rest rest))
                            (t (ptimes rest rest-pow))))
              (sum (first descending-powers)
                   (pplus sum
@@ -600,7 +602,9 @@
                              (ptimes (pctimes (cmod n-choose-k) rest-pow)
                                      (first b-list))
                              (pctimes (cmod n-choose-k) rest-pow)))))
-            ((> k n) sum))))))
+            ;; Stop right after the last term. A step more would compute
+            ;; REST^(N+1), the most expensive power, for nothing.
+            ((= k n) sum))))))
 
 ;; P-DESCENDING-POWERS
 ;;
