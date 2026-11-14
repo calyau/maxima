@@ -448,3 +448,20 @@ block([D : expand((x^2+c^2)*(d*x^2-1)*(e*x^4+d*x^2+1)),
        N : expand((x^2+c^2)*(l1*(x^5+c*d*x^3+%i*e)+l2*(d*x^4-%i*c^2*x+1)+l3*(e*x^5+x^2-d)+l4*(c*x^3+e*d*x-%i*c)))],
   is(block([algebraic : true], ratsimp(D/N)) = ratsimp(D/N)));
 true$
+
+
+/* Bug #5802: "gcd() and rat() fail over radicals with gcd:red" */
+
+block([p : expand((x^(2/3)-1+t)*(t-y^(1/4))*(t-y^(3/4))), q : expand((t-y^(1/4))*(t-y^(3/4)))],
+  [expand(gcd(p, q)), ratdisrep(rat(p/q))]), algebraic, gcd : red;
+[y-t*y^(3/4)-t*y^(1/4)+t^2, x^(2/3)+t-1]$
+
+block([p : expand((x^(2/3)-1+t)*(t-y^(1/4))^2), q : expand((t-y^(1/4))^2)],
+  [expand(gcd(p, q)), ratdisrep(rat(p/q))]), algebraic, gcd : red;
+[sqrt(y)-2*t*y^(1/4)+t^2, x^(2/3)+t-1]$
+
+/* This one recursed until the Lisp stack was exhausted: */
+block([c : (x-y^(2/3))*(x-sqrt(y)), p, q, g],
+  p : expand(((sqrt(y)+2)*x+y^(2/3)+1)*c), q : expand((x^2-x-sqrt(y))*c), g : gcd(p, q),
+  [remainder(p, g, x), remainder(q, g, x)]), algebraic, gcd : red;
+[0, 0]$

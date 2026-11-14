@@ -348,6 +348,7 @@ Bug fixes for numbered bugs:
 * \#5796 limit() does not return at branch points of elliptic_e and elliptic_f
 * \#5797 integrate() hangs on some definite integrals of powers of cos(x)
 * \#5798 elliptic_f() lacks the quasi-periodicity simplification of elliptic_e()
+* \#5802 gcd() and rat() fail over radicals with gcd:red
 
 Bug fixes for unnumbered bugs:
 ------------------------------

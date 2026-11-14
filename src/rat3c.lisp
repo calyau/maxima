@@ -129,7 +129,12 @@
         ;; EZGCD2 may loop infinitely on algebraic variables - switch to OLDGCD.
 	    (let (($gcd '$subres)) (list (oldgcd x y)))
 	    (ezgcd2 x y)))
-	((eq $gcd '$red) (list (oldgcd x y)))
+	((eq $gcd '$red)
+	 (if (or (palgp x) (palgp y))
+	   ;; With REDGCD, OLDGCD may fail or recurse infinitely on algebraic
+	   ;; variables - switch to SUBRESGCD.
+	   (let (($gcd '$subres)) (list (oldgcd x y)))
+	   (list (oldgcd x y))))
 	((eq $gcd '$mod)
 	  (if (or (palgp x) (palgp y))
 	    ;; NEWGCD gcd may loop infinitely on algebraic variables - switch to OLDGCD.
