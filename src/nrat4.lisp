@@ -86,14 +86,19 @@
      (setq exp (cdr (ratrep* exp)))
      (setq var (cdr (ratrep* var)))
      (setq bas (cadr (ratrep* bas)))
-     ;; PRODCOEF truncates numeric quotients, so only take this shortcut
-     ;; when the monomial VAR has coefficient 1 or -1.
-     (if (and (onep1 (cdr exp)) (onep1 (cdr var)) (pureprod (car var))
-	      (member (leadcoefficient (car var)) '(1 -1)))
-	 (return (pdis* (prodcoef (car var) (car exp)))))
+     (when minvar (setq minvar (caadr (ratrep* minvar))))
+     ;; If VAR is a monomial C*M and the denominator of EXP is free of the
+     ;; variables of VAR, the coefficient is that of M in the numerator,
+     ;; divided by C and the denominator. PRODCOEF truncates numeric
+     ;; quotients, so it gets the monic M.
+     (when (and (onep1 (cdr var)) (pureprod (car var))
+                (or (pcoefp (cdr exp))
+                    (and minvar (pointergp minvar (car (cdr exp))))))
+       (let ((c (leadcoefficient (car var))))
+         (return (rdis* (ratreduce (prodcoef (pquotient (car var) c) (car exp))
+                                   (ptimes c (cdr exp)))))))
      (setq exp (ratquotient exp var))
      (if (null minvar) (return (pdis* (prodcoef (cdr exp) (car exp)))))
-     (setq minvar (caadr (ratrep* minvar)))
      loop	(if (or (pcoefp (cdr exp)) (pointergp minvar (cadr exp)))
 		    (return (rdis* (cdr (ratdivide exp bas)))))
      (setq exp (ratcoef1 (car exp) (cdr exp)))
