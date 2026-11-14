@@ -465,3 +465,9 @@ block([c : (x-y^(2/3))*(x-sqrt(y)), p, q, g],
   p : expand(((sqrt(y)+2)*x+y^(2/3)+1)*c), q : expand((x^2-x-sqrt(y))*c), g : gcd(p, q),
   [remainder(p, g, x), remainder(q, g, x)]), algebraic, gcd : red;
 [0, 0]$
+
+
+/* Bug #5807: "gcd() of two CREs made from factor() results signals a Lisp error" */
+
+block([a : rat(factor(x^2+x*y+1)), c : rat(factor(x^3+y^2*x+2))], ratdisrep([gcd(a, c), gcd(a, a)]));
+[1, x*y+x^2+1]$

@@ -402,7 +402,7 @@
      (newvar x)
      (newvar y)
      (when (and ($ratp x) ($ratp y) (equal (car x) (car y)))
-       (setq genvar (car (last (car x))) h (car x) x (cdr x) y (cdr y))
+       (setq genvar (cadddr (car x)) h (car x) x (cdr x) y (cdr y))
        (go on))
      (setq x (ratrep* x))
      (setq h (car x))
