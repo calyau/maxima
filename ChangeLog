@@ -349,6 +349,7 @@ Bug fixes for numbered bugs:
 * \#5797 integrate() hangs on some definite integrals of powers of cos(x)
 * \#5798 elliptic_f() lacks the quasi-periodicity simplification of elliptic_e()
 * \#5802 gcd() and rat() fail over radicals with gcd:red
+* \#5803 ratsimp() turns sqrt(2) into 3 with algebraic:true
 
 Bug fixes for unnumbered bugs:
 ------------------------------

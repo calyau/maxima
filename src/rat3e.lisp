@@ -827,7 +827,10 @@
      (orderpointer varlist)
      (setq genpairs (mapcar #'(lambda (x y) (cons x (rget y))) varlist genvar))
      (dolist (p pairs)
-       (push (cons (car p) (ratexpt (assolike (cadr p) genpairs) (cddr p)))
+       ;; Before RATSETUP, a gensym that ORDERPOINTER reused can still have the
+       ;; TELLRAT property of another kernel. Take the powers without it.
+       (push (cons (car p) (let (($algebraic nil))
+			     (ratexpt (assolike (cadr p) genpairs) (cddr p))))
 	     genpairs))
      (let (($algebraic $algebraic) ($ratalgdenom $ratalgdenom) radlist)
        (and (not $algebraic)

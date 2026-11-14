@@ -4810,6 +4810,12 @@ string('(block(if x then 42 else log(0))));
 "block(if x then 42 else log(0))"$
 
 
+/* Bug #5803: "ratsimp() turns sqrt(2) into 3 with algebraic:true" */
+
+ratsimp(exp(sqrt(3)*x)*2^(1/4)+sqrt(2)), algebraic;
+2^(1/4)*%e^(sqrt(3)*x)+sqrt(2)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
