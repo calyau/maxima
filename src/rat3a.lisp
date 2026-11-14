@@ -539,7 +539,13 @@
               (quot-simp (cons (psimp (p-var y) (list k (car quot)))
                                (cdr quot))))
          (setf q (ratplus q quot-simp)
-               r (ratplus r (rattimes (cons (pminus y) 1) quot-simp t))))))))
+               r (ratplus r (rattimes (cons (pminus y) 1) quot-simp t)))
+         ;; The leading term of R cancels. With floats, a rounding error can
+         ;; be left in its place, and the degree of R would never decrease.
+         (when (and (not (pcoefp (car r)))
+                    (eq (p-var (car r)) (p-var y))
+                    (= (p-le (car r)) (+ k (p-le y))))
+           (setq r (ratreduce (psimp (p-var y) (p-red (car r))) (cdr r)))))))))
 
 ;; PEXPT
 ;;

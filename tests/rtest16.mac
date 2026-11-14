@@ -4827,6 +4827,15 @@ ratsimp(exp(sqrt(3)*x)*2^(1/4)+sqrt(2)), algebraic;
 [3*x/2, 3*x/10]$
 
 
+/* Bug #5806: "divide() never returns for some polynomials when keepfloat is true" */
+
+divide(x^2+1.6*x, 1.9*x), keepfloat;
+[0.5263157894736842*x+0.8421052631578947, 0]$
+
+[quotient(x^2+1.6*x+0.2, -1.9*x), remainder(x^2+1.6*x+0.2, -1.9*x)], keepfloat;
+[-0.5263157894736842*x-0.8421052631578947, 0.2]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
