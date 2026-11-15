@@ -224,8 +224,8 @@ add_subdirectory("tcltk/")
 
 if(WITH_WXMAXIMA)
     # the MSWEBVIEW version is needed for the subdirectory mswebview and wxwidgets - set it here.
-    set(MSWEBVIEWVERSION "1.0.4258.31")
-    set(MSWEBVIEW_MD5 "f75f8b494581daf306c17979464bcc9d")
+    set(MSWEBVIEWVERSION "1.0.4314.35")
+    set(MSWEBVIEW_MD5 "88658ecbd022c71906430fb269eacd52")
     add_subdirectory("mswebview/")
     add_subdirectory("wxwidgets/")
     add_subdirectory("wxmaxima/")
