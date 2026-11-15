@@ -1119,7 +1119,7 @@
 
 (defun nonvanishing-common-factor (p q)
  "Return the product of the absolute values of the nonvanishing factors that are common to p and q. This code
-  doesn't factor p or q, so it only considers factors that are explict. When there are no
+  doesn't factor p or q, so it only considers factors that are explicit. When there are no
   such factors, return one, that is, the empty product."
  (flet ((factors (e)
           (if (mtimesp e)
