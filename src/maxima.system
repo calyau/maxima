@@ -74,12 +74,12 @@
 			  :ld-flags
 			  (let ((x (symbol-value (find-symbol "*AUTOCONF-LD-FLAGS*"
 							      (find-package "MAXIMA")))))
-			    (if (and x (not (string= x ""))) (list x))))
+			    (and x (c::split-program-options x))))
 	(c::build-program "binary-ecl/maxima" :lisp-files obj
 			  :ld-flags
 			  (let ((x (symbol-value (find-symbol "*AUTOCONF-LD-FLAGS*"
 							      (find-package "MAXIMA")))))
-			    (if (and x (not (string= x ""))) (list x)))
+			    (and x (c::split-program-options x)))
 			  :epilogue-code '(progn (cl-user::run)))))))
 
 ;; CMUCL, SCL, SBCL and LispWorks build an absolute binary pathname
