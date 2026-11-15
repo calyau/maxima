@@ -347,6 +347,20 @@ proc setMaxDir {} {
     }
 }
 
+# The maxima script installed beside this xmaxima script, following
+# symlinks, or "" if there is none.
+proc vMAXSiblingMaxima {} {
+    set script [file normalize $::argv0]
+    while {![catch {file type $script} type] && $type eq "link"} {
+	set script [file join [file dirname $script] [file readlink $script]]
+    }
+    set exe [file join [file dirname $script] maxima]
+    if {[file isfile $exe] && [file executable $exe]} {
+	return $exe
+    }
+    return ""
+}
+
 proc vMAXSetMaximaCommand {} {
     set ::xmaxima_priv(localMaximaServer) ""
     if {[info exists ::xmaxima_priv(xmaxima_maxima)] && \
@@ -365,6 +379,9 @@ proc vMAXSetMaximaCommand {} {
                 [concat [mc "Maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$::env(XMAXIMA_MAXIMA)"]
 	    return
 	}
+    } elseif {$::tcl_platform(platform) != "windows" && \
+		  [set exe [vMAXSiblingMaxima]] != ""} {
+	set ::xmaxima_priv(xmaxima_maxima) $exe
     } else {
 	set ::xmaxima_priv(xmaxima_maxima) maxima
 	if {[set exe [auto_execok $::xmaxima_priv(xmaxima_maxima)]] == "" } {

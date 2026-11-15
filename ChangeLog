@@ -354,6 +354,7 @@ Bug fixes for numbered bugs:
 * \#5806 divide() never returns for some polynomials when keepfloat is true
 * \#5807 gcd() of two CREs made from factor() results signals a Lisp error
 * \#5809 rat(p)^2 takes much longer than rat(p)*rat(p)
+* \#5822 rmaxima and xmaxima run the first maxima on PATH, not their own
 
 Bug fixes for unnumbered bugs:
 ------------------------------

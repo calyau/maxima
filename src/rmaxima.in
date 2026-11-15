@@ -18,10 +18,30 @@ fi
 
 MAXIMA_BUILTINS=$MAXIMA_SHAREDIR/builtins-list.txt
 
+# Run the maxima installed beside this script, not the first one on PATH.
+# Follow symlinks to find the real script. In the build tree this script
+# is src/rmaxima and runs maxima-local.
+script=$0
+while [ -h "$script" ]; do
+  link=$(readlink "$script") || break
+  case $link in
+    /*) script=$link ;;
+    *) script=$(dirname "$script")/$link ;;
+  esac
+done
+bindir=$(dirname "$script")
+if [ -x "$bindir/../maxima-local" ]; then
+  MAXIMA=$bindir/../maxima-local
+elif [ -x "$bindir/maxima" ]; then
+  MAXIMA=$bindir/maxima
+else
+  MAXIMA=maxima
+fi
+
 if [ -f "$MAXIMA_BUILTINS" ]; then
-  exec rlwrap --always-readline --complete-filenames --break-chars '(){}[].,*/+-=&^$#@\;|´`:' --file "$MAXIMA_BUILTINS" --remember maxima --disable-readline "$@"
+  exec rlwrap --always-readline --complete-filenames --break-chars '(){}[].,*/+-=&^$#@\;|´`:' --file "$MAXIMA_BUILTINS" --remember --command-name maxima "$MAXIMA" --disable-readline "$@"
 else
   echo "$0: failed to locate list of built-in symbols; go ahead without it."
   echo "$0: (I thought it might be $MAXIMA_BUILTINS but there is no such file.)"
-  exec rlwrap --always-readline --complete-filenames --break-chars '(){}[].,*/+-=&^$#@\;|´`:' --remember maxima --disable-readline "$@"
+  exec rlwrap --always-readline --complete-filenames --break-chars '(){}[].,*/+-=&^$#@\;|´`:' --remember --command-name maxima "$MAXIMA" --disable-readline "$@"
 fi
