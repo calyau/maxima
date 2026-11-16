@@ -170,7 +170,7 @@ distclean-local:
 
 # Preprocess the files with m4 to handle math equations.
 %.texi : math.m4 %.texi.m4
-	m4 --prefix-builtins $^ > $@
+	$(M4) --prefix-builtins $^ > $@
 
 # Implementation notes in impl-notes/.  These are not part of the
 # manual; build them with "make impl-notes-docs" (or the html, info or
@@ -194,7 +194,7 @@ IMPL_NOTES_HTMLFLAGS = $(if $(NEED_MATHJAX),,-c HTML_MATH=mathjax) \
 
 impl-notes/%.texi : math.m4 impl-notes/%.texi.m4
 	$(MKDIR_P) impl-notes
-	m4 --prefix-builtins $^ > $@
+	$(M4) --prefix-builtins $^ > $@
 
 impl-notes/%.html : impl-notes/%.texi
 	$(MAKEINFO) --html --no-split -c OUTPUT_ENCODING_NAME=UTF-8 \

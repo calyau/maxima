@@ -683,7 +683,7 @@ AS_IF([test "x$syntax_highlighting" = "xpygments"],
 
 AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
 
-AC_ARG_VAR([MAKEINFO], [The path to the 'makeinfo' executable to use])
+AC_ARG_VAR([MAKEINFO], [The full path to the 'makeinfo' executable to use])
 if test x"${enable_build_docs}" = xtrue ; then
   AC_PATH_PROG([MAKEINFO], [makeinfo])
   makeinfo_found=true
@@ -694,6 +694,21 @@ if test x"${enable_build_docs}" = xtrue ; then
 If you have makeinfo installed somewhere not in PATH,
 specify where it is by using
   ./configure MAKEINFO=/path/to/makeinfo
+Or disable building of the docs using
+  ./configure --disable-build-docs
+])
+  fi
+fi
+
+AC_ARG_VAR([M4], [The full path to the GNU 'm4' executable to use])
+if test x"${enable_build_docs}" = xtrue ; then
+  AC_PATH_PROG([M4], [m4])
+  if test -z "$M4"; then
+    AC_MSG_ERROR(
+[m4 not found; Maxima needs GNU m4 to build docs.
+If you have GNU m4 installed somewhere not in PATH,
+specify where it is by using
+  ./configure M4=/path/to/m4
 Or disable building of the docs using
   ./configure --disable-build-docs
 ])
@@ -1759,6 +1774,10 @@ fi
 
 if test -n "x$MAKEINFO"; then
   echo "Using makeinfo ${MAKEINFO} to generate docs"
+fi
+
+if test -n "$M4"; then
+  echo "Using m4 ${M4} to generate docs"
 fi
 
 if test "x${syntax_highlighting}" = "xfalse"; then
