@@ -76,7 +76,7 @@ gamma_simp(e) := block([prederror : false, opsubst : true,keepfloat : true,
           e : ratsubst(rhs(id), lhs(id), e))),
   
    /* Do gamma(2*x+n)/gamma(x) = pochhammer(2*x,n)*gamma(x+1/2)/(sqrt(%pi)*2^(1-2x)) 
-      I think we only want to do this when n is an explict, not declared integer. 
+      I think we only want to do this when n is an explicit, not declared integer.
       Otherwise pochhammer(2*x,n)*gamma(x+1/2) is effectively a product of two
       gamma functions, and that's not really a simplification. So we'll test
       for an integer using integerp, not featurep.*/
