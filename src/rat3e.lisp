@@ -403,6 +403,11 @@
      (newvar y)
      (when (and ($ratp x) ($ratp y) (equal (car x) (car y)))
        (setq genvar (cadddr (car x)) h (car x) x (cdr x) y (cdr y))
+       ;; Since X and Y were made, CREs of other kernels may have used
+       ;; these gensyms and given them their minimal polynomials. Set
+       ;; them up for the kernels of X and Y again.
+       (setq varlist (caddr h))
+       (ratsetup varlist genvar)
        (go on))
      (setq x (ratrep* x))
      (setq h (car x))

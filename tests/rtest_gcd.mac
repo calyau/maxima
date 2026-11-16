@@ -471,3 +471,19 @@ block([c : (x-y^(2/3))*(x-sqrt(y)), p, q, g],
 
 block([a : rat(factor(x^2+x*y+1)), c : rat(factor(x^3+y^2*x+2))], ratdisrep([gcd(a, c), gcd(a, a)]));
 [1, x*y+x^2+1]$
+
+
+/* Bug #5825: "gcd() with algebraic : true can use the minimal polynomial of another algebraic number" */
+
+/* rat(sqrt(3), y) gives the gensym of sqrt(2) in a and b the minimal polynomial of sqrt(3): */
+block([algebraic : true, a, b],
+  [a, b] : rat([1/(x-sqrt(2)), 1/(x+sqrt(2))]),
+  makelist(block([gcd : g], rat(sqrt(3), y), ratdisrep(gcd(a, b))), g, ['spmod, 'subres, 'ez, 'red]));
+[1/(x^2-2), 1/(x^2-2), 1/(x^2-2), 1/(x^2-2)]$
+
+block([algebraic : true, a, b, c, d],
+  [a, b] : rat([x^2-2, x-sqrt(2)]),
+  [c, d] : rat([1/(x-2^(1/4)), 1/(x+2^(1/4))]),
+  rat(sqrt(3), y),
+  [ratdisrep(gcd(a, b)), ratdisrep(gcd(c, d))]);
+[x-sqrt(2), 1/(x^2-sqrt(2))]$
