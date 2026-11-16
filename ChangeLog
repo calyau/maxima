@@ -5,6 +5,7 @@ Bug fixes for numbered bugs:
 ----------------------------
 * \#2596 error in matrix exponentiation
 * \#3091 Antiderivative of sin(x^3) is wrong by a factor of -1/2
+* \#3759 ld-flags passed to ECL should be a list
 * \#3994 limits of some gamma_incomplete expressions
 * \#4020 various limit bugs with exp(%i*x)
 * \#4055 ratsimp/algebraic doesn't simplify expand(p^2)/p where p=x+sqrt(2)
@@ -355,6 +356,7 @@ Bug fixes for numbered bugs:
 * \#5807 gcd() of two CREs made from factor() results signals a Lisp error
 * \#5809 rat(p)^2 takes much longer than rat(p)*rat(p)
 * \#5822 rmaxima and xmaxima run the first maxima on PATH, not their own
+* \#5824 ratsimp() with ratwtlvl drops a radical
 
 Bug fixes for unnumbered bugs:
 ------------------------------

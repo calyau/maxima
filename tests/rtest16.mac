@@ -4845,6 +4845,16 @@ block([p : 1],
 [true, true]$
 
 
+/* Bug #5824: "ratsimp() with ratwtlvl drops a radical" */
+
+block([r],
+  ratweight(x, 1),
+  r : block([ratwtlvl : 1], ratsimp(exp(x*z)*sqrt(3)+exp(x*z)/(3^(1/4)+sqrt(3)))),
+  ratweights : [],
+  r);
+((3^(3/4)+4)*%e^(x*z))/(sqrt(3)+3^(1/4))$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
