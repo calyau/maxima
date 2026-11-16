@@ -218,6 +218,55 @@ Example:
 
 @end deffn
 
+@anchor{perm_inverse_array}
+@deffn {Function} perm_inverse_array (@var{p})
+
+Returns the inverse of an array permutation @var{p},
+namely, an array permutation @var{q}
+such that the products @var{pq} and @var{qp} are equal to the identity array permutation.
+
+An array permutation is a one-dimensional array of integers,
+as created by @code{make_array},
+containing the values 0, 1, 2, @dots{}, @math{n - 1} in any order,
+where @math{n} is the order of the permutation.
+
+See also @mref{perm_inverse} and @mrefdot{permult_array}
+
+Example:
+
+@c ===beg===
+@c load ("combinatorics")$
+@c a: make_array ('fixnum, 8);
+@c fillarray (a, [3, 5, 2, 0, 6, 4, 1, 7]);
+@c perm_inverse_array (a);
+@c listarray (%);
+@c ===end===
+@example
+(%i1) load ("combinatorics")$
+@group
+(%i2) a: make_array ('fixnum, 8);
+(%o2)           @{Lisp Array: #(0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i3) fillarray (a, [3, 5, 2, 0, 6, 4, 1, 7]);
+(%o3)           @{Lisp Array: #(3 5 2 0 6 4 1 7)@}
+@end group
+@group
+(%i4) perm_inverse_array (a);
+(%o4)           @{Lisp Array: #(3 6 2 0 5 1 4 7)@}
+@end group
+@group
+(%i5) listarray (%);
+(%o5)               [3, 6, 2, 0, 5, 1, 4, 7]
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Package combinatorics}
+@closecatbox
+
+@end deffn
+
 @anchor{perm_length}
 @deffn {Function} perm_length (@var{p})
 
@@ -651,6 +700,73 @@ Example:
 
 @end deffn
 
+@anchor{permult_array}
+@deffn {Function} permult_array (@var{p_1}, @dots{}, @var{p_m})
+
+Returns the product of two or more array permutations @var{p_1}, @dots{}, @var{p_m}.
+
+An array permutation is a one-dimensional array of integers,
+as created by @code{make_array},
+containing the values 0, 1, 2, @dots{}, @math{n - 1} in any order,
+where @math{n} is the order of the permutation.
+
+See also @mrefdot{permult}
+
+Example:
+
+@c ===beg===
+@c load ("combinatorics")$
+@c a: make_array ('fixnum, 3);
+@c b: make_array ('fixnum, 3);
+@c c: make_array ('fixnum, 3);
+@c fillarray (a, [1, 2, 0]);
+@c fillarray (b, [2, 0, 1]);
+@c fillarray (c, [1, 0, 2]);
+@c permult_array (a, b, c);
+@c listarray (%);
+@c ===end===
+@example
+(%i1) load ("combinatorics")$
+@group
+(%i2) a: make_array ('fixnum, 3);
+(%o2)                @{Lisp Array: #(0 0 0)@}
+@end group
+@group
+(%i3) b: make_array ('fixnum, 3);
+(%o3)                @{Lisp Array: #(0 0 0)@}
+@end group
+@group
+(%i4) c: make_array ('fixnum, 3);
+(%o4)                @{Lisp Array: #(0 0 0)@}
+@end group
+@group
+(%i5) fillarray (a, [1, 2, 0]);
+(%o5)                @{Lisp Array: #(1 2 0)@}
+@end group
+@group
+(%i6) fillarray (b, [2, 0, 1]);
+(%o6)                @{Lisp Array: #(2 0 1)@}
+@end group
+@group
+(%i7) fillarray (c, [1, 0, 2]);
+(%o7)                @{Lisp Array: #(1 0 2)@}
+@end group
+@group
+(%i8) permult_array (a, b, c);
+(%o8)                @{Lisp Array: #(1 0 2)@}
+@end group
+@group
+(%i9) listarray (%);
+(%o9)                       [1, 0, 2]
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Package combinatorics}
+@closecatbox
+
+@end deffn
+
 @anchor{permute}
 @deffn {Function} permute (@var{p}, @var{l})
 
@@ -686,6 +802,78 @@ Example:
 
 @end deffn
 
+@anchor{permute_array}
+@deffn {Function} permute_array (@var{p}, @var{a})
+
+Applies the array permutation @var{p} to the elements of the array @var{a}.
+
+An array permutation is a one-dimensional array of integers,
+as created by @code{make_array},
+containing the values 0, 1, 2, @dots{}, @math{n - 1} in any order,
+where @math{n} is the order of the permutation.
+
+See also @mrefdot{permute}
+
+Example:
+
+@c ===beg===
+@c load ("combinatorics")$
+@c lis1: [a, b*c^2, 4, z, x/y, 1/2, ff23(x), 0];
+@c aa: make_array ('any, length (lis1));
+@c fillarray (aa, lis1);
+@c P: make_array ('fixnum, length (lis1));
+@c fillarray (P, [3, 5, 2, 0, 6, 4, 1, 7]);
+@c permute_array (P, aa);
+@c listarray (%);
+@c ===end===
+@example
+(%i1) load ("combinatorics")$
+@group
+(%i2) lis1: [a, b*c^2, 4, z, x/y, 1/2, ff23(x), 0];
+                       2        x  1
+(%o2)           [a, b c , 4, z, -, -, ff23(x), 0]
+                                y  2
+@end group
+@group
+(%i3) aa: make_array ('any, length (lis1));
+(%o3)   @{Lisp Array: #(NIL NIL NIL NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i4) fillarray (aa, lis1);
+(%o4) @{Lisp Array: #($A ((MTIMES SIMP) $B ((MEXPT SIMP) $C 2)) 4\
+ $Z
+               ((MTIMES SIMP) $X ((MEXPT SIMP) $Y -1)) ((RAT SIM\
+P) 1 2)
+               (($FF23 SIMP) $X) 0)@}
+@end group
+@group
+(%i5) P: make_array ('fixnum, length (lis1));
+(%o5)           @{Lisp Array: #(0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i6) fillarray (P, [3, 5, 2, 0, 6, 4, 1, 7]);
+(%o6)           @{Lisp Array: #(3 5 2 0 6 4 1 7)@}
+@end group
+@group
+(%i7) permute_array (P, aa);
+(%o7) @{Lisp Array: #($Z ((RAT SIMP) 1 2) 4 $A (($FF23 SIMP) $X)
+               ((MTIMES SIMP) $X ((MEXPT SIMP) $Y -1))
+               ((MTIMES SIMP) $B ((MEXPT SIMP) $C 2)) 0)@}
+@end group
+@group
+(%i8) listarray (%);
+                    1                 x     2
+(%o8)           [z, -, 4, a, ff23(x), -, b c , 0]
+                    2                 y
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Package combinatorics}
+@closecatbox
+
+@end deffn
+
 @anchor{random_perm}
 @deffn {Function} random_perm (@var{n})
 
@@ -704,6 +892,43 @@ Example:
 @group
 (%i2) random_perm (7);
 (%o2)                  [6, 3, 4, 7, 5, 1, 2]
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Package combinatorics}
+@closecatbox
+
+@end deffn
+
+@anchor{random_perm_array}
+@deffn {Function} random_perm_array (@var{n})
+
+Returns a random array permutation of degree @var{n}.
+
+An array permutation is a one-dimensional array of integers,
+as created by @code{make_array},
+containing the values 0, 1, 2, @dots{}, @math{n - 1} in any order,
+where @math{n} is the order of the permutation.
+
+See also @mref{random_perm} and @mrefdot{random_permutation}
+
+Example:
+
+@c ===beg===
+@c load ("combinatorics")$
+@c random_perm_array (7);
+@c listarray (%);
+@c ===end===
+@example
+(%i1) load ("combinatorics")$
+@group
+(%i2) random_perm_array (7);
+(%o2)            @{Lisp Array: #(5 2 3 6 4 0 1)@}
+@end group
+@group
+(%i3) listarray (%);
+(%o3)                 [5, 2, 3, 6, 4, 0, 1]
 @end group
 @end example
 
