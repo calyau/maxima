@@ -316,6 +316,10 @@ Interleaving cancels drift from other load, and repetition shows the noise
 floor. Add a targeted benchmark for what the change should most affect, since
 a whole-suite time buries a large local win. Speed work still has to pass the
 full suite.
+`run_testsuite(..., time = true)` prints each file's time, which shows where a
+slower run loses it. A test that is instant on SBCL can hang for hours on
+another Lisp, so time heavy new tests on a second Lisp (GCL, ECL) where one is
+available.
 
 **Never `--very-quiet`/`--very-very-quiet` for tests** (sec. 3): `dim-mlabel`
 (`src/displa.lisp`) emits labels only while `*display-labels-p*` is true, so a
@@ -456,6 +460,17 @@ that for rational expressions. A nonzero difference proves nothing, and
 `sin(2*x) = 2*sin(x)*cos(x)`, `ratsimp` and `trigsimp` do not). When they
 agree, re-baseline the test rather than contorting code to match it.
 
+**A test is a specification.** Assert only what the documentation promises or
+a maintainer has confirmed, with an expected value verified independently
+(sec. 6), never one copied from what the new code returns. A test of behavior
+outside a function's intended use cements that behavior and misleads the
+next reader.
+
+**When a fix reroutes a computation, test the new route.** Inputs sent down
+another code path often meet an old bug there, which then surfaces as a
+regression of the fix. Test the newly reached path on its own, and compare
+with the last release, built from its tag in a worktree.
+
 **Not in the suite**: `tests/testbench_*_manual.wxm` (visual, needs a human),
 `tests/rtest_tex.mac` (despite the name a LaTeX *document generator*, run with
 `batch`) and `share/contrib/diffequations/tests/` (own harness).
@@ -484,6 +499,9 @@ integrand that comes back complex refutes itself. Cheap independent checks:
 - Test a negative interval and one straddling zero; branch bugs show on one
   side.
 - Substitute a returned root back in: `solve` can produce spurious ones.
+
+These checks validate results. They never belong in the code that computes
+them (sec. 10, "Decide conditions exactly").
 
 ---
 
@@ -697,6 +715,24 @@ one. Keep them where they are, but indent new functions with spaces.
 `#+`/`#-` per-Lisp workarounds: add narrowly, comment why. `#+nil`/`#+broken`
 disable code in place -- grep hits inside aren't live.
 
+**Decide conditions exactly.** Never let numerical evaluation decide a
+mathematical condition in code. Use the exact machinery: `sign`/`csign` and the
+fact database (sec. 11), `ratsimp` for the zero equivalence of rational
+expressions, `sturm` and `isolat` for real roots (sec. 8). When nothing exact
+decides the case, return a noun form or `unknown`, or ask with `asksign`,
+rather than guess. Numbers are for checking results (sec. 6) and for
+functions that are numerical by nature. They never decide a symbolic answer.
+
+**Reject input you don't handle.** New code signals an error (`merror`) or
+returns a noun form for input it isn't meant for, rather than computing
+something plausible. Where code must be copied, copy only what the intended
+use needs.
+
+**Correctness first, then speed.** A fix may cost time only where correctness
+needs it. When a change touches a hot path (the simplifier, CRE arithmetic,
+`sign`), time it as sec. 5 describes, and keep the common case as fast as it
+was.
+
 **Comments.** Describe what the code does now. Never narrate history ("this used
 to...", "I changed...") -- that is the commit message's job, whatever older
 comments do (sec. 12). Write Lisp names in ALL-UPPERCASE (`SIMPLIFYA`,
@@ -751,6 +787,17 @@ placeholders -> actuals into the result unless it returns a second value T, so
 an already-substituted result captures colliding user symbols. Return `#$...$`
 templates in placeholder names, or that T.
 
+**itensor** (`share/tensor/itensor.lisp`): `idiff(e, k)` differentiates with
+respect to the k-th coordinate, so `k` is an abstract index, not a variable.
+Valid input is built from indexed objects (`T([a],[b])`, scalars `s([],[])`,
+`kdelta`, ...) by arithmetic. An ordinary function applied to an indexed
+object, or an index used as an ordinary argument, is outside itensor's scope,
+whatever the code computes for it. itensor keeps private copies of core
+differentiation code (`IDIFFGRAD` beside `SDIFFGRAD` in `src/comm.lisp`) and
+changes `diff` itself once loaded: `diff(T([a],[]), T([b],[]))` is `0` before
+`load(itensor)` and `'kdelta([a],[b])` after. Don't merge the copies, and
+don't port core fixes into them without the package's maintainer.
+
 ---
 
 ## 12. Do not trust the comments
@@ -762,6 +809,12 @@ sit right above the fix that silenced it.
 
 > **Rule: build and reproduce before acting on a comment** -- whether it
 > promises you the code works or warns you that it does not.
+
+**The code's reach is no specification either.** That a function computes
+something for an input doesn't make the input valid: code often handles more
+than its documentation describes, by accident or by copying. When the manual
+and the code disagree, or the code does much more than the manual says,
+assume neither is right, and ask before "fixing" either.
 
 ---
 
@@ -816,10 +869,30 @@ Upstream SourceForge: scratch branch -> `master` -> push there
 (`README.developers-howto` sec. 1). Release branches are `branch-5_mm`, tags
 `5.mm.0` and on, the tag matching `configure.ac`. A fix belongs with a test
 appended to the matching `tests/rtest_*.mac` in its idiom, never a new file.
-Commits: short subject + explanatory body naming the functions touched, wrapped
-near 72 columns --
+Commits: short subject + brief body saying what changes for users and why,
+wrapped near 72 columns, naming internal functions only where that helps a
+reader. Example subject:
 `forget(), remove(), killcontext(): make return values more useful`. That width
 is the prevailing habit, not a documented rule.
+
+**Agents prepare, humans land.** An agent works in a clone, on a branch of its
+own, and hands its changes over. A human reviews them, applies them and
+commits. Never push to SourceForge, and never post to the bug tracker or the
+mailing list. Reading the tracker is fine and useful: older reports of the
+same bug often add cases.
+
+**Mark AI help.** A commit message you propose ends with
+`AI-Assisted-By: <model name and version>`, the trailer the log already uses
+(`git log --grep=AI-Assisted-By`).
+
+**Ask the maintainer.** Some share packages have an active maintainer, the
+person whose commits dominate `git log -- share/<package>`. A change to such a
+package beyond the trivial needs their agreement, so say so in your report
+instead of changing the package's behavior on your own. That holds for
+porting a core fix into a copy of core code there, too.
+
+**Name the commit a regression came from.** When a fix repairs a regression,
+bisect to the commit that caused it and name that commit in the message.
 
 **`ChangeLog`** (top level) collects the cycle's entries under underlined
 headings; add your line under the one that fits. The set is per cycle, not fixed
