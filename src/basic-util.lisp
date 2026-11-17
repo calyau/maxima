@@ -19,11 +19,17 @@
 (defun recur-apply (fun e)
   (cond ((eq (caar e) 'bigfloat) e)
 	((specrepp e) (funcall fun (specdisrep e)))
-	(t (let ((newargs (mapcar fun (cdr e))))
-	     (if (alike newargs (cdr e))
-		 e
-		 (simplifya (cons (cons (caar e) (member 'array (cdar e) :test #'eq)) newargs)
-			    nil))))))
+	(t (let ((args (cdr e)))
+	     (loop for tail on args
+		   for arg = (car tail)
+		   for new-arg = (funcall fun arg)
+		   unless (alike1 new-arg arg)
+		     return (simplifya
+			     (cons (cons (caar e) (member 'array (cdar e) :test #'eq))
+				   (nconc (ldiff args tail)
+					  (cons new-arg (mapcar fun (cdr tail)))))
+			     nil)
+		   finally (return e))))))
 
 ;; replace y with x in z, but leave z's second arg unchanged.
 ;; This is for cases like at(integrate(x, x, a, b), [x=3])
