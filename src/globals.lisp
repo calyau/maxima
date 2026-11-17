@@ -534,6 +534,9 @@
 (defvar *complexsign* nil
   "If T, COMPAR works in a complex mode.")
 
+(defvar *alias-expressions* nil
+  "If T, SUBST-ALIASES replaces the gensyms of MAKE-NEW-VAR by their aliases.")
+
 (defmvar $prederror nil
   "When true, an error message is displayed whenever the predicate of an
   'if' statement or an 'is' function fails to evaluate to either

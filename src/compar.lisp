@@ -617,6 +617,7 @@
 	   (zl-get (caar pat) 'unlearn))))
 
 (defun learn (pat flag)
+  (setq pat (subst-aliases pat))
   (cond ((atom pat))
         ;; Check for abs function in pattern.
         ((and (not limitp)
@@ -822,6 +823,7 @@
 (setq limitp nil)
 
 (defmfun $askequal (a b)
+  (setq a (subst-aliases a) b (subst-aliases b))
   (let ((answer (meqp (sratsimp a) (sratsimp b))) ; presumably handles mbags and extended reals.
 	(question `((mtext) ,(intl:gettext "Is ") ,a
 		    ,(intl:gettext " equal to ") ,b ,(intl:gettext "?"))))
@@ -843,7 +845,7 @@
 		  ($askequal a b)))))))
 	   
 (defmfun $asksign (exp)
-  (let (sign minus odds evens factored)
+  (let ((exp (subst-aliases exp)) sign minus odds evens factored)
     (asksign01 (cond (limitp (restorelim exp))
 		     ((among '$%i exp) ($rectform exp))
 		     (t exp)))))
@@ -884,7 +886,7 @@
     ($sign z)))
 
 (defmfun $sign (x)
-  (let ((x (specrepcheck x))
+  (let ((x (subst-aliases (specrepcheck x)))
 	sign minus odds evens factored)
     (sign01 (cond (limitp (restorelim x))
 		  (*complexsign*
@@ -925,6 +927,25 @@
 	((atom e) nil)
 	(t (or (has-int-symbols (car e))
 	       (has-int-symbols (cdr e))))))
+
+;; The expression that the gensym E from MAKE-NEW-VAR stands for, or NIL.
+;; A gensym declared complex or imaginary stands for itself: IRINTE, CONJUGATE
+;; and RISPLIT treat it as a complex variable, and so do signs, facts and
+;; features. Then the declaration of a gensym made for an expression in it
+;; does not depend on the form that its alias simplifies to.
+(defun alias-of (e)
+  (and (symbolp e) (not (decl-complexp e)) (get e 'alias-expression)))
+
+;; A gensym from MAKE-NEW-VAR has the expression it stands for as its
+;; ALIAS-EXPRESSION property. Signs, facts, features and questions involving
+;; the gensym are those of the expression, since the entry points of that code
+;; replace the gensym by the expression with SUBST-ALIASES, which
+;; resimplifies the parts of E that change.
+(defun subst-aliases (e)
+  (cond ((not *alias-expressions*) e)
+        ((alias-of e) (subst-aliases (alias-of e)))
+        ((atom e) e)
+        (t (recur-apply #'subst-aliases e))))
 
 ;; The limit of A as EPS, which is '$ZEROA or '$ZEROB, goes to 0 from direction
 ;; DIR. limit() rejects '$ZEROA and '$ZEROB as its variable, since they're
@@ -2722,7 +2743,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; been declared an integer.
 
 (defmfun $featurep (e ind)
-  (setq e ($ratdisrep e))
+  (setq e (subst-aliases ($ratdisrep e)))
   (when (and (atom e) (not (eq ind '$alphabetic)))
     ;; Match the behavior of declare: If declare("operatorname", ...) works,
     ;; then featurep("operatorname", ...) should work, too.
@@ -2831,7 +2852,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   * 'EVOD: '$EVEN/'$ODD iff we can prove equality of X to an even/odd integer.
   When negative facts are encountered, e.g. equal(x, some_noninteger) in 'INTEGER
   or 'EVOD mode, returns NIL."
-  (dolist (fact (cdr (facts1 x)))
+  ;; A gensym from MAKE-NEW-VAR equals its ALIAS-EXPRESSION.
+  (dolist (fact (append (and (alias-of x) `((($equal) ,x ,(alias-of x))))
+                        (cdr (facts1 x))))
     (when (and (not (atom fact)) (eq (caar fact) '$equal))
       (let ((e (cond ((eq (cadr fact)  x) (caddr fact))   ; equal(x, e)
                      ((eq (caddr fact) x) (cadr fact))))) ; equal(e, x) -> normalize

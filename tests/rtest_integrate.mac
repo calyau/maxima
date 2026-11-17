@@ -7768,6 +7768,62 @@ block([J : first(quad_qags(sqrt(-cos(x))/cos(x)^2, x, 2, 4)), I1, I2],
 [tan(3)-tan(2), 1/tan(1)-1/tan(2)]$
 
 
+/* Bug #5748: "integrate() ignores what is known about the expressions it substitutes" */
+
+block([x, f, g, F, G],
+  f: sin(x)^3/sqrt(cos(x)^4-4*cos(x)^2+4),
+  g: cos(x)^3/sqrt(sin(x)^4-4*sin(x)^2+4),
+  F: integrate(f, x),
+  G: integrate(g, x),
+  [freeof('integrate, [F, G]),
+   map(lambda([p], is(abs(float(rectform(subst(x = p, diff(F, x) - f)))) < 1e-12)),
+       [-2.5, -1, 0.3, 1.2, 2.9]),
+   map(lambda([p], is(abs(float(rectform(subst(x = p, diff(G, x) - g)))) < 1e-12)),
+       [-2.5, -1, 0.3, 1.2, 2.9])]);
+[true, [true, true, true, true, true], [true, true, true, true, true]]$
+
+block([assume_pos: true, r, x],
+  local(r),
+  [integrate(abs(r(x)), r(x)), integrate(abs(sin(x)), sin(x))]);
+[(r(x)*abs(r(x)))/2, (sin(x)*abs(sin(x)))/2]$
+
+block([r, x, y, ans],
+  local(r),
+  assume(r(x) + y > 0),
+  ans: integrate(1/sqrt(r(x)^2+2*y*r(x)+y^2), r(x)),
+  forget(r(x) + y > 0),
+  ans);
+log(y+r(x))$
+
+block([x, ans],
+  assume(x > 0),
+  ans: integrate(exp(x)/sqrt(exp(2*x)-2*exp(x)+1), x),
+  forget(x > 0),
+  ans);
+log(%e^x-1)$
+
+block([r, x],
+  local(r),
+  declare(r, complex),
+  [integrate(conjugate(r(x)), r(x)), integrate(r(x)*conjugate(r(x)), r(x))]);
+['integrate(conjugate(r(x)), r(x)), 'integrate(r(x)*conjugate(r(x)), r(x))]$
+
+/* Known signs of the substitution variables must not keep these from being integrated: */
+block([x, f, g, F, G],
+  f: sqrt(a+a*sec(x))*tan(x)^3,
+  g: sin(2*x)/sqrt(9-cos(x)^4),
+  assume(a > 0),
+  F: integrate(f, x),
+  G: integrate(g, x),
+  forget(a > 0),
+  [freeof('integrate, [F, G]),
+   map(lambda([p], is(abs(float(rectform(subst([a = 2, x = p], diff(F, x) - f)))) < 1e-12)),
+       [-2.5, -1, 0.3, 1.2, 2.9]),
+   map(lambda([p], is(abs(float(rectform(subst(x = p, diff(G, x) - g)))) < 1e-12)),
+       [-2.5, -1, 0.3, 1.2, 2.9])]);
+[true, [true, true, true, true, true], [true, true, true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
