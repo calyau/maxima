@@ -4867,6 +4867,28 @@ block([ratexpand : true],
 [(2^(1/4)*%e^(sqrt(2)*x)*%i)/(%i+2^(1/4))+%e^(%i*x)/(%i+2^(1/4))+(sqrt(2)*%e^(sqrt(2)*x))/(%i+2^(1/4)), true]$
 
 
+/* Bug #5804: "ratsimp does not cancel after rat() of a related radical" */
+
+[(rat(sqrt(7)), ratsimp((x^2-sqrt(7))/(x-7^(1/4)))), (rat(7^(1/4)), ratsimp((x^2-sqrt(7))/(x-7^(1/4)))),
+ (rat(2^(1/4)), ratsimp((x^2-sqrt(2))/(x-2^(1/4)) + 2^(1/6)))];
+[x+7^(1/4), x+7^(1/4), x+2^(1/4)+2^(1/6)]$
+
+[(rat(sqrt(3)), rat(3^(1/4)), ratsimp((x^2-sqrt(3))/(x-3^(1/4)))), (rat(2^(1/4)), ratsimp((x^2-2)/(x-sqrt(2)))),
+ (rat((-1)^(1/8)), ratsimp((x^2-(-1)^(1/4))/(x-(-1)^(1/8)))), (rat(sqrt(2)), ratsimp((x^2-2)/(x-sqrt(2))))];
+[x+3^(1/4), x+sqrt(2), x+(-1)^(1/8), x+sqrt(2)]$
+
+[(rat(%i), ratsimp((x^2+1)/(x-%i))), (rat(sqrt(-2)), ratsimp((x^2+2)/(x-sqrt(2)*%i)))];
+[x+%i, x+sqrt(2)*%i]$
+
+[ratsimp(x*sqrt(2)+y*sqrt(2)+x+y, sqrt(2)), ratsimp(%i*x+%i*y+x, %i),
+ block([r], ratvars(sqrt(2)), r : ratsimp(x*sqrt(2)+y*sqrt(2)+x+y), ratvars(), r)];
+[sqrt(2)*(y+x)+y+x, %i*(y+x)+x, sqrt(2)*(y+x)+y+x]$
+
+block([algebraic : true, e : (x^2-((1+sqrt(2))^(5/8))^2)/(x-(1+sqrt(2))^(5/8))],
+  [ratsimp(e), (rat(sqrt(2)), rat((1+sqrt(2))^(3/4)), ratsimp(e))]);
+[x+(sqrt(2)+1)^(5/8), x+(sqrt(2)+1)^(5/8)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

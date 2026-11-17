@@ -168,7 +168,8 @@
   (cond ((not (null vars))
 	 (let (varlist)
 	   (joinvarlist vars)
-	   (fullratsimp e)))
+	   (let ((*explicit-varlist* varlist))
+	     (fullratsimp e))))
 	(t (fullratsimp e))))
 
 ;; $RATSIMP, $FULLRATSIMP and $RAT allow for optional extra
@@ -809,12 +810,33 @@
                   (push (list* m k (/ n (caddr (caddr m)))) pairs)))
             (or (memalike k l) (memalike k varlist) (push k l))))))))
 
+(defun algebraic-number-p (e)
+  ;; Is E built from numbers and %i by sums, products and powers?
+  (or (mnump e) (eq e '$%i)
+      (and (not (atom e)) (member (caar e) '(mplus mtimes mexpt))
+           (every #'algebraic-number-p (cdr e)))))
+
+(defun constant-radical-p (v)
+  ;; Is V %i or a radical b^(1/n) of an algebraic number b?
+  (or (eq v '$%i)
+      (and (radfunp v nil) (eql (cadr (caddr v)) 1)
+           (algebraic-number-p (cadr v)))))
+
 (defun fr1 (x varlist)		    ;put radicands on initial varlist?
   (if (or (and (symbolp x) (not $algebraic) (not $ratwtlvl))
           (and (integerp x) (not modulus)))
    x ; early exit for symbols and integers
    (prog (genvar $norepeat *ratsimp* radlist vlist nvarlist ovarlist genpairs
 	  pairs)
+     ;; %i and radicals of algebraic numbers on the initial varlist that
+     ;; neither ratvars() nor *EXPLICIT-VARLIST* has, as an earlier rat() of
+     ;; the input leaves them, count as new kernels, so that the result does
+     ;; not depend on that rat().
+     (setq varlist (remove-if #'(lambda (v)
+				  (and (constant-radical-p v)
+				       (not (memalike v (cdr $ratvars)))
+				       (not (memalike v *explicit-varlist*))))
+			      varlist))
      (newvar1 x)
      (setq nvarlist (mapcar #'fr-args vlist))
      (cond ((not *ratsimp*)	;*ratsimp* not set for initial varlist

@@ -123,7 +123,8 @@
      (if ($ratp c) (setq dontdisrepit t))
      (if (and $radsubstflag
 		(prog2 (newvar b) (some #'mexptp varlist)))
-       (let (($factorflag t) *exp *exp2 *radsubst *radcan-nogcd*)
+       (let (($factorflag t) *exp *exp2 *radsubst *radcan-nogcd*
+	     (*explicit-varlist* varlist))
 	 (setq a (fullratsimp a))
 	 (setq b (fullratsimp b))
 	 (setq c (fullratsimp c))

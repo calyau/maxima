@@ -1136,6 +1136,10 @@
 (defmvar varlist nil
   "List of kernels")
 
+(defmvar *explicit-varlist* nil
+  "Kernels that ratsimp() or ratsubst() put on VARLIST on purpose, whose place
+  in the order FR1 keeps")
+
 ;;------------------------------------------------------------------------
 ;; From result.lisp
 (defmvar $resultant '$subres
