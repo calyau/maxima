@@ -323,12 +323,16 @@
 	;; fine for an algebraic number like 1+%i and a product of algebraic
 	;; variables like sqrt(s), whose squares are 2*%i and s. But PTIMES
 	;; turns (x+sqrt(2))^2 into x^2+2^(3/2)*x+2, where RATREDUCE misses
-	;; x+sqrt(2), so the last clause divides such factors out first.
+	;; x+sqrt(2), so the last clause divides such factors out first. With
+	;; $RATEXPAND it does so for algebraic numbers that RATREDUCE leaves in
+	;; the denominator too. The terms of a result then share its
+	;; denominator, and their sum has to get it back and not a power of it.
 	((and $algebraic (ralgp x) (ralgp y)
 	      (or (not (palgp (cdr x))) (not (palgp (cdr y)))
 		  (progn (setq q (pgcdcofacts (cdr x) (cdr y))
 			       m (palgtermcont (car q)))
-			 (palgnump (pquotientchk (car q) m)))))
+			 (and (or $ratalgdenom (not $ratexpand))
+			      (palgnump (pquotientchk (car q) m))))))
 	 (ratreduce
 	  (pplus (ptimeschk (car x) (cdr y))
 		 (ptimeschk (car y) (cdr x)))

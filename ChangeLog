@@ -356,6 +356,7 @@ Bug fixes for numbered bugs:
 * \#5807 gcd() of two CREs made from factor() results signals a Lisp error
 * \#5809 rat(p)^2 takes much longer than rat(p)*rat(p)
 * \#5822 rmaxima and xmaxima run the first maxima on PATH, not their own
+* \#5823 fullratsimp() does not terminate with ratexpand:true and a radical or %i in a denominator
 * \#5824 ratsimp() with ratwtlvl drops a radical
 * \#5825 gcd() with algebraic : true can use the minimal polynomial of another algebraic number
 

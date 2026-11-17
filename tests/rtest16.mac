@@ -4855,6 +4855,18 @@ block([r],
 ((3^(3/4)+4)*%e^(x*z))/(sqrt(3)+3^(1/4))$
 
 
+/* Bug #5823: "fullratsimp() does not terminate with ratexpand:true and a radical or %i in a denominator" */
+
+block([ratexpand : true],
+  map(fullratsimp, [(a+b)/(1+sqrt(2)), (a+b+c)/(1+%i), a/(2^(1/4)+%i)+b/(2*2^(1/4)+2*%i)]));
+[b/(sqrt(2)+1)+a/(sqrt(2)+1), c/(%i+1)+b/(%i+1)+a/(%i+1), b/(2*%i+2^(5/4))+a/(%i+2^(1/4))]$
+
+/* A second ratsimp() changes nothing: */
+block([ratexpand : true],
+  block([e : ratsimp(exp(sqrt(2)*x)*2^(1/4)+exp(%i*x)/(2^(1/4)+%i))], [e, is(ratsimp(e) = e)]));
+[(2^(1/4)*%e^(sqrt(2)*x)*%i)/(%i+2^(1/4))+%e^(%i*x)/(%i+2^(1/4))+(sqrt(2)*%e^(sqrt(2)*x))/(%i+2^(1/4)), true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
