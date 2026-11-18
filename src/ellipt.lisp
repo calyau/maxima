@@ -985,17 +985,17 @@
      ;; nonnegative terms and the imaginary part is -Im(M)*sin(phi)^2,
      ;; and there is no cancellation.
      (+ (expt (cos phi) 2)
-        (* (- 1 m)
-           (expt (sin phi) 2))))
+	(* (- 1 m)
+	   (expt (sin phi) 2))))
     (t
      (let ((y (- 1 (* m
-                      (expt (sin phi) 2)))))
+		      (expt (sin phi) 2)))))
        (cond
 	 ((> (abs y) 1/16)
-          ;; For |y| > 1/16, we don't need to do extra precision.  The
-          ;; threshold was determined by Claude.  A threshold of 1/4
-          ;; also works to give the same accuracy, but then we do the
-          ;; slow path below more often.
+	  ;; For |y| > 1/16, we don't need to do extra precision.  The
+	  ;; threshold was determined by Claude.  A threshold of 1/4
+	  ;; also works to give the same accuracy, but then we do the
+	  ;; slow path below more often.
 	  y)
 	 (t
 	  ;; WITH-EXTRA-PRECISION would round Y to FPPREC, not to the
@@ -1005,14 +1005,14 @@
 	  (flet ((y-with-bits (bits)
 		   (maxima::bind-fpprec (ceiling (* bits 30103) 100000)
 		     (- 1 (* (bigfloat m)
-                             (expt (sin (bigfloat phi))
-                                   2))))))
+			     (expt (sin (bigfloat phi))
+				   2))))))
 	    (loop with x = (realpart phi)
 		  with p = (float-digits x)
 		  for extra = p then (* 2 extra)
 		  for y2 = (y-with-bits (+ p extra 8))
 		  when (or (>= (abs y2)
-                               (expt 2 (- extra)))
+			       (expt 2 (- extra)))
 			   (> extra (* 8 p)))
 		    return (cond ((not (typep x 'cl:float))
 				  ;; Round to the working precision
@@ -1041,20 +1041,20 @@
 	 ;; This also covers m = 1, where it is sin(z)*rf(cos(z)^2,
 	 ;; cos(z)^2, 1) = asinh(tan(z)) for |Re(z)| < %pi/2.  This
 	 ;; form isn't any more accurate than Carlson's Rf so just use
-	 ;; Rf.  log(tan(z/2+%pi/4)) loses accuracy for small z and
-	 ;; near %pi/2.  For |Re(z)| > %pi/2, K(1) is undefined.
+	 ;; Rf.	 log(tan(z/2+%pi/4)) loses accuracy for small z and
+	 ;; near %pi/2.	 For |Re(z)| > %pi/2, K(1) is undefined.
 	 (let* ((period (round (realpart phi) (%pi phi)))
 		(s (if (evenp period)
-                       (sin phi)
-                       (- (sin phi))))
+		       (sin phi)
+		       (- (sin phi))))
 		(c (cos phi))
 		(base (* s (bf-rf (* c c)
-                                  (bf-1-m*sin^2 phi m)
-                                  1))))
+				  (bf-1-m*sin^2 phi m)
+				  1))))
 	   (if (zerop period)
 	       base
 	       (+ base (* 2 period
-                          (bf-elliptic-k m))))))))
+			  (bf-elliptic-k m))))))))
 
 ;; elliptic_kc(k) = rf(0, 1-k^2,1)
 ;;
