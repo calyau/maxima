@@ -2247,7 +2247,10 @@ elliptic_f(asin(1/sqrt(u^2+m)), m)$
 [elliptic_e(3*%pi/2, m), elliptic_e(-%pi/2, m), elliptic_e(%pi, m), elliptic_e(5*%pi/4, m), elliptic_e(4, 2)];
 [3*elliptic_ec(m), -elliptic_ec(m), 2*elliptic_ec(m), elliptic_e(%pi/4, m)+2*elliptic_ec(m), elliptic_e(4-%pi, 2)+2*elliptic_ec(2)]$
 
-[closeto(elliptic_f(float(5*%pi/4), 2.0) - float(elliptic_f(5*%pi/4, 2)), 1e-14),
+/* Not m = 2, where 2*sin(5*%pi/4)^2 = 1: there F(phi|m) has a square-root
+   branch point in phi, so the different roundings of float(5*%pi/4) and of
+   float(%pi/4) in the reduced form change F by about 1e-8. */
+[closeto(elliptic_f(float(5*%pi/4), 3.0) - float(elliptic_f(5*%pi/4, 3)), 1e-14),
  closeto(elliptic_f(-3.5, 0.7) - float(elliptic_f(-7/2, 7/10)), 1e-14),
  closeto(elliptic_e(float(7*%pi/3), 3.0) - float(elliptic_e(7*%pi/3, 3)), 1e-14)];
 [true, true, true]$
@@ -2262,3 +2265,99 @@ elliptic_f(asin(1/sqrt(u^2+m)), m)$
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
+
+/* #5799: elliptic_f is inaccurate for m > 1 and m < 0 */
+[closeto(elliptic_f(0.001, -2.0) - 9.9999966666703335e-4, 2.1685e-19),
+ closeto(elliptic_f(0.1, -0.5) - 0.099917019232073891, 1.3878e-17),
+ closeto(elliptic_f(0.5, -100.0) - 0.23297754025307211, 8.3268e-17),
+ closeto(elliptic_f(2.5, -1e6) - 0.0093958440849945672, 1.7348e-18),
+ closeto(elliptic_f(0.1, 100.0) - 0.15167264501929891, 8.3268e-17),
+ closeto(elliptic_f(1.0, 4.0) - (0.84287517740629802-0.72107358725939072*%i), 3.5109e-16),
+ closeto(elliptic_f(-2.5, 4.0) - (-0.84287517740629802+1.7911381827767493*%i), 1.0935e-15)];
+[true, true, true, true, true, true, true];
+
+[closeto(elliptic_kc(-1e6) - 0.0082940478165906199, 1.7348e-18),
+ closeto(elliptic_kc(-100.0) - 0.36821924860914103, 5.5512e-17)];
+[true, true];
+
+[elliptic_f(1.0, 0.0), elliptic_f(7.0, 0.0), elliptic_f(1b0, 0b0)];
+[1.0, 7.0, 1b0];
+
+/* Near the turning point m*sin(phi)^2 = 1 */
+[closeto(elliptic_f(float(%pi/4), 2.0) - 1.3110287693209503, 2.2205e-16),
+ closeto(elliptic_f(float(%pi/6), 4.0) - 0.84287516926376508, 1.1103e-16)];
+[true, true];
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+[closeto(bfloat(elliptic_f(%pi/4, 2))
+           - (1.3110287771460599052324197949456b0
+              - 3.8696058001548035943588888545896b-17*%i),
+         4.3142b-32),
+ closeto(bfloat(elliptic_f(%pi/6, 4))
+           - (8.4287517740629802143560182889954b-1
+              - 2.4007159736224855849049775101439b-17*%i),
+         1.5408b-33)];
+[true, true];
+
+(fpprec:oldfpprec, kill(oldfpprec), done);
+done;
+
+/* Near zeros of 1 - m*sin(phi)^2 with complex phi or m */
+[closeto(elliptic_f(float(%pi/4), 2.0+1e-10*%i)
+           - (1.3110237771429985+4.9999491861615767e-6*%i),
+         2.2205e-16),
+ closeto(elliptic_f(1.5707963267958966+0.881373587020543*%i, 0.5)
+           - (1.8540765250681746+1.854073911916536*%i),
+         3.1403e-16),
+ closeto(elliptic_f(0.7919968356240591-0.8074052291747109*%i, 0.3+0.7*%i)
+           - (1.0831538109529458-1.3385056758127445*%i),
+         2.2205e-16),
+ closeto(elliptic_f(1.5707963, 0.99999999+1e-8*%i)
+           - (10.423139795176144+0.3926128326607965*%i),
+         1.8454e-15)];
+[true, true, true, true];
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+[closeto(elliptic_f(bfloat(%pi/4), 2b0+1b-10*%i)
+           - (1.311023777146060155229657768412265b0
+              + 4.999952247777637153584017913053116b-6*%i),
+         6.1631b-33),
+ closeto(elliptic_f(1.5707963b0, 0.99999999b0+1b-8*%i)
+           - (1.042313979643191523115630579057548b1
+              + 3.926128339165064301407725742952106b-1*%i),
+         2.4665b-32)];
+[true, true];
+
+(fpprec:oldfpprec, kill(oldfpprec), done);
+done;
+
+/* m = 1: small phi and phi near %pi/2, where log(tan(phi/2+%pi/4))
+   loses accuracy */
+[closeto(elliptic_f(1e-12, 1.0) - 9.9999999999999998e-13, 2.2205e-28),
+ closeto(elliptic_f(1e-8, 1.0) - 1.0e-8, 2.2205e-24),
+ closeto(elliptic_f(1.5707963, 1.0) - 18.128201574054633, 3.5528e-15),
+ closeto(elliptic_f(1.5707963267, 1.0) - 23.771380457619291, 3.5528e-15),
+ closeto(elliptic_f(1e-9+1e-9*%i, 1.0)
+           - (1.0000000000000001e-9+1.0000000000000001e-9*%i),
+         3.1402e-25),
+ closeto(elliptic_f(1.5707963+0.001*%i, 1.0)
+           - (7.6009025425164275+1.5707695319027838*%i),
+         4.5777e-15)];
+[true, true, true, true, true, true];
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+[closeto(elliptic_f(1b-12, 1b0) - 1.000000000000000000000000166666667b-12,
+         2.8027b-45),
+ closeto(elliptic_f(1.5707963267b0, 1b0)
+           - 23.77138021604541323433000418706534b0,
+         4.9305b-32)];
+[true, true];
+
+(fpprec:oldfpprec, kill(oldfpprec), done);
+done;

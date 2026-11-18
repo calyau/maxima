@@ -974,23 +974,71 @@
 	   1/3)
 	(sqrt (/ (* x y) z)))))
 
+;; 1 - m*sin(phi)^2.  This cancels near its zeros, where F(phi|m) has
+;; a square-root branch point, so an absolute error e here gives an
+;; error of about sqrt(e) in F.  There, recompute it with more
+;; precision until it has full relative accuracy.
+(defun bf-1-m*sin^2 (phi m)
+  (cond
+    ((and (realp phi) (<= (realpart m) 1))
+     ;; PHI is real and Re(M) <= 1, so the real part is a sum of
+     ;; nonnegative terms and the imaginary part is -Im(M)*sin(phi)^2,
+     ;; and there is no cancellation.
+     (+ (expt (cos phi) 2) (* (- 1 m) (expt (sin phi) 2))))
+    (t
+     (let ((y (- 1 (* m (expt (sin phi) 2)))))
+       (cond
+	 ((> (abs y) 1/16)
+	  y)
+	 (t
+	  ;; WITH-EXTRA-PRECISION would round Y to FPPREC, not to the
+	  ;; precision of a double-float PHI, so bind the precision
+	  ;; here.  BIND-FPPREC takes decimal digits.  As 30103/100000 >
+	  ;; log10(2), these give at least BITS bits.
+	  (flet ((y-with-bits (bits)
+		   (maxima::bind-fpprec (ceiling (* bits 30103) 100000)
+		     (- 1 (* (bigfloat m) (expt (sin (bigfloat phi)) 2))))))
+	    (loop with x = (realpart phi)
+		  with p = (float-digits x)
+		  for extra = p then (* 2 extra)
+		  for y2 = (y-with-bits (+ p extra 8))
+		  when (or (>= (abs y2) (expt 2 (- extra)))
+			   (> extra (* 8 p)))
+		    return (cond ((not (typep x 'cl:float))
+				  ;; Round to the working precision
+				  (bigfloat y2))
+				 ((complexp y2)
+				  (complex (float (realpart y2) x)
+					   (float (imagpart y2) x)))
+				 (t
+				  (float y2 x)))))))))))
+
 ;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
+;;
+;; This holds for |Re(phi)| <= %pi/2.  Elsewhere, use the
+;; quasi-periodicity
+;;
+;; F(z|m) = F(z - k*%pi|m) + 2*k*K(m), k = round(Re(z)/%pi).
+;;
+;; Since sin(z - k*%pi) = (-1)^k*sin(z) and cos(z - k*%pi)^2 =
+;; cos(z)^2, F(z - k*%pi|m) is computed from sin(z) and cos(z), so the
+;; reduced angle, which has the rounding error of k*%pi, is not needed.
 (defun bf-elliptic-f (phi m)
-  (flet ((base (phi m)
-	   (cond ((= m 1)
-		  ;; F(z|1) = log(tan(z/2+%pi/4))
-		  (log (tan (+ (/ phi 2) (/ (%pi phi) 4)))))
-		 (t
-		  (let ((s (sin phi))
-			(c (cos phi)))
-		    (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))))
-    ;; Handle periodicity (see elliptic-f)
-    (let* ((bfpi (%pi phi))
-	   (period (round (realpart phi) bfpi)))
-      (+ (base (- phi (* bfpi period)) m)
-	 (if (zerop period)
-	     0
-	     (* 2 period (bf-elliptic-k m)))))))
+  (cond ((zerop m)
+	 ;; F(z|0) = z
+	 phi)
+	(t
+	 ;; This also covers m = 1, where it is
+	 ;; sin(z)*rf(cos(z)^2, cos(z)^2, 1) = asinh(tan(z)) for
+	 ;; |Re(z)| < %pi/2.  log(tan(z/2+%pi/4)) loses accuracy for small
+	 ;; z and near %pi/2.  For |Re(z)| > %pi/2, K(1) is undefined.
+	 (let* ((period (round (realpart phi) (%pi phi)))
+		(s (if (evenp period) (sin phi) (- (sin phi))))
+		(c (cos phi))
+		(base (* s (bf-rf (* c c) (bf-1-m*sin^2 phi m) 1))))
+	   (if (zerop period)
+	       base
+	       (+ base (* 2 period (bf-elliptic-k m))))))))
 
 ;; elliptic_kc(k) = rf(0, 1-k^2,1)
 ;;
@@ -2675,119 +2723,6 @@ first kind:
 	     (setf y (* (+ y lam) 1/4))
 	     (setf z (* (+ z lam) 1/4))))))))
 
-;; Elliptic integral of the first kind (Legendre's form):
-;;
-;;
-;;      phi
-;;     /
-;;     [             1
-;;     I    ------------------- ds
-;;     ]                  2
-;;     /    SQRT(1 - m SIN (s))
-;;     0
-
-(defun elliptic-f (phi-arg m-arg)
-  (flet ((base (phi-arg m-arg)
-	   (cond ((and (realp m-arg) (realp phi-arg))
-		  (let ((phi (float phi-arg))
-			(m (float m-arg)))
-		    (cond ((> m 1)
-			   ;; A&S 17.4.15
-			   ;;
-			   ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
-			   ;;
-			   ;; with sin(theta) = sqrt(m)*sin(phi)
-			   (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
-					  (sqrt m)))
-			  ((< m 0)
-			   ;; A&S 17.4.17
-			   (let* ((m (- m))
-				  (m+1 (+ 1 m))
-				  (root (sqrt m+1))
-				  (m/m+1 (/ m m+1)))
-			     (- (/ (elliptic-f (float (/ pi 2)) m/m+1)
-				   root)
-				(/ (elliptic-f (- (float (/ pi 2)) phi) m/m+1)
-				   root))))
-			  ((= m 0)
-			   ;; A&S 17.4.19
-			   phi)
-			  ((= m 1)
-			   ;; A&S 17.4.21
-			   ;;
-1			   ;; F(phi,1) = log(sec(phi)+tan(phi))
-			   ;;          = log(tan(pi/4+pi/2))
-			   (log (cl:tan (+ (/ phi 2) (float (/ pi 4))))))
-			  ((minusp phi)
-			   (- (elliptic-f (- phi) m)))
-			  ((> phi pi)
-			   ;; A&S 17.4.3
-			   (multiple-value-bind (s phi-rem)
-			       (truncate phi (float pi))
-			     (+ (* 2 s (elliptic-k m))
-				(elliptic-f phi-rem m))))
-			  ((<= phi (/ pi 2))
-			   (let ((sin-phi (sin phi))
-				 (cos-phi (cos phi))
-				 (k (sqrt m)))
-			     (* sin-phi
-				(bigfloat::bf-rf (* cos-phi cos-phi)
-						 (* (- 1 (* k sin-phi))
-						    (+ 1 (* k sin-phi)))
-						 1.0))))
-			  ((< phi pi)
-			   (+ (* 2 (elliptic-k m))
-			      (elliptic-f (- phi (float pi)) m)))
-			  (t
-			   (error "Shouldn't happen! Unhandled case in elliptic-f: ~S ~S~%"
-				  phi-arg m-arg)))))
-		 (t
-		  (let ((phi (coerce phi-arg '(complex flonum)))
-			(m (coerce m-arg '(complex flonum))))
-		    (let ((sin-phi (sin phi))
-			  (cos-phi (cos phi))
-			  (k (sqrt m)))
-		      (* sin-phi
-			 (crf (* cos-phi cos-phi)
-			      (* (- 1 (* k sin-phi))
-				 (+ 1 (* k sin-phi)))
-			      1.0))))))))
-    ;; Elliptic F is quasi-periodic wrt to z:
-    ;;
-    ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
-    (let ((period (round (realpart phi-arg) pi)))
-      (+ (base (- phi-arg (* pi period)) m-arg)
-	 (if (zerop period)
-	     0
-	     (* 2 period
-		(bigfloat:to (elliptic-k m-arg))))))))
-
-;; Complete elliptic integral of the first kind
-(defun elliptic-k (m)
-  (cond ((realp m)
-	 (cond ((< m 0)
-		;; A&S 17.4.17
-		(let* ((m (- m))
-		       (m+1 (+ 1 m))
-		       (root (sqrt m+1))
-		       (m/m+1 (/ m m+1)))
-		  (- (/ (elliptic-k m/m+1)
-			root)
-		     (/ (elliptic-f 0.0 m/m+1)
-			root))))
-	       ((= m 0)
-		;; A&S 17.4.19
-		(float (/ pi 2)))
-	       ((= m 1)
-		(maxima::merror
-		 (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
-	       (t
-		(bigfloat::bf-rf 0.0 (- 1 m)
-				 1.0))))
-	(t
-	 (bigfloat::bf-rf 0.0 (- 1 m)
-			  1.0))))
-
 ;; Elliptic integral of the second kind (Legendre's form):
 ;;
 ;;
@@ -3003,12 +2938,12 @@ first kind:
   (let (args periods)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
-	   (to (elliptic-f ($float phi) ($float m))))
+	   (to (bigfloat::bf-elliptic-f ($float phi) ($float m))))
 	  ((setf args (complex-float-numerical-eval-p phi m))
 	   (destructuring-bind (phi m)
 	       args
-	     (to (elliptic-f (bigfloat:to ($float phi))
-			     (bigfloat:to ($float m))))))
+	     (to (bigfloat::bf-elliptic-f (bigfloat:to ($float phi))
+					  (bigfloat:to ($float m))))))
 	  ((bigfloat-numerical-eval-p phi m)
 	   (to (bigfloat::bf-elliptic-f (bigfloat:to ($bfloat phi))
 					(bigfloat:to ($bfloat m)))))
@@ -3133,7 +3068,7 @@ first kind:
              m))
           ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
-	   (to (elliptic-k ($float m))))
+	   (to (bigfloat::bf-elliptic-k ($float m))))
 	  ((complex-float-numerical-eval-p m)
 	   (complexify (bigfloat::bf-elliptic-k (complex ($float ($realpart m)) ($float ($imagpart m))))))
 	  ((setf args (complex-bigfloat-numerical-eval-p m))
