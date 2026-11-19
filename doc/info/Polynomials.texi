@@ -819,9 +819,7 @@ Example:
 @end group
 @group
 (%i3) factor(x^101-1);
-                               101
-Refusing to factor polynomial x    - 1
-               because its degree exceeds factor_max_degree (100)
+Not factoring: degree 101 in x exceeds factor_max_degree (100)
                              101
 (%o3)                       x    - 1
 @end group

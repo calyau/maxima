@@ -391,7 +391,10 @@ L = ((A_1 ... A_N) (B_1 ... B_N) (C_1 ... C_N) ...), returns a list
      (cond ((dontfactor (car p)) (return (list p)))
 	   ((and (not (zerop $factor_max_degree)) (> (apply 'max (pdegreevector p)) $factor_max_degree))
 		 (when $factor_max_degree_print_warning
-		   (mtell (intl:gettext "Refusing to factor polynomial ~M because its degree exceeds factor_max_degree (~M)~%") (pdis p) $factor_max_degree))
+		   (let* ((degrees (pdegreevector p))
+			  (d (apply 'max degrees)))
+		     (mtell (intl:gettext "Not factoring: degree ~A in ~M exceeds factor_max_degree (~A)~%")
+			    d (pdis (make-poly (nth (position d degrees) genvar))) $factor_max_degree)))
 		 (return (list p)))
 	   ((onevarp p)
 	    (cond ((setq factors (factxn+-1 p))
