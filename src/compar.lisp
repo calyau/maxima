@@ -3408,8 +3408,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (if (not (numberp y))
     (setq y (/ (cadr y) (caddr y))))
   (cond
-    (#-ecl (> x y) #+ecl (> (- x y) 0) '$pos)
-    (#-ecl (> y x) #+ecl (> (- y x) 0) '$neg)
+    ((> x y) '$pos)
+    ((> y x) '$neg)
     (t '$zero)))
 
 (defun mcons (x l)

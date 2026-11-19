@@ -362,6 +362,7 @@ Bug fixes for numbered bugs:
 * \#5824 ratsimp() with ratwtlvl drops a radical
 * \#5825 gcd() with algebraic : true can use the minimal polynomial of another algebraic number
 * \#5827 factor() prints the whole polynomial when it refuses to factor it
+* \#5826 maxima 5.50.0: sum fails with ECL
 
 Bug fixes for unnumbered bugs:
 ------------------------------
