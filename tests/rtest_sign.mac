@@ -3479,6 +3479,15 @@ csign(log(csc(x))), logarc, exponentialize;
 complex;
 
 
+/* csign(x^2*w^2) with imaginary w */
+
+block([w],
+ local(w),
+ declare(w, imaginary),
+ [csign(x^2*w^2), csign(-x^2*w^2), csign(x^2*w^6), csign(x^2*w^4), csign(w^2*x)]);
+[nz, pz, nz, pz, pnz]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

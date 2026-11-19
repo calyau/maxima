@@ -2182,7 +2182,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	      (let ((evod-half (evod ($expand (div expt 2)))))
 	        (setq sign (cond ((eq evod-half '$even) '$pz)
 	                         ((eq evod-half '$odd) '$nz)
-	                         (t '$pnz)))))
+	                         (t '$pnz)))
+	        (if (eq sign '$pnz)
+	          (setq minus nil odds (ncons x) evens nil)
+	          (setq minus (eq sign '$nz) odds nil evens (ncons base1)))))
 	     ((eq evod '$odd)
 	      (setq sign '$imaginary
 	            minus (eq (evod ($expand (div (sub expt 1) 2))) '$odd)))
