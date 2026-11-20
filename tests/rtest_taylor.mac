@@ -928,6 +928,56 @@ map('ratdisrep, [taylor(elliptic_e(%pi/4-g/2,2), g, 0, 4),
  elliptic_e(%pi/4,2)+2*%i*sqrt(2)*(x-%pi/4)^(3/2)/3]$
 
 
+/* Bug #5829: "taylor() and residue() of tan fail at poles other than %pi/2 and -%pi/2"
+   A regression from commit 2f8043d13 */
+
+map('ratdisrep, [taylor(tan(z), z, 3*%pi/2, 1), taylor(tan(z), z, -3*%pi/2, 1), taylor(tan(2*z), z, 3*%pi/4, 1),
+                 taylor(tan(x)^2, x, 3*%pi/2, 0), taylor(cot(z), z, 3*%pi/2, 3)]);
+[-1/(z-3*%pi/2)+(z-3*%pi/2)/3, -1/(z+3*%pi/2)+(z+3*%pi/2)/3, -1/(2*(z-3*%pi/4))+2*(z-3*%pi/4)/3,
+ 1/(x-3*%pi/2)^2-2/3, -(z-3*%pi/2)-(z-3*%pi/2)^3/3]$
+
+[residue(tan(z), z, 3*%pi/2), residue(tan(z), z, 7*%pi/2), residue(cot(z), z, 3*%pi/2)];
+[-1, -1, 0]$
+
+
+/* Bug #5834: "ratdisrep(taylor(tan(z), z, %pi, 1)) = z-%pi is false every other time" */
+
+block([s : taylor(tan(z), z, %pi, 1)],
+  [ratdisrep(s) - (z-%pi), ratdisrep(s) - (z-%pi), is(ratdisrep(s) = z-%pi)]);
+[0, 0, true]$
+
+map('ratdisrep, [taylor(tan(z), z, %pi, 3), taylor(log(z), z, 1, 2)]);
+[(z-%pi)+(z-%pi)^3/3, (z-1)-(z-1)^2/2]$
+
+
+/* Bug #5835: "taylor() of sec and csc at a pole fails with quotient by zero" */
+
+map('ratdisrep,
+    [taylor(sec(z), z, %pi/2, 0), taylor(sec(z), z, 3*%pi/2, 0), taylor(csc(z), z, %pi, 0),
+     taylor(csc(z), z, -2*%pi, 0), taylor(sech(z), z, %i*%pi/2, 0), taylor(sec(z)^2, z, %pi/2, 0),
+     taylor((z-%pi/2)*sec(z), z, %pi/2, 1)]);
+[-1/(z-%pi/2), 1/(z-3*%pi/2), -1/(z-%pi), 1/(z+2*%pi), -%i/(z-%i*%pi/2), 1/(z-%pi/2)^2+1/3, -1]$
+
+
+/* Bug #5836: "taylor(tan(z)*cot(2*z), z, 2*%pi, 0) gives 0 instead of 1/2" */
+
+map('ratdisrep,
+    [taylor(tan(z)*cot(2*z), z, 2*%pi, 0), taylor(sin(z)*cot(z), z, %pi, 0),
+     taylor((z-%pi/2)*tan(z), z, %pi/2, 0), taylor((z-2*%pi)^2*cot(z)^2, z, 2*%pi, 0), taylor(tan(z)*csc(z), z, 2*%pi, 0),
+     taylor((z+1)*gamma(z), z, -1, 0), taylor(sin(%pi*z)*gamma(z), z, -1, 0), taylor(cot(z), z, 2*%pi, -1)]);
+[1/2, -1, -1, 1, 1, -1, %pi, 1/(z-2*%pi)]$
+
+
+/* Bug #5837: "taylor() of tanh and coth fails at their poles on the imaginary axis" */
+
+map('ratdisrep,
+    [taylor(tanh(z), z, %i*%pi/2, 1), taylor(coth(2*z), z, %i*%pi/4, 3), taylor(tanh(z), z, -3*%i*%pi/2, 1),
+     taylor(coth(z), z, 2*%i*%pi, 1), taylor(tanh(z)^2, z, %i*%pi/2, 0), taylor(tanh(z)*coth(2*z), z, %i*%pi/4, 1)]);
+[1/(z-%i*%pi/2)+(z-%i*%pi/2)/3, 2*(z-%i*%pi/4)-8*(z-%i*%pi/4)^3/3, 1/(z+3*%i*%pi/2)+(z+3*%i*%pi/2)/3,
+ 1/(z-2*%i*%pi)+(z-2*%i*%pi)/3, 1/(z-%i*%pi/2)^2+2/3, 2*%i*(z-%i*%pi/4)]$
+
+[residue(tanh(z), z, %i*%pi/2), residue(tanh(z), z, -%i*%pi/2), residue(coth(z), z, %i*%pi)];
+[1, 1, 1]$
 /* Bug #NNNN: "taylor(z^2/((z+1)*(z-1)+1),z,0,1) gives 0 instead of 1" */
 
 block([c : (z+1)*(z-1)+1],

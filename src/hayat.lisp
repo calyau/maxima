@@ -2479,7 +2479,16 @@
 						                       c0)))))
 		    (return ans)))))
      (setq temp (t-o-var (gvar psarg)))
-     (when (e> (e* funord argord) temp) (return (rczero)))
+     (when (e> (e* funord argord) temp)
+       ;; FUNC may still have a pole at the constant term of ARG. Then
+       ;; expand to order 0 and keep the terms of negative order.
+       (when (and (rczerop argord) (pscoefp (ps-lc* psarg))
+		  (assoc funame const-exp-funs :test #'eq))
+	 (let ((ps (let-pw (get-datum (get-key-var (gvar psarg))) (rczero)
+		     (expand arg func))))
+	   (when (and (psp ps) (eq (gvar ps) (gvar psarg)))
+	     (return (pstrunc ps)))))
+       (return (rczero)))
      ;; the following form need not be executed if psarg is really exact.
      ;; The constant problem does not allow one to determine this now,
      ;; so we always have to execute this currently.
@@ -2545,22 +2554,25 @@
 (defun trig-const (a arg func)
        (let ((const (ps-lc* arg)) (temp (cdr (assoc func trigdisp :test #'eq))))
 	    (cond ((and (pscoefp const)
-			(member func '(%tan %cot) :test #'eq)
-			(multiple-%pi a (srdis const) func)))
+			(member func '(%tan %cot %tanh %coth))
+			(multiple-%pi a (simplify (srdis const)) func)))
 		  (temp (funcall temp (setq const (psdisrep const))
 				 (m- a const)))
-		  (t (tsexpt `((,(get func 'recip)) ,(srdis arg)) -1)))))
+		  (t (tsexpt `((,(get func 'recip)) ,a) -1)))))
 
 (defun multiple-%pi (a const func)
-  (let (coef)
-    (and (multiplep const '$%pi)
-	 ($ratnump (setq coef ($ratcoef const '$%pi 1)))
+  (let ((coef) (c (if (member func '(%tanh %coth)) (div const '$%i) const)))
+    (and (multiplep c '$%pi)
+	 ($ratnump (setq coef ($ratcoef c '$%pi 1)))
 	 (cond ((numberp coef) (expand (m- a const) func))
 	       ((equal (caddr coef) 2)
-		(psminus (expand (m- a const)
-				 (cond ((eq func '%tan) '%cot)
-				       ((eq func '%cot) '%tan)
-				       (t (merror "MULTIPLE-%PI: internal error in Taylor expansion."))))))))))
+		;; tan(x+%pi/2) = -cot(x), but tanh(x+%i*%pi/2) = coth(x)
+		(case func
+		  (%tan (psminus (expand (m- a const) '%cot)))
+		  (%cot (psminus (expand (m- a const) '%tan)))
+		  (%tanh (expand (m- a const) '%coth))
+		  (%coth (expand (m- a const) '%tanh))
+		  (t (merror "MULTIPLE-%PI: internal error in Taylor expansion."))))))))
 
 (setq *pscirc '(%cot %tan %csc %sin %sec %cos %coth
 		%tanh %csch %sinh %sech %cosh)
@@ -3322,9 +3334,10 @@
     (t
      ;; Since the DISPLAY package prints trunc'd sum's arguments
      ;; from right to left we must put the terms of any constant term
-     ;; in decreasing order. Note that only a constant (wrt to the
-     ;; mainvar) term can be a term which is a sum.
-     (when (mplusp (setq lowest-degree-term (car (last p))))
+     ;; in decreasing order. A simplified sum, such as the expansion
+     ;; variable X-A, is shared and canonical, so it keeps its order.
+     (when (and (mplusp (setq lowest-degree-term (car (last p))))
+		(not (member 'simp (cdar lowest-degree-term))))
        (rplacd lowest-degree-term (nreverse (cdr lowest-degree-term))))
      (cons plush p))))
 

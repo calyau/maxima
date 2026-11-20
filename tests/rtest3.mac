@@ -420,9 +420,8 @@ errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x));
 (kill (quux), bar () := (errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x)), throw ('quux)), catch (foo ()));
 quux;
 
-/* result for this test will change if ever "quotient by zero" bug is fixed */
 errcatch (taylor(coth(x), x, %i*%pi, 0));
-[];
+[1/(x-%i*%pi)];
 
 (kill (mumble), bar () := (errcatch (taylor(coth(x), x, %i*%pi, 0)), throw ('mumble)), catch (foo ()));
 mumble;
