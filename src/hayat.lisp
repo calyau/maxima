@@ -2217,7 +2217,22 @@
       (or (alike1 (exp-pt (get-datum (datum-var (car l)))) (exp-pt (car l)))
 	  (return () ))))
 
-(defun taylor2  (e)
+(defun taylor2 (e)
+  ;; A constant is a term of degree 0, so a negative truncation level drops
+  ;; it. TAYLOR2-1 does that for a constant E, and this does it for a
+  ;; constant result. Such a result can come from a series whose other terms
+  ;; cancelled or lie beyond its truncation, since PSCHECK makes that series
+  ;; a bare constant, which PSTRUNC cannot truncate. Kept, it would spoil
+  ;; sums: expanded to degree -1, (x-1)*(x+1) gives -1 but 1 gives 0, so
+  ;; 1+(x-1)*(x+1) would get the constant term -1, and TSEXPT1 would take
+  ;; that for the leading term of its base.
+  (let ((ans (taylor2-1 e)))
+    (if (and (pscoefp ans) (not (rczerop ans))
+             (e> (rczero) (current-trunc mainvar-datum)))
+      (pszero (data-gvar-o mainvar-datum) (current-trunc mainvar-datum))
+      ans)))
+
+(defun taylor2-1 (e)
  (let ((last-exp e))	    ;; lexp-non0 should be bound here when needed
   (cond ((assolike e tlist) (var-expand e 1 () ))
 	((or (mnump e) (atom e) (mfree e tvars))
@@ -2265,7 +2280,7 @@
 	 (newsym e))
 	(t (let ((exact-poly () ))	; Taylor series aren't exact
           (let ((ee (diff-expand e tlist)))
-            (cond ((equal (sratsimp e) (sratsimp ee)) (return-from taylor2 (prep1 ee)))
+            (cond ((equal (sratsimp e) (sratsimp ee)) (return-from taylor2-1 (prep1 ee)))
                   (t (taylor2 ee)))))))))
 
 (defun compatvarlist (a b c d)

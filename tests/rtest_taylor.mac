@@ -928,6 +928,29 @@ map('ratdisrep, [taylor(elliptic_e(%pi/4-g/2,2), g, 0, 4),
  elliptic_e(%pi/4,2)+2*%i*sqrt(2)*(x-%pi/4)^(3/2)/3]$
 
 
+/* Bug #NNNN: "taylor(z^2/((z+1)*(z-1)+1),z,0,1) gives 0 instead of 1" */
+
+block([c : (z+1)*(z-1)+1],
+  map('ratdisrep,
+      [taylor(z^2/c, z, 0, 1), taylor(sin(c)/c, z, 0, 1),
+       taylor(sin(c)/c, z, 0, 2), taylor(log(1+c)/c, z, 0, 1),
+       taylor(1/c, z, 0, -2), taylor(z^2*exp(z)/c^2, z, 0, 1)]));
+[1, 1, 1, 1, 1/z^2, 1/z^2+1/z+1/2+z/6]$
+
+ratdisrep(taylor(z^2/((z+a)*(z-a)+a^2), z, 0, 1));
+1$
+
+block([d : z^3-z^2+(z-1)*(z+1)+1],
+  [ratdisrep(taylor(z^4/d, z, 0, 1)), residue(z^2*(1+z)/d, z, 0)]);
+[z, 1]$
+
+map('ratdisrep,
+    [taylor(z/(log(2+z)-log(2)), z, 0, 0),
+     taylor(1/(exp(1+z)-%e), z, 0, -1),
+     taylor(1/(cos(1+z^5)-cos(1)), z, 0, -4)]);
+[2, %e^-1/z, -1/(sin(1)*z^5)]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
