@@ -984,7 +984,7 @@ APPLY means like APPLY.")
 				  arglist))))))))
 
 
-(defun make-declares (varlist localp &aux (dl) (fx) (fl) (bl) specs)
+(defun make-declares (varlist localp &aux (dl) (fx) (fl) specs)
   (do ((l varlist (cdr l))
        (mode) (var))
       ((null l))
@@ -1000,12 +1000,14 @@ APPLY means like APPLY.")
       (setq var (teval (car l)) mode (value-mode var))
       (setq specs (cons var specs))
 
+      ;; A variable of mode $BOOLEAN gets no Lisp type declaration,
+      ;; because it need not hold T or NIL: a block variable without
+      ;; an initial value is bound to its own name, and values like
+      ;; unknown or an unevaluated relation can be assigned to it.
       (cond ((eq '$fixnum mode) (pushnew var fx :test #'eq))
-	    ((eq '$float mode)  (pushnew var fl :test #'eq))
-	    ((eq '$boolean mode)  (pushnew var bl :test #'eq)))))
+	    ((eq '$float mode)  (pushnew var fl :test #'eq)))))
   (if fx (pushnew `(fixnum  . ,fx) dl :test #'eq))
   (if fl (pushnew `(type flonum  . ,fl) dl :test #'eq))
-  (if bl (pushnew `(type boolean  . ,bl) dl :test #'eq))
   (if specs (pushnew `(special  . ,specs) dl :test #'eq))
   (if dl `(declare . ,dl)))
 

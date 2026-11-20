@@ -370,6 +370,7 @@ Bug fixes for numbered bugs:
 * \#5835 taylor() of sec and csc at a pole fails with quotient by zero
 * \#5836 taylor(tan(z)*cot(2*z), z, 2*%pi, 0) gives 0 instead of 1/2
 * \#5837 taylor() of tanh and coth fails at their poles on the imaginary axis
+* \#5838 Translated functions give Lisp type errors for boolean variables
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -3425,6 +3425,46 @@ block([translate : false, e1, e2],
 [[[[[x, true], [-1, true]], [[x, true], [-0.5, true]], [[a, true], [-b, false]], [[1, true], [sqrt(x), false]]], [3, 7, 6]], true]$
 
 
+/* Bug #5838: "Translated functions give Lisp type errors for boolean variables" (regression from commit 4e8ac7d4f) */
+
+block([translate : false, e1, e2],
+  local(f, g, h),
+  f(u) := block([y], mode_declare(y, boolean), y : is(u > 0), y),
+  g(u) := block([y : false], mode_declare(y, boolean), y : u > 0, y),
+  h(u) := block([ok], mode_declare(ok, boolean), ok : true, if u > 0 then ok : false, ok),
+  e1 : [f(1), f(-1), f(a), g(1), g(3), h(1), h(-1)],
+  translate_or_lose(f, g, h),
+  e2 : [f(1), f(-1), f(a), g(1), g(3), h(1), h(-1)],
+  kill(f, g, h, y, ok),
+  [e1, is(e1 = e2)]);
+[[true, false, unknown, 1 > 0, 3 > 0, false, true], true]$
+
+block([translate : false, e1, e2],
+  local(f, g, h),
+  f(u) := block([y], mode_declare(y, boolean), y : is(u > 0), y),
+  g(u) := block([y : false], mode_declare(y, boolean), y : u > 0, y),
+  h(u) := block([ok], mode_declare(ok, boolean), ok : true, if u > 0 then ok : false, ok),
+  e1 : [f(1), f(-1), f(a), g(1), g(3), h(1), h(-1)],
+  compile_or_lose(f, g, h),
+  e2 : [f(1), f(-1), f(a), g(1), g(3), h(1), h(-1)],
+  kill(f, g, h, y, ok),
+  [e1, is(e1 = e2)]);
+[[true, false, unknown, 1 > 0, 3 > 0, false, true], true]$
+
+/* The translator takes listarith, maxapplydepth and xaxis to be boolean without any mode_declare: */
+block([translate : false, e1, e2],
+  local(f, g, h),
+  f(l) := block([listarith], listarith : true, l + 1),
+  g(n) := block([maxapplydepth : n], maxapplydepth),
+  h(l) := block([xaxis : l], xaxis),
+  e1 : [f([1, 2]), g(5), h([0, 1])],
+  translate_or_lose(f, g, h),
+  e2 : [f([1, 2]), g(5), h([0, 1])],
+  kill(f, g, h),
+  [e1, is(e1 = e2)]);
+[[[2, 3], 5, [0, 1]], true]$
+
+
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
