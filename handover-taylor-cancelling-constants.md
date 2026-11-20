@@ -79,7 +79,7 @@ Maxima encountered a Lisp error:
    LIST
 ```
 
-Old, with the pending `%i` TELLRAT change emulated (see Internals):
+Old, with an unconditional `%i` reduction emulated (see Internals):
 
 ```
 (%i4) taylor(tan(A)/A,z,0,1)
@@ -91,7 +91,7 @@ Old, with the pending `%i` TELLRAT change emulated (see Internals):
 (%o4) +0
 ```
 
-New, with the pending change emulated:
+New, with the same emulation:
 
 ```
 (%i4) taylor(tan(A)/A,z,0,1)
@@ -109,7 +109,7 @@ New, with the pending change emulated:
 
 **Why the fix is in TAYLOR2.** TAYLOR* binds `maxtayorder` to false because constants carry no truncation level, so every series has to stay truncated to the current level before a constant is added to it. Constants themselves are the hole in that rule. Logging every nonzero constant that TAYLOR2 returns while the truncation is negative (SBCL `encapsulate`, no source change) found four producers: TSTIMES as above, TSLOG (`log(2+z)` gives `log(2)`), TRY-EXPANSION (`cos(1+z^5)` gives even `cos(0) = 1`, from its constant-argument branch) and TSEXPT-RED (`exp(1+z)` gives `%e`). Each gives a wrong series once a sum is involved, as in `(%i8)` above, `taylor(1/(exp(1+z)-%e),z,0,-1)` and `taylor(1/(cos(1+z^5)-cos(1)),z,0,-4)`. Dropping constant results in TAYLOR2 covers them all, and matches what TAYLOR2 already does for a constant input and what TAYLOR_SIMPLIFY_RECURSE already does for a constant at the top level. In the whole suite such constants turn up only in `rtestint` (one expansion at `x = 3*%i*%pi/2`) and `rtest_orthopoly` (limits at infinity), and both files pass unchanged.
 
-**The `%i` inputs.** TAYLOR1 runs RATSETUP before ORDERPOINTER creates the gensyms, so the gensym of `%i` never gets the TELLRAT property and `%i^2` stays unreduced in taylor's CRE arithmetic. For `tan(A)/A`, TRIG-CONST splits off the constant term `-%i^2-1`, which is nonzero as a CRE, but `A` minus that constant simplifies back to `A`, so PSTANA+B expands `tan(A)` again without end. I emulated the pending change with a variant TAYLOR1 that, right after `(orderpointer varlist)`, gives that gensym the property as RATSETUP2 would:
+**The `%i` inputs.** TAYLOR1 runs RATSETUP before ORDERPOINTER creates the gensyms, so the gensym of `%i` never gets the TELLRAT property and `%i^2` stays unreduced in taylor's CRE arithmetic. For `tan(A)/A`, TRIG-CONST splits off the constant term `-%i^2-1`, which is nonzero as a CRE, but `A` minus that constant simplifies back to `A`, so PSTANA+B expands `tan(A)` again without end. I emulated an unconditional `%i` reduction with a variant TAYLOR1 that, right after `(orderpointer varlist)`, gives that gensym the property as RATSETUP2 would:
 
 ```lisp
 (mapl #'(lambda (v lg)
@@ -120,7 +120,7 @@ New, with the pending change emulated:
       varlist genvar)
 ```
 
-With it, both inputs reach this bug unpatched (0) and give 1 patched. Their tests (section 5) should go in with that change.
+With it, both inputs reach this bug unpatched (0) and give 1 patched. Their tests (section 5) go in only together with an unconditional `%i` reduction like this one. The pending H29 fix as handed over is not enough: it reduces `%i` only inside the Gruntz series, through `*taylor-algebraic-%i*`, so with it `taylor(tan(u)/u,z,0,1)` still overflows the control stack at user level.
 
 **Residues.** Residues of rational functions with an expanded denominator at an algebraic pole are unchanged and correct in all four configurations (unpatched and patched, each with and without the emulation), for example `residue(1/(z^2-2)^2,z,sqrt(2))` = `-1/2^(7/2)`, `residue(1/(z^4+4),z,1+%i)` = `-(%i+1)/16` and `residue((z-%i)^2/(z^6+3*z^4+3*z^2+1),z,%i)` = `%i/8`. `residue()` expands to order 1, which keeps most residues away from negative truncation levels. `(%i9)` above is one that is not.
 
@@ -230,6 +230,14 @@ Adds the tests of section 5.
 /* clean up & checks */
 ```
 
+### `ChangeLog` (optional, not in the commit)
+
+Once the bug report has a number, add its line under `Bug fixes for numbered bugs:`, in number order:
+
+```
+* \#NNNN taylor(z^2/((z+1)*(z-1)+1),z,0,1) gives 0 instead of 1
+```
+
 ## 5. Proposed test cases
 
 **New**, in `tests/rtest_taylor.mac`, before its final clean-up checks. Replace `NNNN` by the number the bug report gets.
@@ -258,7 +266,7 @@ map('ratdisrep,
 [2, %e^-1/z, -1/(sin(1)*z^5)]$
 ```
 
-**New**, in `tests/rtest_taylor.mac`, to be appended together with the pending `%i` TELLRAT change, not before it. On master the first input overflows the control stack, which can kill SBCL and with it the whole test run. Run only against the emulation described in section 2, where it passes, and fails without this patch.
+**New**, in `tests/rtest_taylor.mac`, to be appended only together with an unconditional `%i` reduction in `taylor()`, such as the emulation in section 2 (reducing every constant algebraic kernel works too). Not with the pending H29 fix as handed over: that reduces `%i` only inside the Gruntz series, so the first input still overflows the control stack at user level. On master it does too, which can kill SBCL and with it the whole test run. Run only against the emulation, where it passes, and fails without this patch.
 
 ```
 block([u : (z+%i)*(z-%i)-z^2-1+z^2, v : (1+%i*z)*(1-%i*z)-1-z^2+z^3],

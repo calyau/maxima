@@ -64,7 +64,7 @@ Master (749af2f) gives the same results for these inputs. I checked that by load
 
 **Unchanged.** Exponents up to 1 (PSEXPT loses nothing there, `(%o9)`), expansions at infinity (an asymptotic one still signals an error), multivariable expansions and everything without `'asymp`.
 
-**Not covered.** RATDISREP of such a series at a point other than 0 can return an unsimplified sum flagged as simplified: `ratdisrep(taylor(x,[x,1,0,'asymp]))` gives `-1+x+1`. That was so before this change too, and one test below compares through `ratsimp` because of it.
+**Not covered.** RATDISREP of such a series at a point other than 0 can return an unsimplified sum flagged as simplified: `ratdisrep(taylor(x,[x,1,0,'asymp]))` gives `-1+x+1`, before this change too. That is the PSDISREP+ bug that the taylor ratdisrep-order handover fixes, and with it applied the result is `x`. One test below compares through `ratsimp` because of it, which is harmless either way.
 
 **Checks.** The expected values were checked numerically, independent of `taylor()`: at x = a + 1/h, (f-S)/h^(n+1) evaluated in 80-digit bigfloats for h = 1e-6, 1e-9, 1e-12 stays bounded (it tends to the next coefficient: 6, 9, 0, 1, 1, 1, 0, 1 and 1/8, with a = 3 for the symbolic point), while for the old results 1 and `x-1` in rows 4 and 6 it grows like 1/h^2.
 
@@ -166,9 +166,17 @@ Adds the tests of section 5, after those of the two earlier handovers.
 /* clean up & checks */
 ```
 
+### `ChangeLog` (optional, not in the commit)
+
+Once the bug report has a number, add its line under `Bug fixes for numbered bugs:`, in number order:
+
+```
+* \#PPPP taylor(x^2,[x,a,0,'asymp]) misses the term a^2
+```
+
 ## 5. Proposed test cases
 
-**New**, in `tests/rtest_taylor.mac`, before its final clean-up checks and after the tests of the two earlier handovers. Replace `PPPP` by the number the bug report gets. The first pair compares through `ratsimp` because RATDISREP returns `-1+x+1` for a series at the point 1 (see section 2).
+**New**, in `tests/rtest_taylor.mac`, before its final clean-up checks and after the tests of the two earlier handovers. Replace `PPPP` by the number the bug report gets. The first pair compares through `ratsimp` because, without the ratdisrep-order fix, RATDISREP returns `-1+x+1` for a series at the point 1 (see section 2).
 
 ```
 /* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */

@@ -64,7 +64,9 @@ Master (749af2f) gives the same wrong results for these inputs. I checked that b
 
 **Side effect.** With `taylor_truncate_polynomials:false`, `taylor(s,s,a,-1)` gave `s-a`, which is not `s` in any sense, and now gives 0 (`(%i9)`). That is what the zero-point branch already gives for a power beyond the truncation with exact polynomials (`taylor(x^5,x,0,3)` is 0 there too). There is no test for it, since the manual does not say what an exact polynomial gives at a negative order.
 
-**residue().** RESM1 in `src/residu.lisp` expands to order 1 because, its comment says, `residue(s/(s^2-a^2),s,a)` fails at order -1. That was this bug. In an experiment with RESM1 at order -1 (a load file, no source change), the full suite passes with only the usual `rtestprintf` failure, and the example gives `1/2` (0 without this fix). RESM1 is unchanged. Switching it is for the maintainers to decide.
+**residue().** RESM1 in `src/residu.lisp` expands to order 1 because, its comment says, `residue(s/(s^2-a^2),s,a)` fails at order -1. That was this bug. In an experiment with RESM1 at order -1 (a load file, no source change), the full suite passes with only the usual `rtestprintf` failure, and the example gives `1/2` (0 without this fix). RESM1 is unchanged here. A broader comparison later showed that the switch is not ready: residues of `cot(z)` at `%pi`, `tan(z)` at `%pi/2` and `gamma(z)` at -1 and -2 then come out as 0, because `taylor()` to order -1 gives 0 for those, on master too.
+
+**Not covered.** `taylor((z+w)/(z-1)^2,[z,w],[1,0],-1)` still gives `1/(z-1)^2` instead of `1/(z-1)^2+1/(z-1)+w/(z-1)^2`, as in 5.47.0, although `z/(z-1)^2` and `w/(z-1)^2` on their own now come out right.
 
 **Checks.** The expected values were checked numerically, independent of `taylor()`: f-S evaluated in 80-digit bigfloats at s = p+h for h = 1e-6, 1e-9, 1e-12 stays bounded (1, 1/12 for a = 3, 3*%e/2 and 1/4 in absolute value), while for the old answer 0 it grows like 1/h. The two-variable and the separate-order cases are exact identities, checked with `ratsimp`.
 
@@ -134,6 +136,14 @@ Adds the tests of section 5, after those of the first handover.
 
 ```
 /* clean up & checks */
+```
+
+### `ChangeLog` (optional, not in the commit)
+
+Once the bug report has a number, add its line under `Bug fixes for numbered bugs:`, in number order:
+
+```
+* \#MMMM taylor(s/(s-1),s,1,-1) gives 0 instead of 1/(s-1)
 ```
 
 ## 5. Proposed test cases
