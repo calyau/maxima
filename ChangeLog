@@ -373,6 +373,7 @@ Bug fixes for numbered bugs:
 * \#5838 Translated functions give Lisp type errors for boolean variables
 * \#5839 Wrong simplification of powers of signum() for negative and complex arguments
 * \#5840 Maxima does not build with GCL 2.6.14, which configure still accepts
+* \#5841 configure: --disable-<lisp> options are ignored or make configure fail
 
 Bug fixes for unnumbered bugs:
 ------------------------------

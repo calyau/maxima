@@ -77,8 +77,7 @@ AC_ARG_ENABLE(abcl,
                      explicit_lisp=true ;;
        		no)  abcl=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-abcl) ;;
-     	esac
-	explicit_lisp=true],
+     	esac],
 	[abcl=false])
 ABCL_JAR=`pwd`/"abcl.jar"
 AC_ARG_WITH(abcl-jar,
@@ -112,10 +111,10 @@ AC_ARG_ENABLE(clisp,
        		yes) clisp=true 
 		     lisps_enabled="${lisps_enabled} clisp"
                      explicit_lisp=true ;;
-       		no)  clisp=false ;;
+       		no)  clisp=false
+		     clisp_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp) ;;
-     	esac
-	explicit_lisp=true],
+     	esac],
 	[clisp=false])
 AC_ARG_WITH(clisp,
 	[AS_HELP_STRING([--with-clisp=<prog>],
@@ -203,10 +202,10 @@ AC_ARG_ENABLE(cmucl,
        		yes) cmucl=true 
 		     lisps_enabled="${lisps_enabled} cmucl"
                      explicit_lisp=true ;;
-       		no)  cmucl=false ;;
+       		no)  cmucl=false
+		     cmucl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl) ;;
-     	esac
-	explicit_lisp=true],
+     	esac],
 	[cmucl=false])
 AC_ARG_WITH(cmucl,
 	[AS_HELP_STRING([--with-cmucl=<prog>],
@@ -270,10 +269,10 @@ AC_ARG_ENABLE(sbcl,
        		yes) sbcl=true 
 		     lisps_enabled="${lisps_enabled} sbcl"
                      explicit_lisp=true ;;
-       		no)  sbcl=false ;;
+       		no)  sbcl=false
+		     sbcl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-sbcl) ;;
-     	esac
-	explicit_lisp=true],
+     	esac],
 	[sbcl=false])
 AC_ARG_WITH(sbcl,
 	[AS_HELP_STRING([--with-sbcl=<prog>],
@@ -328,10 +327,10 @@ AC_ARG_ENABLE(acl,
        		yes) acl=true 
 		     lisps_enabled="${lisps_enabled} acl"
                      explicit_lisp=true ;;
-       		no)  acl=false ;;
+       		no)  acl=false
+		     acl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-acl) ;;
-     	esac
-	explicit_lisp=true],
+     	esac],
 	[acl=false])
 AC_ARG_WITH(acl,
 	[AS_HELP_STRING([--with-acl=<prog>],
@@ -370,7 +369,8 @@ AC_ARG_ENABLE(gcl,
        		yes) gcl=true 
 		     lisps_enabled="${lisps_enabled} gcl"
 		     explicit_lisp=true;;
-       		no)  gcl=false ;;
+       		no)  gcl=false
+		     gcl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-gcl) ;;
      	esac],
 	[gcl=false])
@@ -410,7 +410,8 @@ AC_ARG_ENABLE(openmcl,
        		yes) openmcl=true 
 		     lisps_enabled="${lisps_enabled} openmcl"
 		     explicit_lisp=true;;
-       		no)  openmcl=false ;;
+       		no)  openmcl=false
+		     openmcl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-openmcl) ;;
      	esac],
 	[openmcl=false])
@@ -451,7 +452,8 @@ AC_ARG_ENABLE(ccl,
        		yes) openmcl=true 
 		     lisps_enabled="${lisps_enabled} openmcl"
 		     explicit_lisp=true;;
-       		no)  openmcl=false ;;
+       		no)  openmcl=false
+		     openmcl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl) ;;
      	esac],
 	[openmcl=false])
@@ -541,7 +543,8 @@ AC_ARG_ENABLE(ccl64,
        		yes) ccl64=true 
 		     lisps_enabled="${lisps_enabled} ccl64"
 		     explicit_lisp=true;;
-       		no)  ccl64=false ;;
+       		no)  ccl64=false
+		     ccl64_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl64) ;;
      	esac],
 	[ccl64=false])
@@ -598,7 +601,8 @@ AC_ARG_ENABLE(ecl,
        		yes) ecl=true 
 		     lisps_enabled="${lisps_enabled} ecl"
 		     explicit_lisp=true;;
-       		no)  ecl=false ;;
+       		no)  ecl=false
+		     ecl_disabled=true ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-ecl) ;;
      	esac],
 	[ecl=false])
@@ -1221,41 +1225,49 @@ if test x"${explicit_lisp}" = xfalse ; then
 	AC_CHECK_PROG(ccl64_found,$CCL64_NAME,true,false)
 	AC_CHECK_PROG(ecl_found,$ECL_NAME,true,false)
 
-  	if test x"${clisp_found}" = xtrue ; then
+  	if test x"${clisp_found}" = xtrue &&
+	   test x"${clisp_disabled}" != xtrue ; then
   		clisp=true
 		lisps_enabled="${lisps_enabled} clisp"
 	fi
-	if test x"${gcl_found}" = xtrue ; then
+	if test x"${gcl_found}" = xtrue &&
+	   test x"${gcl_disabled}" != xtrue ; then
 		gcl=true
 		gcl_autodetected=true
 		lisps_enabled="${lisps_enabled} gcl"
 	fi
-	if test x"${cmucl_found}" = xtrue ; then
+	if test x"${cmucl_found}" = xtrue &&
+	   test x"${cmucl_disabled}" != xtrue ; then
 		cmucl=true
 		lisps_enabled="${lisps_enabled} cmucl"
 	fi
-	if test x"${sbcl_found}" = xtrue ; then
+	if test x"${sbcl_found}" = xtrue &&
+	   test x"${sbcl_disabled}" != xtrue ; then
 	   	sbcl=true
 		lisps_enabled="${lisps_enabled} sbcl"
 	fi
-	if test x"${acl_found}" = xtrue ; then
+	if test x"${acl_found}" = xtrue &&
+	   test x"${acl_disabled}" != xtrue ; then
 		acl=true
 		lisps_enabled="${lisps_enabled} acl"
 	fi
-	if test x"${openmcl_found}" = xtrue ; then
+	if test x"${openmcl_found}" = xtrue &&
+	   test x"${openmcl_disabled}" != xtrue ; then
 		openmcl=true
 		lisps_enabled="${lisps_enabled} openmcl"
 	fi
-	if test x"${ccl64_found}" = xtrue ; then
+	if test x"${ccl64_found}" = xtrue &&
+	   test x"${ccl64_disabled}" != xtrue ; then
 		ccl64=true
 		lisps_enabled="${lisps_enabled} ccl64"
 	fi
-	if test x"${ecl_found}" = xtrue ; then
+	if test x"${ecl_found}" = xtrue &&
+	   test x"${ecl_disabled}" != xtrue ; then
 		ecl=true
 		lisps_enabled="${lisps_enabled} ecl"
 	fi
 	if test x"${lisps_enabled}" = x; then
-		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ccl64_default_name}(CCL),${ecl_default_name}(ECL)] were found in PATH)
+		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ccl64_default_name}(CCL),${ecl_default_name}(ECL)] were found in PATH except disabled ones)
 	fi
 fi
 
