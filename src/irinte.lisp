@@ -180,10 +180,11 @@
             t))))
 
 ;; Return T if R = sqrt(r1)*sqrt(r2) is equal to sqrt(r1*r2) for every real x,
-;; which holds for r1 = a1*x+b1 and r2 = a2*x+b2 with real numbers a1*a2 < 0 and
-;; abs(a2)*b1+abs(a1)*b2 >= 0, as for 1-x and 1+x. A positive combination of
+;; which holds for r1 = a1*x+b1 and r2 = a2*x+b2 with real k = -a1/a2 > 0 and
+;; b1+k*b2 >= 0, as for 1-%i*x and 1+%i*x. A positive combination of
 ;; r1 and r2 is then a constant >= 0, so their imaginary parts have opposite
-;; signs, and they are never both negative.
+;; signs, and they are never both negative. INTIR1-OPPOSITE-IMAG-P tests these
+;; two conditions for other complex coefficients, as for x-%i and x+%i.
 (defun intir1-merge-exact-p (r1 r2 x)
   (flet ((coeffs (r)
            (let* ((r ($expand r))
@@ -192,14 +193,35 @@
              (when (and (freeof x a)
                         (freeof x b)
                         (alike1 ($expand (add (mul a x) b)) r)
-                        (zerop1 ($imagpart a)))
+                        (not (zerop1 a)))
                (list a b)))))
     (let ((c1 (coeffs r1))
           (c2 (coeffs r2)))
       (and c1 c2
-           (eq t (mgrp 0 (mul (first c1) (first c2))))
-           (eq t (mgqp (add (mul (ftake 'mabs (first c2)) (second c1))
-                            (mul (ftake 'mabs (first c1)) (second c2))) 0))))))
+           (or (let ((k (div (neg (first c1)) (first c2))))
+                 (and (eq t (mgrp k 0))
+                      (eq t (mgqp (add (second c1) (mul k (second c2))) 0))))
+               (and (notevery #'(lambda (c) (freeof '$%i c)) (append c1 c2))
+                    (apply #'intir1-opposite-imag-p (append c1 c2))))))))
+
+;; Return T if Im(a1*x+b1) = -m*Im(a2*x+b2) for a constant m > 0 and every real x,
+;; and a1*x+b1 or a2*x+b2 is >= 0 where both are real.
+(defun intir1-opposite-imag-p (a1 b1 a2 b2)
+  (flet ((nonneg-at-p (a b x0)
+           (eq t (mgqp (add (mul ($realpart a) x0) ($realpart b)) 0))))
+    (let ((i1 ($imagpart a1)) (j1 ($imagpart b1))
+          (i2 ($imagpart a2)) (j2 ($imagpart b2)))
+      (if (zerop1 ($ratsimp i2))
+        ;; Both imaginary parts are constants, of opposite signs.
+        (and (zerop1 ($ratsimp i1))
+             (eq t (mgrp 0 (mul j1 j2))))
+        ;; Both are real only at x0, where Im(a2*x+b2) = 0.
+        (let ((m (div (neg i1) i2))
+              (x0 (div (neg j2) i2)))
+          (and (eq t (mgrp m 0))
+               (zerop1 ($ratsimp (add j1 (mul m j2))))
+               (or (nonneg-at-p a1 b1 x0)
+                   (nonneg-at-p a2 b2 x0))))))))
 
 ;; Replace q^k in E by r1^k*r2^k for k not an integer.
 (defun intir1-unsplit (e q r1 r2)
