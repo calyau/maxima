@@ -82,20 +82,15 @@
 			    (and x (c::split-program-options x)))
 			  :epilogue-code '(progn (cl-user::run)))))))
 
-;; CMUCL, SCL, SBCL and LispWorks build an absolute binary pathname
-;; here (rather than the bare relative directory name the other lisps
-;; use below, which is resolved against the process's current
-;; directory instead) because historically it was derived from
-;; *LOAD-TRUENAME*, i.e. wherever maxima.system was actually loaded
-;; from. For an out-of-tree build that is the source directory, which
-;; makes the compiler write all of its output back into the pristine
-;; source tree instead of the build tree. The Makefile sets
-;; CL-USER::*MAXIMA-BINARY-DIRECTORY* (to $(abs_top_builddir)/src/)
-;; before loading this file precisely so that binaries can be
-;; redirected to the build directory instead; when it isn't bound
-;; (e.g. this file is loaded by hand, outside of the Makefile-driven
-;; build) this falls back to the previous *LOAD-TRUENAME*-based
-;; behavior.
+;; MK:DEFSYSTEM merges a relative binary pathname with the directory
+;; maxima.system was loaded from, which for an out-of-tree build is the
+;; source directory. The MAKE-PATHNAME branches below therefore build an
+;; absolute one, in CL-USER::*MAXIMA-BINARY-DIRECTORY*, which
+;; src/Makefile.am sets to $(abs_top_builddir)/src/ before loading this
+;; file. When it is unbound or NIL, as when this file is loaded by hand,
+;; they use the directory of maxima.system. ECL and ABCL load a copy of
+;; maxima.system from the build directory instead (see
+;; shadow-srcdir-for-ecl-abcl in src/Makefile.am).
 (defun maxima-build-directory ()
   (if (and (boundp 'cl-user::*maxima-binary-directory*)
 	   (symbol-value 'cl-user::*maxima-binary-directory*))
@@ -104,7 +99,8 @@
 
 (defun maxima-binary-pathname ()
   #+clisp
-  "binary-clisp"
+  (make-pathname :name "binary-clisp"
+		 :directory (pathname-directory (maxima-build-directory)))
   #+cmu
   (make-pathname :name "binary-cmucl"
 		 :directory (pathname-directory (maxima-build-directory)))
@@ -115,13 +111,17 @@
   (make-pathname :name "binary-sbcl"
 		 :directory (pathname-directory (maxima-build-directory)))
   #+gcl
-  "binary-gcl"
+  (make-pathname :name "binary-gcl"
+		 :directory (pathname-directory (maxima-build-directory)))
   #+allegro
-  "binary-acl"
+  (make-pathname :name "binary-acl"
+		 :directory (pathname-directory (maxima-build-directory)))
   #+(and openmcl (not 64-bit-target))
-  "binary-openmcl"
+  (make-pathname :name "binary-openmcl"
+		 :directory (pathname-directory (maxima-build-directory)))
   #+(and openmcl 64-bit-target)
-  "binary-ccl64"
+  (make-pathname :name "binary-ccl64"
+		 :directory (pathname-directory (maxima-build-directory)))
   #+abcl
   "binary-abcl"
   #+lispworks
