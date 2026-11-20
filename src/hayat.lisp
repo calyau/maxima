@@ -2357,16 +2357,20 @@
 					     (if (eq (exp-pt temp) '$minf)
 						 (rcmone)
 					       (rcone))))))))
-	   ((and (tvar? var2) (not (signp e (exp-pt temp)))
-		 (null (switch '$asymp temp)) (not dont-truncate?)
-		 (e> (rczero) (current-trunc temp)))
+	   ((and (not (signp e (exp-pt temp))) (null (switch '$asymp temp))
+		 (not dont-truncate?) (e> (rczero) (current-trunc temp))
+		 (eq mainvar-datum
+		     (if (switch 'multi temp)
+		       (get-datum (car (switch 'multi temp)))
+		       temp)))
 	    ;; Expanded at a point other than 0, VAR2^EXP starts with the
 	    ;; constant EXP-PT^EXP, so a negative truncation level leaves
 	    ;; nothing of it. The code below would drop only that constant and
 	    ;; return a power of the kernel, and TSTIMES would take its order
-	    ;; for the order of VAR2^EXP, which is 0. A kernel adjoined during
-	    ;; the expansion is not TVAR?, and its EXP-PT is a limit such as
-	    ;; $ZEROA rather than a point, so it is left alone.
+	    ;; for the order of VAR2^EXP, which is 0. This is done only where
+	    ;; VAR2 is truncated at the main level, the one at which TAYLOR2
+	    ;; drops constants. At the level of another variable a constant
+	    ;; can survive, and a 0 for VAR2 would turn VAR2-1 into -1.
 	    (rczero))
 	   ;; multivar expansion does not work at infinity, so
 	   ;; expansion at infinity is handled by above clause even if doing multivar.
@@ -3056,7 +3060,11 @@
 	    (when (or ;; When 1 > s we need more terms since -le*(s-1) > 0.
 		   (e> (rcone) s)
 		   (and (e> (rczero) pw) (e> s (rcone))))
-	      (setq tb (get-lexp b () 't)))
+	      (setq tb (get-lexp b () 't))
+	      ;; PW was a guess as long as TB had no variable.
+	      (when (psp tb)
+		(setq pw (current-trunc (get-datum
+					 (get-key-var (gvar tb)))))))
 	    (setq le (ps-le* tb)))
 	   ((psp tb) (setq le (ps-le tb)))
 	   (t (return (rcexpt tb e))))

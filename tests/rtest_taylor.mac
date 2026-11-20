@@ -978,6 +978,8 @@ map('ratdisrep,
 
 [residue(tanh(z), z, %i*%pi/2), residue(tanh(z), z, -%i*%pi/2), residue(coth(z), z, %i*%pi)];
 [1, 1, 1]$
+
+
 /* Bug #NNNN: "taylor(z^2/((z+1)*(z-1)+1),z,0,1) gives 0 instead of 1" */
 
 block([c : (z+1)*(z-1)+1],
@@ -1018,6 +1020,15 @@ map('ratdisrep,
 
 ratsimp(ratdisrep(taylor(x*y/((x-1)*(y-2)), [x, y], [1, 2], -1)) - (2/((x-1)*(y-2))+1/(x-1)+2/(y-2)));
 0$
+
+ratsimp(map('ratdisrep,
+            [taylor(1/((z-1)*(w-1)), z, 1, -1, w, 1, -1), taylor(5+1/(w-1), z, 1, 0, w, 1, -1),
+             taylor(z/((z-1)*(w-1)), z, 1, -1, w, 1, 1)])
+        - [1/((z-1)*(w-1)), 1/(w-1), 1/((z-1)*(w-1))]);
+[0, 0, 0]$
+
+ratdisrep(taylor(z/((z+sqrt(2))*(z-sqrt(2))+2)+z^2*(1+z), z, 0, 2));
+1/z+z^2$
 
 
 /* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */
