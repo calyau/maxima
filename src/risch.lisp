@@ -222,6 +222,15 @@
     (let ((rischp risch-var)
 	  (rp-polylogp t)
 	  $logarc $exponentialize result)
+     (if (let ($listconstvars) (some #'decl-complexp (cdr ($listofvars yyy))))
+      ;; RISPLIT cannot turn the exponentials of a symbol declared complex or
+      ;; imaginary back into trigonometric functions. Rewrite them with
+      ;; demoivre instead, which holds for all complex values, and take that
+      ;; without its constant terms if it is free of %i. Otherwise take YYY as
+      ;; it is, as demoivre only makes its logarithms and the like longer.
+      ;; $LISTCONSTVARS is NIL to leave out %i, which is declared imaginary.
+      (let ((d (cdr (partition (sratsimp ($demoivre yyy)) risch-var 0))))
+        (setq result (if (freeof '$%i d) d (sratsimp yyy))))
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
      ;; RISPLIT can ask sign() about an expression that is not real, which
@@ -245,12 +254,12 @@
       ;; as non-constant - keeping is always safe, dropping is not.
       (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re))) 0 yyy-re))
             (yyy-im (if (car (errcatch (locally-const-p yyy-im))) 0 yyy-im)))
-      ;; If YYY-RE contains a noun-form %REALPART or YYY-IM contains a noun-form
-      ;; %IMAGPART, then just work with YYY instead of YYY-RE + %i * YYY-IM.
-      (setq result (sratsimp (if (and (freeof '%realpart yyy-re)
-                                      (freeof '%imagpart yyy-im))
+      ;; If YYY-RE or YYY-IM contains a noun-form %REALPART or %IMAGPART, then
+      ;; just work with YYY instead of YYY-RE + %i * YYY-IM.
+      (setq result (sratsimp (if (and (freeofl '%realpart (list yyy-re yyy-im))
+                                      (freeofl '%imagpart (list yyy-re yyy-im)))
                                (add yyy-re (mul '$%i yyy-im))
-                               yyy))))))
+                               yyy)))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.

@@ -376,6 +376,7 @@ Bug fixes for numbered bugs:
 * \#5841 configure: --disable-<lisp> options are ignored or make configure fail
 * \#5842 Out-of-tree build with GCL writes its object files into the source tree
 * \#5843 configure: --without-<lisp> enables the Lisp with executable "no"
+* \#5846 integrate(cos(sqrt(x)), x) returns an exponential form
 
 Bug fixes for unnumbered bugs:
 ------------------------------

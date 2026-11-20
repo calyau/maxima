@@ -8019,6 +8019,59 @@ block([g, G, b],
 [true, [0, 0, 0]]$
 
 
+/* Bug #5846: "integrate(cos(sqrt(x)), x) returns an exponential form" */
+
+[integrate(cos(sqrt(x)), x), integrate(x*cos(sqrt(x)), x), integrate(log(x)*sin(log(x))/x, x)];
+[2*(sin(sqrt(x))*sqrt(x)+cos(sqrt(x))), 2*(sin(sqrt(x))*(x^(3/2)-6*sqrt(x))+cos(sqrt(x))*(3*x-6)), sin(log(x))-log(x)*cos(log(x))]$
+
+block([],
+  local(x),
+  assume(x < 0),
+  integrate(cos(sqrt(x))+1, x));
+x+2*(sin(sqrt(x))*sqrt(x)+cos(sqrt(x)))$
+
+block([],
+  local(zz, a),
+  declare(zz, imaginary, a, complex),
+  [integrate(zz*sin(zz)+1, zz), integrate(x*cos(a*x), x), integrate(sin(a*x)/x, x)]);
+[sin(zz)-zz*cos(zz)+zz, (a*x*sin(a*x)+cos(a*x))/a^2, -((%i*gamma_incomplete(0,%i*a*x)-%i*gamma_incomplete(0,-%i*a*x))/2)]$
+
+integrate(sin(sqrt(x))/x, x);
+%i*gamma_incomplete(0,-%i*sqrt(x))-%i*gamma_incomplete(0,%i*sqrt(x))$
+
+block([f : sin(x)/(x+%i), F],
+  F : integrate(f, x),
+  [freeof(realpart, imagpart, F), ratsimp(exponentialize(diff(F, x) - f))]);
+[true, 0]$
+
+/* These were right before and must stay right. */
+
+block([g : x^2*cos(b*sqrt(d*x+c)+a)],
+  local(tq),
+  assume(tq > 0),
+  ratsimp(exponentialize(subst(x = (-tq^2-c)/d, diff(integrate(g, x), x) - g))));
+0$
+
+block([g : 1/(tan(sqrt(x))+2), G],
+  local(tq),
+  assume(tq > 0),
+  G : integrate(g, x),
+  [freeof(atan2, G), ratsimp(exponentialize(subst(x = -tq^2, diff(G, x) - g)))]);
+[true, 0]$
+
+block([g : sqrt(d*x+c)*sin(b*x+a)],
+  ratsimp(exponentialize(diff(integrate(g, x), x) - g)));
+0$
+
+[ratsimp(exponentialize(integrate(cos(sqrt(x))+1, x, -1, 0) - (3-2*%e^-1))),
+ ratsimp(exponentialize(integrate(x+sin(sqrt(x)), x, -1, 0) - (2*%i*%e^-1-1/2)))];
+[0, 0]$
+
+block([f : x/(cos(x)+1)],
+  is(ev(integrate(f, x), listconstvars : true) = integrate(f, x)));
+true$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
