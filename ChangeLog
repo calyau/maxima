@@ -365,6 +365,7 @@ Bug fixes for numbered bugs:
 * \#5826 maxima 5.50.0: sum fails with ECL
 * \#5827 factor() prints the whole polynomial when it refuses to factor it
 * \#5829 taylor() and residue() of tan fail at poles other than %pi/2 and -%pi/2
+* \#5834 ratdisrep(taylor(tan(z), z, %pi, 1)) = z-%pi is false every other time
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -940,6 +940,16 @@ map('ratdisrep, [taylor(tan(z), z, 3*%pi/2, 1), taylor(tan(z), z, -3*%pi/2, 1), 
 [-1, -1, 0]$
 
 
+/* Bug #5834: "ratdisrep(taylor(tan(z), z, %pi, 1)) = z-%pi is false every other time" */
+
+block([s : taylor(tan(z), z, %pi, 1)],
+  [ratdisrep(s) - (z-%pi), ratdisrep(s) - (z-%pi), is(ratdisrep(s) = z-%pi)]);
+[0, 0, true]$
+
+map('ratdisrep, [taylor(tan(z), z, %pi, 3), taylor(log(z), z, 1, 2)]);
+[(z-%pi)+(z-%pi)^3/3, (z-1)-(z-1)^2/2]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

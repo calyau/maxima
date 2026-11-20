@@ -3288,9 +3288,10 @@
     (t
      ;; Since the DISPLAY package prints trunc'd sum's arguments
      ;; from right to left we must put the terms of any constant term
-     ;; in decreasing order. Note that only a constant (wrt to the
-     ;; mainvar) term can be a term which is a sum.
-     (when (mplusp (setq lowest-degree-term (car (last p))))
+     ;; in decreasing order. A simplified sum, such as the expansion
+     ;; variable X-A, is shared and canonical, so it keeps its order.
+     (when (and (mplusp (setq lowest-degree-term (car (last p))))
+		(not (member 'simp (cdar lowest-degree-term))))
        (rplacd lowest-degree-term (nreverse (cdr lowest-degree-term))))
      (cons plush p))))
 
