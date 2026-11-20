@@ -968,6 +968,18 @@ map('ratdisrep,
 [1/2, -1, -1, 1, 1, -1, %pi, 1/(z-2*%pi)]$
 
 
+/* Bug #5837: "taylor() of tanh and coth fails at their poles on the imaginary axis" */
+
+map('ratdisrep,
+    [taylor(tanh(z), z, %i*%pi/2, 1), taylor(coth(2*z), z, %i*%pi/4, 3), taylor(tanh(z), z, -3*%i*%pi/2, 1),
+     taylor(coth(z), z, 2*%i*%pi, 1), taylor(tanh(z)^2, z, %i*%pi/2, 0), taylor(tanh(z)*coth(2*z), z, %i*%pi/4, 1)]);
+[1/(z-%i*%pi/2)+(z-%i*%pi/2)/3, 2*(z-%i*%pi/4)-8*(z-%i*%pi/4)^3/3, 1/(z+3*%i*%pi/2)+(z+3*%i*%pi/2)/3,
+ 1/(z-2*%i*%pi)+(z-2*%i*%pi)/3, 1/(z-%i*%pi/2)^2+2/3, 2*%i*(z-%i*%pi/4)]$
+
+[residue(tanh(z), z, %i*%pi/2), residue(tanh(z), z, -%i*%pi/2), residue(coth(z), z, %i*%pi)];
+[1, 1, 1]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
