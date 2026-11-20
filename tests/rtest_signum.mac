@@ -300,11 +300,11 @@ signum(x);
 signum(x^4);
 signum(x)^2;
 
-signum(x^-1);
-1/signum(x);
+block([e : signum(x^-1)], [e, subst(x = -2, e)]);
+[signum(1/x), -1];
 
-signum(sqrt(x));
-sqrt(signum(x));
+block([e : signum(sqrt(x))], [e, subst(x = -4, e)]);
+[signum(sqrt(x)), %i];
 
 signum(x^%i);
 signum(x^%i);
@@ -336,11 +336,11 @@ forget(notequal(x, 0));
 declare(z, complex);
 done;
 
-signum(z^3);
-signum(z)^3;
+block([e : signum(z^3)], [e, subst(z = %i, e)]);
+[signum(z^3), -%i];
 
-signum(z^4);
-signum(z)^4;
+block([e : signum(z^4)], [e, subst(z = %i, e)]);
+[signum(z^4), 1];
 
 remove(z, complex);
 done;
@@ -348,14 +348,14 @@ done;
 
 /* Bug #5195: "csign(1/sqrt(x)) vs. csign(sqrt(x))" */
 
-signum(1/sqrt(x));
-1/sqrt(signum(x));
+block([e : signum(1/sqrt(x))], [e, subst(x = -4, e)]);
+[signum(1/sqrt(x)), -%i];
 
-signum(sqrt(x)) * signum(1/sqrt(x));
-1;
+block([e : signum(sqrt(x)) * signum(1/sqrt(x))], [e, subst(x = -4, e)]);
+[signum(sqrt(x)) * signum(1/sqrt(x)), 1];
 
-signum(x^(-1/4));
-1/signum(x)^(1/4);
+block([e : signum(x^(-1/4))], [e, subst(x = -16, e)]);
+[signum(x^(-1/4)), 1/(-1)^(1/4)];
 
 signum(1/sqrt(-4));
 -%i;
@@ -365,6 +365,52 @@ signum(1/sqrt(-4));
 
 block([domain : complex], signum((-8)^(1/3)) - (-1)^(1/3));
 0;
+
+
+/* Bug #5839: "Wrong simplification of powers of signum() for negative and complex arguments"
+   Regressions from c58cde787 (signum(z^r) = signum(z)^r, signum(real)^int), and for the third
+   case from 3fa92abb5 (wrong csign) and 0a6e72115. The tests give the value at a point too,
+   because an expected form is simplified by the same rules as the input. */
+
+block([e : sqrt((signum(x)^3)^(5/3))], [e, subst(x = -1, e)]);
+[sqrt(signum(x)), %i]$
+
+block([e], local(n), declare(n, integer), e : signum(cos(n)^(1/6))^2, [e, subst(n = 4, e)]);
+[signum(cos(n)^(1/6))^2, 1/2 + sqrt(3)*%i/2]$
+
+block([e : signum((-y)^(-3/2))^(1/2)], [e, subst(y = 3, e)]);
+[sqrt(signum(1/(-y)^(3/2))), (-1)^(1/4)]$
+
+block([e : sqrt(signum(1/x))], [e, subst(x = -1, e)]);
+[sqrt(signum(1/x)), %i]$
+
+block([e : signum(sqrt(x))^(2/3)], [e, subst(x = -4, e)]);
+[signum(sqrt(x))^(2/3), 1/2 + sqrt(3)*%i/2]$
+
+block([e], local(z), declare(z, complex), e : signum(z^2)^(1/3), subst(z = -%i, e));
+-1$
+
+/* With domain : complex an odd root is the principal value: */
+block([domain : complex, e], e : [signum(x^(1/3)), signum(x)^(5/3)], subst(x = -8, e) - [(-1)^(1/3), (-1)^(5/3)]);
+[0, 0]$
+
+/* With domain : real it is the real root, so the parity of the numerator decides: */
+[signum(x^(1/3)), signum(x^(2/3)), signum(x)^(5/3), signum(x)^(2/3), signum(x)^(-5/3), signum(x)^(-2/3)];
+[signum(x), signum(x)^2, signum(x), signum(x)^2, 1/signum(x), 1/signum(x)^2]$
+
+/* A base of known sign gives a number: */
+[signum((-2)^(1/4)), signum(sqrt(1 - sqrt(2))), signum((1 - sqrt(2))^(-3/2))];
+[(-1)^(1/4), %i, %i]$
+
+block([], local(x), assume(notequal(x, 0)), [signum(1/x), signum(x^(-1/3)), signum(x)^(-5/3)]);
+[signum(x), signum(x), signum(x)]$
+
+block([], local(x), assume(x >= 0), [signum(sqrt(x)), signum(x^(3/4)), signum(x^3)]);
+[signum(x), signum(x), signum(x)]$
+
+/* c58cde787 made these an error, see bug #4636 for signum(ind): */
+[signum(ind^2), signum(ind)^2, signum(1/ind), signum(und^3), signum(ind)^(1/3)];
+['signum(ind^2), 'signum(ind)^2, 'signum(1/ind), 'signum(und^3), 'signum(ind)^(1/3)]$
 
 
 /***********************************************************/

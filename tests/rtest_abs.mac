@@ -511,8 +511,8 @@ forget(notequal(x, 0));
 declare(z, complex);
 done;
 
-abs(signum(1/z));
-1/abs(signum(z));
+block([e : abs(signum(1/z))], [e, subst(z = %i, e)]);
+[abs(signum(1/z)), 1];
 
 abs(signum(z)^3);
 abs(signum(z))^3;

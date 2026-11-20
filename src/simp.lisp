@@ -1971,6 +1971,48 @@
 		 ;; nounform return
 		 (t (eqtest (list '(%signum) x) e)))))))
 
+;; The complex sign of E, or NIL where $CSIGN signals an error, as for ind.
+(defun $csign-or-nil (e)
+  (car (let (($errormsg nil) (errcatch t) (errset nil))
+         (errset ($csign e)))))
+
+;; signum(z^r) for a rational number r in terms of signum(z), or NIL to leave
+;; it alone. With r = p/q, the result is
+;;
+;;   signum(z)^r, a number, for z > 0 or z < 0,
+;;   signum(z) for z >= 0 and r > 0,
+;;   signum(z)^abs(p) for a real z, if q = 1, or q is odd and domain:real,
+;;   where z^r is the real root, and if p > 0 or z # 0.
+;;
+;; So it is a number, signum(z) or signum(z)^2. signum(1/z) does not become
+;; signum(z) when z can be zero, because it says that z # 0.
+;;
+;; TODO: signum(z^r) = signum(z)^r holds for every rational r. The other
+;; cases are left alone only because, with domain:real, signum(z)^r would
+;; meet rules of the simplifier that are wrong for a base that can be -1.
+;; When one of them gets fixed, the conditions that work around it are not
+;; needed any more:
+;;
+;;   (1/a)^b = 1/a^b in SIMPEXPT: the condition p > 0 or z # 0, because
+;;   signum(1/z) can then be 1/signum(z).
+;;   (a^b)^c = a^(b*c) in SIMPEXPT and a^b*a^c = a^(b+c) in TIMESIN: the
+;;   conditions on q and on z being real, because signum(z)^r can then
+;;   stay for an even q and for a complex z.
+;;
+(defun signum-of-power (z r)
+  (when (or (integerp r) (ratnump r))
+    (let ((s ($csign-or-nil z)))
+      (cond ((member s '($pos $neg))
+             (power (ftake '%signum z) r))
+            ((eq s '$pz)
+             (when (plusp (num1 r))
+               (ftake '%signum z)))
+            ((and (member s '($pn $pnz $nz))
+                  (or (integerp r)
+                      (and (eq $domain '$real) (oddp (caddr r))))
+                  (or (eq s '$pn) (plusp (num1 r))))
+             (power (ftake '%signum z) (abs (num1 r))))))))
+
 (def-simplifier signum (x)
   (let (sgn)
     (cond ((complex-number-p x #'mnump)
@@ -2003,10 +2045,9 @@
 		 ((great (neg x) x)
 		  (neg (take '(%signum) (neg x))))
          
-         ;; signum(z^real) = signum(z)^real
-         ((and (mexptp x)
-               (apparently-real-to-judge-by-$csign-p (caddr x)))
-           (power (ftake '%signum (cadr x)) (caddr x)))
+         ;; signum(z^r) for a rational r, where SIGNUM-OF-POWER has a safe
+         ;; result in terms of signum(z).
+         ((and (mexptp x) (signum-of-power (cadr x) (caddr x))))
 	
 		 ;; nounform return
 		 (t (give-up)))))))
@@ -2220,18 +2261,23 @@
            
            ;; signum(real)^int = signum(real)^{-2, -1, 1, 2} or 1, depending on
            ;; the sign and parity of int, and whether real can be zero.
+           ;; With domain:real, signum(real)^(p/q) for an odd q is the real
+           ;; root, so it is signum(real)^p.
            ((and (eq (caar gr) '%signum)
-                 (integerp pot)
-                 (not (member (setq arg-sign ($csign (cadr gr))) '($complex $imaginary))))
+                 (or (integerp pot)
+                     (and (eq $domain '$real) (ratnump pot) (oddp (caddr pot))))
+                 (member (setq arg-sign ($csign-or-nil (cadr gr)))
+                         '($pos $neg $zero $pn $pnz $pz $nz)))
              (if (member arg-sign '($zero $pnz $pz $nz))
                ;; real can be zero, so if the exponent is negative, it has to stay negative.
-               (let ((new-pot (* (signum pot) (if (evenp pot) 2 1))))
-                 (if (= new-pot pot)
+               (let ((new-pot (* (signum (num1 pot))
+                                 (if (evenp (num1 pot)) 2 1))))
+                 (if (eql new-pot pot)
                    (go up)
                    (return (power gr new-pot))))
                ;; real cannot be zero. Simplify signum(real)^int to 1 for even
                ;; int and signum(real) for odd int.
-               (return (if (evenp pot) 1 gr))))
+               (return (if (evenp (num1 pot)) 1 gr))))
            
            ((eq (caar gr) 'mequal)
             (return (eqtest (list (ncons (caar gr))
