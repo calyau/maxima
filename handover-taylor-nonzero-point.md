@@ -82,7 +82,7 @@ Master 8c68d35ac without that fix gives the same results.
 
 **Side effect.** With `taylor_truncate_polynomials:false`, `taylor(s,s,a,-1)` gave `s-a`, which is not `s` in any sense, and now gives 0 (`(%i9)`). That is what the zero-point branch already gives for a power beyond the truncation with exact polynomials (`taylor(x^5,x,0,3)` is 0 there too). There is no test for it, since the manual does not say what an exact polynomial gives at a negative order.
 
-**residue().** RESM1 in `src/residu.lisp` expands to order 1 because, its comment says, `residue(s/(s^2-a^2),s,a)` fails at order -1. That was this bug. RESM1 is unchanged here, and `handover-residue-order.md` switches it. With all three fixes on master 8c68d35ac, RESM1 at order -1 gives the same value as at order 1 for all 900 generated residues below, among them `cot(z)` at `%pi`, `tan(z)` at `%pi/2` and `gamma(z)` at -1 and -2, which commit f0e672f made work at order -1. On master alone, order -1 breaks 80 of the 826 residues that are right.
+**residue().** RESM1 in `src/residu.lisp` expands to order 1 because, its comment says, `residue(s/(s^2-a^2),s,a)` fails at order -1. That was this bug. RESM1 is unchanged here. With all three fixes on master 8c68d35ac, RESM1 at order -1 gives the same value as at order 1 for all 900 generated residues below, among them `cot(z)` at `%pi`, `tan(z)` at `%pi/2` and `gamma(z)` at -1 and -2, which commit f0e672f made work at order -1. On master alone, order -1 breaks 80 of the 826 residues that are right.
 
 **Not covered.**
 

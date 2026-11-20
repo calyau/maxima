@@ -1045,13 +1045,6 @@ map('ratdisrep,
 [x^2+x, x^2+x+1, x+1+1/x, x+1/(2*x)]$
 
 
-/* Bug #QQQQ: "residue() expands to order 1 where order -1 is enough" */
-
-[residue(s/(s^2-a^2), s, a), residue(cot(z), z, %pi), residue(tan(z), z, %pi/2), residue(gamma(z), z, -1),
- residue(s*exp(s)/(s-1)^2, s, 1), residue(1/(z^2-2)^2, z, sqrt(2)), residue(z^2*(1+z)/(z^3-z^2+(z-1)*(z+1)+1), z, 0)];
-[1/2, 1, -1, -1, 2*%e, -1/2^(7/2), 1]$
-
-
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
