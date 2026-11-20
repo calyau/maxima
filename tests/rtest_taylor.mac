@@ -928,6 +928,18 @@ map('ratdisrep, [taylor(elliptic_e(%pi/4-g/2,2), g, 0, 4),
  elliptic_e(%pi/4,2)+2*%i*sqrt(2)*(x-%pi/4)^(3/2)/3]$
 
 
+/* Bug #5829: "taylor() and residue() of tan fail at poles other than %pi/2 and -%pi/2"
+   A regression from commit 2f8043d13 */
+
+map('ratdisrep, [taylor(tan(z), z, 3*%pi/2, 1), taylor(tan(z), z, -3*%pi/2, 1), taylor(tan(2*z), z, 3*%pi/4, 1),
+                 taylor(tan(x)^2, x, 3*%pi/2, 0), taylor(cot(z), z, 3*%pi/2, 3)]);
+[-1/(z-3*%pi/2)+(z-3*%pi/2)/3, -1/(z+3*%pi/2)+(z+3*%pi/2)/3, -1/(2*(z-3*%pi/4))+2*(z-3*%pi/4)/3,
+ 1/(x-3*%pi/2)^2-2/3, -(z-3*%pi/2)-(z-3*%pi/2)^3/3]$
+
+[residue(tan(z), z, 3*%pi/2), residue(tan(z), z, 7*%pi/2), residue(cot(z), z, 3*%pi/2)];
+[-1, -1, 0]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

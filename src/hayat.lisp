@@ -2512,7 +2512,7 @@
        (let ((const (ps-lc* arg)) (temp (cdr (assoc func trigdisp :test #'eq))))
 	    (cond ((and (pscoefp const)
 			(member func '(%tan %cot) :test #'eq)
-			(multiple-%pi a (srdis const) func)))
+			(multiple-%pi a (simplify (srdis const)) func)))
 		  (temp (funcall temp (setq const (psdisrep const))
 				 (m- a const)))
 		  (t (tsexpt `((,(get func 'recip)) ,(srdis arg)) -1)))))
