@@ -192,8 +192,8 @@
 (defun taylim (e var val &optional (flag nil))
   "Attempt to compute the limit of `e` as `var` approaches `val` using a
    Taylor expansion. If the Taylor expansion succeeds, apply limit
-   methods to the resulting series. If it fails—or if Taylor-based
-   assumptions require rewriting the expression—fall back to `limit1`
+   methods to the resulting series. If it fails - or if Taylor-based
+   assumptions require rewriting the expression - fall back to `limit1`
    and related methods."
   (declare (ignore flag))
 
