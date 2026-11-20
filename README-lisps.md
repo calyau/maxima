@@ -80,25 +80,21 @@ There are CMUCL implementations only for Unix-like systems
 GCL <https://www.gnu.org/software/gcl/>
 ---------------------------------------
 
-GCL >= 2.6.14 is required to build Maxima.
+GCL >= 2.7.0 is required to build Maxima. GCL 2.6.14 fails to compile it.
 
 GCL can be built with readline support, so Maxima has advanced
 command-line editing facilities when built with it.
 GCL produces a fast Maxima executable that profit from GCL's
 fast bignum algorithms.
 
-Only the ANSI-enabled version of GCL works with Maxima, i.e.,
-when GCL is built, it must be configured with the `--enable-ansi` flag,
-i.e., execute `./configure --enable-ansi` in the build directory
-before executing make.
+Only the ANSI version of GCL works with Maxima. GCL 2.7 needs no
+special configure option for that: it builds both an ANSI and a CLtL1
+image, and its `gcl` script starts the ANSI one when the environment
+variable `GCL_ANSI` is set to a nonempty value. Maxima's configure
+script and Makefile set `GCL_ANSI` themselves.
 
-Whether GCL is ANSI-enabled or not can be determined by
-inspecting the banner which is printed when GCL is executed;
-if ANSI-enabled, the banner should say `ANSI`.
-Also, the special variable `*FEATURES*` should include the keyword `:ANSI-CL`.
-
-On Debian based Linux distributions you can enable/disable the ANSI version using:
-dpkg-reconfigure gcl
+When GCL is started with `GCL_ANSI=t gcl`, the banner should say `ANSI`,
+and the special variable `*FEATURES*` should include the keyword `:ANSI-CL`.
 
 There are GCL implementations for many platforms
 including MS Windows and Unix-like systems.

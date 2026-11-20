@@ -371,6 +371,7 @@ Bug fixes for numbered bugs:
 * \#5836 taylor(tan(z)*cot(2*z), z, 2*%pi, 0) gives 0 instead of 1/2
 * \#5837 taylor() of tanh and coth fails at their poles on the imaginary axis
 * \#5838 Translated functions give Lisp type errors for boolean variables
+* \#5840 Maxima does not build with GCL 2.6.14, which configure still accepts
 
 Bug fixes for unnumbered bugs:
 ------------------------------

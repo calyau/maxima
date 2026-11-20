@@ -64,6 +64,7 @@ dnl didn't so we have to drop this in ourselves.
 AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
 
 explicit_lisp=false
+gcl_autodetected=false
 lisps_enabled=""
 
 dnl Compiling with abcl requires a jre and the path to abcl.jar
@@ -1226,6 +1227,7 @@ if test x"${explicit_lisp}" = xfalse ; then
 	fi
 	if test x"${gcl_found}" = xtrue ; then
 		gcl=true
+		gcl_autodetected=true
 		lisps_enabled="${lisps_enabled} gcl"
 	fi
 	if test x"${cmucl_found}" = xtrue ; then
@@ -1260,7 +1262,6 @@ fi
 AM_CONDITIONAL(ABCL, test x$abcl = xtrue)
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 AM_CONDITIONAL(CLISP_EXEC, test x$clisp_exec = xtrue)
-AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 AM_CONDITIONAL(CMUCL_EXEC, test x${cmucl_exec} = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
@@ -1327,7 +1328,7 @@ flag.)
 fi
 
 if test x"${gcl}" = xtrue; then
-   AC_MSG_CHECKING([if gcl version >= 2.6.14])
+   AC_MSG_CHECKING([if gcl version >= 2.7.0])
    dnl Check gcl version
    dnl Perhaps could be done better, but this is easy to see that we're
    dnl correctly getting the version number of gcl at the expense of
@@ -1342,12 +1343,25 @@ if test x"${gcl}" = xtrue; then
    dnl Create a numerical version number
    gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_extra}`
 
-   if test ${gcl_version} -lt 20614; then
-       AC_MSG_ERROR([GCL version ${GCL_VERSION} too old])
-   else
-       AC_MSG_RESULT([${GCL_VERSION}])
+   AC_MSG_RESULT([${GCL_VERSION}])
+   dnl GCL 2.6.14 generates invalid C code.
+   if test ${gcl_version} -lt 20700; then
+       if test x"${gcl_autodetected}" = xtrue; then
+           AC_MSG_WARN([GCL ${GCL_VERSION} is too old, Maxima needs GCL 2.7.0 or later.
+Not building Maxima with GCL.])
+           gcl=false
+           lisps_enabled=`echo "${lisps_enabled}" | sed 's/ gcl//g'`
+           if test x"${lisps_enabled}" = x; then
+               AC_MSG_ERROR([No usable lisp implementation found: GCL ${GCL_VERSION}
+is too old, Maxima needs GCL 2.7.0 or later])
+           fi
+       else
+           AC_MSG_ERROR([GCL version ${GCL_VERSION} too old, Maxima needs GCL 2.7.0 or later])
+       fi
    fi
+fi
 
+if test x"${gcl}" = xtrue; then
    result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")' -eval '(si::bye)'`
    retval=$?
    if test ! x"${retval}" = x"0" ; then
@@ -1372,6 +1386,7 @@ AC_ARG_ENABLE(gcl-alt-link,
      	esac],
 	[gcl_alt_link=false])
 
+AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(GCL_ALT_LINK, test x$gcl_alt_link = xtrue)
 
 AC_ARG_WITH(default-lisp,
