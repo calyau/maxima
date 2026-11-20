@@ -1009,6 +1009,29 @@ block([e : -1/(tan(1)*z^3)-(tan(1)^2+1)/(tan(1)^2*z)],
           - [e, e, 1/z^3+(1-%gamma)/z]));
 [0, 0, 0]$
 
+ratsimp(map('ratdisrep,
+            [taylor(gamma((z+1)*(z-1))/z^2, z, 0, -3), taylor(gamma((z+1)*(z-1))/z^3, z, 0, -3)])
+        - [-1/z^4, (%gamma-1)/z^3-1/z^5]);
+[0, 0]$
+
+/* The denominators hide a 0, like 1/sin(2)-csc(2). Right here is an error
+   or the leading term, but not 0. */
+map(lambda([c],
+      block([r : errcatch(taylor(c[1], z, 0, c[2]))],
+        is(r = [] or abs(float(subst(z = 1/2, ratdisrep(r[1]) - c[3]))) < 1e-9))),
+    [[1/(csc(2+z^3)-csc(2)), -2, -sin(2)^2/(cos(2)*z^3)],
+     [1/(cot(1/2+z^2)-cot(1/2)), -1, -sin(1/2)^2/z^2],
+     [1/(sec(2+z^2)-sec(2)), -2, cos(2)^2/(sin(2)*z^2)]]);
+[true, true, true]$
+
+ratsimp(map('ratdisrep,
+            [taylor((w+2)/(z*(w-1)), z, 0, -1, w, 1, -1),
+             taylor(1/((1-z)*(1-w)), z, 0, -1, w, 0, 0),
+             taylor(1+z+log(1+w)/w^2, z, 0, -1, w, 0, -1),
+             taylor(exp(z)*z^2*log(1+w)*log(2+w)/w, z, 1, -1, w, 0, 0)])
+        - [3/(z*(w-1)), 0, 0, 0]);
+[0, 0, 0, 0]$
+
 
 /* Bug #MMMM: "taylor(s/(s-1),s,1,-1) gives 0 instead of 1/(s-1)" */
 
@@ -1029,6 +1052,14 @@ ratsimp(map('ratdisrep,
 
 ratdisrep(taylor(z/((z+sqrt(2))*(z-sqrt(2))+2)+z^2*(1+z), z, 0, 2));
 1/z+z^2$
+
+ratsimp(map('ratdisrep,
+            [taylor(log(4+z)/(z-1)*(w+2)/(w-2), z, 1, -1, w, 2, -1),
+             taylor(log(z+4)*log(w+4)/((z-1)*(w-2)), z, 1, -1, w, 2, -1),
+             taylor(z^2*w*log(2+w)/((w+3)*(w-2)*sin(z-2)), z, 2, -1, w, 2, -2),
+             taylor(log(4+w), z, 1, 0, w, 2, -1)])
+        - [4*log(5)/((z-1)*(w-2)), log(5)*log(6)/((z-1)*(w-2)), 0, 0]);
+[0, 0, 0, 0]$
 
 
 /* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */

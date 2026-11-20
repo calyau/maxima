@@ -590,7 +590,9 @@
 				      (tsprsum (m+t a (m-t '%%taylor-index%%))
 					       `(%%taylor-index%% 1 ,const) '%product)))
 		     (pstimes (expand (m+t a (- const)) '%gamma)
-			      (let-pw datum (e+ func ord)
+			      ;; The product has a constant term, so it takes a
+			      ;; level of at least 0 for it to be invertible.
+			      (let-pw datum (emax (e+ func ord) (rczero))
 				      (psexpt (tsprsum (m+t a '%%taylor-index%%)
 						       `(%%taylor-index%% 0 ,(- (1+ const))) '%product)
 					      (rcmone)))))))))))

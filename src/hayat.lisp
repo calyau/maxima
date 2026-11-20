@@ -2234,7 +2234,14 @@
 
 (defun taylor2-1 (e)
  (let ((last-exp e))	    ;; lexp-non0 should be bound here when needed
-  (cond ((assolike e tlist) (var-expand e 1 () ))
+  (cond ((and (e> (rczero) (current-trunc mainvar-datum))
+	      (mfree e (main-tvars)))
+	 ;; E is free of the main variables, so it is a term of degree 0
+	 ;; in them, which a negative main level drops like a constant.
+	 ;; Its own expansion would be wrong there, since the constants
+	 ;; in it are dropped: log(w+1) would become log(w).
+	 (pszero (data-gvar-o mainvar-datum) (current-trunc mainvar-datum)))
+	((assolike e tlist) (var-expand e 1 () ))
 	((or (mnump e) (atom e) (mfree e tvars))
 	 (if (or (e> (rczero) (current-trunc mainvar-datum))
 		 (lim-zerop e))
@@ -2282,6 +2289,15 @@
           (let ((ee (diff-expand e tlist)))
             (cond ((equal (sratsimp e) (sratsimp ee)) (return-from taylor2-1 (prep1 ee)))
                   (t (taylor2 ee)))))))))
+
+;; The variables truncated at the main level: the variable given first to
+;; taylor, or the variables of a list given first.
+
+(defun main-tvars ()
+  (let ((multivar (switch 'multivar mainvar-datum)))
+    (if multivar
+      (cadr multivar)
+      (ncons (datum-var mainvar-datum)))))
 
 (defun compatvarlist (a b c d)
    (cond ((null a) t)
@@ -3111,7 +3127,11 @@
 
 (defun tslog (arg)
   (let ((psarg (taylor2 arg)) datum)
-   (when (rczerop psarg) (setq psarg (get-lexp arg () 't)))
+   ;; PSARG can lie beyond the truncation altogether: a variable other than
+   ;; the main one, expanded at a point other than 0 to a negative level,
+   ;; comes from VAR-EXPAND as its kernel beyond that level. Taken as it
+   ;; is, log(w+2) at w = 2 would become log(w-2).
+   (when (rczerop (pstrunc psarg)) (setq psarg (get-lexp arg () 't)))
    ;; We must ensure that the lc is non-zero since it will be inverted in pslog
    (setq psarg (strip-zeroes psarg 't))
    (do ((ps psarg (ps-lc ps)) (shift (rcone) (e* shift (rctwo))))
@@ -3120,7 +3140,14 @@
 	   (when (rczerop (setq psarg (taylor2 arg)))
 	      (setq psarg (get-lexp arg () 't)))
 	   (mapc #'(lambda (data) (pop-pw data)) datum))
-	(pslog psarg))
+	;; A log that comes out constant is the constant term of a series in
+	;; the variable of PSARG, so a negative level of that variable
+	;; drops it.
+	(let ((ans (pslog psarg)))
+	  (if (and (pscoefp ans) (psp psarg)
+		   (e> (rczero) (t-o-var (gvar psarg))))
+	    (rczero)
+	    ans)))
       (push (get-datum (get-key-var (gvar ps))) datum)
       (if (and (e> (ps-le ps) (rczero))
 	       (e> (current-trunc (car datum)) (rczero)))
@@ -3141,7 +3168,7 @@
 	  (rczero))
       (progn
 	(tlist-mapc d (push-pw d (or e-start (emax (orig-trunc d) (rcone)))))
-	(do ((psexp) (i (1+ $taylordepth) (1- i)))
+	(do ((psexp) (i (1+ $taylordepth) (1- i)) (zero-truncs))
 	    ((signp e i)
 	     (tlist-mapc d (pop-pw d))
 	     (if zerocheck?
@@ -3158,13 +3185,35 @@
 		;; ((and lexp-non0 (rczerop (le (terms psexp)))
 		;;       (mono-term? (terms psexp))))
 		(t (tlist-mapc d (pop-pw d))
+		   ;; PSEXP is the first expansion that is not 0, so its
+		   ;; leading term should lie beyond the truncation levels
+		   ;; of the expansions before it, which came out 0. If it
+		   ;; lies within them, the leading term is not known: one
+		   ;; of its coefficients may be a 0 that was not seen to
+		   ;; vanish, like 1/sin(2)-csc(2).
+		   (when (and zerocheck? zero-truncs (not (rczerop psexp))
+			      (lexp-contradicted? psexp zero-truncs))
+		     (zero-test-err))
 		   (return psexp)))
+	  (setq zero-truncs
+		(mapcar #'(lambda (d) (cons d (current-trunc d))) tlist))
 	  (cond ((and (= i 1) e-start)
 		 (setq e-start () i 2)
 		 (tlist-mapc d (push-pw d (prog1 (e* (orig-trunc d) (current-trunc d))
 					    (pop-pw d)))))
 		(t (tlist-mapc d (push-pw d (prog1 (e* (rctwo) (current-trunc d))
 					      (pop-pw d))))))))))
+
+;; Does the leading term of PS lie within ZERO-TRUNCS, the truncation levels
+;; of an expansion that came out 0? ZERO-TRUNCS pairs each datum of TLIST
+;; with its level. Those levels are at least 1, so a constant lies within.
+
+(defun lexp-contradicted? (ps zero-truncs)
+  (or (pscoefp ps)
+      (let ((trunc (cdr (assoc (get-datum (get-key-var (gvar ps)))
+                               zero-truncs))))
+        (and trunc (not (e> (ps-le ps) trunc))
+             (lexp-contradicted? (ps-lc ps) zero-truncs)))))
 
 (defun 1p (x)
   (or (equal x 1) (equal x 1.0)))
@@ -3468,6 +3517,10 @@
 
 (defun tay-depth-err ()
        (tay-err (intl:gettext "'taylordepth' exceeded while expanding:")))
+
+(defun zero-test-err ()
+  (tay-err
+   (intl:gettext "unable to tell whether a coefficient vanishes in:")))
 
 ;;;		 Subtitle TAYLORINFO
 
