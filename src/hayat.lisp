@@ -2357,6 +2357,17 @@
 					     (if (eq (exp-pt temp) '$minf)
 						 (rcmone)
 					       (rcone))))))))
+	   ((and (tvar? var2) (not (signp e (exp-pt temp)))
+		 (null (switch '$asymp temp)) (not dont-truncate?)
+		 (e> (rczero) (current-trunc temp)))
+	    ;; Expanded at a point other than 0, VAR2^EXP starts with the
+	    ;; constant EXP-PT^EXP, so a negative truncation level leaves
+	    ;; nothing of it. The code below would drop only that constant and
+	    ;; return a power of the kernel, and TSTIMES would take its order
+	    ;; for the order of VAR2^EXP, which is 0. A kernel adjoined during
+	    ;; the expansion is not TVAR?, and its EXP-PT is a limit such as
+	    ;; $ZEROA rather than a point, so it is left alone.
+	    (rczero))
 	   ;; multivar expansion does not work at infinity, so
 	   ;; expansion at infinity is handled by above clause even if doing multivar.
 	   ((switch 'multi temp)	;; multivar expansion

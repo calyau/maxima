@@ -951,6 +951,18 @@ map('ratdisrep,
 [2, %e^-1/z, -1/(sin(1)*z^5)]$
 
 
+/* Bug #MMMM: "taylor(s/(s-1),s,1,-1) gives 0 instead of 1/(s-1)" */
+
+map('ratdisrep,
+    [taylor(s/(s-1), s, 1, -1), taylor(s/(s^2-a^2), s, a, -1),
+     taylor(s*exp(s)/(s-1)^2, s, 1, -1), taylor(s/(s^2+1), s, %i, -1),
+     taylor(s/(s-1), [s], 1, -1), taylor(y*s/(s-1), s, 1, -1, y, 0, 1)]);
+[1/(s-1), 1/(2*(s-a)), %e/(s-1)^2+2*%e/(s-1), 1/(2*(s-%i)), 1/(s-1), y/(s-1)]$
+
+ratsimp(ratdisrep(taylor(x*y/((x-1)*(y-2)), [x, y], [1, 2], -1)) - (2/((x-1)*(y-2))+1/(x-1)+2/(y-2)));
+0$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
