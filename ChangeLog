@@ -366,6 +366,7 @@ Bug fixes for numbered bugs:
 * \#5827 factor() prints the whole polynomial when it refuses to factor it
 * \#5829 taylor() and residue() of tan fail at poles other than %pi/2 and -%pi/2
 * \#5834 ratdisrep(taylor(tan(z), z, %pi, 1)) = z-%pi is false every other time
+* \#5835 taylor() of sec and csc at a pole fails with quotient by zero
 
 Bug fixes for unnumbered bugs:
 ------------------------------

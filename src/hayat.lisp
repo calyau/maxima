@@ -2515,7 +2515,7 @@
 			(multiple-%pi a (simplify (srdis const)) func)))
 		  (temp (funcall temp (setq const (psdisrep const))
 				 (m- a const)))
-		  (t (tsexpt `((,(get func 'recip)) ,(srdis arg)) -1)))))
+		  (t (tsexpt `((,(get func 'recip)) ,a) -1)))))
 
 (defun multiple-%pi (a const func)
   (let (coef)
