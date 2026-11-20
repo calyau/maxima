@@ -1174,3 +1174,36 @@ block([r],
   remrule(log, all),
   [r, constantp(log(2))]);
 [true, true]$
+
+
+/* Bug #5415: "defmatch and defrule patterns with + or * never match an atomic expression" */
+
+(kill(all),
+ matchdeclare(cc, freeof(x), nn, integerp),
+ defmatch(m1, cc*x^nn, x),
+ [m1(5*t^3, t), m1(t, t)]);
+[[cc = 5, nn = 3, x = t], [cc = 1, nn = 1, x = t]]$
+
+(matchdeclare([bb, cc], freeof(x)),
+ defmatch(linearp, bb*x + cc, x),
+ [linearp(3*z + 1, z), linearp(z, z), linearp(%pi, %pi)]);
+[[cc = 1, bb = 3, x = z], [cc = 0, bb = 1, x = z], [cc = 0, bb = 1, x = %pi]]$
+
+(matchdeclare(aa, true),
+ defrule(r1, aa + 1, aa),
+ [r1(x), r1(5), r1(%pi), r1(%i), r1(2.5), r1("s")]);
+[x - 1, 4, %pi - 1, %i - 1, 1.5, "s" - 1]$
+
+(matchdeclare(kk, integerp),
+ defrule(r2, kk*y, kk),
+ apply1([2*y, y], r2));
+[2, 1]$
+
+(matchdeclare(cc, numberp),
+ defrule(r3, f(cc), cc),
+ defrule(r4, f[cc], cc),
+ [r3(f(1)), r3(f[1]), r3(f), r3(5), r4(f(1)), r4(f[1]), r4(f), r4(5)]);
+[1, false, false, false, false, 1, false, false]$
+
+(kill(all), 0);
+0$

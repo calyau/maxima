@@ -362,8 +362,8 @@
                                             (when (not (atom pt))
 					      ;; Ensure that the expression to be matched is an array expression iff the pattern is.
 					      (if (member 'array (car pt))
-					        (list `(when (not (member 'array (kar ,a))) (matcherr)))
-					        (list `(when (member 'array (kar ,a)) (matcherr)))))
+					        (list `(when (not ($subvarp ,a)) (matcherr)))
+					        (list `(when ($subvarp ,a) (matcherr)))))
 
 					    program
 					    (list (list 'return
@@ -612,8 +612,8 @@
                                             (when (not (atom pt))
 					      ;; Ensure that the expression to be matched is an array expression iff the pattern is.
 					      (if (member 'array (car pt))
-					        (list `(when (not (member 'array (kar ,a))) (matcherr)))
-					        (list `(when (member 'array (kar ,a)) (matcherr)))))
+					        (list `(when (not ($subvarp ,a)) (matcherr)))
+					        (list `(when ($subvarp ,a) (matcherr)))))
 
 					    program
 					    (list (list 'return
