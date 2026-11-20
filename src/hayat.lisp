@@ -2443,7 +2443,12 @@
 			  (funcall (cdr temp) arg psarg func))
 			 ((rczerop funord) fun-lc)
 			 (t (rczero))))))
-     (when (pscoefp psarg) (setq psarg (taylor2 arg)))
+     ;; ARG expands to the constant PSARG. Expand it again for the terms the
+     ;; current truncation level adds, unless that level is negative: there
+     ;; TAYLOR2 gives 0, and FUNC would be taken at 0 instead of at PSARG.
+     (when (and (pscoefp psarg)
+		(not (e> (rczero) (current-trunc mainvar-datum))))
+       (setq psarg (taylor2 arg)))
      (when (pscoefp psarg)
        (return
 	 (cond ((null (mfree (rdis psarg) tvars))
