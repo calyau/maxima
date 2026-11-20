@@ -4,11 +4,11 @@
 
 **Fix taylor() with 'asymp dropping terms at a finite point**
 
-`taylor(expr, [x, a, n, 'asymp])` lost terms at every finite point: `taylor(x^2,[x,a,0,'asymp])` missed `a^2`, `taylor(x^2,[x,a,-2,'asymp])` gave 0 and `taylor(x^2+x+1,[x,0,0,'asymp])` gave 1. Both causes are in VAR-EXPAND. At a point other than 0 it raised a too short expansion of `x` to a power, and at the point 0 it compared the wrong degree with the truncation level. This builds on the two earlier handovers (commits 5b387d9 and 59481de), which must be applied first.
+`taylor(expr, [x, a, n, 'asymp])` lost terms at every finite point: `taylor(x^2,[x,a,0,'asymp])` missed `a^2`, `taylor(x^2,[x,a,-2,'asymp])` gave 0 and `taylor(x^2+x+1,[x,0,0,'asymp])` gave 1. Both causes are in VAR-EXPAND. At a point other than 0 it raised a too short expansion of `x` to a power, and at the point 0 it compared the wrong degree with the truncation level. This builds on `handover-taylor-cancelling-constants.md` and `handover-taylor-nonzero-point.md`, which must be applied first.
 
 ## 2. Reproducer/Demo
 
-### Old: pristine build of 178e865 (executed)
+### Old: master 8c68d35ac with the cancelling-constants and nonzero-point fixes (executed)
 
 ```
 (%i1) display2d:false
@@ -30,9 +30,9 @@
 (%o9) 1/(x-1)-1/(x-1)^2
 ```
 
-Master (749af2f) gives the same results for these inputs. I checked that by loading master's TAYLOR2 and VAR-EXPAND, the only functions that differ, into the patched image.
+Master 8c68d35ac without those fixes gives the same results.
 
-### New: patched build (executed)
+### New: the same with this fix (executed)
 
 ```
 (%i1) display2d:false
@@ -64,9 +64,11 @@ Master (749af2f) gives the same results for these inputs. I checked that by load
 
 **Unchanged.** Exponents up to 1 (PSEXPT loses nothing there, `(%o9)`), expansions at infinity (an asymptotic one still signals an error), multivariable expansions and everything without `'asymp`.
 
-**Not covered.** RATDISREP of such a series at a point other than 0 can return an unsimplified sum flagged as simplified: `ratdisrep(taylor(x,[x,1,0,'asymp]))` gives `-1+x+1`, before this change too. That is the PSDISREP+ bug that the taylor ratdisrep-order handover fixes, and with it applied the result is `x`. One test below compares through `ratsimp` because of it, which is harmless either way.
+**RATDISREP.** Before ffb699c5b (bug #5834), RATDISREP of such a series at a point other than 0 could return an unsimplified sum flagged as simplified: `ratdisrep(taylor(x,[x,1,0,'asymp]))` gave `-1+x+1`. On master it gives `x`. One test below still compares through `ratsimp`, which is harmless.
 
-**Checks.** The expected values were checked numerically, independent of `taylor()`: at x = a + 1/h, (f-S)/h^(n+1) evaluated in 80-digit bigfloats for h = 1e-6, 1e-9, 1e-12 stays bounded (it tends to the next coefficient: 6, 9, 0, 1, 1, 1, 0, 1 and 1/8, with a = 3 for the symbolic point), while for the old results 1 and `x-1` in rows 4 and 6 it grows like 1/h^2.
+**Checks.** The expected values were checked numerically, independent of `taylor()`: at x = a + 1/h, (f-S)/h^(n+1) evaluated in 80-digit bigfloats for h = 1e-6, 1e-9, 1e-12 stays bounded (it tends to the next coefficient: 6, 9, 0, 1, 1, 1, 0, 1 and 1/8, with a = 3 for the symbolic point), while for the old results 1 and `x-1` in rows 4 and 6 it grows like 1/h^2. Measured before the two earlier fixes were revised: on master 8c68d35ac with the two earlier fixes, this fix makes 65 more of the 1,122 generated expansions right, all of them asymptotic ones, and none that were right got worse.
+
+Measured on master 8c68d35ac with the two earlier fixes as they are now: of the 4,870 generated expansions of the first handover, 870 are asymptotic ones (29 expressions at 5 points and 6 orders). With this fix 327 more of them are right, none got worse, and no other result changed. All 870 are right now. For the 21 with `z^(3/2)`, whose terms come in half-integer steps, that was checked by hand.
 
 ## 3. Bug report
 
@@ -166,17 +168,9 @@ Adds the tests of section 5, after those of the two earlier handovers.
 /* clean up & checks */
 ```
 
-### `ChangeLog` (optional, not in the commit)
-
-Once the bug report has a number, add its line under `Bug fixes for numbered bugs:`, in number order:
-
-```
-* \#PPPP taylor(x^2,[x,a,0,'asymp]) misses the term a^2
-```
-
 ## 5. Proposed test cases
 
-**New**, in `tests/rtest_taylor.mac`, before its final clean-up checks and after the tests of the two earlier handovers. Replace `PPPP` by the number the bug report gets. The first pair compares through `ratsimp` because, without the ratdisrep-order fix, RATDISREP returns `-1+x+1` for a series at the point 1 (see section 2).
+**New**, in `tests/rtest_taylor.mac`, before its final clean-up checks and after the tests of the two earlier handovers. Replace `PPPP` by the number the bug report gets. The first pair compares through `ratsimp`, a leftover from before ffb699c5b, when RATDISREP returned `-1+x+1` for a series at the point 1 (see section 2). It is harmless.
 
 ```
 /* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */
@@ -193,7 +187,7 @@ map('ratdisrep,
 [x^2+x, x^2+x+1, x+1+1/x, x+1/(2*x)]$
 ```
 
-`run_testsuite(share_tests=true)` on SBCL 2.2.9: 1 failure out of 22,358 tests (`rtestprintf.mac` problem 38, the same float printing failure as the unpatched baseline). `rtest_taylor` passes 255/255, and its 2 new problems both fail on the build without this patch.
+`run_testsuite(share_tests=true)` on SBCL 2.2.9, master 8c68d35ac with all three fixes: 1 failure out of 22,391 tests (`rtestprintf.mac` problem 38, the same float printing failure as on master). `rtest_taylor` passes 266/266, and its 2 new problems both fail without this patch.
 
 ## 6. Proposed Git commit message
 
