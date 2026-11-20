@@ -2445,7 +2445,16 @@
 						                       c0)))))
 		    (return ans)))))
      (setq temp (t-o-var (gvar psarg)))
-     (when (e> (e* funord argord) temp) (return (rczero)))
+     (when (e> (e* funord argord) temp)
+       ;; FUNC may still have a pole at the constant term of ARG. Then
+       ;; expand to order 0 and keep the terms of negative order.
+       (when (and (rczerop argord) (pscoefp (ps-lc* psarg))
+		  (assoc funame const-exp-funs :test #'eq))
+	 (let ((ps (let-pw (get-datum (get-key-var (gvar psarg))) (rczero)
+		     (expand arg func))))
+	   (when (and (psp ps) (eq (gvar ps) (gvar psarg)))
+	     (return (pstrunc ps)))))
+       (return (rczero)))
      ;; the following form need not be executed if psarg is really exact.
      ;; The constant problem does not allow one to determine this now,
      ;; so we always have to execute this currently.
