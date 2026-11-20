@@ -2391,6 +2391,8 @@
 		     (taylor2 (exp-pt temp)))
 		    exp))
 	   ((signp e (exp-pt temp))
+	    ;; With $ASYMP the kernel is 1/VAR2, so VAR2^EXP has degree -EXP.
+	    (when (switch '$asymp temp) (setq exp (rcminus exp)))
 	    (let ((exp>trunc? () ))
 	       (if (and (e> exp (current-trunc temp)) (setq exp>trunc? 't)
 			(not dont-truncate?))
@@ -2398,9 +2400,15 @@
 		  (make-ps (int-var temp)
 			   (ncons (if exact-poly (inf)
 				     (if exp>trunc? exp (current-trunc temp))))
-			   (ncons (term (if (switch '$asymp temp) (rcminus exp)
-					   exp)
-					(rcone)))))))
+			   (ncons (term exp (rcone)))))))
+	   ((and (switch '$asymp temp) (e> exp (rcone)))
+	    ;; With $ASYMP the kernel is 1/(VAR2-EXP-PT), of degree -1, and
+	    ;; PSEXPT knows a power of a series of degree -1 to EXP-1 degrees
+	    ;; less than the series. VAR2 is exact, so expand it that much
+	    ;; further, also keeping the constant EXP-PT at a negative level.
+	    (psexpt (let-pw temp (e+ (current-trunc temp) (e1- exp))
+		      (var-expand var2 1 dont-truncate?))
+		    exp))
 	   (t (psexpt (psplus
 			 (make-ps (int-var temp)
 				  (ncons (if exact-poly (inf) (current-trunc temp)))

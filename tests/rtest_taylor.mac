@@ -963,6 +963,20 @@ ratsimp(ratdisrep(taylor(x*y/((x-1)*(y-2)), [x, y], [1, 2], -1)) - (2/((x-1)*(y-
 0$
 
 
+/* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */
+
+ratsimp(map('ratdisrep,
+             [taylor(x^2, [x, a, -2, 'asymp]), taylor(x^2, [x, a, -1, 'asymp]), taylor(x^2, [x, a, 0, 'asymp]),
+              taylor(x^3/(x^2-1), [x, 1, 0, 'asymp]), taylor(x^3/(x^2-1), [x, 1, 1, 'asymp])])
+        - [(x-a)^2, (x-a)^2+2*a*(x-a), (x-a)^2+2*a*(x-a)+a^2, x, x+1/(x-1)]);
+[0, 0, 0, 0, 0]$
+
+map('ratdisrep,
+    [taylor(x^2+x+1, [x, 0, -1, 'asymp]), taylor(x^2+x+1, [x, 0, 0, 'asymp]),
+     taylor(x^2/(x-1), [x, 0, 1, 'asymp]), taylor(sqrt(x^2+1), [x, 0, 2, 'asymp])]);
+[x^2+x, x^2+x+1, x+1+1/x, x+1/(2*x)]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
