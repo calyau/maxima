@@ -66,6 +66,15 @@ AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
 explicit_lisp=false
 gcl_autodetected=false
 lisps_enabled=""
+abcl_without=
+clisp_without=
+cmucl_without=
+sbcl_without=
+acl_without=
+gcl_without=
+openmcl_without=
+ccl64_without=
+ecl_without=
 
 dnl Compiling with abcl requires a jre and the path to abcl.jar
 AC_ARG_ENABLE(abcl,
@@ -83,10 +92,14 @@ ABCL_JAR=`pwd`/"abcl.jar"
 AC_ARG_WITH(abcl-jar,
 	[AS_HELP_STRING([--with-abcl-jar=<jarfile>],
         [Use <jarfile> as abcl install (default ./abcl.jar)])],
-	[abcl=true
-	lisps_enabled="${lisps_enabled} abcl"
-	explicit_lisp=true
-	ABCL_JAR="${withval}"])
+	[if test "$withval" = "no"; then
+		abcl_without=--without-abcl-jar
+	else
+		abcl=true
+		lisps_enabled="${lisps_enabled} abcl"
+		explicit_lisp=true
+		ABCL_JAR="${withval}"
+	fi])
 	
 AC_ARG_WITH(jre,
  	[AS_HELP_STRING([--with-jre=<jre>],
@@ -94,6 +107,9 @@ AC_ARG_WITH(jre,
  	[JRE="${withval}"],
  	[JRE="java"])
 
+if test -n "${abcl_without}" && test x"${abcl}" = xtrue ; then
+	AC_MSG_ERROR(${abcl_without} contradicts an option enabling ABCL)
+fi
 if test x"${abcl}" = xtrue ; then
      if test -e "${ABCL_JAR}" ; then
           echo Using abcl found in ${ABCL_JAR}
@@ -119,10 +135,15 @@ AC_ARG_ENABLE(clisp,
 AC_ARG_WITH(clisp,
 	[AS_HELP_STRING([--with-clisp=<prog>],
         [Use clisp executable <prog> (default clisp)])],
-	[clisp=true
-	lisps_enabled="${lisps_enabled} clisp"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		clisp_disabled=true
+		clisp_without=--without-clisp
+	else
+		clisp=true
+		lisps_enabled="${lisps_enabled} clisp"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		CLISP_NAME="${clisp_default_name}"
 	else
 		CLISP_NAME="$withval"
@@ -134,10 +155,12 @@ AC_ARG_WITH(clisp-runtime,
         [Use clisp runtime <path> (default
 	                          *lib-directory*/base/lisp.run on unix,
 	   		          *lib-directory*\\lisp.exe on windows) ])],
-	[clisp=true
-	lisps_enabled="${lisps_enabled} clisp"
-	CLISP_RUNTIME_PATH="$withval"
-	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
+	[if test "$withval" != "no"; then
+		clisp=true
+		lisps_enabled="${lisps_enabled} clisp"
+		CLISP_RUNTIME_PATH="$withval"
+		CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`
+	fi],
 	[])
 AC_ARG_ENABLE(clisp-exec,
 	[AS_HELP_STRING([--enable-clisp-exec],
@@ -155,6 +178,9 @@ AC_ARG_ENABLE(clisp-exec,
 	 CLISP_EXEC=${clisp_exec}],
 	[clisp_exec=false
 	 CLISP_EXEC=false])
+if test -n "${clisp_without}" && test x"${clisp}" = xtrue ; then
+	AC_MSG_ERROR(${clisp_without} contradicts an option enabling CLISP)
+fi
 if test x"${clisp}" = xtrue ; then
 	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CLISP_NAME" ; then
@@ -210,10 +236,15 @@ AC_ARG_ENABLE(cmucl,
 AC_ARG_WITH(cmucl,
 	[AS_HELP_STRING([--with-cmucl=<prog>],
         [Use CMUCL executable <prog> (default lisp)])],
-	[cmucl=true
-	lisps_enabled="${lisps_enabled} cmucl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		cmucl_disabled=true
+		cmucl_without=--without-cmucl
+	else
+		cmucl=true
+		lisps_enabled="${lisps_enabled} cmucl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		CMUCL_NAME="${cmucl_default_name}"
 	else
 		CMUCL_NAME="$withval"
@@ -223,10 +254,12 @@ AC_ARG_WITH(cmucl-runtime,
 	[AS_HELP_STRING([--with-cmucl-runtime=<path>],
         [Use CMUCL runtime <path> (default
 	                          *cmucl-lib*/../bin/lisp)])],
-	[cmucl=true
-	lisps_enabled="${lisps_enabled} cmucl"
-	CMUCL_RUNTIME_PATH="$withval"
-	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
+	[if test "$withval" != "no"; then
+		cmucl=true
+		lisps_enabled="${lisps_enabled} cmucl"
+		CMUCL_RUNTIME_PATH="$withval"
+		CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`
+	fi],
 	[])
 AC_ARG_ENABLE(cmucl-exec,
 	[AS_HELP_STRING([--enable-cmucl-exec],
@@ -244,6 +277,9 @@ AC_ARG_ENABLE(cmucl-exec,
 	 CMUCL_EXEC=${cmucl_exec}],
 	[cmucl_exec=false
 	 CMUCL_EXEC=false])
+if test -n "${cmucl_without}" && test x"${cmucl}" = xtrue ; then
+	AC_MSG_ERROR(${cmucl_without} contradicts an option enabling CMUCL)
+fi
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CMUCL_NAME" ; then
@@ -277,10 +313,15 @@ AC_ARG_ENABLE(sbcl,
 AC_ARG_WITH(sbcl,
 	[AS_HELP_STRING([--with-sbcl=<prog>],
         [Use SBCL executable <prog> (default sbcl)])],
-	[sbcl=true
-	lisps_enabled="${lisps_enabled} sbcl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		sbcl_disabled=true
+		sbcl_without=--without-sbcl
+	else
+		sbcl=true
+		lisps_enabled="${lisps_enabled} sbcl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		SBCL_NAME="${sbcl_default_name}"
 	else
 		SBCL_NAME="$withval"
@@ -302,6 +343,9 @@ AC_ARG_ENABLE(sbcl-exec,
 	 SBCL_EXEC=${sbcl_exec}],
 	[sbcl_exec=false
 	 SBCL_EXEC=false])
+if test -n "${sbcl_without}" && test x"${sbcl}" = xtrue ; then
+	AC_MSG_ERROR(${sbcl_without} contradicts an option enabling SBCL)
+fi
 if test x"${sbcl}" = xtrue ; then
 	if test `echo "$SBCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$SBCL_NAME" ; then
@@ -335,15 +379,23 @@ AC_ARG_ENABLE(acl,
 AC_ARG_WITH(acl,
 	[AS_HELP_STRING([--with-acl=<prog>],
         [Use ACL executable <prog> (default lisp)])],
-	[acl=true
-	lisps_enabled="${lisps_enabled} acl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		acl_disabled=true
+		acl_without=--without-acl
+	else
+		acl=true
+		lisps_enabled="${lisps_enabled} acl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		ACL_NAME="${acl_default_name}"
 	else
 		ACL_NAME="$withval"
 	fi],
 	[ACL_NAME=${acl_default_name}])
+if test -n "${acl_without}" && test x"${acl}" = xtrue ; then
+	AC_MSG_ERROR(${acl_without} contradicts an option enabling ACL)
+fi
 if test x"${acl}" = xtrue ; then
 	if test `echo "$ACL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$ACL_NAME" ; then
@@ -377,15 +429,23 @@ AC_ARG_ENABLE(gcl,
 AC_ARG_WITH(gcl,
 	[AS_HELP_STRING([--with-gcl=<prog>],
         [Use GCL executable <prog> (default gcl)])],
-	[gcl=true
-	lisps_enabled="${lisps_enabled} gcl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		gcl_disabled=true
+		gcl_without=--without-gcl
+	else
+		gcl=true
+		lisps_enabled="${lisps_enabled} gcl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		GCL_NAME="${gcl_default_name}"
 	else
 		GCL_NAME="$withval"
 	fi],
 	[GCL_NAME=${gcl_default_name}])
+if test -n "${gcl_without}" && test x"${gcl}" = xtrue ; then
+	AC_MSG_ERROR(${gcl_without} contradicts an option enabling GCL)
+fi
 if test x"${gcl}" = xtrue ; then
 	if test `echo "$GCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$GCL_NAME" ; then
@@ -418,10 +478,15 @@ AC_ARG_ENABLE(openmcl,
 AC_ARG_WITH(openmcl,
 	[AS_HELP_STRING([--with-openmcl=<prog>],
         [Use OpenMCL executable <prog> (default openmcl)])],
-	[openmcl=true
-	lisps_enabled="${lisps_enabled} openmcl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		openmcl_disabled=true
+		openmcl_without=--without-openmcl
+	else
+		openmcl=true
+		lisps_enabled="${lisps_enabled} openmcl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		OPENMCL_NAME="${openmcl_default_name}"
 	else
 		OPENMCL_NAME="$withval"
@@ -460,10 +525,15 @@ AC_ARG_ENABLE(ccl,
 AC_ARG_WITH(ccl,
 	[AS_HELP_STRING([--with-ccl=<prog>],
         [Use OpenMCL executable <prog> (default ccl)])],
-	[openmcl=true
-	lisps_enabled="${lisps_enabled} openmcl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		openmcl_disabled=true
+		openmcl_without=--without-ccl
+	else
+		openmcl=true
+		lisps_enabled="${lisps_enabled} openmcl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		OPENMCL_NAME="${openmcl_default_name}"
 	else
 		OPENMCL_NAME="$withval"
@@ -486,6 +556,9 @@ AC_ARG_ENABLE(ccl-exec,
 	[openmcl_exec=false
 	 OPENMCL_EXEC=false])
 
+if test -n "${openmcl_without}" && test x"${openmcl}" = xtrue ; then
+	AC_MSG_ERROR(${openmcl_without} contradicts an option enabling OpenMCL)
+fi
 if test x"${openmcl}" = xtrue ; then
 	if test `echo "$OPENMCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$OPENMCL_NAME" ; then
@@ -551,10 +624,15 @@ AC_ARG_ENABLE(ccl64,
 AC_ARG_WITH(ccl64,
 	[AS_HELP_STRING([--with-ccl64=<prog>],
         [Use ccl64 executable <prog> (default ${ccl64_default_name})])],
-	[ccl64=true
-	lisps_enabled="${lisps_enabled} ccl64"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		ccl64_disabled=true
+		ccl64_without=--without-ccl64
+	else
+		ccl64=true
+		lisps_enabled="${lisps_enabled} ccl64"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		CCL64_NAME="${ccl64_default_name}"
 	else
 		CCL64_NAME="$withval"
@@ -577,6 +655,9 @@ AC_ARG_ENABLE(ccl64-exec,
 	[ccl64_exec=false
 	 CCL64_EXEC=false])
 
+if test -n "${ccl64_without}" && test x"${ccl64}" = xtrue ; then
+	AC_MSG_ERROR(${ccl64_without} contradicts an option enabling CCL64)
+fi
 if test x"${ccl64}" = xtrue ; then
 	if test `echo "$CCL64_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CCL64_NAME" ; then
@@ -609,15 +690,23 @@ AC_ARG_ENABLE(ecl,
 AC_ARG_WITH(ecl,
 	[AS_HELP_STRING([--with-ecl=<prog>],
         [Use ECL executable <prog> (default ecl)])],
-	[ecl=true
-	lisps_enabled="${lisps_enabled} ecl"
-	explicit_lisp=true
-	if test "$withval" = "yes"; then
+	[if test "$withval" = "no"; then
+		ecl_disabled=true
+		ecl_without=--without-ecl
+	else
+		ecl=true
+		lisps_enabled="${lisps_enabled} ecl"
+		explicit_lisp=true
+	fi
+	if test "$withval" = "yes" || test "$withval" = "no"; then
 		ECL_NAME="${ecl_default_name}"
 	else
 		ECL_NAME="$withval"
 	fi],
 	[ECL_NAME=${ecl_default_name}])
+if test -n "${ecl_without}" && test x"${ecl}" = xtrue ; then
+	AC_MSG_ERROR(${ecl_without} contradicts an option enabling ECL)
+fi
 if test x"${ecl}" = xtrue ; then
 	if test `echo "$ECL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$ECL_NAME" ; then

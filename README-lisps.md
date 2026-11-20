@@ -17,7 +17,8 @@ configure (among other options). It is possible to specify several
 Lisp type(s) you want Maxima to be built with at the same time.
 configure tries to autodetect the Lisp type if it is not specified,
 but it has been reported that autodetection can fail.
-`--disable-foolisp` leaves foolisp out of the autodetection.
+`--disable-foolisp` or `--without-foolisp` leaves foolisp out of the
+autodetection.
 
 
 Comparison of execution times (in seconds)
