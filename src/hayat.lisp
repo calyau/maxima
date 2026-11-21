@@ -1547,8 +1547,9 @@
 		    (when (and (member gvar-lim '($inf $minf) :test #'eq)
 			       (e> (le terms) (rczero)))
 		       (return (psplus lterm (pslog p))))
+		    ;; P is 1, or 0 when the truncation level leaves no term.
 		    (when (pscoefp p)
-		       (unless (equal p (rcone))
+		       (unless (or (equal p (rcone)) (equal p (rczero)))
 			  (merror "PSLOG: internal error."))
 		       (return lterm))
 		    (setq l (terms p) inc (psexpon-gcd l))

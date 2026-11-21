@@ -989,6 +989,17 @@ taylor(psi[2](x), x, 1, 2);
 -2*zeta(3) + %pi^4*(x-1)/15 - 12*zeta(5)*(x-1)^2$
 
 
+/* Bug #5883: "taylor() signals 'PSLOG: internal error' for log(x^2+x) at inf" */
+
+map('ratdisrep, [taylor(1+log(x^2+x)/x, x, inf, 0),
+                 taylor(x+log(x^2+x), x, inf, -1),
+                 taylor(1+x*log(1/x^2+1/x), x, 0, 0)]);
+[1, x, 1]$
+
+limit((x+sqrt(x))^x-(x^2+x)^x/(sqrt(%e)*x^x), x, inf);
+inf;
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
