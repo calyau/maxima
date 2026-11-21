@@ -2004,9 +2004,28 @@
 (defmvar $taylor_order_coefficients t
  "When `true', coefficients of taylor series will be ordered canonically.")
 
+;; The rules that drop what lies beyond a negative main truncation level
+;; (see CONSTANTS-BEYOND-TRUNC?) hold only for an expansion that adjoins no
+;; kernel such as %e^-(1/x) or log(x) to TLIST. When a kernel turns up after
+;; such a rule has changed a result, TAYLOR1 expands once more, with
+;; *KERNELS-AHEAD?* true, which keeps those rules off from the start.
+
+(defvar *kernels-ahead?* ())
+(defvar *level-rule-used?* ())
+
 (defun taylor1 (e tlist)
-  (declare (special *within-srf?* ))
   (setq tlist (tlist-merge (nconc (find-tlists e) tlist)))
+  ;; TAYLOR1-1 changes the data of TLIST, so a second expansion gets a copy.
+  (let* ((tlist-copy (copy-tree tlist))
+         (ans (let ((*kernels-ahead?* ()) (*level-rule-used?* ()))
+                (taylor1-1 e tlist))))
+    (if (eq ans 'kernels-ahead)
+      (let ((*kernels-ahead?* 't) (*level-rule-used?* ()))
+        (taylor1-1 e tlist-copy))
+      ans)))
+
+(defun taylor1-1 (e tlist)
+  (declare (special *within-srf?* ))
   (prog ($zerobern $simp $algebraic genpairs varlist tvars sing-tvars
 	 log-1 log%i ivars key-vars ans full-log last-exp
 	 mainvar-datum zerolist taylor_simplifier least_term? tvar-limits 
@@ -2065,6 +2084,8 @@
 	(setq mainvar-datum (car (last tlist)))
 	(mapc #'(lambda (d) (adjoin-sing-datum d)) sing-tvars)
 	(setq ans (catch 'tay-err (taylor3 e)))
+	(when (and *level-rule-used?* (kernels-in-tlist?))
+	  (return 'kernels-ahead))
 	(return
 	 (if (atom (car ans)) (tay-error (car ans) (cadr ans)) ans))))
 
@@ -2219,27 +2240,27 @@
 
 (defun taylor2 (e)
   ;; A constant is a term of degree 0, so a negative truncation level drops
-  ;; it. TAYLOR2-1 does that for a constant E, and this does it for a
-  ;; constant result. Such a result can come from a series whose other terms
-  ;; cancelled or lie beyond its truncation, since PSCHECK makes that series
-  ;; a bare constant, which PSTRUNC cannot truncate. Kept, it would spoil
-  ;; sums: expanded to degree -1, (x-1)*(x+1) gives -1 but 1 gives 0, so
-  ;; 1+(x-1)*(x+1) would get the constant term -1, and TSEXPT1 would take
-  ;; that for the leading term of its base.
+  ;; it (see CONSTANTS-BEYOND-TRUNC?). TAYLOR2-1 does that for a constant E,
+  ;; and this does it for a constant result. Such a result can come from a
+  ;; series whose other terms cancelled or lie beyond its truncation, since
+  ;; PSCHECK makes that series a bare constant, which PSTRUNC cannot
+  ;; truncate. Kept, it would spoil sums: expanded to degree -1, (x-1)*(x+1)
+  ;; gives -1 but 1 gives 0, so 1+(x-1)*(x+1) would get the constant term
+  ;; -1, and TSEXPT1 would take that for the leading term of its base.
   (let ((ans (taylor2-1 e)))
-    (if (and (pscoefp ans) (not (rczerop ans))
-             (e> (rczero) (current-trunc mainvar-datum)))
+    (if (and (pscoefp ans) (not (rczerop ans)) (constants-beyond-trunc?)
+             (level-rule-used))
       (pszero (data-gvar-o mainvar-datum) (current-trunc mainvar-datum))
       ans)))
 
 (defun taylor2-1 (e)
  (let ((last-exp e))	    ;; lexp-non0 should be bound here when needed
-  (cond ((and (e> (rczero) (current-trunc mainvar-datum))
-	      (mfree e (main-tvars)))
+  (cond ((and (constants-beyond-trunc?) (mfree e (main-tvars)))
 	 ;; E is free of the main variables, so it is a term of degree 0
-	 ;; in them, which a negative main level drops like a constant.
-	 ;; Its own expansion would be wrong there, since the constants
-	 ;; in it are dropped: log(w+1) would become log(w).
+	 ;; in them and lies beyond the truncation like a constant. Its
+	 ;; own expansion would be wrong there, since the constants in
+	 ;; it are dropped: log(w+1) would become log(w).
+	 (unless (mfree e tvars) (level-rule-used))
 	 (pszero (data-gvar-o mainvar-datum) (current-trunc mainvar-datum)))
 	((assolike e tlist) (var-expand e 1 () ))
 	((or (mnump e) (atom e) (mfree e tvars))
@@ -2298,6 +2319,31 @@
     (if multivar
       (cadr multivar)
       (ncons (datum-var mainvar-datum)))))
+
+;; Has a kernel such as %e^-(1/x) or log(x) been adjoined to TLIST?
+
+(defun kernels-in-tlist? ()
+  (notevery #'(lambda (d) (tvar? (datum-var d))) tlist))
+
+;; Is this an expansion without kernels, as far as is known (see TAYLOR1)?
+
+(defun no-kernels? ()
+  (not (or *kernels-ahead?* (kernels-in-tlist?))))
+
+;; Records for TAYLOR1 that a rule which asks NO-KERNELS? has changed a
+;; result. Returns true.
+
+(defun level-rule-used ()
+  (setq *level-rule-used?* 't))
+
+;; Does a constant lie beyond the truncation? It is a term of degree 0, so
+;; it does when the main truncation level is negative. That holds only
+;; without kernels. With one, TSTIMES can expand a factor like
+;; %e^(%e^-(1/x)/x^4) at a negative main level because of the powers of x
+;; in its kernel terms, and the constant 1 it gets is the leading term.
+
+(defun constants-beyond-trunc? ()
+  (and (e> (rczero) (current-trunc mainvar-datum)) (no-kernels?)))
 
 (defun compatvarlist (a b c d)
    (cond ((null a) t)
@@ -2374,19 +2420,21 @@
 						 (rcmone)
 					       (rcone))))))))
 	   ((and (not (signp e (exp-pt temp))) (null (switch '$asymp temp))
-		 (not dont-truncate?) (e> (rczero) (current-trunc temp))
+		 (not dont-truncate?) (constants-beyond-trunc?)
 		 (eq mainvar-datum
 		     (if (switch 'multi temp)
 		       (get-datum (car (switch 'multi temp)))
 		       temp)))
 	    ;; Expanded at a point other than 0, VAR2^EXP starts with the
-	    ;; constant EXP-PT^EXP, so a negative truncation level leaves
-	    ;; nothing of it. The code below would drop only that constant and
-	    ;; return a power of the kernel, and TSTIMES would take its order
-	    ;; for the order of VAR2^EXP, which is 0. This is done only where
-	    ;; VAR2 is truncated at the main level, the one at which TAYLOR2
-	    ;; drops constants. At the level of another variable a constant
-	    ;; can survive, and a 0 for VAR2 would turn VAR2-1 into -1.
+	    ;; constant EXP-PT^EXP, so nothing of it is left where constants
+	    ;; lie beyond the truncation. The code below would drop only that
+	    ;; constant and return a power of VAR2-EXP-PT, and TSTIMES would
+	    ;; take its order for the order of VAR2^EXP, which is 0. This is
+	    ;; done only where VAR2 is truncated at the main level, the one
+	    ;; at which TAYLOR2 drops constants. At the level of another
+	    ;; variable a constant can survive, and a 0 for VAR2 would turn
+	    ;; VAR2-1 into -1.
+	    (level-rule-used)
 	    (rczero))
 	   ;; multivar expansion does not work at infinity, so
 	   ;; expansion at infinity is handled by above clause even if doing multivar.
@@ -2464,11 +2512,13 @@
 			 ((rczerop funord) fun-lc)
 			 (t (rczero))))))
      ;; ARG expands to the constant PSARG. Expand it again for the terms the
-     ;; current truncation level adds, unless that level is negative: there
-     ;; TAYLOR2 gives 0, and FUNC would be taken at 0 instead of at PSARG.
-     (when (and (pscoefp psarg)
-		(not (e> (rczero) (current-trunc mainvar-datum))))
-       (setq psarg (taylor2 arg)))
+     ;; current truncation level adds, unless constants lie beyond that
+     ;; level: there TAYLOR2 gives 0, and FUNC would be taken at 0 instead
+     ;; of at PSARG.
+     (when (pscoefp psarg)
+       (if (constants-beyond-trunc?)
+         (level-rule-used)
+         (setq psarg (taylor2 arg))))
      (when (pscoefp psarg)
        (return
 	 (cond ((null (mfree (rdis psarg) tvars))
@@ -3077,10 +3127,14 @@
 		   (e> (rcone) s)
 		   (and (e> (rczero) pw) (e> s (rcone))))
 	      (setq tb (get-lexp b () 't))
-	      ;; PW was a guess as long as TB had no variable.
-	      (when (psp tb)
-		(setq pw (current-trunc (get-datum
-					 (get-key-var (gvar tb)))))))
+	      ;; PW was a guess as long as TB had no variable. With kernels
+	      ;; it stays one: TB can be a series in a kernel whose level
+	      ;; is not negative while the main level is.
+	      (when (and (psp tb) (no-kernels?))
+		(let ((pw-tb (t-o-var (gvar tb))))
+		  (unless (e= pw pw-tb)
+		    (level-rule-used)
+		    (setq pw pw-tb)))))
 	    (setq le (ps-le* tb)))
 	   ((psp tb) (setq le (ps-le tb)))
 	   (t (return (rcexpt tb e))))
@@ -3129,9 +3183,12 @@
   (let ((psarg (taylor2 arg)) datum)
    ;; PSARG can lie beyond the truncation altogether: a variable other than
    ;; the main one, expanded at a point other than 0 to a negative level,
-   ;; comes from VAR-EXPAND as its kernel beyond that level. Taken as it
-   ;; is, log(w+2) at w = 2 would become log(w-2).
-   (when (rczerop (pstrunc psarg)) (setq psarg (get-lexp arg () 't)))
+   ;; comes from VAR-EXPAND as the series w-2, say, whose only term lies
+   ;; beyond that level. Taken as it is, log(w+2) at w = 2 would become
+   ;; log(w-2). With kernels such a series is kept.
+   (when (or (rczerop psarg)
+	     (and (no-kernels?) (rczerop (pstrunc psarg)) (level-rule-used)))
+     (setq psarg (get-lexp arg () 't)))
    ;; We must ensure that the lc is non-zero since it will be inverted in pslog
    (setq psarg (strip-zeroes psarg 't))
    (do ((ps psarg (ps-lc ps)) (shift (rcone) (e* shift (rctwo))))
@@ -3142,10 +3199,10 @@
 	   (mapc #'(lambda (data) (pop-pw data)) datum))
 	;; A log that comes out constant is the constant term of a series in
 	;; the variable of PSARG, so a negative level of that variable
-	;; drops it.
+	;; drops it, unless there are kernels.
 	(let ((ans (pslog psarg)))
-	  (if (and (pscoefp ans) (psp psarg)
-		   (e> (rczero) (t-o-var (gvar psarg))))
+	  (if (and (pscoefp ans) (not (rczerop ans)) (psp psarg) (no-kernels?)
+		   (e> (rczero) (t-o-var (gvar psarg))) (level-rule-used))
 	    (rczero)
 	    ans)))
       (push (get-datum (get-key-var (gvar ps))) datum)
@@ -3168,7 +3225,7 @@
 	  (rczero))
       (progn
 	(tlist-mapc d (push-pw d (or e-start (emax (orig-trunc d) (rcone)))))
-	(do ((psexp) (i (1+ $taylordepth) (1- i)) (zero-truncs))
+	(do ((psexp) (i (1+ $taylordepth) (1- i)) (zero?))
 	    ((signp e i)
 	     (tlist-mapc d (pop-pw d))
 	     (if zerocheck?
@@ -3185,18 +3242,18 @@
 		;; ((and lexp-non0 (rczerop (le (terms psexp)))
 		;;       (mono-term? (terms psexp))))
 		(t (tlist-mapc d (pop-pw d))
-		   ;; PSEXP is the first expansion that is not 0, so its
-		   ;; leading term should lie beyond the truncation levels
-		   ;; of the expansions before it, which came out 0. If it
-		   ;; lies within them, the leading term is not known: one
-		   ;; of its coefficients may be a 0 that was not seen to
-		   ;; vanish, like 1/sin(2)-csc(2).
-		   (when (and zerocheck? zero-truncs (not (rczerop psexp))
-			      (lexp-contradicted? psexp zero-truncs))
+		   ;; PSEXP is the first expansion that is not 0. If it starts
+		   ;; with a constant, the expansions before it, which came
+		   ;; out 0, should have had that constant too. So it may be
+		   ;; a 0 that was not seen to vanish, like 1/sin(2)-csc(2),
+		   ;; and the leading term is not known. Expansions with
+		   ;; kernels are left alone.
+		   (when (and zerocheck? zero? (not (rczerop psexp))
+			      (no-kernels?) (starts-with-constant? psexp))
+		     (level-rule-used)
 		     (zero-test-err))
 		   (return psexp)))
-	  (setq zero-truncs
-		(mapcar #'(lambda (d) (cons d (current-trunc d))) tlist))
+	  (setq zero? 't)
 	  (cond ((and (= i 1) e-start)
 		 (setq e-start () i 2)
 		 (tlist-mapc d (push-pw d (prog1 (e* (orig-trunc d) (current-trunc d))
@@ -3204,16 +3261,12 @@
 		(t (tlist-mapc d (push-pw d (prog1 (e* (rctwo) (current-trunc d))
 					      (pop-pw d))))))))))
 
-;; Does the leading term of PS lie within ZERO-TRUNCS, the truncation levels
-;; of an expansion that came out 0? ZERO-TRUNCS pairs each datum of TLIST
-;; with its level. Those levels are at least 1, so a constant lies within.
+;; Does the series PS start with a constant, a term of degree 0 in each of
+;; its variables?
 
-(defun lexp-contradicted? (ps zero-truncs)
+(defun starts-with-constant? (ps)
   (or (pscoefp ps)
-      (let ((trunc (cdr (assoc (get-datum (get-key-var (gvar ps)))
-                               zero-truncs))))
-        (and trunc (not (e> (ps-le ps) trunc))
-             (lexp-contradicted? (ps-lc ps) zero-truncs)))))
+      (and (ezerop (ps-le ps)) (starts-with-constant? (ps-lc ps)))))
 
 (defun 1p (x)
   (or (equal x 1) (equal x 1.0)))

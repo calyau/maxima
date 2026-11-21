@@ -1032,6 +1032,14 @@ ratsimp(map('ratdisrep,
         - [3/(z*(w-1)), 0, 0, 0]);
 [0, 0, 0, 0]$
 
+/* With a kernel like %e^-(1/z^2), a constant that comes back at a negative
+   order of z can be a leading term. */
+[map('ratdisrep,
+     [taylor(exp(exp(-1/z^2)/z^4)*sin(z)/z, z, 0, 3), taylor((z/sin(z))/exp(exp(-1/z^2)/z^3), z, 0, 4),
+      taylor(z*sin(1/z)/exp(z^10*exp(-z)), z, inf, 3)]),
+ tlimit(sin((exp(-1/(x-2)^2)/(x-2)^4)/(1+(exp(-1/(x-2)^2)/(x-2)^4)^2)), x, 2, plus)];
+[[1-z^2/6, 1+z^2/6+7*z^4/360, 1-1/(6*z^2)], 0]$
+
 
 /* Bug #MMMM: "taylor(s/(s-1),s,1,-1) gives 0 instead of 1/(s-1)" */
 
@@ -1060,6 +1068,10 @@ ratsimp(map('ratdisrep,
              taylor(log(4+w), z, 1, 0, w, 2, -1)])
         - [4*log(5)/((z-1)*(w-2)), log(5)*log(6)/((z-1)*(w-2)), 0, 0]);
 [0, 0, 0, 0]$
+
+[ratdisrep(taylor(((1-cos(z))/z)/(2+sin(exp(-1/z^2))), z, 0, 0)),
+ tlimit((sqrt(x+1)-sqrt(x))/(1+(exp(-x)*x^10)^2)+x*exp(-x), x, inf)];
+[0, 0]$
 
 
 /* Bug #PPPP: "taylor(x^2,[x,a,0,'asymp]) misses the term a^2" */

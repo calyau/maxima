@@ -4,7 +4,7 @@
 
 **Fix taylor() with 'asymp dropping terms at a finite point**
 
-`taylor(expr, [x, a, n, 'asymp])` lost terms at every finite point: `taylor(x^2,[x,a,0,'asymp])` missed `a^2`, `taylor(x^2,[x,a,-2,'asymp])` gave 0 and `taylor(x^2+x+1,[x,0,0,'asymp])` gave 1. Both causes are in VAR-EXPAND. At a point other than 0 it raised a too short expansion of `x` to a power, and at the point 0 it compared the wrong degree with the truncation level. This builds on `handover-taylor-cancelling-constants.md` and `handover-taylor-nonzero-point.md`, which must be applied first.
+`taylor(expr, [x, a, n, 'asymp])` lost terms at every finite point: `taylor(x^2,[x,a,0,'asymp])` missed `a^2`, `taylor(x^2,[x,a,-2,'asymp])` gave 0 and `taylor(x^2+x+1,[x,0,0,'asymp])` gave 1. Both causes are in VAR-EXPAND: at a point other than 0 it raised a too short expansion of `x` to a power, and at the point 0 it compared the wrong degree with the truncation level. This builds on `handover-taylor-cancelling-constants.md` and `handover-taylor-nonzero-point.md`, which must be applied first.
 
 ## 2. Reproducer/Demo
 
@@ -187,7 +187,7 @@ map('ratdisrep,
 [x^2+x, x^2+x+1, x+1+1/x, x+1/(2*x)]$
 ```
 
-`run_testsuite(share_tests=true)` on SBCL 2.2.9, master 8c68d35ac with all three fixes: 1 failure out of 22,395 tests (`rtestprintf.mac` problem 38, the same float printing failure as on master). `rtest_taylor` passes 270/270, and its 2 new problems both fail without this patch.
+`run_testsuite(share_tests=true)` on SBCL 2.2.9, master 8c68d35ac with all three fixes: 1 failure out of 22,397 tests (`rtestprintf.mac` problem 38, the same float printing failure as on master). `rtest_taylor` passes 272/272, and its 2 new problems both fail without this patch.
 
 ## 6. Proposed Git commit message
 

@@ -591,8 +591,12 @@
 					       `(%%taylor-index%% 1 ,const) '%product)))
 		     (pstimes (expand (m+t a (- const)) '%gamma)
 			      ;; The product has a constant term, so it takes a
-			      ;; level of at least 0 for it to be invertible.
-			      (let-pw datum (emax (e+ func ord) (rczero))
+			      ;; level of at least 0 to be invertible. With
+			      ;; kernels its level is left alone (see TAYLOR1).
+			      (let-pw datum (if (and (e> (rczero) (e+ func ord))
+						 (no-kernels?) (level-rule-used))
+					    (rczero)
+					    (e+ func ord))
 				      (psexpt (tsprsum (m+t a '%%taylor-index%%)
 						       `(%%taylor-index%% 0 ,(- (1+ const))) '%product)
 					      (rcmone)))))))))))
