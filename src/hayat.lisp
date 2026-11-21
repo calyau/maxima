@@ -3370,6 +3370,11 @@
 
 (defun srconvert (r)
   (cond ((not (atom (caadr (cdddar r))))
+	 ;; A gensym of the tlist which is not a genvar stands for the
+	 ;; kernel of its datum.
+	 (dolist (datum (mrat-tlist r))
+	   (unless (member (int-gvar datum) (mrat-genvar r))
+	     (putprop (int-gvar datum) (datum-var datum) 'disrep)))
 	 (cons (car r) (psdisextend (cdr r))))
 	(t
 	 (*bind* ((trunclist (cadr (cdddar r)))

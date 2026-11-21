@@ -4889,6 +4889,39 @@ block([algebraic : true, e : (x^2-((1+sqrt(2))^(5/8))^2)/(x-(1+sqrt(2))^(5/8))],
 [x+(sqrt(2)+1)^(5/8), x+(sqrt(2)+1)^(5/8)]$
 
 
+/* Bug #5860: "A CRE or Taylor series written by save is corrupted when loaded" */
+
+block([file : tempfile("save-cre", "lisp")],
+  save_r : rat((x + y)^2),
+  save_t1 : taylor(sin(x) + y, x, 0, 5),
+  save_t2 : taylor(%e^(x^2)/x^2 - 1, x, inf, 2),
+  save_t3 : taylor(log(x) + x, x, 0, 2),
+  save(file, save_r, save_t1, save_t2, save_t3),
+  kill(save_r, save_t1, save_t2, save_t3),
+  load(file),
+  ?delete\-file(file),
+  [ratp(save_r), taylorp(save_r), taylorp(save_t1), taylorp(save_t2), taylorp(save_t3)]);
+[true, false, true, true, true]$
+
+[ratdisrep(save_r), ratdisrep(save_t1), ratdisrep(save_t2), ratdisrep(save_t3)];
+[y^2 + 2*x*y + x^2, y + x^5/120 - x^3/6 + x, %e^(x^2)/x^2 - 1, log(x) + x]$
+
+/* The loaded values are displayed like the saved ones: */
+[is(string(save_r) = string(rat((x + y)^2))),
+ is(string(save_t1) = string(taylor(sin(x) + y, x, 0, 5))),
+ is(string(save_t2) = string(taylor(%e^(x^2)/x^2 - 1, x, inf, 2))),
+ is(string(save_t3) = string(taylor(log(x) + x, x, 0, 2)))];
+[true, true, true, true]$
+
+/* The loaded values in further computations: */
+[ratdisrep(save_r - rat((x + y)^2)), ratdisrep(taytorat(save_t1)),
+ ratdisrep(save_t1 - taylor(sin(x) + y, x, 0, 5)), ratdisrep(save_t3 + x)];
+[0, (x^5 - 20*x^3 + 120*x + 120*y)/120, 0, log(x) + 2*x]$
+
+(kill(save_r, save_t1, save_t2, save_t3), 0);
+0$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

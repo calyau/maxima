@@ -225,7 +225,11 @@
 	   (if (not (member var featurel :test #'eq)) (pradd2lnc var '$features))))
 	((and (eq item '$linenum) (eq item rename))
 	 (fasprint t `(setq $linenum ,val)))
-	(($ratp val) (fasprint t `(dsksetq ,rename (dskrat (quote ,val)))))
+	(($ratp val)
+	 ;; Printed as #1=#:G123 and #1#, the occurrences of a gensym are
+	 ;; read back as one uninterned symbol, which DSKRAT relies on.
+	 (let ((*print-circle* t) (*print-gensym* t))
+	   (fasprint t `(dsksetq ,rename (dskrat (quote ,val))))))
 	(t
       (cond
         ;; Hash tables ("fast arrays") aren't printable in all Lisp implementations.
