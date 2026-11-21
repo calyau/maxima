@@ -191,6 +191,7 @@ Bug fixes for numbered bugs:
 * \#5523 integrate(x^n*(%e^(sqrt(x)-x))^u,x) (type 6-1) has an extra factor %e^(2*u*(sqrt(x)-x))
 * \#5524 integrate(sin(2.0*x)*tan(x),x) exhausts the control stack
 * \#5525 integrate takes an even float power such as cos(x)^2.0 for an odd one
+* \#5529 taylor(psi[n](x),...) has wrong coefficients for n >= 1
 * \#5532 gcd with a small modulus intermittently signals Invalid index 4 for (SIMPLE-ARRAY FIXNUM (4 5))
 * \#5533 gcd with modulus set returns 1 when the leading coefficient vanishes at the evaluation point
 * \#5534 gcd with modulus set returns y+1 instead of x*y+1 and ratsimp fails

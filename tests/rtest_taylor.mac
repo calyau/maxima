@@ -980,6 +980,15 @@ map('ratdisrep,
 [1, 1, 1]$
 
 
+/* Bug #5529: "taylor(psi[n](x),...) has wrong coefficients for n >= 1" */
+
+taylor(psi[1](x), x, 0, 3);
+1/x^2 + %pi^2/6 - 2*zeta(3)*x + %pi^4*x^2/30 - 4*zeta(5)*x^3$
+
+taylor(psi[2](x), x, 1, 2);
+-2*zeta(3) + %pi^4*(x-1)/15 - 12*zeta(5)*(x-1)^2$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

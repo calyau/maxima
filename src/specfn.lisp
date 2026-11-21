@@ -539,17 +539,16 @@
 		     `(((,e . 1)
 			. ,(rctimes (rcplygam e sf-sign subl sf-last)
 				    (prep1 ($zeta (+ (1+ subl) e))))))))
+	 (when sf-last
+	   ;; Advance SF-LAST from (SUBL+E)!/E! to (SUBL+E+1)!/(E+1)!.
+	   (setq sf-last (quot (* sf-last (+ subl (1+ e))) (1+ e))))
 	 (go a))))
 
 (defun rcplygam (k sf-sign subl sf-last)
   (declare (fixnum k) )
   (cond ((= subl -1) (cons sf-sign k))
 	((= subl 0) (cons sf-sign 1))
-	(t (prog1
-	       (cons (* sf-sign sf-last) 1)
-	     (setq sf-last
-		   (quot (* sf-last (+ subl (1+ k)))
-			 (1+ k)))))))
+	(t (cons (* sf-sign sf-last) 1))))
 
 (defun plygam-ord (subl)
   (let ((sub (car subl)))
