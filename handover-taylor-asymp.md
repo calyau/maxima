@@ -68,7 +68,7 @@ Master 8c68d35ac without those fixes gives the same results.
 
 **Checks.** The expected values were checked numerically, independent of `taylor()`: at x = a + 1/h, (f-S)/h^(n+1) evaluated in 80-digit bigfloats for h = 1e-6, 1e-9, 1e-12 stays bounded (it tends to the next coefficient: 6, 9, 0, 1, 1, 1, 0, 1 and 1/8, with a = 3 for the symbolic point), while for the old results 1 and `x-1` in rows 4 and 6 it grows like 1/h^2. Measured before the two earlier fixes were revised: on master 8c68d35ac with the two earlier fixes, this fix makes 65 more of the 1,122 generated expansions right, all of them asymptotic ones, and none that were right got worse.
 
-Measured on master 8c68d35ac with the two earlier fixes as they are now: of the 4,870 generated expansions of the first handover, 870 are asymptotic ones (29 expressions at 5 points and 6 orders). With this fix 326 more of them are right, none got worse, and no other result changed. All 870 are right now. For the 21 with `z^(3/2)`, whose terms come in half-integer steps, that was checked by hand.
+Measured on master 8c68d35ac with the two earlier fixes as they are now: of the 4,870 generated expansions of the first handover, 870 are asymptotic ones (29 expressions at 5 points and 6 orders). With this fix 326 more of them are right, none got worse, and no other result changed. All 870 are right now. For the 21 with `z^(3/2)`, whose terms come in half-integer steps, that was checked by hand. The benchmarks in the first handover ran with all three fixes.
 
 ## 3. Bug report
 
