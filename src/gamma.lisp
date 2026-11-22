@@ -373,7 +373,9 @@
   ;; Set *preserve-direction* to true and find the limit of each argument.
   (let* ((*preserve-direction* t) 
          (a (limit (cadr expr) var val 'think))
-         (z (limit (caddr expr) var val 'think)))
+         (z (limit (caddr expr) var val 'think))
+         ;; The limit of z, kept when z reverts to the argument below
+         (zlim z))
   (cond
    ;; when either a or z is und, return und
    ((or (eql a '$und) (eql z '$und)) '$und)
@@ -416,7 +418,19 @@
               (limit (div (mul -1 (ftake 'mexpt -1 a) (ftake '%log z))
                           (ftake 'mfactorial a)) var val 'think))
               (t 
-              (limit (sub (ftake '%gamma a) (div (ftake 'mexpt z a) a)) var val 'think))))
+              ;; gamma_incomplete(a,z) = gamma(a) - z^a/a + ..., with z^a
+              ;; on the principal branch. For a negative z and a rational a,
+              ;; that is (-z)^a*%e^(%i*%pi*a), not the real root that z^a
+              ;; simplifies to for an odd denominator.
+              (limit (sub (ftake '%gamma a)
+                          (div (if (and (ratnump a)
+                                        (or (eq zlim '$zerob)
+                                            (member ($csign z) '($neg $nz))))
+                                 (mul (power (neg z) a)
+                                      (power '$%e (mul '$%i '$%pi a)))
+                                 (ftake 'mexpt z a))
+                               a))
+                     var val 'think))))
     ;; z is on the branch cut. We need to know if the imaginary part of
     ;; (caddr exp) approaches zero from above or below. The incomplete
     ;; gamma function is continuous from above its branch cut. The check for

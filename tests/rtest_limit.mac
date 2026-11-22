@@ -1934,6 +1934,20 @@ block([nv],
 [true, true, true]$
 
 
+/* Bug #5891: "limit(gamma_incomplete(-1/3,x),x,0,minus) returns minf instead of infinity" */
+
+limit(gamma_incomplete(-1/3,x),x,0,minus);
+infinity$
+
+[limit(gamma_incomplete(-2/3,x),x,0,minus),
+ limit(gamma_incomplete(-1/3,x^3),x,0,minus),
+ limit(gamma_incomplete(-1/3,sin(x)),x,0,minus)];
+[infinity, infinity, infinity]$
+
+limit(gamma_incomplete(-1/3,x)*x^(1/3),x,0,minus);
+(3^(3/2)*%i-3)/2$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

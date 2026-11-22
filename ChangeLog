@@ -383,6 +383,7 @@ Bug fixes for numbered bugs:
 * \#5883 taylor() signals 'PSLOG: internal error' for log(x^2+x) at inf
 * \#5889 integrate(t^3*%e^(2*t^3)*%pi^(t^3), t) is wrong for t > 0
 * \#5890 Definite integral of %e^(x-1)*(x-1)^(7/3) is off by a cube root of unity
+* \#5891 limit(gamma_incomplete(-1/3,x),x,0,minus) returns minf instead of infinity
 
 Bug fixes for unnumbered bugs:
 ------------------------------
