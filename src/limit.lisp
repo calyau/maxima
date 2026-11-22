@@ -5086,7 +5086,10 @@ ignoring dummy variables and array indices."
 		  (let* ((p (extra-simp (cadr e)))
 				 (arg (extra-simp (caddr e)))
 				 (s (sub p 1))
-				 (lim (and (ratnump s) (limit-catch arg var val))))
+				 ;; LIMIT-CATCH needs the specials that $LIMIT binds.
+				 ;; A direct gruntz() call has none, so it keeps the plain power.
+				 (lim (and limitp (ratnump s)
+						  (limit-catch arg var val))))
 				(mul (if (and lim (not (eq lim '$zeroa))
 					      (freeof-extended-real (ridofab lim))
 					      (member ($csign (ridofab lim))

@@ -1933,6 +1933,11 @@ block([nv],
    is(cabs(nv(subst(a = 3/2, limit(expintegral_e(1/3, x - a^2), x, 0, minus)) - expintegral_e(1/3, -9/4))) < 1e-10)]);
 [true, true, true]$
 
+/* No error in a direct gruntz() call with an expintegral_e whose argument contains log(x): */
+[is(errcatch(gruntz(expintegral_e(1/3, -log(x)), x, inf)) # []),
+ is(errcatch(gruntz(expintegral_e(-1/2, -log(x))*%e^(-log(x))*(-log(x)), x, inf)) # [])];
+[true, true]$
+
 
 /* Bug #5891: "limit(gamma_incomplete(-1/3,x),x,0,minus) returns minf instead of infinity" */
 
