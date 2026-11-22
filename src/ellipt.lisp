@@ -1084,8 +1084,9 @@
 ;;    + m*s*c/sqrt(y)
 ;;
 ;; where y = c^2 + (1-m)*s^2.  For c >= 0, all terms have the sign of
-;; phi, so there is no cancellation, unlike the formula above when m
-;; is near 1 and phi is near pi/2.
+;; phi, so there is no cancellation, unlike in the usual formula
+;; s*rf(c^2, 1-m*s^2, 1) - (m/3)*s^3*rd(c^2, 1-m*s^2, 1) when m is
+;; near 1 and phi is near pi/2.
 ;;
 ;; A reduced phi can be just past +/- pi/2, so for c < 0 use
 ;;
