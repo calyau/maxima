@@ -1188,7 +1188,7 @@ block([ref : [0,
 closeto(elliptic_e(1,1.23) - 0.7935821331230606, 1e-15); 
 true;
 
-closeto(elliptic_e(1,2.0) - (0.09311292177217778*%i+0.5990701173677968), 1e-15);
+closeto(elliptic_e(1,2.0) - (0.093112921772178507*%i+0.5990701173677961), 1e-15);
 true;
 
 closeto(elliptic_e(1,1.23b0)- 7.9358213312306066216147457280131b-1, 1b-32);
@@ -2307,6 +2307,91 @@ block([fpprec : 32],
    closeto(elliptic_ec(bfloat(1-2^-50)) - 1.000000000000008089073355640920771b0,
            3.0815b-33)]);
 [true, true, true, true, true, true, true, true]$
+
+
+/*
+ * elliptic_e and elliptic_ec lose accuracy for real m > 1.  The real
+ * and imaginary parts are checked separately, since the real part can
+ * be much smaller than the imaginary part.  Reference values from
+ * mpmath.
+ */
+block([fpprec : 32],
+  [closeto(elliptic_e(0.5, 2.0) - 4.56992352075574e-1,
+           5.0737e-17),
+   closeto(realpart(elliptic_e(1.0, 2.0)) - 5.990701173677961e-1,
+           1.1103e-16),
+   closeto(imagpart(elliptic_e(1.0, 2.0)) - 9.3112921772178507e-2,
+           2.7756e-17),
+   closeto(elliptic_e(float(%pi/4)-2^-30, 2.0) - 5.9907011736776931e-1,
+           1.1103e-16),
+   closeto(realpart(elliptic_e(float(%pi/4)+2^-30, 2.0)) - 5.990701173677961e-1,
+           1.1103e-16),
+   closeto(imagpart(elliptic_e(float(%pi/4)+2^-30, 2.0)) - 2.6796243306859025e-14,
+           3.1555e-30),
+   closeto(realpart(elliptic_e(1.25, 1.25)) - 8.1286533580320924e-1,
+           1.1103e-16),
+   closeto(imagpart(elliptic_e(1.25, 1.25)) - 3.470937738124192e-2,
+           3.8536e-18),
+   closeto(realpart(elliptic_e(1.0, 2.0^60)) - 7.3145903963357984e-10,
+           8.1209e-26),
+   closeto(imagpart(elliptic_e(1.0, 2.0^60)) - 4.9359664058573775e+8,
+           1.1921e-7),
+   closeto(realpart(elliptic_e(-12.5, 180.0)) + 4.1259995195037558e-1,
+           5.5512e-17),
+   closeto(imagpart(elliptic_e(-12.5, 180.0)) + 1.0599408768196068e+2,
+           1.1768e-14),
+   closeto(realpart(elliptic_ec(2.0)) - 5.990701173677961e-1,
+           1.1103e-16),
+   closeto(imagpart(elliptic_ec(2.0)) - 5.990701173677961e-1,
+           1.1103e-16),
+   closeto(realpart(elliptic_ec(float(1+2^-20))) - 9.9999627219983125e-1,
+           2.2205e-16),
+   closeto(imagpart(elliptic_ec(float(1+2^-20))) - 7.4901378871664477e-7,
+           2.1176e-22),
+   closeto(realpart(elliptic_ec(1e16)) - 7.8539816339744832e-9,
+           8.7197e-25),
+   closeto(imagpart(elliptic_ec(1e16)) - 9.9999999999999898e+7,
+           1.4902e-8)]);
+[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]$
+
+block([fpprec : 32],
+  [closeto(elliptic_e(0.5b0, 2b0) - 4.569923520755739993814727170484775b-1,
+           1.5408b-33),
+   closeto(realpart(elliptic_e(1b0, 2b0)) - 5.990701173677961037199612461401619b-1,
+           3.0815b-33),
+   closeto(imagpart(elliptic_e(1b0, 2b0)) - 9.311292177217850720981546161504105b-2,
+           3.8519b-34),
+   closeto(elliptic_e(bfloat(%pi/4)-2^-60, 2b0) - 5.990701173677961037199612453785669b-1,
+           1.8461b-33),
+   closeto(realpart(elliptic_e(bfloat(%pi/4)+2^-60, 2b0)) - 5.990701173677961037199612461401619b-1,
+           3.0815b-33),
+   closeto(imagpart(elliptic_e(bfloat(%pi/4)+2^-60, 2b0)) - 7.615950786488135987070764020925057b-28,
+           3.7339b-60),
+   closeto(realpart(elliptic_e(1.25b0, 1.25b0)) - 8.128653358032092422716608772225758b-1,
+           3.0815b-33),
+   closeto(imagpart(elliptic_e(1.25b0, 1.25b0)) - 3.470937738124191989696594617835021b-2,
+           1.926b-34),
+   closeto(realpart(elliptic_e(1b0, bfloat(2^60))) - 7.314590396335798406049738501403849b-10,
+           4.3048b-42),
+   closeto(imagpart(elliptic_e(1b0, bfloat(2^60))) - 4.935966405857377460710759156379883b+8,
+           8.2719b-25),
+   closeto(realpart(elliptic_e(-12.5b0, 180b0)) + 4.125999519503755819299131038784289b-1,
+           1.2715b-33),
+   closeto(imagpart(elliptic_e(-12.5b0, 180b0)) + 1.059940876819606834197430913969843b+2,
+           3.2662b-31),
+   closeto(realpart(elliptic_ec(2b0)) - 5.990701173677961037199612461401619b-1,
+           3.0815b-33),
+   closeto(imagpart(elliptic_ec(2b0)) - 5.990701173677961037199612461401619b-1,
+           3.0815b-33),
+   closeto(realpart(elliptic_ec(bfloat(1+2^-50))) - 9.999999999999919109266443590844445b-1,
+           3.0815b-33),
+   closeto(imagpart(elliptic_ec(bfloat(1+2^-50))) - 6.975736996017261475571333796820181b-16,
+           1.3685b-48),
+   closeto(realpart(elliptic_ec(bfloat(10^16))) - 7.8539816339744831943313788828798b-9,
+           2.2959b-41),
+   closeto(imagpart(elliptic_ec(bfloat(10^16))) - 9.999999999999989846512447463871835b+7,
+           6.2039b-25)]);
+[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]$
 
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
