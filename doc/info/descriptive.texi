@@ -2618,6 +2618,88 @@ See also @mref{cov} and @mrefdot{cov1}
 
 
 
+@anchor{pearson_correlation}
+@deffn {Function} pearson_correlation (@var{X}, @var{Y})
+
+Returns Pearson's correlation coefficient,
+defined, for @var{X} and @var{Y} each being a list, as
+
+@ifnottex
+@example
+@group
+                mean(X * Y) - mean(X) mean(Y)
+                -----------------------------
+                        std(X) std(Y)
+@end group
+@end example
+@end ifnottex
+@tex
+$$\frac{\mathrm{mean}(X Y) - \mathrm{mean}(X) \mathrm{mean}(Y)}{\mathrm{std}(X) \mathrm{std}(Y)}$$
+@end tex
+
+where the multiplication @code{@var{X}*@var{Y}} is computed element by element.
+
+@var{X} and @var{Y} must be lists or matrices.
+
+When @var{X} and @var{Y} are both matrices,
+the result is a matrix with the number of rows equal to the number of columns of @var{X},
+and the number of columns equal to the number of columns of @var{Y}.
+The @code{(i, j)}-th element of the result is the Pearson correlation coefficient for
+the @code{i}-th column of @var{X} and the @code{j}-th column of @var{Y},
+treating the columns as lists and applying the definition above.
+
+When @var{X} is a list,
+it is converted to a matrix of one column,
+likewise if @var{Y} is a list,
+it is converted to a matrix of one column.
+
+The result is, in general, a matrix.
+However, when the result would be a one by one matrix,
+and the global flag @code{scalarmatrixp} is @code{true} or @code{all},
+the result is simplified to a scalar value (namely the sole element of the matrix).
+
+The result returned by @code{pearson_correlation} is a submatrix of the result of @code{cor}.
+@code{pearson_correlation(@var{X}, @var{Y})} returns the same result as
+the upper right off-diagonal submatrix of @code{cor(addcol(@var{X}, @var{Y}))}
+(which is also the transpose of the lower left off-diagonal submatrix).
+Also, for any matrix @var{X},
+@code{pearson_correlation(@var{X}, @var{X})} is the same result as @code{cor(@var{X})}.
+
+Examples:
+
+@c ===beg===
+@c load ("descriptive")$
+@c s1: makelist (random (10) / 5.0, 12);
+@c s2: makelist (random (13) / 7.0, 12);
+@c pearson_correlation (s1, s2);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+@group
+(%i2) s1: makelist (random (10) / 5.0, 12);
+(%o2) [0.4, 0.4, 0.8, 1.0, 0.8, 0.2, 1.8, 1.0, 1.6, 0.6, 1.0, 
+                                                             1.0]
+@end group
+@group
+(%i3) s2: makelist (random (13) / 7.0, 12);
+(%o3) [0.2857142857142857, 1.4285714285714286, 1.0, 
+0.42857142857142855, 1.5714285714285714, 1.7142857142857142, 
+1.4285714285714286, 0.14285714285714285, 0.2857142857142857, 
+1.2857142857142858, 0.42857142857142855, 1.7142857142857142]
+@end group
+@group
+(%i4) pearson_correlation (s1, s2);
+(%o4)                 - 0.23377517023065703
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
 @anchor{cor}
 @deffn {Function} cor @
 @fname{cor} (@var{matrix}) @
