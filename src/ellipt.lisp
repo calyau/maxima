@@ -1158,12 +1158,16 @@
       (flet ((base (phi m)
 	       (let* ((s (sin phi))
 		      (c (cos phi)))
-		 (if (and (realp phi) (realp m) (> m 0) (< m 1))
-		     (bf-elliptic-e-0<m<1 s c m)
-		     (let ((c2 (* c c))
-			   (s2 (- 1 (* m s s))))
-		       (- (* s (bf-rf c2 s2 1))
-			  (* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))))
+		 (cond ((and (realp phi) (realp m) (> m 0) (< m 1))
+			(bf-elliptic-e-0<m<1 s c m))
+		       ((= m 1)
+			;; A&S 17.4.25
+			s)
+		       (t
+			(let ((c2 (* c c))
+			      (s2 (- 1 (* m s s))))
+			  (- (* s (bf-rf c2 s2 1))
+			     (* (/ m 3) (* s s s) (bf-rd c2 s2 1)))))))))
 	;; Elliptic E is quasi-periodic wrt to phi:
 	;;
 	;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
@@ -2837,71 +2841,6 @@ first kind:
 	     (setf y (* (+ y lam) 1/4))
 	     (setf z (* (+ z lam) 1/4))))))))
 
-;; Elliptic integral of the second kind (Legendre's form):
-;;
-;;
-;;      phi
-;;     /
-;;     [                  2
-;;     I    SQRT(1 - m SIN (s)) ds
-;;     ]
-;;     /
-;;      0
-
-(defun elliptic-e (phi m)
-  (declare (type flonum phi m))
-  (if (> m 1)
-      (bigfloat::bf-elliptic-e-m>1 phi m)
-      (flet ((base (phi m)
-	       (cond ((= m 0)
-		      ;; A&S 17.4.23
-		      phi)
-		     ((= m 1)
-		      ;; A&S 17.4.25
-		      (sin phi))
-		     ((< 0 m 1)
-		      (bigfloat::bf-elliptic-e-0<m<1 (sin phi) (cos phi) m))
-		     (t
-		      (let* ((sin-phi (sin phi))
-			     (cos-phi (cos phi))
-			     (k (sqrt m))
-			     (y (* (- 1 (* k sin-phi))
-				   (+ 1 (* k sin-phi)))))
-			(- (* sin-phi
-			      (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
-			   (* (/ m 3)
-			      (expt sin-phi 3)
-			      (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0))))))))
-	;; Elliptic E is quasi-periodic wrt to phi:
-	;;
-	;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
-	(let ((period (round (realpart phi) pi)))
-	  (+ (base (- phi (* (float pi 1d0) period)) m)
-	     (* 2 period (elliptic-ec m)))))))
-
-;; Complete version
-(defun elliptic-ec (m)
-  (declare (type flonum m))
-  (cond ((= m 0)
-	 ;; A&S 17.4.23
-	 (float (/ pi 2)))
-	((= m 1)
-	 ;; A&S 17.4.25
-	 1.0)
-	((< 0 m 1)
-	 ;; See BF-ELLIPTIC-EC
-	 (let ((y (- 1 m)))
-	   (+ (* y (bigfloat::bf-rf 0.0 y 1.0))
-	      (* m y 1/3 (bigfloat::bf-rd 0.0 1.0 y)))))
-	((> m 1)
-	 (bigfloat::bf-elliptic-ec m))
-	(t
-	 (let* ((y (- 1 m)))
-	   (- (bigfloat::bf-rf 0.0 y 1.0)
-	      (* (/ m 3)
-		 (bigfloat::bf-rd 0.0 y 1.0)))))))
-
-
 ;; Define the elliptic integrals for maxima
 ;;
 ;; We use the definitions given in A&S 17.2.6 and 17.2.8.  In particular:
@@ -3111,7 +3050,7 @@ first kind:
   (let (args periods)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
-	   (complexify (elliptic-e ($float phi) ($float m))))
+	   (complexify (bigfloat::bf-elliptic-e ($float phi) ($float m))))
 	  ((complex-float-numerical-eval-p phi m)
 	   (complexify (bigfloat::bf-elliptic-e (complex ($float ($realpart phi)) ($float ($imagpart phi)))
 						(complex ($float ($realpart m)) ($float ($imagpart m))))))
@@ -3292,7 +3231,7 @@ first kind:
   (let (args)
     (cond ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
-	   (complexify (elliptic-ec ($float m))))
+	   (complexify (bigfloat::bf-elliptic-ec ($float m))))
 	  ((setf args (complex-float-numerical-eval-p m))
 	   (destructuring-bind (m)
 	       args
