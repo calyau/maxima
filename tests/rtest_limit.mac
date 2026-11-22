@@ -1953,6 +1953,24 @@ limit(gamma_incomplete(-1/3,x)*x^(1/3),x,0,minus);
 (3^(3/2)*%i-3)/2$
 
 
+/* Bug #5893: "tlimit(x*exp(-log(x)^(3/2)), x, inf) gives inf instead of 0" */
+
+[tlimit(x*exp(-log(x)^(3/2)), x, inf),
+ tlimit(x*log(x)*exp(-log(x)^(3/2)), x, inf),
+ tlimit(x^1000*exp(-log(x)^(3/2)), x, inf),
+ tlimit(exp(log(x)^(3/2))/x^2, x, inf)];
+[0, 0, 0, inf]$
+
+[tlimit(exp(-log(1/x)^(3/2))/x, x, 0, plus),
+ tlimit(exp(-(-log(x))^(3/2))/x^2, x, 0, plus),
+ tlimit(exp(-(-log(-x))^(3/2))/x, x, 0, minus)];
+[0, 0, 0]$
+
+[tlimit(exp(-log(-x)^(3/2))*x, x, minf),
+ tlimit(exp(log(-x)^(3/2))/x, x, minf)];
+[0, minf]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

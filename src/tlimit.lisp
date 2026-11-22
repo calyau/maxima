@@ -254,12 +254,20 @@
 (defun limit-method-reciprocal-limit-point (e var val)
   "Attempt to compute the limit of E as VAR approaches VAL by transforming the
   limit point via reciprocal substitution."
-  (let* ((ee (maxima-substitute (div 1 var) var e))
-         (new-val   (liminv-new-val val)))
+  (let ((new-val (liminv-new-val val)))
     (cond
       (new-val
-       (let ((*preserve-direction* t))
-         (taylim ee var new-val nil)))
+       ;; Substitute 1/G for VAR, where G is a new variable with the facts of
+       ;; a limit at NEW-VAL. The facts on VAR need not hold for 1/VAR: for
+       ;; VAL = inf they include VAR > *LARGE-POSITIVE-NUMBER*, and with that
+       ;; fact the simplifier turns (-log(x))^(3/2) into -%i*log(x)^(3/2),
+       ;; which is wrong for x near 0.
+       (let ((g (gensym)))
+         (putprop g t 'internal) ; ask no questions about G
+         (with-new-context (context)
+           (make-limit-assumptions g new-val (if (eq new-val '$zerob) '$minus '$plus))
+           (let ((*preserve-direction* t))
+             (taylim (maxima-substitute (div 1 g) var e) g new-val nil)))))
       (t
        (throw 'limit t)))))
 
