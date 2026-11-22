@@ -1000,6 +1000,30 @@ limit((x+sqrt(x))^x-(x^2+x)^x/(sqrt(%e)*x^x), x, inf);
 inf;
 
 
+/* Bug #5854: "taytorat and listofvars give a Lisp error for a taylor series in %e^(-x^2) or log(x)" */
+
+block([ts : taylor(%e^(x^2)/x^2 - 1, x, inf, 2), r],
+  r : taytorat(ts),
+  [ratp(r), taylorp(r), ratsimp(r - (%e^(x^2)/x^2 - 1)), listofvars(ts),
+   ratsimp(ratnumer(ts)/ratdenom(ts) - (%e^(x^2)/x^2 - 1))]);
+[true, false, 0, [x], 0]$
+
+block([ts : taylor(log(x) + x, x, 0, 2), r],
+  r : taytorat(ts),
+  [ratp(r), taylorp(r), ratsimp(r - (log(x) + x)), listofvars(ts)]);
+[true, false, 0, [x]]$
+
+block([ts : taylor(taylor(1 + %e^(-x^2), x, inf, 2), x, inf, 2), r],
+  r : taytorat(ts),
+  [ratp(r), taylorp(r), ratsimp(r - (1 + %e^(-x^2))), listofvars(ts)]);
+[true, false, 0, [x]]$
+
+/* A product of series calls listofvars on a factor which expands to a constant: */
+ratsimp(  ratdisrep(taylor(%e^(x^2)/x^2 - 1, x, inf, 2) * taylor(1/x, x, inf, 1))
+        - ratdisrep(taylor((%e^(x^2)/x^2 - 1)/x, x, inf, 1))), maxtayorder : false;
+0$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

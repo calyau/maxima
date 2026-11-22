@@ -1402,25 +1402,31 @@
 (defun srrat (e)
   (unless (some (lambda (v) (switch 'multivar v)) (mrat-tlist e))
     (cons (list 'mrat 'simp (mrat-varlist e) (mrat-genvar e))
-          (srrat2 (mrat-ps e)))))
+          (srrat2 (mrat-ps e) (mrat-genvar e)))))
 
-(defun srrat2 (e)
-  (if (pscoefp e) e (srrat3 (terms e) (gvar e))))
+;; GENS is the GENVAR list of the series. A kernel which taylor adjoins
+;; during an expansion, like %e^(-x^2) at inf or log(x) at 0, has a gensym
+;; which is only in the tlist: it is not on GENS and has no value, so the
+;; polynomial arithmetic below can't order it. Throw to $TAYTORAT then,
+;; which converts the disrep'd series instead.
+(defun srrat2 (e gens)
+  (cond ((pscoefp e) e)
+	((not (member (gvar e) gens)) (throw 'srrat nil))
+	(t (srrat3 (terms e) (gvar e) gens))))
 
-(defun srrat3 (l poly-var)
+(defun srrat3 (l poly-var gens)
   (cond ((null l) '(0 . 1))
 	((null (=1 (cdr (le l))))
 	 (throw 'srrat nil))
 	((null (n-term l))
 	 (rattimes (cons (list poly-var (car (le l)) 1) 1)
-		   (srrat2 (lc l))
+		   (srrat2 (lc l) gens)
 		   t))
 	((ratplus
 	  (rattimes (cons (list poly-var (car (le l)) 1) 1)
-		    (srrat2 (lc l))
+		    (srrat2 (lc l) gens)
 		    t)
-	  (srrat3 (n-term l) poly-var)))))
-
+	  (srrat3 (n-term l) poly-var gens)))))
 
 (defmspec $deftaylor (l)
   (prog (fun series param op ops)

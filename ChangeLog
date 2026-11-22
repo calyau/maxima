@@ -378,6 +378,7 @@ Bug fixes for numbered bugs:
 * \#5842 Out-of-tree build with GCL writes its object files into the source tree
 * \#5843 configure: --without-<lisp> enables the Lisp with executable "no"
 * \#5846 integrate(cos(sqrt(x)), x) returns an exponential form
+* \#5854 taytorat and listofvars give a Lisp error for a taylor series in %e^(-x^2) or log(x)
 * \#5860 A CRE or Taylor series written by save is corrupted when loaded
 * \#5883 taylor() signals 'PSLOG: internal error' for log(x^2+x) at inf
 
