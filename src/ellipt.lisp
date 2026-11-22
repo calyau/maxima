@@ -980,6 +980,9 @@
 ;; it with more precision until it has full relative accuracy.
 ;;
 ;; The result is recomputed when its absolute value is at most LIMIT.
+;; The default value of 1/16 is for elliptic-f and was determined by
+;; Claude as a tradeoff between speed and accuracy.  1/4 also works
+;; fine for elliptic-f but the slow path happens more often.
 (defun bf-1-m*sin^2 (phi m &optional (limit 1/16))
   (cond
     ((and (realp phi) (<= (realpart m) 1))
@@ -994,10 +997,7 @@
 		      (expt (sin phi) 2)))))
        (cond
 	 ((> (abs y) limit)
-	  ;; For |y| > 1/16, we don't need to do extra precision for
-	  ;; elliptic_f.  The threshold was determined by Claude.  A threshold of 1/4
-	  ;; also works to give the same accuracy, but then we do the
-	  ;; slow path below more often.
+	  ;; For |y| > LIMIT, we don't need to do extra precision.
 	  y)
 	 (t
 	  ;; WITH-EXTRA-PRECISION would round Y to FPPREC, not to the
@@ -1074,27 +1074,20 @@
 	(t
 	 (bf-rf 0 (- 1 m) 1))))
 
-;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
-;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
+;; BF-ELLIPTIC-E-0<M<1 computes elliptic_e(phi, m) for real m with
+;; 0 < m < 1 and real phi reduced to about [-pi/2, pi/2].  Its
+;; arguments are s = sin(phi), c = cos(phi) and m.  DLMF 19.25.10,
+;; whose c is csc(phi)^2, scaled by s^2, gives
 ;;
+;; elliptic_e(phi, m) = (1-m)*s*rf(c^2, y, 1)
+;;    + (m*(1-m)/3)*s^3*rd(c^2, 1, y)
+;;    + m*s*c/sqrt(y)
 ;;
-;; or 
-;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
-;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
+;; where y = c^2 + (1-m)*s^2.  For c >= 0, all terms have the sign of
+;; phi, so there is no cancellation, unlike the formula above when m
+;; is near 1 and phi is near pi/2.
 ;;
-;; For real 0 < m < 1 and |phi| <= pi/2, DLMF 19.25.10 with c =
-;; csc(phi)^2, scaled by sin(phi)^2, gives
-;;
-;; elliptic_e(phi, m) = (1-m)*sin(phi)*rf(cos(phi)^2, y, 1)
-;;    + (m*(1-m)/3)*sin(phi)^3*rd(cos(phi)^2, 1, y)
-;;    + m*sin(phi)*cos(phi)/sqrt(y)
-;;
-;; where y = cos(phi)^2 + (1-m)*sin(phi)^2.  All terms have the sign
-;; of phi, so there is no cancellation, unlike the formula above when
-;; m is near 1 and phi is near pi/2.
-;;
-;; This needs cos(phi) >= 0.  A reduced phi can be just past +/- pi/2,
-;; so for cos(phi) < 0 use
+;; A reduced phi can be just past +/- pi/2, so for c < 0 use
 ;;
 ;; elliptic_e(phi, m) = 2*sgn(phi)*elliptic_ec(m)
 ;;    - elliptic_e(sgn(phi)*%pi - phi, m)
@@ -1103,11 +1096,15 @@
 	   (let* ((m1 (- 1 m))
 		  (c2 (* c c))
 		  (y (+ c2 (* m1 s s))))
-	     (+ (* m1 s (bf-rf c2 y 1))
-		(* m m1 1/3 s s s (bf-rd c2 1 y))
-		(/ (* m s c) (sqrt y))))))
+	     (+ (* m1 s
+		   (bf-rf c2 y 1))
+		(* m m1 1/3 s s s
+		   (bf-rd c2 1 y))
+		(/ (* m s c)
+		   (sqrt y))))))
     (if (minusp c)
-	(- (* (if (minusp s) -2 2) (bf-elliptic-ec m))
+	(- (* (if (minusp s) -2 2)
+	      (bf-elliptic-ec m))
 	   (base s (- c)))
 	(base s c))))
 
@@ -1133,7 +1130,9 @@
 ;; (-1)^k*sin(phi).
 (defun bf-elliptic-e-m>1 (phi m)
   (let* ((k (round phi (%pi phi)))
-	 (s (if (evenp k) (sin phi) (- (sin phi))))
+	 (s (if (evenp k)
+		(sin phi)
+		(- (sin phi))))
 	 (a (abs s))
 	 (c (abs (cos phi)))
 	 ;; The imaginary part is proportional to |y|^(3/2), so y is
@@ -1142,39 +1141,61 @@
 	 ;; precision.  Recompute it for |y| <= 1, where that exceeds 2.
 	 (y (bf-1-m*sin^2 phi m 1))
 	 (e (if (>= y 0)
-		(+ (* (- m 1) 1/3 a a a (bf-rd y 1 (* c c)))
-		   (/ (* a (sqrt y)) c))
-		(let ((s1 (sqrt (/ (- y) (- m 1)))))
+		(+ (* (- m 1) 1/3 a a a
+		      (bf-rd y 1 (* c c)))
+		   (/ (* a (sqrt y))
+		      c))
+		(let ((s1 (sqrt (/ (- y)
+				   (- m 1)))))
 		  (complex (realpart (bf-elliptic-ec m))
-			   (* (/ (/ (- m 1) m) (* 3 (sqrt m)))
+			   (* (/ (/ (- m 1)
+				    m)
+				 (* 3 (sqrt m)))
 			      s1 s1 s1
-			      (bf-rd (/ (* c c) (- m 1)) (* a a) (/ m))))))))
+			      (bf-rd (/ (* c c)
+					(- m 1))
+				     (* a a)
+				     (/ m))))))))
     (+ (if (minusp s) (- e) e)
-       (if (zerop k) 0 (* 2 k (bf-elliptic-ec m))))))
+       (if (zerop k)
+	   0
+	   (* 2 k
+	      (bf-elliptic-ec m))))))
 
+;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
+;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
+;;
+;;
+;; or 
+;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
+;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
+;;
 (defun bf-elliptic-e (phi m)
-  (if (and (realp phi) (realp m) (> m 1))
-      (bf-elliptic-e-m>1 phi m)
-      (flet ((base (phi m)
-	       (let* ((s (sin phi))
-		      (c (cos phi)))
-		 (cond ((and (realp phi) (realp m) (> m 0) (< m 1))
-			(bf-elliptic-e-0<m<1 s c m))
-		       ((= m 1)
-			;; A&S 17.4.25
-			s)
-		       (t
-			(let ((c2 (* c c))
-			      (s2 (- 1 (* m s s))))
-			  (- (* s (bf-rf c2 s2 1))
-			     (* (/ m 3) (* s s s) (bf-rd c2 s2 1)))))))))
-	;; Elliptic E is quasi-periodic wrt to phi:
-	;;
-	;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
-	(let* ((bfpi (%pi phi))
-	       (period (round (realpart phi) bfpi)))
-	  (+ (base (- phi (* bfpi period)) m)
-	     (* 2 period (bf-elliptic-ec m)))))))
+  (when (and (realp phi) (realp m) (> m 1))
+    (return-from bf-elliptic-e
+      (bf-elliptic-e-m>1 phi m)))
+  (flet ((base (phi m)
+	   (let* ((s (sin phi))
+		  (c (cos phi)))
+	     (cond ((and (realp phi) (realp m) (> m 0) (< m 1))
+		    (bf-elliptic-e-0<m<1 s c m))
+		   ((= m 1)
+		    ;; A&S 17.4.25
+		    s)
+		   (t
+		    (let ((c2 (* c c))
+			  (s2 (- 1 (* m s s))))
+		      (- (* s (bf-rf c2 s2 1))
+			 (* (/ m 3)
+			    (* s s s)
+			    (bf-rd c2 s2 1)))))))))
+    ;; Elliptic E is quasi-periodic wrt to phi:
+    ;;
+    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
+    (let* ((bfpi (%pi phi))
+	   (period (round (realpart phi) bfpi)))
+      (+ (base (- phi (* bfpi period)) m)
+	 (* 2 period (bf-elliptic-ec m))))))
     
 
 ;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
