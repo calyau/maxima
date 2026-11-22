@@ -8079,6 +8079,22 @@ map(lambda([f], block([F : integrate(f, t)], map(lambda([p], radcan(rectform(sub
 [[0, 0], [0, 0], [0, 0], [0, 0]]$
 
 
+/* Bug #5890: "Definite integral of %e^(x-1)*(x-1)^(7/3) is off by a cube root of unity" */
+
+block([nv, chk],
+  local(nv, chk),
+  nv(e) := float(rectform(expand(float(rectform(e))))),
+  chk(f, a, b) := block([r : integrate(f, x, a, b), q : quad_qags(f, x, a, b)],
+                    is(q[4] = 0) and freeof('integrate, r) and is(cabs(nv(r) - q[1]) < 1e-9*abs(q[1]))),
+  map(lambda([l], apply(chk, l)),
+      [[%e^(x-1)*(x-1)^(7/3), 3/2, 5/2], [%e^(x-1)*(x-1)^(1/3), 3/2, 5/2], [%e^(2*(1+2*x))*(2+3*x)^(7/3), -1/6, 11/6],
+       [%e^(x-1)*(2+2*x)^(4/3), -1/2, 1/2], [%e^(x-1)/(x-1)^(1/3), 3/2, 5/2], [%e^(x-1)*(x-1)^(7/3), 1/2, 3/2],
+       [%e^(x-1)*(x-1)^(7/3), 1, 2], [%e^(1-x)*(x-1)^(1/3), -1, 1/2], [%e^(2*x)*(x+2)^(7/5), -7/3, -3/2],
+       [%e^(1-3*x)*(3*x-3)^(4/7), 2/3, 2], [%e^(x-1)*(x-1)^(7/3), -2, 1], [%e^x*x^(1/3), 1, 2],
+       [%e^(x/2+1)*(3*x+2)^(-1/7), -8/3, -7/6]]));
+[true, true, true, true, true, true, true, true, true, true, true, true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -382,6 +382,7 @@ Bug fixes for numbered bugs:
 * \#5860 A CRE or Taylor series written by save is corrupted when loaded
 * \#5883 taylor() signals 'PSLOG: internal error' for log(x^2+x) at inf
 * \#5889 integrate(t^3*%e^(2*t^3)*%pi^(t^3), t) is wrong for t > 0
+* \#5890 Definite integral of %e^(x-1)*(x-1)^(7/3) is off by a cube root of unity
 
 Bug fixes for unnumbered bugs:
 ------------------------------

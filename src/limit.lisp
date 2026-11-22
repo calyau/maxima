@@ -5020,7 +5020,7 @@ ignoring dummy variables and array indices."
              (power '$%e (sub ex (addn logs t))))))))
 
 (defun extra-simp (e)
-  (declare (special var))
+  (declare (special var val))
    (let ((var-present (not (freeof var e))) w)
    (cond ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
@@ -5072,11 +5072,27 @@ ignoring dummy variables and array indices."
 		 ;; convert log_gamma(X) to log(gamma(X))
 		((and var-present (eq '%log_gamma (caar e)))
 		  (extra-simp (ftake '%log (ftake '%gamma (cadr e)))))
-        ;; convert expintegral_e to an incomplete gamma expression
+        ;; convert expintegral_e to an incomplete gamma expression:
+        ;; expintegral_e(p,z) = z^(p-1)*gamma_incomplete(1-p,z). Where the
+        ;; limit of z is known to be <= 0 or not real, take the principal
+        ;; z^(p-1), not the real root that the simplifier takes for a
+        ;; negative z. Elsewhere keep the plain power. Where z tends to a
+        ;; positive number, both roots agree, and the plain power stays
+        ;; consistent with real roots of the same base in other factors.
+        ;; For z going to infinity, SIMPLIM%GAMMA_INCOMPLETE takes the real
+        ;; root of z^(-p) in z^(-p)*exp(-z), and the product of the two real
+        ;; roots is 1/z. The limit variable is real, hence REAL-VAR T.
         ((and var-present (eq (caar e) '%expintegral_e))
 		  (let* ((p (extra-simp (cadr e)))
-				 (arg (extra-simp (caddr e))))
-				(mul (ftake 'mexpt arg (sub p 1))
+				 (arg (extra-simp (caddr e)))
+				 (s (sub p 1))
+				 (lim (and (ratnump s) (limit-catch arg var val))))
+				(mul (if (and lim (not (eq lim '$zeroa))
+					      (freeof-extended-real (ridofab lim))
+					      (member ($csign (ridofab lim))
+					              '($neg $nz $zero $complex $imaginary)))
+				       (principal-power arg s t)
+				       (ftake 'mexpt arg s))
 				     (ftake '%gamma_incomplete (sub 1 p) arg))))
 	     (($subvarp (mop e)) ;subscripted function
 		     (subfunmake 
@@ -5122,11 +5138,11 @@ ignoring dummy variables and array indices."
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
 				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
 				  (setq exp (resimplify exp)) ;simplify in new context
-				   ;; Additional simplifications. EXTRA-SIMP reads the limit
-                  ;; variable from the special VAR.
-                  (setq exp (let ((var newvar))
-                              (declare (special var))
-                              (resimp-extra-simp (sratsimp exp))))
+				  ;; Additional simplifications. EXTRA-SIMP reads the limit
+				  ;; variable and point from the specials VAR and VAL.
+				  (setq exp (let ((var newvar) (val '$inf))
+					      (declare (special var val))
+					      (resimp-extra-simp (sratsimp exp))))
 				  (limitinf exp newvar)) ;compute & return limit
 			($killcontext cx))))) ;kill context & forget all new facts.	 			
 
