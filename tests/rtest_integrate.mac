@@ -8072,6 +8072,13 @@ block([f : x/(cos(x)+1)],
 true$
 
 
+/* Bug #5889: "integrate(t^3*%e^(2*t^3)*%pi^(t^3), t) is wrong for t > 0" */
+
+map(lambda([f], block([F : integrate(f, t)], map(lambda([p], radcan(rectform(subst(t = p, diff(F, t) - f)))), [1/2, -1/2]))),
+    [t^3*%e^(2*t^3)*%pi^(t^3), t^4*%e^(t^3)*2^(t^3), t*%e^(t^3)*2^(t^3), t^(1/3)*%e^(t^2)*2^(t^2)]);
+[[0, 0], [0, 0], [0, 0], [0, 0]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -3200,18 +3200,13 @@
 
      (mul
       const
-      (power var2 n)
       (div -1 r)
       (power a e)
       (power h g)
-      (power
-       (mul -1
-            (power var2 r)
-            (add (mul b ($log a)) (mul c ($log h))))
-       (div (mul -1 n) r))
-      ($gamma_incomplete
+      (gamma-incomplete-and-power
        (div n r)
-       (mul -1 (power var2 r) (add (mul b ($log a)) (mul c ($log h)))))))
+       (mul -1 (power var2 r) (add (mul b ($log a)) (mul c ($log h))))
+       var2 n)))
 
     ((and (m2-exp-type-7-1 fe var2)
           (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
@@ -3224,12 +3219,10 @@
           (power '$%e (mul -1 (power var2 r) (add (mul b q) (mul c u))))
           (power (power '$%e (add e (mul b (power var2 r)))) q)
           (power (power '$%e (add g (mul c (power var2 r)))) u)
-          (power var2 (add v 1))
-          (power (mul -1 (power var2 r) (add (mul b q) (mul c u)))
-                 (div (mul -1 (add v 1)) r))
-          (take '(%gamma_incomplete)
+          (gamma-incomplete-and-power
                 (div (add v 1) r)
-                (mul -1 (power var2 r) (add (mul b q) (mul c u))))))
+                (mul -1 (power var2 r) (add (mul b q) (mul c u)))
+                var2 (add v 1))))
 
     ((m2-exp-type-8 fe var2)
      (a b c d e f g h)
@@ -3328,19 +3321,15 @@
                       (power var2 r)
                       (add (mul b u) (mul c v))))
           (power (power '$%e
-                        (add (power var2 r) e))
+                        (add (mul b (power var2 r)) e))
                  u)
           (power (power '$%e
-                        (add (power var2 r) g))
+                        (add (mul c (power var2 r)) g))
                  v)
-          var2
-          (power (mul -1
-                      (power var2 r)
-                      (add (mul b u) (mul c v)))
-                 (div -1 r))
-          (take '(%gamma_incomplete)
+          (gamma-incomplete-and-power
                 (div 1 r)
-                (mul -1 (power var2 r) (add (mul b u) (mul c v))))))
+                (mul -1 (power var2 r) (add (mul b u) (mul c v)))
+                var2 1)))
 
     ((and (m2-exp-type-9 fe var2)
 	  (maxima-integerp (cdras 'n w))

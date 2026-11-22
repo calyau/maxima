@@ -381,6 +381,7 @@ Bug fixes for numbered bugs:
 * \#5854 taytorat and listofvars give a Lisp error for a taylor series in %e^(-x^2) or log(x)
 * \#5860 A CRE or Taylor series written by save is corrupted when loaded
 * \#5883 taylor() signals 'PSLOG: internal error' for log(x^2+x) at inf
+* \#5889 integrate(t^3*%e^(2*t^3)*%pi^(t^3), t) is wrong for t > 0
 
 Bug fixes for unnumbered bugs:
 ------------------------------
