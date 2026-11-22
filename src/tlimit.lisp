@@ -207,7 +207,12 @@
         (et nil))
 
     (when (tlimp e var)
-      (let* ((e1  (stirling0 e))
+      ;; STIRLING0 reads the limit variable and point from the specials VAR
+      ;; and VAL. Bind them to the arguments of TAYLIM, which differ from
+      ;; the specials when LIMIT-METHOD-RECIPROCAL-LIMIT-POINT calls it.
+      (let* ((e1  (let ((var var) (val val))
+                    (declare (special var val))
+                    (stirling0 e)))
              (pt  (ridofab val)))
 
         ;; First Taylor attempt
