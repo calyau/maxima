@@ -1080,14 +1080,45 @@
 ;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
 ;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
 ;;
+;; For real 0 < m < 1 and |phi| <= pi/2, DLMF 19.25.10 with c =
+;; csc(phi)^2, scaled by sin(phi)^2, gives
+;;
+;; elliptic_e(phi, m) = (1-m)*sin(phi)*rf(cos(phi)^2, y, 1)
+;;    + (m*(1-m)/3)*sin(phi)^3*rd(cos(phi)^2, 1, y)
+;;    + m*sin(phi)*cos(phi)/sqrt(y)
+;;
+;; where y = cos(phi)^2 + (1-m)*sin(phi)^2.  All terms have the sign
+;; of phi, so there is no cancellation, unlike the formula above when
+;; m is near 1 and phi is near pi/2.
+;;
+;; This needs cos(phi) >= 0.  A reduced phi can be just past +/- pi/2,
+;; so for cos(phi) < 0 use
+;;
+;; elliptic_e(phi, m) = 2*sgn(phi)*elliptic_ec(m)
+;;    - elliptic_e(sgn(phi)*%pi - phi, m)
+(defun bf-elliptic-e-0<m<1 (s c m)
+  (flet ((base (s c)
+	   (let* ((m1 (- 1 m))
+		  (c2 (* c c))
+		  (y (+ c2 (* m1 s s))))
+	     (+ (* m1 s (bf-rf c2 y 1))
+		(* m m1 1/3 s s s (bf-rd c2 1 y))
+		(/ (* m s c) (sqrt y))))))
+    (if (minusp c)
+	(- (* (if (minusp s) -2 2) (bf-elliptic-ec m))
+	   (base s (- c)))
+	(base s c))))
+
 (defun bf-elliptic-e (phi m)
   (flet ((base (phi m)
 	   (let* ((s (sin phi))
-		  (c (cos phi))
-		  (c2 (* c c))
-		  (s2 (- 1 (* m s s))))
-	     (- (* s (bf-rf c2 s2 1))
-		(* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))
+		  (c (cos phi)))
+	     (if (and (realp phi) (realp m) (> m 0) (< m 1))
+		 (bf-elliptic-e-0<m<1 s c m)
+		 (let ((c2 (* c c))
+		       (s2 (- 1 (* m s s))))
+		   (- (* s (bf-rf c2 s2 1))
+		      (* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))))
     ;; Elliptic E is quasi-periodic wrt to phi:
     ;;
     ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
@@ -1101,6 +1132,11 @@
 ;;
 ;; or
 ;; elliptic_ec(m) = rf(0,1-m,1) - (m/3)*rd(0,1-m,1);
+;;
+;; For 0 < m < 1, use the limit phi = pi/2 of BF-ELLIPTIC-E-0<M<1
+;; instead, which has no cancellation when m is near 1:
+;;
+;; elliptic_ec(m) = (1-m)*rf(0,1-m,1) + (m*(1-m)/3)*rd(0,1,1-m)
 
 (defun bf-elliptic-ec (m)
   (cond ((= m 0)
@@ -1111,6 +1147,10 @@
 	 (if (typep m 'bigfloat)
 	     (bigfloat 1)
 	     1e0))
+	((and (realp m) (> m 0) (< m 1))
+	 (let ((m1 (- 1 m)))
+	   (+ (* m1 (bf-rf 0 m1 1))
+	      (* m m1 1/3 (bf-rd 0 1 m1)))))
 	(t
 	 (let ((m1 (- 1 m)))
 	   (- (bf-rf 0 m1 1)
@@ -2759,6 +2799,8 @@ first kind:
 		 ((= m 1)
 		  ;; A&S 17.4.25
 		  (sin phi))
+		 ((< 0 m 1)
+		  (bigfloat::bf-elliptic-e-0<m<1 (sin phi) (cos phi) m))
 		 (t
 		  (let* ((sin-phi (sin phi))
 			 (cos-phi (cos phi))
@@ -2786,6 +2828,11 @@ first kind:
 	((= m 1)
 	 ;; A&S 17.4.25
 	 1.0)
+	((< 0 m 1)
+	 ;; See BF-ELLIPTIC-EC
+	 (let ((y (- 1 m)))
+	   (+ (* y (bigfloat::bf-rf 0.0 y 1.0))
+	      (* m y 1/3 (bigfloat::bf-rd 0.0 1.0 y)))))
 	(t
 	 (let* ((y (- 1 m)))
 	   (- (bigfloat::bf-rf 0.0 y 1.0)
