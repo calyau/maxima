@@ -2382,6 +2382,8 @@ closeto_relerr(elliptic_e(float(%pi/2), float(1-2^-53)), 1.0000000000000011,
                4.0001*2^-53);
 true;
 
+/* This and the next fail on CLISP, whose double-float cos has an
+   absolute error of about 3e-20 near %pi/2. */
 closeto_relerr(elliptic_e(float(%pi/2)-2^-40, float(1-2^-53)),
                1.0000000000000011,
                2.0001*2^-53);
@@ -2490,6 +2492,8 @@ closeto_relerr(realpart(elliptic_e(float(%pi/4)+2^-30, 2.0)),
                1.6694*2^-53);
 true;
 
+/* Fails on CLISP, whose (expt x 3/2) has an error of up to about
+   2.6 ulps. */
 closeto_relerr(imagpart(elliptic_e(float(%pi/4)+2^-30, 2.0)),
                2.6796243306859025e-14,
                1.0607*2^-53);
