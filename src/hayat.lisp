@@ -1678,6 +1678,16 @@
 
 ;;;		 Subtitle Extending Routines
 
+;; The form to put for SP2VAR to expand a power series at 0: an expansion
+;; variable as TRANSFORM-TVAR made it, e.g. 1/x for x at inf, whose series
+;; is just its gvar. With the variable itself, the series would be expanded
+;; at its expansion point, where TSPRSUM may find no last term.
+(defun sp2var-form ()
+  (let ((d (find-if #'(lambda (d)
+                        (and (tvar? (datum-var d)) (null (switch 'multi d))))
+                    tlist)))
+    (if d (get-inverse (data-gvar d)) (dummy-var))))
+
 (defun getfun-lt (fun)
    (let ((exp-datum (get (oper-name fun) 'exp-form)))
 	(cond (exp-datum
@@ -1686,7 +1696,7 @@
 		   ;;     (setq 0p-funord (copy-tree (cdar exp-datum))))
 	       (exp-datum-lt fun exp-datum))
 	      ((setq exp-datum (get (oper-name fun) 'sp2))
-	       (setq exp-datum (get-lexp (subst (dummy-var) 'sp2var exp-datum)
+	       (setq exp-datum (get-lexp (subst (sp2var-form) 'sp2var exp-datum)
 					 (rcone) ()))
 		   ;; Info not needed yet; need to bind lexp-non0 to T when
 		   ;; this is used though so n-term will be there.

@@ -353,7 +353,7 @@ s + s^2/2 + s^3/3$
 /*--- SF bug 1641487 ---*/
 
 taylor(unk(x),x,1,2);
-unk(1)+(at('diff(unk(x),x,1),x=1))*(x-1)$
+unk(1)+('at('diff(unk(x),x,1),x=1))*(x-1)+('at('diff(unk(x),x,2),x=1))*(x-1)^2/2$
 
 (deftaylor(nam[n](x), sum(x^k/(k + n),k,0,inf)),0);
 0$
@@ -1022,6 +1022,21 @@ block([ts : taylor(taylor(1 + %e^(-x^2), x, inf, 2), x, inf, 2), r],
 ratsimp(  ratdisrep(taylor(%e^(x^2)/x^2 - 1, x, inf, 2) * taylor(1/x, x, inf, 1))
         - ratdisrep(taylor((%e^(x^2)/x^2 - 1)/x, x, inf, 1))), maxtayorder : false;
 0$
+
+
+/* Bug #5897: "taylor() of lambert_w() fails at expansion points other than 0, slowly in tlimit()" */
+
+map(lambda([l], ratsimp(ratdisrep(l[1]) - l[2])),
+    [[taylor(lambert_w(x), x, %e, 2), 1 + (x-%e)/(2*%e) - 3*(x-%e)^2/(16*%e^2)],
+     [taylor(lambert_w(x-1), x, 1, 3), (x-1) - (x-1)^2 + 3*(x-1)^3/2],
+     [taylor(lambert_w(1/x), x, inf, 3), 1/x - 1/x^2 + 3/(2*x^3)],
+     [taylor(lambert_w(1/x), x, minf, 3), 1/x - 1/x^2 + 3/(2*x^3)],
+     [taylor(lambert_w(exp(-x)), x, inf, 3), %e^-x - %e^(-2*x) + 3*%e^(-3*x)/2],
+     [taylor(lambert_w(x*y), [x, 1, 2], [y, 0, 2]), y - y^2 + (y - 2*y^2)*(x-1) - y^2*(x-1)^2]]);
+[0, 0, 0, 0, 0, 0]$
+
+[tlimit(x^2*(lambert_w(1/x) - 1/x), x, inf), tlimit(x^3*(lambert_w(1/x) - 1/x + 1/x^2), x, inf)];
+[-1, 3/2]$
 
 
 /* clean up & checks */
