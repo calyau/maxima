@@ -4642,7 +4642,11 @@ ignoring dummy variables and array indices."
 	((and (mlogp exp)
 	      (not (freeof wsym exp)))
 	 (let* ((f (cadr exp))
-		(c ($lopow (calculate-series f wsym)
+		;; lopow treats log(w) like w^1, which makes c wrong
+		;; for an f such as log(1/w+1) = -log(w)+w+... Replace
+		;; log(w) by LOGW first, as MRV-LEADTERM does.
+		(c ($lopow (maxima-substitute logw `((%log) ,wsym)
+					      (calculate-series f wsym))
 			   wsym)))
 	   (m+ (list (car exp)
 		     (m* (m^ wsym (m- c))
@@ -4796,6 +4800,21 @@ ignoring dummy variables and array indices."
       (throw 'taylor-catch nil)
       (mrv-sign-to-number (maybe-asksign e))))
 
+;; Return the mrv-sign of e as Gruntz computes it: the sign of the
+;; coefficient of the leading term of e, found the same way until it
+;; is free of x. Each coefficient varies less rapidly than the one
+;; before, so the recursion ends. $CSIGN does not ask the user.
+(defun mrv-sign-leadterm (e x)
+  (cond ((member e extended-reals)
+         (throw 'taylor-catch nil))
+        ((freeof x e)
+         (mrv-sign-to-number ($csign e)))
+        (t
+         (let ((c (car (mrv-leadterm e x nil))))
+           (if (alike1 c e)
+             (throw 'taylor-catch nil)
+             (mrv-sign-leadterm c x))))))
+
 ;; Return the mrv-sign of e, where e is a sum.
 (defun mrv-sign-sum (e x)	
      (let ((ans) (minfterms nil) (infterms nil) (negterms nil) (posterms nil) 
@@ -4839,9 +4858,12 @@ ignoring dummy variables and array indices."
 					        (setq a (fapply 'mplus (append negterms posterms infterms)))
 						    (setq b (mul -1 (fapply 'mplus minfterms)))
 						    (setq qq (tlimit-taylor (sratsimp (sub (div a b) 1)) x '$inf 0 3))
-                             (if (null qq)
-					           (throw 'taylor-catch nil))
-		                       (mrv-sign ($ratdisrep qq) x)))
+                             ;; TLIMIT-TAYLOR fails for some sums of nested
+                             ;; logarithms. Then use the leading term.
+                             (or (and qq
+                                      (catch 'taylor-catch
+                                        (mrv-sign ($ratdisrep qq) x)))
+                                 (mrv-sign-leadterm e x))))
 					   (t 
 				          (throw 'taylor-catch nil)))))))
 

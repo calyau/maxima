@@ -135,10 +135,10 @@
         "rtest_trace"
 	"rtest_polynomialp"
         ((mlist simp) "rtest_limit_extra" 
-          ((mlist simp)  42 59 61 82 83 84 89 
+          ((mlist simp)  42 59 61 82 83 84
                          96 104 
                          124 125 126 127 132 133 135 136 137
-                         240 243 244 245 246 249
+                         240 243 249
                          267 272
                          357 358))
          ((mlist simp) "rtest_limit_gruntz"

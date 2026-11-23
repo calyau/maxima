@@ -374,6 +374,31 @@ gruntz(sinh(x)/exp(x), x, inf);
 gruntz(tanh(x), x, inf);
 1$
 
+
+/* Bug #5892: "limit() and gruntz() give inf for limits of nested logarithms" */
+
+[gruntz(log(log(log(x+1)))-log(log(log(x))), x, inf),
+ gruntz(log(log(log(x+1)))/log(log(log(x))), x, inf),
+ gruntz(log(log(log(exp(x)+x)))/log(log(x)), x, inf),
+ gruntz(log(log(log(exp(x)+1)))/log(log(x)), x, inf)];
+[0, 1, 1, 1]$
+
+[limit(log(log(log(x+1)))-log(log(log(x))), x, inf),
+ limit((log(log(log(x+1)))-log(log(log(x))))*x*log(x)*log(log(x)), x, inf),
+ limit((log(log(log(x^2+1)))-log(log(log(x))))*log(log(x)), x, inf),
+ limit((log(log(log(exp(x)+1)))-log(log(x)))*x*log(x)*exp(x), x, inf),
+ limit(log(log(log(log(x+1))))-log(log(log(log(x)))), x, inf),
+ limit(log(log(log(1/x+1)))-log(log(log(1/x))), x, 0, plus)];
+[0, 1, log(2), 1, 0, 0]$
+
+[limit((log(log(log(log(sqrt(x)))))-log(log(log(log(2*x)))))*x*log(x)*log(log(x)), x, inf),
+ limit((log(log(log(log(x+1))))-log(log(log(log(2*x)))))*x, x, inf),
+ gruntz((log(log(log(2*x)))-log(log(log(x))))*x*log(x)*log(log(x)), x, inf),
+ gruntz((log(log(log(x^3+x)))-log(log(log(x))))*x*log(x), x, inf),
+ gruntz((log(log(log(x*exp(x))))-log(log(log(x^x))))*exp(x)*x*log(x), x, inf)];
+[minf, minf, inf, inf, minf]$
+
+
 /* Any leftover facts, contexts, or values? */
 facts();
 []$
