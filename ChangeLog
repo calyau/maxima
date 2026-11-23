@@ -386,6 +386,7 @@ Bug fixes for numbered bugs:
 * \#5891 limit(gamma_incomplete(-1/3,x),x,0,minus) returns minf instead of infinity
 * \#5893 tlimit(x*exp(-log(x)^(3/2)), x, inf) gives inf instead of 0
 * \#5894 limit(gamma_incomplete(2/3,-1-1/x),x,inf) gives -76*%e/27
+* \#5896 integrate(2^x*sqrt(x+1), x) returns a noun form
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -35,6 +35,15 @@
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
   $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
 
+(defvar *exp-clues* :ready
+  "Whether INTEGRATOR, when nothing else works for an exponential that INTFORM
+  cannot do, tries another factor as the clue: NIL while SININT integrates as
+  before, T while it integrates again because that left an integral, and
+  :READY outside SININT.")
+
+(defvar *exp-clues-seen* nil
+  "Set to T where INTEGRATOR could have tried another factor as the clue.")
+
 (defvar *integrator-stack* nil
   "The integrals that the enclosing calls of INTEGRATOR are computing for an
   integration by parts, each as a cons of the integrand and its variable. It
@@ -100,7 +109,22 @@
   (and (null (pzerop a))
        (free a var2)))
 
+;; T if EX is an exponential b^f with an exponent f rational in VAR2 and a
+;; base b that is free of VAR2 or is such an exponential itself, as in
+;; (%e^x)^v. This leaves out %e^atanh(x) and the like, which are algebraic,
+;; as %e^atanh(x) = sqrt((1+x)/(1-x)).
+(defun exponentialp (ex var2)
+  (and (mexptp ex)
+       (rat8 (caddr ex) var2)
+       (or (freevar2 (cadr ex) var2)
+           (exponentialp (cadr ex) var2))))
 
+;; E with each erf(%i*u) written as %i*erfi(u), which is real for real u.
+(defun erf-to-erfi (e)
+  (cond ((atom e) e)
+        ((and (eq (caar e) '%erf) (multiplep (cadr e) '$%i))
+         (mul '$%i (ftake '%erfi (erf-to-erfi (coeff (cadr e) '$%i 1)))))
+        (t (recur-apply #'erf-to-erfi e))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -350,13 +374,38 @@
 	   (intform (let (($radexpand '$all))
 		      (simplify (list '(mexpt) w (caddr expres))))
                     var2))))
+  
+  ;; If *EXP-CLUES* is T, try INTFORM on the first of FACTORS that is not
+  ;; rational in VAR2, leaving *EXP*, POWERL, *INTEGRATOR-LEVEL* and
+  ;; *RISCH-USE-TRIGINV-ALL* as they were, else only set *EXP-CLUES-SEEN*.
+  ;; Return NIL if INTFORM finds nothing or signals an error. Give up if the
+  ;; clue has %e in it and is an integer power, as in the exponential form of
+  ;; a hyperbolic function, which INTFORM takes apart to try the exponentials
+  ;; again, which can take long, or if the domain is complex, where the
+  ;; answer can then be right only for x > 0, as for sinh(2*log(x))^(-1/2).
+  (defun intform-past-exponentials (factors var2)
+    (declare (special *exp* *integrator-level*))
+    (let ((clue (find-if-not #'(lambda (f) (rat8 f var2)) factors)))
+      (when (and clue
+                 (or (freeof '$%e clue)
+                     (not (or (eq $domain '$complex)
+                              (and (mexptp clue) (integerp (caddr clue)))))))
+        (setq *exp-clues-seen* t)
+        (when (eq *exp-clues* t)
+          (let ((*exp* *exp*) (*integrator-level* *integrator-level*)
+                (*risch-use-triginv-all* *risch-use-triginv-all*)
+                (saved-powerl powerl) ($errormsg nil))
+            (declare (special *exp* *integrator-level*))
+            (prog1 (car (errcatch (intform clue var2)))
+              (setq powerl saved-powerl)))))))
+  
   ;;------------------------------------------------------------------------------
   
   ;; This is the main integration routine.  It is called from sinint.
 
   (defun integrator (*exp* var2 &optional (stack *integrator-stack*))
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result *risch-use-triginv-all*)
+    (prog (y const w arcpart coef integrand result *risch-use-triginv-all* exp-clues)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -440,6 +489,11 @@
 	      (format t "In loop, go special~%")
 	      ;; Store a possible partial result
 	      (setq result w)
+	      ;; If INTFORM found nothing for an exponential with an exponent
+	      ;; rational in VAR2, the special methods try the other factors as
+	      ;; clues when nothing else works.
+	      (when (exponentialp (car y) var2)
+		(setq exp-clues (cdr y)))
 	      (go special)))
      skip
        (setq y (cdr y))
@@ -538,6 +592,16 @@
 			    ((setq y (integrate-exp-special *exp* var2))
 			     ;; Maxima found an integral for a power function
 			     y)
+			    ;; Nothing worked for an exponential with an exponent
+			    ;; rational in VAR2. When SININT integrates again,
+			    ;; try another factor as the clue, but not in the
+			    ;; integrals RISCHINT leaves, whose radicals it may
+			    ;; have split on a wrong branch, and write erf(%i*u)
+			    ;; in the answer as %i*erfi(u).
+			    ((and exp-clues (not *in-risch-p*)
+				  (setq y (intform-past-exponentials exp-clues var2))
+				  (not (isinop y '%integrate)))
+			     (erf-to-erfi y))
 			    (t
 			     ;; Integrate-exp-special has not found an integral
 			     ;; We look for a previous result obtained by
@@ -2072,7 +2136,19 @@
 
       ((zerop1 expr)	;; special case because 0 will not pass sum-of-intsp test
        0)
-      
+
+      ;; Integrate as before. If that leaves an integral where INTEGRATOR
+      ;; could have tried another factor after an exponential as the clue,
+      ;; integrate again with that, and take the answer if it has no integral.
+      ((eq *exp-clues* :ready)
+       (let* ((*exp-clues-seen* nil)
+              (ans (let ((*exp-clues* nil)) (sinint expr var2))))
+         (or (and *exp-clues-seen*
+                  (isinop ans '%integrate)
+                  (let ((new (let ((*exp-clues* t)) (sinint expr var2))))
+                    (and (not (isinop new '%integrate)) new)))
+             ans)))
+
       ((let ((ans (simplify
                      (let ($opsubst varlist genvar *integrator-stack*)
 		       (integrator expr var2 nil)))))

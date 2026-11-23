@@ -8095,6 +8095,29 @@ block([nv, chk],
 [true, true, true, true, true, true, true, true, true, true, true, true, true]$
 
 
+/* Bug #5896: "integrate(2^x*sqrt(x+1), x) returns a noun form" */
+
+[integrate(2^x*sqrt(x+1), x),
+ integrate(2^x/sqrt(x+1), x),
+ integrate((-log(x))^(3/2), x),
+ integrate(log(x)/sqrt(log(x)+1), x)];
+[(%e^(log(2)*(x+1))*sqrt(x+1))/(2*log(2))-(sqrt(%pi)*erfi(sqrt(log(2))*sqrt(x+1)))/(4*log(2)^(3/2)),
+ (sqrt(%pi)*erfi(sqrt(log(2))*sqrt(x+1)))/(2*sqrt(log(2))),
+ -2*((3*sqrt(%pi)*erf(sqrt(-log(x))))/8-(x*(2*(-log(x))^(3/2)+3*sqrt(-log(x))))/4),
+ 2*((x*sqrt(log(x)+1))/2-(3*%e^-1*sqrt(%pi)*erfi(sqrt(log(x)+1)))/4)]$
+
+/* The fix above must not give answers that are right on part of the domain only: */
+block([f : %e^atanh(a*x)*sqrt(c-a*c*x),
+       g : %e^(3*acoth(a*x))*(c-a*c*x)^(3/2),
+       h : %e^(2*x)*%pi^x*(x+1)^(1/3),
+       k : sinh(2*log(x))^(-1/2)],
+  [radcan(rectform(subst([a=1/2, c=-3, x=-3], diff(integrate(f, x), x) - f))),
+   radcan(rectform(subst([a=1/2, c=-3, x=-1], diff(integrate(g, x), x) - g))),
+   radcan(rectform(subst(x=1, diff(integrate(h, x), x) - h))),
+   block([domain : complex], radcan(rectform(subst(x=-2, diff(integrate(k, x), x) - k))))]);
+[0, 0, 0, 0]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
