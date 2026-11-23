@@ -503,6 +503,35 @@ integrand that comes back complex refutes itself. Cheap independent checks:
 These checks validate results. They never belong in the code that computes
 them (sec. 10, "Decide conditions exactly").
 
+### Fixes move other results
+
+A fix changes every input that takes the paths it touches, not only the
+reported one. Results that were right can turn wrong, into noun forms or into
+questions. Some of them were right only by luck: a failed inner step (a NIL,
+an `und`, a noun form) is folded into the answer, and the simplifier still
+lands on the right value. Handle the failure properly and that answer goes.
+When a test turns red this way the fix can still be right (sec. 5), so find
+out how the old answer came about before you revert. The suite covers a small
+part of the inputs, so a green run proves little. Before calling a fix done:
+
+- Read every caller of what you changed and how it treats the result, NIL
+  included. A caller may rely on the old behavior on purpose, such as a NIL
+  that means "gave up" and triggers a retry. Check the other entry points into
+  the same code too: `limit()`, `tlimit()` and `gruntz()` share most of it,
+  definite integrals (`src/defint.lisp`) call `limit()`, and so does
+  `taylor()` (`src/hayat.lisp`).
+- Validate on randomized inputs and fuzzing, not only on the reported cases.
+  Build expressions from pieces with known values so that each expected result
+  is known, or take references from another system and confirm them
+  numerically (above). Cover both the shapes the fix is about and a general
+  mix.
+- Run the same set on builds with and without the fix, each call under a time
+  limit with questions trapped, and read every result that changes, not only
+  the totals: right to wrong or to a noun form, new questions, errors,
+  timeouts and slowdowns.
+- When other patches are due to land with yours, validate on top of them as
+  well. Some interactions show only in combination.
+
 ---
 
 ## 7. Repository layout
