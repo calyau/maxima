@@ -48,10 +48,13 @@ This document records the work on bug @uref{https://sourceforge.net/p/maxima/bug
 @item
 @ref{p2,,Real @math{m > 1}}, including the removal of the separate double-float functions (@ref{s2-10,,section 2.10}).
 @item
-@ref{p3,,Complex @math{m}}. Not done yet.
+@ref{p3,,Complex arguments}, complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+or
+m4_mathdot(<<<m>>>, <<<m>>>)
 @end enumerate
 
-The changes are in @code{src/ellipt.lisp} and @code{tests/rtest_elliptic.mac}. Measurements are from SBCL 2.2.9 against @uref{https://mpmath.org/, mpmath} references at the exact double or bigfloat inputs. The tests also pass on CMUCL, CCL, ECL and GCL. On CLISP, four tests are expected failures (@ref{s2-9,,section 2.9}).
+The changes are in @code{src/ellipt.lisp} and @code{tests/rtest_elliptic.mac}. Measurements are from SBCL 2.2.9 against @uref{https://mpmath.org/, mpmath} references at the exact double or bigfloat inputs. The tests of parts 1 and 2 also pass on CMUCL, CCL, ECL and GCL. On CLISP, four tests are expected failures (@ref{s2-9,,section 2.9}). Part 3 was tested on SBCL and CLISP.
 
 Errors are given in ulps of the exact value, with 53 bits for double floats and 109 bits for bigfloats at @code{fpprec : 32}. Where the real and imaginary parts of a complex value are measured separately, each is in ulps of that part. Where a complex value is measured as a whole, the error is in ulps of its larger part.
 
@@ -177,6 +180,10 @@ which is about 20 here.
 
 Double-float examples, with reference values from mpmath at the exact double inputs, rounded to 17 significant digits:
 
+@need 3370
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.30 0.28 0.27 0.15
 @headitem
@@ -184,7 +191,7 @@ Expression
 @tab
 Before
 @tab
-Reference
+Exact value
 @tab
 Error (ulps)
 @item
@@ -221,6 +228,23 @@ m4_math(<<<1.0000000000000011>>>, <<<1.0000000000000011>>>)
 20.8
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-1}
+@noindent
+@strong{Table 1.1.} Double-float examples of the cancellation for
+m4_math(<<<m>>>, <<<m>>>)
+near 1 and
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_math(<<<\pi/2\colon>>>, <<<π/2:>>>)
+the value before the change, the exact value from mpmath, and the error before the change.
+
+@tex
+\medskip
+@end tex
 
 Bigfloats have the same problem. At @code{fpprec : 32},
 
@@ -416,6 +440,10 @@ once each, as before.
 
 Errors below are the worst errors in ulps. References are from mpmath at 80 digits, at the exact inputs. ``Before'' is the code without this change.
 
+@need 2800
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.42 0.10 0.12 0.12 0.12 0.12
 @headitem
@@ -524,10 +552,27 @@ m4_math(<<<m>>>, <<<m>>>)
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-2}
+@noindent
+@strong{Table 1.2.} Worst errors in ulps for real
+m4_mathcomma(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+and for other arguments, before and after the change of part 1.
+
+@tex
+\medskip
+@end tex
+
 This part leaves the last two rows bit-for-bit unchanged.
 
 The double-float examples of @ref{s1-2,,section 1.2} after the change:
 
+@need 2610
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.50 0.32 0.18
 @headitem
@@ -563,6 +608,17 @@ m4_math(<<<1.0000000000000007>>>, <<<1.0000000000000007>>>)
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-3}
+@noindent
+@strong{Table 1.3.} The examples of Table 1.1 after the change.
+
+@tex
+\medskip
+@end tex
+
 @section Tests
 @anchor{s1-7}
 
@@ -585,14 +641,18 @@ for bigfloats.
 
 Double-float tests:
 
+@need 5650
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.33 0.38 0.29
 @headitem
 Expression
 @tab
-What it covers
+What it tests
 @tab
-Reference value
+Exact value
 @item
 @code{elliptic_e(@/float(%pi/2), float(1-2^-53))}
 @tab
@@ -662,16 +722,33 @@ m4_math(<<<1.0000000381610592>>>, <<<1.0000000381610592>>>)
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-4}
+@noindent
+@strong{Table 1.4.} Double-float tests added for real
+m4_mathcomma(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+with exact values from mpmath.
+
+@tex
+\medskip
+@end tex
+
 Bigfloat tests:
 
+@need 5270
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.29 0.19 0.52
 @headitem
 Expression
 @tab
-What it covers
+What it tests
 @tab
-Reference value
+Exact value
 @item
 @code{elliptic_e(@/bfloat(%pi/2), bfloat(1-2^-100))}
 @tab
@@ -728,6 +805,19 @@ m4_math(<<<1.000000000000000000000000000014019>>>, <<<1.000000000000000000000000
 m4_math(<<<1.000000000000008089073355640920771>>>, <<<1.000000000000008089073355640920771>>>)
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-5}
+@noindent
+@strong{Table 1.5.} Bigfloat tests added for real
+m4_mathcomma(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+at @code{fpprec : 32}, with exact values from mpmath.
+
+@tex
+\medskip
+@end tex
 
 Without the source change, all 18 new tests fail, with errors 2.5 to 165 times the tolerance.
 
@@ -799,6 +889,10 @@ with the double float
 m4_mathdot(<<<\mathrm{am} = 1.254827029042835>>>, <<<am = 1.254827029042835>>>)
 Errors in ulps, against mpmath at the exact inputs, with ``before'' the code without this change:
 
+@need 2040
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.56 0.22 0.22
 @headitem
@@ -841,6 +935,17 @@ m4_math(<<<-0.19>>>, <<<−0.19>>>)
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-6}
+@noindent
+@strong{Table 1.6.} Errors in ulps of the quantities that make up @code{jacobi_epsilon(1.0, 2.0)}, before and after the change.
+
+@tex
+\medskip
+@end tex
+
 @itemize @bullet
 @item
 The error of
@@ -872,6 +977,10 @@ this part does not make @code{jacobi_epsilon} worse. Errors in ulps for
 m4_mathcomma(<<<u = 0.01, 0.02, \ldots, 3>>>, <<<u = 0.01, 0.02, …, 3>>>)
 against Maxima's bigfloat @code{jacobi_epsilon} at @code{fpprec : 60}:
 
+@need 1660
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.40 0.15 0.15 0.15 0.15
 @headitem
@@ -906,6 +1015,19 @@ Mean after
 0.88
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-1-7}
+@noindent
+@strong{Table 1.7.} Worst and mean errors in ulps of @code{jacobi_epsilon} for
+m4_mathcomma(<<<u = 0.01, 0.02, \ldots, 3>>>, <<<u = 0.01, 0.02, …, 3>>>)
+before and after the change.
+
+@tex
+\medskip
+@end tex
 
 The old tolerance was luck at
 m4_mathdot(<<<u = 1>>>, <<<u = 1>>>)
@@ -1073,6 +1195,10 @@ m4_mathdot(<<<10^{250}>>>, <<<10²⁵⁰>>>)
 
 Double-float examples, with reference values from mpmath at the exact inputs:
 
+@need 4890
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.195 0.347 0.33 0.128
 @headitem
@@ -1080,7 +1206,7 @@ Expression
 @tab
 Before
 @tab
-Reference
+Exact value
 @tab
 Error (ulps)
 @item
@@ -1133,6 +1259,19 @@ m4_math(<<<7.85{\times}10^{-126} + 4.60{\times}10^{124}\,i>>>, <<<7.85×10⁻¹�
 
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-1}
+@noindent
+@strong{Table 2.1.} Double-float examples of the problems for real
+m4_math(<<<m > 1\colon>>>, <<<m > 1:>>>)
+the value before the change, the exact value from mpmath, and the error before the change.
+
+@tex
+\medskip
+@end tex
 
 In each of these examples, the part not shown is accurate. Bigfloats have the same problems, apart from the overflow.
 
@@ -1311,6 +1450,10 @@ m4_math(<<<ms^2 = 1.0755>>>, <<<ms² = 1.0755>>>)
 and
 m4_math(<<<y = -0.0754995731919693829\colon>>>, <<<y = −0.0754995731919693829:>>>)
 
+@need 1850
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.32 0.32 0.16 0.20
 @headitem
@@ -1347,6 +1490,23 @@ m4_math(<<<-0.075499573191969385>>>, <<<−0.075499573191969385>>>)
 0.37
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-2}
+@noindent
+@strong{Table 2.2.} How the accuracy of
+m4_math(<<<y>>>, <<<y>>>)
+affects the imaginary part of
+m4_mathcomma(<<<E>>>, <<<E>>>)
+at
+m4_mathcomma(<<<\phi = 1.1545304187230139>>>, <<<φ = 1.1545304187230139>>>)
+m4_mathdot(<<<m = 1.285709708166709>>>, <<<m = 1.285709708166709>>>)
+
+@tex
+\medskip
+@end tex
 
 Before the turning point,
 m4_math(<<<E>>>, <<<E>>>)
@@ -1393,6 +1553,10 @@ Worst errors in ulps, double float / bigfloat, for several limits. The limit app
 m4_mathcomma(<<<y>>>, <<<y>>>)
 as in the code:
 
+@need 2800
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.27 0.11 0.124 0.124 0.124 0.124 0.124
 @headitem
@@ -1471,6 +1635,18 @@ m4_math(<<<-1 < y < -1/16>>>, <<<−1 < y < −1/16>>>)
 6.41 / 7.18
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-3}
+@noindent
+@strong{Table 2.3.} Worst errors in ulps, double float / bigfloat, for several values of the @code{limit} argument of @code{bf-1-m*sin^2}. Always means extra precision for every
+m4_mathdot(<<<y>>>, <<<y>>>)
+
+@tex
+\medskip
+@end tex
 
 Limits below 1 leave errors of up to 26 ulps past the turning point and up to 14 ulps before it for
 m4_math(<<<m>>>, <<<m>>>)
@@ -1627,6 +1803,10 @@ in complex arithmetic past the turning point.
 Errors below are the worst errors in ulps of the real and imaginary parts, measured separately. References are from mpmath at 260 digits, at the exact inputs. ``Before'' is the code without the changes of either part. The change of @ref{p1,,part 1} does not affect
 m4_mathdot(<<<m > 1>>>, <<<m > 1>>>)
 
+@need 6790
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.23 0.10 0.19 0.13 0.20 0.15
 @headitem
@@ -1811,6 +1991,19 @@ Im 5.03
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-4}
+@noindent
+@strong{Table 2.4.} Worst errors in ulps of the real and imaginary parts for real
+m4_mathcomma(<<<m > 1>>>, <<<m > 1>>>)
+before and after the change.
+
+@tex
+\medskip
+@end tex
+
 The few increases are where neither the old nor the new form cancels, and are within the scatter of a few ulps. The largest remaining errors are 4.84 ulps for double floats and 6.44 ulps for bigfloats. In the prototype, at one of the worst bigfloat points
 m4_mathcomma(<<<(\phi = 0.665>>>, <<<(φ = 0.665>>>)
 m4_mathpunc(<<<),>>>, <<<m = 8.09>>>, <<<m = 8.09>>>)
@@ -1823,6 +2016,10 @@ and the products and quotients built from them.
 
 The examples of @ref{s2-2,,section 2.2} after the change:
 
+@need 2610
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.50 0.32 0.18
 @headitem
@@ -1863,6 +2060,17 @@ m4_math(<<<7.490137887166446{\times}10^{-7}>>>, <<<7.490137887166446×10⁻⁷>>
 1.64
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-5}
+@noindent
+@strong{Table 2.5.} The examples of Table 2.1 after the change.
+
+@tex
+\medskip
+@end tex
 
 The change does not affect real
 m4_mathcomma(<<<m \le 1>>>, <<<m ≤ 1>>>)
@@ -1910,12 +2118,16 @@ m4_mathdot(<<<2^{-109}>>>, <<<2⁻¹⁰⁹>>>)
 
 Double-float tests:
 
+@need 6220
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.255 0.18 0.2825 0.2825
 @headitem
 Expression
 @tab
-What it covers
+What it tests
 @tab
 Real part
 @tab
@@ -2008,6 +2220,19 @@ m4_math(<<<7.8539816339744832\times10^{-9}>>>, <<<7.8539816339744832×10⁻⁹>>
 m4_math(<<<9.9999999999999898\times10^{7}>>>, <<<9.9999999999999898×10⁷>>>)
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-6}
+@noindent
+@strong{Table 2.6.} Double-float tests added for real
+m4_mathcomma(<<<m > 1>>>, <<<m > 1>>>)
+with the parts of the exact values from mpmath.
+
+@tex
+\medskip
+@end tex
 
 Bigfloat tests, the same cases with bigfloat arguments, with their references in the notation of the test file:
 
@@ -2121,6 +2346,10 @@ and had errors of up to 128 ulps on 34 points. This change adds the same special
 
 The double-float results before and after that change, as worst errors in ulps:
 
+@need 2800
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.40 0.12 0.16 0.16 0.16
 @headitem
@@ -2132,7 +2361,7 @@ Before
 @tab
 After
 @tab
-Identical results
+Identical
 @item
 @code{elliptic_e},
 m4_mathcomma(<<<m = 0>>>, <<<m = 0>>>)
@@ -2226,6 +2455,17 @@ m4_math(<<<-10^{10} < m < 10^{50}>>>, <<<−10¹⁰ < m < 10⁵⁰>>>)
 @end multitable
 @end raggedright
 
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-7}
+@noindent
+@strong{Table 2.7.} Worst errors in ulps of double-float results before and after removing @code{elliptic-e} and @code{elliptic-ec}, and the number of points with identical results.
+
+@tex
+\medskip
+@end tex
+
 The results that changed are all for
 m4_mathcomma(<<<m < 0>>>, <<<m < 0>>>)
 and differ by up to 2 ulps, with the same worst errors. For @code{elliptic_e}, @code{elliptic-e} computed
@@ -2244,6 +2484,10 @@ Double-float @code{elliptic_e} also got faster. Per 1000 calls with
 m4_mathcomma(<<<\lvert\phi\rvert < 1.5>>>, <<<|φ| < 1.5>>>)
 on SBCL:
 
+@need 1660
+@tex
+\bigskip
+@end tex
 @raggedright
 @multitable @columnfractions 0.26 0.33 0.41
 @headitem
@@ -2255,23 +2499,36 @@ m4_math(<<<m>>>, <<<m>>>)
 @item
 m4_math(<<<-100 < m < 0>>>, <<<−100 < m < 0>>>)
 @tab
-111 ms
+111
 @tab
-52 ms
+52
 @item
 m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
 @tab
-69 ms
+69
 @tab
-46 ms
+46
 @item
 m4_math(<<<1 < m < 101>>>, <<<1 < m < 101>>>)
 @tab
-39 ms
+39
 @tab
-42 ms
+42
 @end multitable
 @end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-2-8}
+@noindent
+@strong{Table 2.8.} Time in milliseconds for 1000 calls of double-float @code{elliptic_e} with
+m4_mathcomma(<<<\lvert\phi\rvert < 1.5>>>, <<<|φ| < 1.5>>>)
+on SBCL, with @code{elliptic-e} and with @code{bf-elliptic-e}.
+
+@tex
+\medskip
+@end tex
 
 For
 m4_math(<<<m > 1>>>, <<<m > 1>>>)
@@ -2280,26 +2537,1296 @@ both call @code{bf-elliptic-e-m>1}, so they take about the same time.
 With all the changes, the full testsuite fails the same 3 tests as above.
 
 @node Complex m
-@chapter Complex @math{m}
+@chapter Complex Arguments
 @anchor{p3}
 
-Not done yet. Complex
+Here
 m4_math(<<<\phi>>>, <<<φ>>>)
-or complex
+or
 m4_math(<<<m>>>, <<<m>>>)
-still use the formula of @ref{s1-2,,section 1.2}. On 20 random points with
-m4_mathcomma(<<<\lvert\mathrm{Re}\,\phi\rvert \le 2>>>, <<<|Re φ| ≤ 2>>>)
-m4_mathcomma(<<<\lvert\mathrm{Im}\,\phi\rvert \le 1>>>, <<<|Im φ| ≤ 1>>>)
-m4_math(<<<0 \le \mathrm{Re}\,m \le 1>>>, <<<0 ≤ Re m ≤ 1>>>)
+is complex. Each part of a result is measured in ulps of that part, and the error of a complex value is the larger of the two. A part whose exact value is 0 must be exactly 0. This is stricter than an error in ulps of the larger part: with that, a small part can be wrong in every digit.
+
+@section Summary of the Change
+@anchor{s3-1}
+
+@itemize @bullet
+@item
+@code{bf-elliptic-e} for complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+or
+m4_mathcomma(<<<m>>>, <<<m>>>)
+with
+m4_mathcomma(<<<m \ne 1>>>, <<<m ≠1>>>)
+and @code{bf-elliptic-ec} for complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+still use the formula of @ref{s1-2,,section 1.2}. They also compute, from the sizes of its terms, an estimate of the error of each part. Where that estimate is too large, they recompute with more precision until each part is accurate (@ref{s3-3,,section 3.3}).
+@item
+The test uses a threshold, @code{*accurate-parts-threshold*}, which is 2 (@ref{s3-4,,section 3.4}).
+@item
+Real arguments are not affected.
+@item
+New regression tests, and one existing @code{jacobi_epsilon} test tolerance is loosened (@ref{s3-8,,section 3.8}).
+@end itemize
+
+For double floats, the worst error of a part on the test sets went from
+m4_math(<<<2.2\times10^{15}>>>, <<<2.2×10¹⁵>>>)
+to 6.1 ulps, and every part that was recomputed is within 0.9 ulps (@ref{s3-5,,section 3.5}). The cost is speed: complex double-float arguments are about 9 to 21 times slower (@ref{s3-6,,section 3.6}).
+
+@section The Problem
+@anchor{s3-2}
+
+Computed in complex arithmetic, each part of a product or sum has an absolute error of about the rounding unit times the modulus of the operands, not times that part. So each part of
+m4_math(<<<E>>>, <<<E>>>)
+has an absolute error of about
+m4_mathcomma(<<<\varepsilon\,B>>>, <<<ε B>>>)
+where
+m4_math(<<<B>>>, <<<B>>>)
+is the sum of the moduli of the terms of the formula. A part much smaller than
+m4_math(<<<B>>>, <<<B>>>)
+is inaccurate relative to itself. This happens in three ways:
+
+@itemize @bullet
+@item
+@strong{Complex @math{m} near 1.} The two terms cancel as in @ref{s1-2,,section 1.2}.
+@item
+@strong{@math{Re m > 1} near the real axis.} The terms have the problems of @ref{s2-2,,section 2.2}, and one part is small: the real part for large
+m4_mathcomma(<<<m>>>, <<<m>>>)
+or the imaginary part, which is about
+m4_math(<<<\mathrm{Im}\,m>>>, <<<Im m>>>)
+times
+m4_mathdot(<<<\partial E/\partial m>>>, <<<∂E/∂m>>>)
+@item
+@strong{General points.} The terms are often several times larger than
+m4_mathcomma(<<<E>>>, <<<E>>>)
+and for many arguments one part of
+m4_math(<<<E>>>, <<<E>>>)
+is much smaller than the other.
+@end itemize
+
+Double-float examples, with errors in ulps of each part, from mpmath at the exact inputs. These are the double-float tests of @ref{s3-9,,section 3.9}:
+
+@need 3940
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.48 0.14 0.14 0.12 0.12
+@headitem
+Expression
+@tab
+Re before
+@tab
+Im before
+@tab
+Re after
+@tab
+Im after
+@item
+@code{elliptic_e(@/float(%pi/2), float(1-2^-50)-@/2^-51*%i)}
+@tab
+36
+@tab
+m4_math(<<<2.0{\times}10^{14}>>>, <<<2.0×10¹⁴>>>)
+@tab
+1
+@tab
+0
+@item
+@code{elliptic_e(@/float(%pi/2)-@/2^-20, float(1-2^-30)+@/2^-31*%i)}
+@tab
+17
+@tab
+m4_math(<<<1.4{\times}10^{8}>>>, <<<1.4×10⁸>>>)
+@tab
+1
+@tab
+0
+@item
+@code{elliptic_ec(@/float(1-2^-40)+@/2^-41*%i)}
+@tab
+7
+@tab
+m4_math(<<<2.5{\times}10^{11}>>>, <<<2.5×10¹¹>>>)
+@tab
+1
+@tab
+0
+@item
+@code{elliptic_e(@/0.5, 2.0+@/2^-45*%i)}
+@tab
+2
+@tab
+1
+@tab
+0
+@tab
+0
+@item
+@code{elliptic_e(@/1.0, 2.0^30+@/2^-10*%i)}
+@tab
+m4_math(<<<1.3{\times}10^{4}>>>, <<<1.3×10⁴>>>)
+@tab
+0
+@tab
+0
+@tab
+0
+@item
+@code{elliptic_ec(@/float(1+@/2^-20)+@/2^-60*%i)}
+@tab
+30
+@tab
+m4_math(<<<5.8{\times}10^{6}>>>, <<<5.8×10⁶>>>)
+@tab
+0
+@tab
+0
+@item
+@code{elliptic_e(@/float(%pi/2)+@/2^-30*%i, float(1-2^-40))}
+@tab
+1
+@tab
+m4_math(<<<4.4{\times}10^{12}>>>, <<<4.4×10¹²>>>)
+@tab
+1
+@tab
+0
+@item
+@code{elliptic_e(@/2.875-1.3125*%i, 3.0625-0.1875*%i)}
+@tab
+44
+@tab
+124
+@tab
+0
+@tab
+0
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-1}
+@noindent
+@strong{Table 3.1.} Errors in ulps of each part, before and after the change, for double-float examples with complex arguments.
+
+@tex
+\medskip
+@end tex
+
+The forms of @ref{p1,,part 1} and @ref{p2,,part 2} do not solve this. For example, the form of @ref{s1-3,,section 1.3} with complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1 brings the real part to within about 1.5 ulps, but the imaginary parts of its terms cancel. At
+m4_mathcomma(<<<\phi = 1.5707963267948966>>>, <<<φ = 1.5707963267948966>>>)
+m4_mathcomma(<<<m = 0.999999999999999 - 2.96\times10^{-16}\,i>>>, <<<m = 0.999999999999999 − 2.96×10⁻¹⁶ i>>>)
+they are
+m4_mathcomma(<<<5.4\times10^{-15}>>>, <<<5.4×10⁻¹⁵>>>)
+m4_math(<<<2.7\times10^{-10}>>>, <<<2.7×10⁻¹⁰>>>)
 and
-m4_mathcomma(<<<\lvert\mathrm{Im}\,m\rvert \le 1>>>, <<<|Im m| ≤ 1>>>)
-the worst error was 8.33 ulps for double floats and 17.2 ulps for bigfloats. Complex
-m4_math(<<<m>>>, <<<m>>>)
-near 1 may have the cancellation of @ref{p1,,part 1}, and complex
-m4_math(<<<m>>>, <<<m>>>)
-near the real axis with
+m4_mathcomma(<<<-2.7\times10^{-10}>>>, <<<−2.7×10⁻¹⁰>>>)
+and their sum is
+m4_mathdot(<<<2.6\times10^{-15}>>>, <<<2.6×10⁻¹⁵>>>)
+That form also gives wrong values for some other complex arguments, so it would need a region of validity. For real
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_mathcomma(<<<m = a + ib>>>, <<<m = a + ib>>>)
+
+m4_displaymath(
+<<<\mathrm{Im}\,E(\phi\,|\,m) = -\frac{b}{2}\int_0^{\phi}\frac{\sin^2\theta}{\mathrm{Re}\sqrt{1 - m\sin^2\theta}}\,d\theta ,>>>,
+<<<Im E(φ | m) = −b/2 ∫₀^φsin²θ/(Re√(1 − m sin²θ)) dθ,>>>)
+
+so the imaginary part is well-conditioned, but
+m4_math(<<<\mathrm{Re}\sqrt{\cdot}>>>, <<<Re√(·)>>>)
+is not analytic, and this has no Carlson form.
+
+@section Recomputing With Extra Precision
+@anchor{s3-3}
+
+The inputs are exact, so with enough precision both parts can be computed accurately. As in @code{bf-1-m*sin^2} (@ref{s2-4,,section 2.4}), the code recomputes with extra precision when it detects that this is needed.
+
+@code{bf-elliptic-ec-terms} computes
+
+m4_displaymath(
+<<<E(m) = t_1 - t_2, \qquad t_1 = R_F(0, 1-m, 1), \qquad t_2 = \frac{m}{3}\,R_D(0, 1-m, 1),>>>,
+<<<E(m) = t₁ − t₂, t₁ = R_F(0, 1−m, 1), t₂ = m/3 R_D(0, 1−m, 1),>>>)
+
+with
+m4_mathdot(<<<B = \lvert t_1\rvert + \lvert t_2\rvert>>>, <<<B = |t₁| + |t₂|>>>)
+@code{bf-elliptic-e-terms} computes
+
+m4_displaymath(
+<<<E(\phi\,|\,m) = t_1 - t_2 + 2k\,E(m), \qquad t_1 = s\,R_F(c^2, y, 1), \qquad t_2 = \frac{m}{3}\,s^3 R_D(c^2, y, 1),>>>,
+<<<E(φ | m) = t₁ − t₂ + 2k E(m), t₁ = s R_F(c², y, 1), t₂ = m/3 s³ R_D(c², y, 1),>>>)
+
+where
+m4_mathcomma(<<<k = \mathrm{round}(\mathrm{Re}\,\phi/\pi)>>>, <<<k = round(Re φ/π)>>>)
+m4_math(<<<s>>>, <<<s>>>)
+and
+m4_math(<<<c>>>, <<<c>>>)
+are the sine and cosine of
+m4_mathcomma(<<<\phi - k\pi>>>, <<<φ − kπ>>>)
+and
+m4_mathcomma(<<<y = 1 - ms^2>>>, <<<y = 1 − ms²>>>)
+with
+m4_mathdot(<<<B = \lvert t_1\rvert + \lvert t_2\rvert + 2\lvert k\rvert B_{E(m)}>>>, <<<B = |t₁| + |t₂| + 2|k|B_E(m)>>>)
+These are the formulas of @ref{s1-2,,section 1.2}.
+
+@code{bf-with-accurate-parts} calls one of them. With working precision
+m4_math(<<<p>>>, <<<p>>>)
+bits, each part has an absolute error of about
+m4_mathdot(<<<B\cdot2^{-p}>>>, <<<B·2^(−p)>>>)
+The function:
+
+@enumerate
+@item
+Keeps the value if, for each part that is not exactly 0,
+m4_mathcomma(<<<B \le 2^T\lvert\mathrm{part}\rvert>>>, <<<B ≤ 2^T|part|>>>)
+where
+m4_math(<<<T>>>, <<<T>>>)
+is @code{*accurate-parts-threshold*}. The error of such a part is then estimated at no more than about
+m4_math(<<<2^T>>>, <<<2^T>>>)
+ulps.
+@item
+Otherwise recomputes at
+m4_math(<<<p + e + 8>>>, <<<p + e + 8>>>)
+bits, with the inputs converted to bigfloats. Here
+m4_mathcomma(<<<e = \lceil\log_2(B/\lvert\mathrm{smaller\ part}\rvert)\rceil + 8>>>, <<<e = ⌈log₂(B/|smaller part|)⌉ + 8>>>)
+or
+m4_math(<<<p + 8>>>, <<<p + 8>>>)
+if the smaller part is 0.
+@item
+Keeps that value if
+m4_math(<<<B \le 2^{e+7}\lvert\mathrm{part}\rvert>>>, <<<B ≤ 2^(e+7)|part|>>>)
+for each part that is not exactly 0. At
+m4_math(<<<p + e + 8>>>, <<<p + e + 8>>>)
+bits the error of a part is about
+m4_mathcomma(<<<B\cdot2^{-(p+e+8)}>>>, <<<B·2^(−(p+e+8))>>>)
+and half an ulp of a
+m4_math(<<<p>>>, <<<p>>>)
+-bit part is at least
+m4_mathdot(<<<\lvert\mathrm{part}\rvert\cdot2^{-(p+1)}>>>, <<<|part|·2^(−(p+1))>>>)
+@item
+Otherwise doubles
+m4_math(<<<e>>>, <<<e>>>)
+and goes back to step 3. Once
+m4_math(<<<e>>>, <<<e>>>)
+exceeds
+m4_mathcomma(<<<16p>>>, <<<16p>>>)
+it keeps the value it has.
+@item
+Rounds the value to the precision of the inputs.
+@end enumerate
+
+A part that comes out exactly 0, such as the real part for purely imaginary
+m4_math(<<<\phi>>>, <<<φ>>>)
+and real
+m4_mathcomma(<<<m>>>, <<<m>>>)
+is accepted as it is. Without that, the loop would never accept it, and would run to its limit.
+
+m4_math(<<<B>>>, <<<B>>>)
+is an estimate, not a bound. The values kept in step 1 have errors of up to about 6 ulps on the test sets, not
+m4_mathdot(<<<2^T>>>, <<<2^T>>>)
+
+@section The Threshold
+@anchor{s3-4}
+
+A larger
+m4_math(<<<T>>>, <<<T>>>)
+recomputes less, but keeps values with larger errors. On the 270 points of @ref{s3-5,,section 3.5}:
+
+@need 2040
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.10 0.22 0.26 0.24 0.18
+@headitem
+m4_math(<<<T>>>, <<<T>>>)
+@tab
+Recomputed
+@tab
+Worst, random
+@tab
+Worst,
 m4_math(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
-may have the problems of @ref{p2,,part 2}. Neither was measured.
+near the axis
+@tab
+Time
+@item
+1
+@tab
+255
+@tab
+1.9
+@tab
+0.89
+@tab
+0.46 s
+@item
+2
+@tab
+232
+@tab
+4.3
+@tab
+0.89
+@tab
+0.37 s
+@item
+3
+@tab
+207
+@tab
+7.9
+@tab
+5.2
+@tab
+0.32 s
+@item
+4
+@tab
+181
+@tab
+7.9
+@tab
+23
+@tab
+0.29 s
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-2}
+@noindent
+@strong{Table 3.2.} Effect of the threshold
+m4_math(<<<T>>>, <<<T>>>)
+on the 270 points of Table 3.5: how many points are recomputed, the worst errors in ulps of the values kept without recomputing, and the time for all 270 points.
+
+@tex
+\medskip
+@end tex
+
+Before the change, these points took 0.04 s. Many of them were chosen because they are hard. On 400 random points in each of three general sets, with
+m4_mathcomma(<<<\lvert\mathrm{Re}\,\phi\rvert \le 3>>>, <<<|Re φ| ≤ 3>>>)
+m4_mathcomma(<<<\lvert\mathrm{Im}\,\phi\rvert \le 1>>>, <<<|Im φ| ≤ 1>>>)
+m4_math(<<<-3 \le \mathrm{Re}\,m \le 4>>>, <<<−3 ≤ Re m ≤ 4>>>)
+and
+m4_math(<<<\lvert\mathrm{Im}\,m\rvert \le 2\colon>>>, <<<|Im m| ≤ 2:>>>)
+
+@need 2800
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.10 0.30 0.30 0.30
+@headitem
+m4_math(<<<T>>>, <<<T>>>)
+@tab
+Complex
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+real
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+complex
+m4_math(<<<m>>>, <<<m>>>)
+@tab
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_math(<<<m>>>, <<<m>>>)
+@item
+2
+@tab
+281 recomputed, 7.75 ulps
+@tab
+393 recomputed, 5.13 ulps
+@tab
+263 recomputed, 8.13 ulps
+@item
+4
+@tab
+121 recomputed, 32.9 ulps
+@tab
+158 recomputed, 22.1 ulps
+@tab
+79 recomputed, 28.0 ulps
+@item
+6
+@tab
+38 recomputed, 32.9 ulps
+@tab
+58 recomputed, 22.1 ulps
+@tab
+20 recomputed, 52.6 ulps
+@item
+8
+@tab
+10 recomputed, 49.1 ulps
+@tab
+36 recomputed, 22.1 ulps
+@tab
+5 recomputed, 181 ulps
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-3}
+@noindent
+@strong{Table 3.3.} Effect of
+m4_math(<<<T>>>, <<<T>>>)
+on three sets of 400 random points. Each entry gives how many points are recomputed, and the worst error in ulps of the values kept without recomputing.
+
+@tex
+\medskip
+@end tex
+
+The errors are the worst errors of the values kept without recomputing.
+m4_math(<<<T = 2>>>, <<<T = 2>>>)
+keeps errors comparable to those for real arguments, so it is the default.
+
+Most of the recomputing is not caused by the formula. Since
+m4_mathcomma(<<<B \ge \lvert E\rvert>>>, <<<B ≥ |E|>>>)
+a part smaller than
+m4_math(<<<\lvert E\rvert/2^T>>>, <<<|E|/2^T>>>)
+always fails the test, even when nothing cancels. That is common:
+
+@need 2040
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.46 0.27 0.27
+@headitem
+Inputs, 400 points each
+@tab
+@code{elliptic_e}
+@tab
+@code{elliptic_ec}
+@item
+Complex
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+real
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+184
+@tab
+0
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+complex
+m4_math(<<<m>>>, <<<m>>>)
+@tab
+247
+@tab
+188
+@item
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_math(<<<m>>>, <<<m>>>)
+@tab
+128
+@tab
+193
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+400
+@tab
+400
+@item
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+m4_math(<<<\mathrm{Im}\,m>>>, <<<Im m>>>)
+tiny
+@tab
+332
+@tab
+387
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-4}
+@noindent
+@strong{Table 3.4.} Number of points, of 400, where one part of the value is smaller than a quarter of its modulus.
+
+@tex
+\medskip
+@end tex
+
+Using the form with the smallest
+m4_math(<<<B>>>, <<<B>>>)
+of those of @uref{https://dlmf.nist.gov/19.25.E9, DLMF 19.25.9}, @uref{https://dlmf.nist.gov/19.25.E10, 19.25.10} and @uref{https://dlmf.nist.gov/19.25.E11, 19.25.11}, where it agreed with 19.25.9, was also tried. It reduced the recomputing by at most 21 of 400 points, and the values it kept had errors of up to 12.1 ulps.
+
+@section Accuracy
+@anchor{s3-5}
+
+The test sets are 270 points for @code{elliptic_e} and 78 for @code{elliptic_ec}. References are Maxima's bigfloat results at @code{fpprec : 60}, which agree with mpmath to all of 40 digits compared. Errors below are the worst errors in ulps of each part, and in ulps of the larger part:
+
+@need 3370
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.40 0.10 0.125 0.125 0.125 0.125
+@headitem
+@code{elliptic_e} inputs
+@tab
+Points
+@tab
+Parts before
+@tab
+Parts after
+@tab
+Whole before
+@tab
+Whole after
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+within
+m4_math(<<<10^{-4}>>>, <<<10⁻⁴>>>)
+to
+m4_math(<<<10^{-15}>>>, <<<10⁻¹⁵>>>)
+of 1,
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_math(<<<\pi/2>>>, <<<π/2>>>)
+@tab
+60
+@tab
+m4_math(<<<1.1{\times}10^{15}>>>, <<<1.1×10¹⁵>>>)
+@tab
+0.74
+@tab
+129
+@tab
+0.74
+@item
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+m4_math(<<<\mathrm{Im}\,m/\mathrm{Re}\,m>>>, <<<Im m/Re m>>>)
+from
+m4_math(<<<10^{-14}>>>, <<<10⁻¹⁴>>>)
+to
+m4_mathcomma(<<<10^{-3}>>>, <<<10⁻³>>>)
+real
+m4_math(<<<\phi>>>, <<<φ>>>)
+@tab
+120
+@tab
+m4_math(<<<7.2{\times}10^{6}>>>, <<<7.2×10⁶>>>)
+@tab
+0.89
+@tab
+7.5
+@tab
+0.89
+@item
+m4_math(<<<\lvert m\rvert>>>, <<<|m|>>>)
+from
+m4_math(<<<10^2>>>, <<<10²>>>)
+to
+m4_math(<<<10^{30}>>>, <<<10³⁰>>>)
+@tab
+15
+@tab
+5.6
+@tab
+3.7
+@tab
+4.1
+@tab
+2.5
+@item
+Complex
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+real
+m4_math(<<<m>>>, <<<m>>>)
+@tab
+20
+@tab
+63
+@tab
+6.1
+@tab
+4.5
+@tab
+5.1
+@item
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+15
+@tab
+m4_math(<<<2.2{\times}10^{15}>>>, <<<2.2×10¹⁵>>>)
+@tab
+0.84
+@tab
+40.5
+@tab
+0.84
+@item
+Random,
+m4_mathcomma(<<<\lvert\mathrm{Re}\,\phi\rvert \le 4>>>, <<<|Re φ| ≤ 4>>>)
+m4_mathcomma(<<<\lvert\mathrm{Im}\,\phi\rvert \le 1.5>>>, <<<|Im φ| ≤ 1.5>>>)
+m4_mathcomma(<<<-3 \le \mathrm{Re}\,m \le 4>>>, <<<−3 ≤ Re m ≤ 4>>>)
+m4_math(<<<\lvert\mathrm{Im}\,m\rvert \le 2>>>, <<<|Im m| ≤ 2>>>)
+@tab
+40
+@tab
+m4_math(<<<9.9{\times}10^{3}>>>, <<<9.9×10³>>>)
+@tab
+4.3
+@tab
+33.1
+@tab
+4.7
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-5}
+@noindent
+@strong{Table 3.5.} Worst errors in ulps of double-float @code{elliptic_e} for complex arguments: of each part, in ulps of that part, and of the whole value, in ulps of the larger part.
+
+@tex
+\medskip
+@end tex
+
+@need 2040
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.52 0.12 0.18 0.18
+@headitem
+@code{elliptic_ec} inputs
+@tab
+Points
+@tab
+Parts before
+@tab
+Parts after
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+within
+m4_math(<<<10^{-3}>>>, <<<10⁻³>>>)
+to
+m4_math(<<<10^{-15}>>>, <<<10⁻¹⁵>>>)
+of 1
+@tab
+25
+@tab
+m4_math(<<<3.4{\times}10^{14}>>>, <<<3.4×10¹⁴>>>)
+@tab
+0.84
+@item
+m4_math(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+near the real axis
+@tab
+18
+@tab
+m4_math(<<<1.4{\times}10^{6}>>>, <<<1.4×10⁶>>>)
+@tab
+0.65
+@item
+Large
+m4_mathcomma(<<<\lvert m\rvert>>>, <<<|m|>>>)
+and random
+@tab
+35
+@tab
+15
+@tab
+4.7
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-6}
+@noindent
+@strong{Table 3.6.} Worst errors of each part of double-float @code{elliptic_ec} for complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+in ulps of that part.
+
+@tex
+\medskip
+@end tex
+
+Every part that was recomputed is within 0.9 ulps. The errors that remain are in values kept without recomputing.
+
+For bigfloats at @code{fpprec : 32}, on 15 of the same points, the recomputed values are within 0.44 ulps, and the others are unchanged, with errors of up to 7.0 ulps.
+
+For
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+the real axis is a branch cut. The value for real
+m4_math(<<<m>>>, <<<m>>>)
+is the limit as
+m4_math(<<<\mathrm{Im}\,m \to 0>>>, <<<Im m → 0>>>)
+from below. From above, the imaginary part has the opposite sign. For example, @code{elliptic_ec(2.0)} is
+m4_mathcomma(<<<0.599 + 0.599\,i>>>, <<<0.599 + 0.599 i>>>)
+and @code{elliptic_ec(2.0+1e-15*%i)} is
+m4_mathdot(<<<0.599 - 0.599\,i>>>, <<<0.599 − 0.599 i>>>)
+mpmath does the same.
+
+@section Speed
+@anchor{s3-6}
+
+Tables 3.7 and 3.8 use the same sets of 400 random double-float points, with
+m4_math(<<<m>>>, <<<m>>>)
+taken from each point for @code{elliptic_ec}.
+
+@need 2990
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.38 0.17 0.17 0.28
+@headitem
+Inputs
+@tab
+Before
+@tab
+After
+@tab
+Recomputed
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+56
+@tab
+42
+@tab
+0
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+m4_math(<<<m < 0>>>, <<<m < 0>>>)
+@tab
+52
+@tab
+38
+@tab
+0
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+m4_math(<<<m > 1>>>, <<<m > 1>>>)
+@tab
+56
+@tab
+52
+@tab
+0
+@item
+Complex
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+real
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+104
+@tab
+1306
+@tab
+281
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+complex
+m4_math(<<<m>>>, <<<m>>>)
+(first set)
+@tab
+144
+@tab
+2014
+@tab
+393
+@item
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_math(<<<m>>>, <<<m>>>)
+(second set)
+@tab
+134
+@tab
+1738
+@tab
+263
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+202
+@tab
+1858
+@tab
+400
+@item
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+m4_math(<<<\mathrm{Im}\,m>>>, <<<Im m>>>)
+tiny
+@tab
+170
+@tab
+1578
+@tab
+400
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-7}
+@noindent
+@strong{Table 3.7.} Time per call in microseconds of double-float @code{elliptic_e} on SBCL, before and after the change, averaged over 400 random points and 5 passes, and how many of the 400 points needed extra precision.
+
+@tex
+\medskip
+@end tex
+
+@need 2800
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.38 0.17 0.17 0.28
+@headitem
+Inputs
+@tab
+Before
+@tab
+After
+@tab
+Recomputed
+@item
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+26
+@tab
+20
+@tab
+0
+@item
+m4_math(<<<m < 0>>>, <<<m < 0>>>)
+@tab
+24
+@tab
+18
+@tab
+0
+@item
+m4_math(<<<m > 1>>>, <<<m > 1>>>)
+@tab
+28
+@tab
+28
+@tab
+0
+@item
+Complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+random, first set
+@tab
+68
+@tab
+1120
+@tab
+341
+@item
+Complex
+m4_mathcomma(<<<m>>>, <<<m>>>)
+random, second set
+@tab
+66
+@tab
+1072
+@tab
+335
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+90
+@tab
+1928
+@tab
+400
+@item
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+m4_math(<<<\mathrm{Im}\,m>>>, <<<Im m>>>)
+tiny
+@tab
+76
+@tab
+1510
+@tab
+400
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-8}
+@noindent
+@strong{Table 3.8.} Time per call in microseconds of double-float @code{elliptic_ec} on SBCL, for the values of
+m4_math(<<<m>>>, <<<m>>>)
+in the sets of Table 3.7, and how many of the 400 points needed extra precision.
+
+@tex
+\medskip
+@end tex
+
+Real arguments take the same path as before, and their differences are within the scatter. Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1 always needs extra precision, since one part of
+m4_math(<<<E>>>, <<<E>>>)
+is always much smaller than the other there.
+
+The extra precision is the
+m4_math(<<<e + 8>>>, <<<e + 8>>>)
+bits of @ref{s3-3,,section 3.3}, beyond the 53 bits of a double float. For the points that were recomputed:
+
+@need 2420
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.40 0.30 0.30
+@headitem
+Inputs
+@tab
+@code{elliptic_e}
+@tab
+@code{elliptic_ec}
+@item
+Complex
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+real
+m4_math(<<<0 < m < 1>>>, <<<0 < m < 1>>>)
+@tab
+19 to 27, median 20
+@tab
+
+@item
+Real
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+complex
+m4_math(<<<m>>>, <<<m>>>)
+(first set)
+@tab
+19 to 35, median 20
+@tab
+19 to 26, median 19
+@item
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_math(<<<m>>>, <<<m>>>)
+(second set)
+@tab
+19 to 27, median 20
+@tab
+19 to 29, median 19
+@item
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+29 to 72, median 50
+@tab
+29 to 71, median 49
+@item
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+m4_math(<<<\mathrm{Im}\,m>>>, <<<Im m>>>)
+tiny
+@tab
+19 to 74, median 21
+@tab
+19 to 24, median 23
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-9}
+@noindent
+@strong{Table 3.9.} Extra bits, beyond the 53 of a double float, used for the points of Tables 3.7 and 3.8 that were recomputed.
+
+@tex
+\medskip
+@end tex
+
+The first estimate of the extra precision was always enough, so the loop never doubled it. For general complex arguments, about 20 extra bits are enough, and the cost of a recomputed value, about 1.5 to 2 ms, is the cost of computing in bigfloats at all, not of the number of bits.
+
+@section Comparison With mpmath
+@anchor{s3-7}
+
+For @code{ellipe(phi, m)}, mpmath uses the same formula, with
+m4_math(<<<\phi>>>, <<<φ>>>)
+reduced by
+m4_mathdot(<<<\mathrm{round}(\mathrm{Re}\,\phi/\pi)\,\pi>>>, <<<round(Re φ/π) π>>>)
+It sums the two terms with @code{sum_accurately}, which works at 15 extra bits and adds precision while the logarithm of the largest term's modulus exceeds that of the sum's modulus by the extra precision or more. So it makes the whole value accurate, not each part. It adds the term
+m4_math(<<<2k\,E(m)>>>, <<<2k E(m)>>>)
+outside that check. For @code{ellipe(m)}, it uses
+m4_mathcomma(<<<E(m) = (1-m)\bigl(K(m) + 2m\,K'(m)\bigr)>>>, <<<E(m) = (1−m)(K(m) + 2m K'(m))>>>)
+with
+m4_math(<<<K>>>, <<<K>>>)
+from the arithmetic-geometric mean and
+m4_math(<<<K'>>>, <<<K'>>>)
+from a finite difference.
+
+At 53 bits, mpmath's small parts can be inaccurate. Errors in ulps of each part, against mpmath at 200 bits:
+
+@need 2800
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.38 0.17 0.17 0.28
+@headitem
+Input
+@tab
+Re
+@tab
+Im
+@tab
+Whole
+@item
+@code{ellipe(phi, m)}, complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1,
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+3 points
+@tab
+0.05 to 0.15
+@tab
+m4_math(<<<1.5{\times}10^{4}>>>, <<<1.5×10⁴>>>)
+to
+m4_math(<<<2.4{\times}10^{6}>>>, <<<2.4×10⁶>>>)
+@tab
+0.05 to 0.15
+@item
+@code{ellipe(phi, m)}, complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@tab
+0.35
+@tab
+m4_math(<<<1.1{\times}10^{6}>>>, <<<1.1×10⁶>>>)
+@tab
+0.35
+@item
+@code{ellipe(m)},
+m4_math(<<<m = 0.999999 + 8.4\times10^{-7}\,i>>>, <<<m = 0.999999 + 8.4×10⁻⁷ i>>>)
+@tab
+0.03
+@tab
+m4_math(<<<3.3{\times}10^{3}>>>, <<<3.3×10³>>>)
+@tab
+0.03
+@item
+@code{ellipe(m)},
+m4_math(<<<m = 1 + 8.4\times10^{-10}\,i>>>, <<<m = 1 + 8.4×10⁻¹⁰ i>>>)
+@tab
+4.3
+@tab
+m4_math(<<<1.7{\times}10^{9}>>>, <<<1.7×10⁹>>>)
+@tab
+7.6
+@item
+Other test points
+@tab
+up to 0.44
+@tab
+up to 1.56
+@tab
+up to 0.37
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-10}
+@noindent
+@strong{Table 3.10.} Errors in ulps of mpmath's @code{ellipe} at 53 bits, against mpmath at 200 bits: of each part, and of the whole value.
+
+@tex
+\medskip
+@end tex
+
+The references in this part were computed at 40 digits or more, where these errors are far below double precision.
+
+@section Effect on @code{jacobi_epsilon}
+@anchor{s3-8}
+
+@code{jacobi_epsilon} for complex arguments calls @code{bf-elliptic-e} and @code{bf-elliptic-ec} with complex arguments, so this part changes it. For @code{jacobi_epsilon(2.75-2.25*%i, 3.0+@/0.5*%i)}, it calls @code{bf-elliptic-ec} with
+m4_math(<<<3 + 0.5\,i>>>, <<<3 + 0.5 i>>>)
+and
+m4_mathdot(<<<-2 - 0.5\,i>>>, <<<−2 − 0.5 i>>>)
+Before the change, those values were off by a few ulps, and after it they are correct to the last digit. But the error of the result went from
+m4_math(<<<1.2\times10^{-16}>>>, <<<1.2×10⁻¹⁶>>>)
+in the real part and
+m4_math(<<<7\times10^{-18}>>>, <<<7×10⁻¹⁸>>>)
+in the imaginary part to
+m4_math(<<<5.7\times10^{-16}>>>, <<<5.7×10⁻¹⁶>>>)
+and
+m4_mathcomma(<<<2.7\times10^{-15}>>>, <<<2.7×10⁻¹⁵>>>)
+because the old errors happened to offset other errors, as in @ref{s1-8,,section 1.8}. The double-float tolerance of that test goes from @code{1.2948e-15} to @code{2.9206e-15}, which also covers CLISP, where the error is
+m4_mathdot(<<<2.9205\times10^{-15}>>>, <<<2.9205×10⁻¹⁵>>>)
+
+On 150 random points with
+m4_mathcomma(<<<\lvert\mathrm{Re}\,u\rvert \le 8>>>, <<<|Re u| ≤ 8>>>)
+m4_mathcomma(<<<\lvert\mathrm{Im}\,u\rvert \le 4>>>, <<<|Im u| ≤ 4>>>)
+m4_math(<<<-4 \le \mathrm{Re}\,m \le 4>>>, <<<−4 ≤ Re m ≤ 4>>>)
+and
+m4_mathcomma(<<<\lvert\mathrm{Im}\,m\rvert \le 2>>>, <<<|Im m| ≤ 2>>>)
+against Maxima's bigfloat @code{jacobi_epsilon} at @code{fpprec : 60}, the median error of a part went from 7.8 to 6.8 ulps, and the mean from 43.6 to 39.1. The change made 60 points more accurate and 42 less. @code{jacobi_epsilon} has large errors of its own for complex arguments, up to 2700 ulps in a part and 276 ulps as a whole, both before and after the change. They are not part of this change.
+
+@section Tests
+@anchor{s3-9}
+
+The new tests are at the end of @code{tests/rtest_elliptic.mac}, after those of @ref{p1,,part 1} and @ref{p2,,part 2}, with @code{fpprec} set to 32 around them and their own copy of @code{closeto_relerr}. References are from mpmath at 90 digits, at the exact inputs. Each part is checked separately, with a relative-error tolerance written as a multiple of
+m4_math(<<<2^{-53}>>>, <<<2⁻⁵³>>>)
+or
+m4_math(<<<2^{-109}\colon>>>, <<<2⁻¹⁰⁹:>>>)
+the error observed in testing, rounded up to five significant digits, or
+m4_math(<<<1.0>>>, <<<1.0>>>)
+times
+m4_math(<<<2^{-53}>>>, <<<2⁻⁵³>>>)
+or
+m4_math(<<<2^{-109}>>>, <<<2⁻¹⁰⁹>>>)
+where the error was 0.
+
+Double-float tests, with the double-float examples of @ref{s3-2,,section 3.2} and the purely imaginary
+m4_math(<<<\phi>>>, <<<φ>>>)
+case:
+
+@need 4130
+@tex
+\bigskip
+@end tex
+@raggedright
+@multitable @columnfractions 0.50 0.50
+@headitem
+Expression
+@tab
+What it tests
+@item
+@code{elliptic_e(@/float(%pi/2), float(1-2^-50)-@/2^-51*%i)}
+@tab
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@item
+@code{elliptic_e(@/float(%pi/2)-@/2^-20, float(1-2^-30)+@/2^-31*%i)}
+@tab
+Complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1,
+m4_math(<<<\phi>>>, <<<φ>>>)
+below
+m4_math(<<<\pi/2>>>, <<<π/2>>>)
+@item
+@code{elliptic_ec(@/float(1-2^-40)+@/2^-41*%i)}
+@tab
+@code{elliptic_ec}, complex
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@item
+@code{elliptic_e(@/0.5, 2.0+@/2^-45*%i)}
+@tab
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+before the turning point
+@item
+@code{elliptic_e(@/1.0, 2.0^30+@/2^-10*%i)}
+@tab
+m4_mathcomma(<<<\mathrm{Re}\,m > 1>>>, <<<Re m > 1>>>)
+large
+m4_math(<<<m>>>, <<<m>>>)
+@item
+@code{elliptic_ec(@/float(1+@/2^-20)+@/2^-60*%i)}
+@tab
+@code{elliptic_ec},
+m4_math(<<<\mathrm{Re}\,m>>>, <<<Re m>>>)
+just above 1
+@item
+@code{elliptic_e(@/float(%pi/2)+@/2^-30*%i, float(1-2^-40))}
+@tab
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+near
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+m4_math(<<<m>>>, <<<m>>>)
+near 1
+@item
+@code{elliptic_e(@/2.875-1.3125*%i, 3.0625-0.1875*%i)}
+@tab
+Complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+and
+m4_math(<<<m>>>, <<<m>>>)
+@item
+@code{elliptic_e(@/0.75*%i, 0.5)}
+@tab
+Purely imaginary
+m4_math(<<<\phi\colon>>>, <<<φ:>>>)
+the real part is exactly 0
+@end multitable
+@end raggedright
+
+@tex
+\nobreak
+@end tex
+@anchor{tab-3-11}
+@noindent
+@strong{Table 3.11.} Double-float tests added for complex arguments.
+
+@tex
+\medskip
+@end tex
+
+The bigfloat tests are the same cases with bigfloat arguments, with the perturbations made smaller to suit 109 bits, such as @code{elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)-2^-101*%i)}.
+
+Without the code change, 28 of the 34 checks fail. Of the other 6, 4 are for purely imaginary
+m4_mathcomma(<<<\phi>>>, <<<φ>>>)
+and 2 are parts the old code already had within the tolerance.
+
+With this part, all 545 tests in @code{rtest_elliptic.mac} pass on SBCL, and on CLISP all but the 4 expected failures of @ref{s2-9,,section 2.9} pass. The full testsuite, with share tests, fails the same 3 tests as before on SBCL.
 
 @node References
 @chapter References

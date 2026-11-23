@@ -2639,3 +2639,201 @@ true;
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
+
+
+/*
+ * Complex arguments.  Each part is checked separately.  References
+ * are from mpmath at 90 digits, at the exact inputs.
+ */
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+
+/* Complex m near 1. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2), float(1-2^-50)-2^-51*%i)),
+               1.0000000000000081,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2), float(1-2^-50)-2^-51*%i)),
+               3.929199271788837e-15,
+               1.0*2^-53);
+true;
+
+/* Complex m near 1, phi below %pi/2. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2)-2^-20,
+                                   float(1-2^-30)+2^-31*%i)),
+               1.0000000052523338,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2)-2^-20,
+                                   float(1-2^-30)+2^-31*%i)),
+               -2.4991357308149325e-9,
+               1.0*2^-53);
+true;
+
+/* elliptic_ec, complex m near 1. */
+closeto_relerr(realpart(elliptic_ec(float(1-2^-40)+2^-41*%i)),
+               1.0000000000067345,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(float(1-2^-40)+2^-41*%i)),
+               -3.235482944432748e-12,
+               1.0*2^-53);
+true;
+
+/* Re m > 1, before the turning point. */
+closeto_relerr(realpart(elliptic_e(0.5, 2.0+2^-45*%i)), 4.56992352075574e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(0.5, 2.0+2^-45*%i)),
+               -6.7051450261676717e-16,
+               1.0*2^-53);
+true;
+
+/* Re m > 1, large m. */
+closeto_relerr(realpart(elliptic_e(1.0, 2.0^30+2^-10*%i)),
+               2.3975299843018238e-5,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.0, 2.0^30+2^-10*%i)),
+               -1.5063373863106627e+4,
+               1.0*2^-53);
+true;
+
+/* elliptic_ec, Re m just above 1. */
+closeto_relerr(realpart(elliptic_ec(float(1+2^-20)+2^-60*%i)),
+               9.9999627219983125e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(float(1+2^-20)+2^-60*%i)),
+               -7.4901378871981834e-7,
+               1.0*2^-53);
+true;
+
+/* Complex phi near %pi/2, m near 1. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2)+2^-30*%i, float(1-2^-40))),
+               1.0000000000067072,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2)+2^-30*%i, float(1-2^-40))),
+               8.8817827852794716e-16,
+               1.0*2^-53);
+true;
+
+/* Complex phi and m. */
+closeto_relerr(realpart(elliptic_e(2.875-1.3125*%i, 3.0625-0.1875*%i)),
+               1.9543953709731864e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(2.875-1.3125*%i, 3.0625-0.1875*%i)),
+               -4.9413895389833289e-2,
+               1.0*2^-53);
+true;
+
+/* Complex m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)-2^-101*%i)),
+               1.000000000000000000000000000014043b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)-2^-101*%i)),
+               6.907309452222480139094610591822567b-30,
+               1.0*2^-109);
+true;
+
+/* elliptic_ec, complex m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_ec(bfloat(1-2^-90)+2^-91*%i)),
+               1.000000000000000000000000012980452b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(1-2^-90)+2^-91*%i)),
+               -6.373185087321694128240936424184316b-27,
+               1.0*2^-109);
+true;
+
+/* Re m > 1, before the turning point, bigfloat. */
+closeto_relerr(realpart(elliptic_e(0.5b0, 2b0+2^-100*%i)),
+               4.569923520755739993814727170484775b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(0.5b0, 2b0+2^-100*%i)),
+               -1.861051597875549206025434200161865b-32,
+               1.0*2^-109);
+true;
+
+/* Re m > 1, large m, bigfloat. */
+closeto_relerr(realpart(elliptic_e(1b0, bfloat(2^60)+2^-20*%i)),
+               7.314592437803655975185770279833863b-10,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1b0, bfloat(2^60)+2^-20*%i)),
+               -4.935966405857377460710759156379883b+8,
+               1.0*2^-109);
+true;
+
+/* elliptic_ec, Re m just above 1, bigfloat. */
+closeto_relerr(realpart(elliptic_ec(bfloat(1+2^-50)+2^-120*%i)),
+               9.999999999999919109266443590844445b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(1+2^-50)+2^-120*%i)),
+               -6.975736996017261475637970122308713b-16,
+               1.0*2^-109);
+true;
+
+/* Complex phi near %pi/2, m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_e(bfloat(%pi/2)+2^-60*%i, bfloat(1-2^-90))),
+               1.000000000000000000000000012956168b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(bfloat(%pi/2)+2^-60*%i, bfloat(1-2^-90))),
+               2.46519032843301399119989975745551b-32,
+               1.0*2^-109);
+true;
+
+/* Complex phi and m, bigfloat. */
+closeto_relerr(realpart(elliptic_e(2.875b0-1.3125b0*%i, 3.0625b0-0.1875b0*%i)),
+               1.954395370973186391274430276519419b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(2.875b0-1.3125b0*%i, 3.0625b0-0.1875b0*%i)),
+               -4.941389538983328859081980976049435b-2,
+               1.0*2^-109);
+true;
+
+/* Purely imaginary phi and real m: the real part is exactly zero. */
+realpart(elliptic_e(0.75*%i, 0.5));
+0;
+
+closeto_relerr(imagpart(elliptic_e(0.75*%i, 0.5)), 0.78759158169920178,
+               1.2697*2^-53);
+true;
+
+realpart(elliptic_e(0.75b0*%i, 0.5b0));
+0;
+
+closeto_relerr(imagpart(elliptic_e(0.75b0*%i, 0.5b0)),
+               7.875915816992017776360759918948034b-1,
+               2.5394*2^-109);
+true;
+
+(fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
+done;
