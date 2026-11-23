@@ -2634,7 +2634,7 @@ defined, for @var{X} and @var{Y} each being a list, as
 @end example
 @end ifnottex
 @tex
-$$\frac{\mathrm{mean}(X Y) - \mathrm{mean}(X) \mathrm{mean}(Y)}{\mathrm{std}(X) \mathrm{std}(Y)}$$
+$$\frac{mean(X Y) - mean(X) mean(Y)}{std(X) std(Y)}$$
 @end tex
 
 where the multiplication @code{@var{X}*@var{Y}} is computed element by element.
