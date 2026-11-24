@@ -558,10 +558,9 @@
         :depends-on ("prompt-util"))
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
-      (:file "testsuite")
       (:file "wxmx")
       (:file "mload"
-        :depends-on ("prompt-util" "suprv1" "macsys" "testsuite" "wxmx"))
+        :depends-on ("prompt-util" "suprv1" "macsys" "wxmx"))
       (:file "mactex"
         :depends-on ("prompt-util" "suprv1"))
       (:file "dskfn"
@@ -956,6 +955,11 @@
      :components ((:file "gnuplot_def")
                   (:file "xmaxima_def")
                   (:file "geomview_def")))
+   (:module testsuite
+     :pathname ""
+     :depends-on (package)
+     ;; The test file lists, read only by mload.lisp, at run time.
+     :components ((:file "testsuite")))
    (:module final
      :pathname ""
      :depends-on (globals defmfun compatibility-macros1)

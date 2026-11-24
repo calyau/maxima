@@ -1585,6 +1585,14 @@
       (subseq (maxima-string x) 1)
       x))
 
+;; The values are set in testsuite.lisp, which is compiled last.
+(defmvar $testsuite_files nil
+  "The test files that run_testsuite runs, with their known failures."
+  no-reset)
+(defmvar $share_testsuite_files nil
+  "The share test files that run_testsuite runs if share_tests is set."
+  no-reset)
+
 (defun intersect-tests (tests)
   ;; If TESTS is non-NIL, we assume it's a Maxima list of (maxima)
   ;; strings naming the tests we want to run.  They must match the
