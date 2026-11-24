@@ -379,15 +379,16 @@
   ;; rational in VAR2, leaving *EXP*, POWERL, *INTEGRATOR-LEVEL* and
   ;; *RISCH-USE-TRIGINV-ALL* as they were, else only set *EXP-CLUES-SEEN*.
   ;; Return NIL if INTFORM finds nothing or signals an error. Give up if the
-  ;; clue has %e in it and is an integer power, as in the exponential form of
-  ;; a hyperbolic function, which INTFORM takes apart to try the exponentials
-  ;; again, which can take long, or if the domain is complex, where the
-  ;; answer can then be right only for x > 0, as for sinh(2*log(x))^(-1/2).
+  ;; clue has a power of %e in VAR2 in it, as the exponential form of a
+  ;; hyperbolic function has, and either is an integer power, which INTFORM
+  ;; takes apart to try the exponentials again, which can take long, or the
+  ;; domain is complex, where the answer can then be right only for x > 0, as
+  ;; for sinh(2*log(x))^(-1/2).
   (defun intform-past-exponentials (factors var2)
     (declare (special *exp* *integrator-level*))
     (let ((clue (find-if-not #'(lambda (f) (rat8 f var2)) factors)))
       (when (and clue
-                 (or (freeof '$%e clue)
+                 (or (not (%einvolve-var clue var2))
                      (not (or (eq $domain '$complex)
                               (and (mexptp clue) (integerp (caddr clue)))))))
         (setq *exp-clues-seen* t)
