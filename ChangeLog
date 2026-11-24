@@ -352,6 +352,7 @@ Bug fixes for numbered bugs:
 * \#5790 integrate() fails with a rat error for log(a+b*x^2)^3/x^4 when a*b > 0
 * \#5791 integrate() gives wrong results or errors for log(x)^2/(x^2-2*x-1) and similar
 * \#5794 algsys([x^5 - sqrt(2)*x - 1], [x]) can't reduce a polynomial in one variable
+* \#5795 run_testsuite: a test that asks more or fewer questions garbles the rest of its file
 * \#5796 limit() does not return at branch points of elliptic_e and elliptic_f
 * \#5797 integrate() hangs on some definite integrals of powers of cos(x)
 * \#5798 elliptic_f() lacks the quasi-periodicity simplification of elliptic_e()
@@ -469,3 +470,17 @@ Other changes:
 * Bigfloat square roots are now much faster and more accurate.
 * General performance improvements
 * featurep now works with non-symbols for real, complex and imaginary
+* New function with_answers(answers, expr_1, ..., expr_n) evaluates the
+  expressions and answers the questions they ask, such as those of
+  asksign, askinteger and read, from a list, in order. An answer can
+  give the subject of its question, as in sign(a) = pos or read = 1.
+  Answers with the wrong subject, invalid answers and missing or unused
+  ones are errors.
+* Test files answer their questions with with_answers(), so a test that
+  asks more or fewer questions fails on its own instead of garbling the
+  rest of its file. Reading the answers from the statements after a
+  test, as before, is now opt-in: set batch_answers_from_file : true in
+  the file or before calling batch(f, test), or call run_testsuite with
+  answers_from_file = true. reset() leaves batch_answers_from_file
+  alone, and --batch-string no longer sets it, so the questions of the
+  string read the standard input again unless the string sets it.
