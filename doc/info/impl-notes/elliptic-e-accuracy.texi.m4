@@ -180,7 +180,7 @@ which is about 20 here.
 
 Double-float examples, with reference values from mpmath at the exact double inputs, rounded to 17 significant digits:
 
-@need 3370
+@need 3170
 @tex
 \bigskip
 @end tex
@@ -440,7 +440,7 @@ once each, as before.
 
 Errors below are the worst errors in ulps. References are from mpmath at 80 digits, at the exact inputs. ``Before'' is the code without this change.
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -569,7 +569,7 @@ This part leaves the last two rows bit-for-bit unchanged.
 
 The double-float examples of @ref{s1-2,,section 1.2} after the change:
 
-@need 2610
+@need 2410
 @tex
 \bigskip
 @end tex
@@ -641,7 +641,6 @@ for bigfloats.
 
 Double-float tests:
 
-@need 5650
 @tex
 \bigskip
 @end tex
@@ -737,7 +736,6 @@ with exact values from mpmath.
 
 Bigfloat tests:
 
-@need 5270
 @tex
 \bigskip
 @end tex
@@ -889,7 +887,7 @@ with the double float
 m4_mathdot(<<<\mathrm{am} = 1.254827029042835>>>, <<<am = 1.254827029042835>>>)
 Errors in ulps, against mpmath at the exact inputs, with ``before'' the code without this change:
 
-@need 2040
+@need 1840
 @tex
 \bigskip
 @end tex
@@ -977,7 +975,7 @@ this part does not make @code{jacobi_epsilon} worse. Errors in ulps for
 m4_mathcomma(<<<u = 0.01, 0.02, \ldots, 3>>>, <<<u = 0.01, 0.02, …, 3>>>)
 against Maxima's bigfloat @code{jacobi_epsilon} at @code{fpprec : 60}:
 
-@need 1660
+@need 1460
 @tex
 \bigskip
 @end tex
@@ -1195,7 +1193,6 @@ m4_mathdot(<<<10^{250}>>>, <<<10²⁵⁰>>>)
 
 Double-float examples, with reference values from mpmath at the exact inputs:
 
-@need 4890
 @tex
 \bigskip
 @end tex
@@ -1450,7 +1447,7 @@ m4_math(<<<ms^2 = 1.0755>>>, <<<ms² = 1.0755>>>)
 and
 m4_math(<<<y = -0.0754995731919693829\colon>>>, <<<y = −0.0754995731919693829:>>>)
 
-@need 1850
+@need 1650
 @tex
 \bigskip
 @end tex
@@ -1553,7 +1550,7 @@ Worst errors in ulps, double float / bigfloat, for several limits. The limit app
 m4_mathcomma(<<<y>>>, <<<y>>>)
 as in the code:
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -1803,7 +1800,6 @@ in complex arithmetic past the turning point.
 Errors below are the worst errors in ulps of the real and imaginary parts, measured separately. References are from mpmath at 260 digits, at the exact inputs. ``Before'' is the code without the changes of either part. The change of @ref{p1,,part 1} does not affect
 m4_mathdot(<<<m > 1>>>, <<<m > 1>>>)
 
-@need 6790
 @tex
 \bigskip
 @end tex
@@ -2016,7 +2012,7 @@ and the products and quotients built from them.
 
 The examples of @ref{s2-2,,section 2.2} after the change:
 
-@need 2610
+@need 2410
 @tex
 \bigskip
 @end tex
@@ -2118,7 +2114,6 @@ m4_mathdot(<<<2^{-109}>>>, <<<2⁻¹⁰⁹>>>)
 
 Double-float tests:
 
-@need 6220
 @tex
 \bigskip
 @end tex
@@ -2346,7 +2341,7 @@ and had errors of up to 128 ulps on 34 points. This change adds the same special
 
 The double-float results before and after that change, as worst errors in ulps:
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -2484,7 +2479,7 @@ Double-float @code{elliptic_e} also got faster. Per 1000 calls with
 m4_mathcomma(<<<\lvert\phi\rvert < 1.5>>>, <<<|φ| < 1.5>>>)
 on SBCL:
 
-@need 1660
+@need 1460
 @tex
 \bigskip
 @end tex
@@ -2605,7 +2600,7 @@ is much smaller than the other.
 
 Double-float examples, with errors in ulps of each part, from mpmath at the exact inputs. These are the double-float tests of @ref{s3-9,,section 3.9}:
 
-@need 3940
+@need 3740
 @tex
 \bigskip
 @end tex
@@ -2835,7 +2830,7 @@ A larger
 m4_math(<<<T>>>, <<<T>>>)
 recomputes less, but keeps values with larger errors. On the 270 points of @ref{s3-5,,section 3.5}:
 
-@need 2040
+@need 1840
 @tex
 \bigskip
 @end tex
@@ -2916,7 +2911,7 @@ m4_math(<<<-3 \le \mathrm{Re}\,m \le 4>>>, <<<−3 ≤ Re m ≤ 4>>>)
 and
 m4_math(<<<\lvert\mathrm{Im}\,m\rvert \le 2\colon>>>, <<<|Im m| ≤ 2:>>>)
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -2997,7 +2992,7 @@ a part smaller than
 m4_math(<<<\lvert E\rvert/2^T>>>, <<<|E|/2^T>>>)
 always fails the test, even when nothing cancels. That is common:
 
-@need 2040
+@need 1840
 @tex
 \bigskip
 @end tex
@@ -3075,7 +3070,7 @@ of those of @uref{https://dlmf.nist.gov/19.25.E9, DLMF 19.25.9}, @uref{https://d
 
 The test sets are 270 points for @code{elliptic_e} and 78 for @code{elliptic_ec}. References are Maxima's bigfloat results at @code{fpprec : 60}, which agree with mpmath to all of 40 digits compared. Errors below are the worst errors in ulps of each part, and in ulps of the larger part:
 
-@need 3370
+@need 3170
 @tex
 \bigskip
 @end tex
@@ -3211,7 +3206,7 @@ m4_math(<<<9.9{\times}10^{3}>>>, <<<9.9×10³>>>)
 \medskip
 @end tex
 
-@need 2040
+@need 1840
 @tex
 \bigskip
 @end tex
@@ -3297,7 +3292,7 @@ Tables 3.7 and 3.8 use the same sets of 400 random double-float points, with
 m4_math(<<<m>>>, <<<m>>>)
 taken from each point for @code{elliptic_ec}.
 
-@need 2990
+@need 2790
 @tex
 \bigskip
 @end tex
@@ -3410,7 +3405,7 @@ tiny
 \medskip
 @end tex
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -3514,7 +3509,7 @@ The extra precision is the
 m4_math(<<<e + 8>>>, <<<e + 8>>>)
 bits of @ref{s3-3,,section 3.3}, beyond the 53 bits of a double float. For the points that were recomputed:
 
-@need 2420
+@need 2220
 @tex
 \bigskip
 @end tex
@@ -3606,7 +3601,7 @@ from a finite difference.
 
 At 53 bits, mpmath's small parts can be inaccurate. Errors in ulps of each part, against mpmath at 200 bits:
 
-@need 2800
+@need 2600
 @tex
 \bigskip
 @end tex
@@ -3736,7 +3731,7 @@ Double-float tests, with the double-float examples of @ref{s3-2,,section 3.2} an
 m4_math(<<<\phi>>>, <<<φ>>>)
 case:
 
-@need 4130
+@need 3930
 @tex
 \bigskip
 @end tex
