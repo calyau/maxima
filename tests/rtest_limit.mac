@@ -1993,6 +1993,29 @@ block([nv],
 [true, true]$
 
 
+/* Bug #5900: "taylor(), tlimit() and limit() enter the Lisp debugger" */
+
+[tlimit((-log(x)/x)^(1/2-1/x), x, 0, plus),
+ tlimit((-x*log(x))^(1/2-1/x), x, 0, plus),
+ tlimit((-log(x)/x)^(1/2-2*log(x)/x), x, 0, plus),
+ tlimit((1-2*log(x)/x)^(1/2-log(x)/x)/sqrt(-log(x)), x, 0, plus),
+ tlimit(binomial(-2*log(x)/x, -log(x)/x)^2*4^(2*log(x)/x), x, 0, plus),
+ tlimit(log(gamma(x*log(log(x)))), x, inf),
+ tlimit(log(x)^(1/log(x))/(gamma(x)*(x*log(log(x)))!), x, inf),
+ limit(((1/x)!)^x/((1/x^2)!*gamma(2*log(1/x)/x)), x, 0, plus)];
+[0, inf, inf, inf, 0, inf, 0, 0]$
+
+/* No question about the sign of a failed inner limit: */
+
+block([expr : binomial(2/x, 1/x)*4^(-1/x)*(1/x+1)^(-1/2-1/x)*((log(-log(x))/x)!)^(x*log(-log(x)))/sqrt(lambert_w(2/x))],
+  member(errcatch(tlimit(expr, x, 0, plus)), [[], [0]]));
+true$
+
+block([expr : (1+1/x)^(x/log(x))*(1+log(log(x))/x)^(-log(x)/log(log(x)))*gamma(x*log(log(x)))^(x/log(x))],
+  member(errcatch(tlimit(expr, x, inf)), [[], [inf]]));
+true$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

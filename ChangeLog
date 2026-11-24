@@ -392,6 +392,7 @@ Bug fixes for numbered bugs:
 * \#5896 integrate(2^x*sqrt(x+1), x) returns a noun form
 * \#5897 taylor() of lambert_w() fails at expansion points other than 0, slowly in tlimit()
 * \#5899 limit() and gruntz() give minf for some limits of nested logarithms that are inf
+* \#5900 taylor(), tlimit() and limit() enter the Lisp debugger: Illegal kernel in `adjoin-pvar'
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -1231,8 +1231,10 @@
 		       ($ratnump (cadr expt)))
 	      (setq pow (cadr expt) kernel (m^ kernel (m// pow))
 		    g (prep1 kernel) pow (prep1 pow))
+	      ;; KERNEL^(1/POW) must be a single variable. It is not for
+	      ;; %e^(log(-log(x))/2), where it is -log(x).
 	      (unless (and (equal (cdr g) 1) (equal (cdar g) '(1 1)))
-		(break "Illegal kernel in `adjoin-pvar'"))
+		(unfam-sing-err))
 	      (setq g (caar g) kernel (get g 'disrep))))
 	  (if (setq ans (key-var-pow g))
 	      (cons (car ans) (e* pow (cdr ans)))
@@ -1377,13 +1379,13 @@
 		   (return
 		    (cond ((lim-infp lim) ())
 			  ((lim-zerop lim) 't)
-			  (t (break "var with non-zero finite lim?")))))))
+			  (t (unfam-sing-err)))))))
 	    ((null vars2*)
 	     (let ((lim (tvar-lim (car vars1*))))
 	       (return
 		 (cond ((lim-infp lim) 't)
 		       ((lim-zerop lim) ())
-		       (t (break "var with non-zero finite lim?"))))))
+		       (t (unfam-sing-err))))))
 	    ((alike1 (car vars1*) (car vars2*)) )
 	    ((return (stronger-var? (car vars1*) (car vars2*)))))))
 

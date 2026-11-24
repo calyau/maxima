@@ -1039,6 +1039,13 @@ map(lambda([l], ratsimp(ratdisrep(l[1]) - l[2])),
 [-1, 3/2]$
 
 
+/* Bug #5900: "taylor(), tlimit() and limit() enter the Lisp debugger" */
+
+map(lambda([e], errcatch(taylor(e, x, 0, 2))),
+    [(-log(x)/x)^(1/2-1/x), (-x*log(x))^(1/2-1/x), (1-2*log(x)/x)^(1/2-2*log(x)/x)]);
+[[], [], []]$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

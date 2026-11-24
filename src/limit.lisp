@@ -412,9 +412,9 @@
     (let ((sgn))
       (setq z (let ((*preserve-direction* nil)) (limit-catch z var val)))
   	  (cond
-	    ;; Don't call csign on ind, und, infinity, zeroa, or zerob.
-		;; When z is either zeroa or zerob, return 0.
-	    ((or (eq z '$ind) (eq z '$und) (eq z '$infinity)) nil)
+	    ;; Don't call csign on a failed limit (NIL), ind, und, infinity, zeroa,
+	    ;; or zerob. When z is either zeroa or zerob, return 0.
+	    ((or (null z) (eq z '$ind) (eq z '$und) (eq z '$infinity)) nil)
 		  ((eq z '$zeroa) 0)
 		  ((eq z '$zerob) 0)
 		  (t
@@ -2351,6 +2351,8 @@ ignoring dummy variables and array indices."
                ((equal el '$minf) 0)
                ((zerop2 el) (bylog expo bas))
                ((member el '($infinity $ind) :test #'eq) '$und)
+               ;; The limit of the exponent failed.
+               ((null el) (throw 'limit t))
                (t (cond ((eql 0 (getsignl el)) 1)
                         ((ratgreaterp 0 el) '$zeroa)
                         ((ratgreaterp el 0) '$inf)
@@ -3731,6 +3733,9 @@ ignoring dummy variables and array indices."
 		(cond ((eql dir -1) (setq arglim '$zerob))
 		      ((eql dir 1) (setq arglim '$zeroa))))
     (cond 
+	  ;; The limit of the argument failed.
+	  ((null arglim) (throw 'limit nil))
+
 	  ((eq arglim '$inf) '$inf)     ;log(inf) = inf
 
       ;;log(minf,infinity,zerob) = infinity
