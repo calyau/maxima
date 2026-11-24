@@ -1074,6 +1074,9 @@
 	(t
 	 (bf-rf 0 (- 1 m) 1))))
 
+;;; Numerical evaluation of elliptic_e and elliptic_ec for real and
+;;; complex values.
+
 ;; BF-ELLIPTIC-E-0<M<1 computes elliptic_e(phi, m) for real m with
 ;; 0 < m < 1 and real phi reduced to about [-pi/2, pi/2].  Its
 ;; arguments are s = sin(phi), c = cos(phi) and m.  DLMF 19.25.10,
@@ -1097,22 +1100,32 @@
 	   (let* ((m1 (- 1 m))
 		  (c2 (* c c))
 		  (y (+ c2 (* m1 s s))))
+	     ;; y = c^2+(1-m)*s^2 instead of 1-m*s^2.
+	     ;; 
+	     ;; (1-m)*s*rf(c^2, y, 1) + m*(1-m)/3*s^3*rd(c^2, 1, y)
+	     ;;   + m*s*c/sqrt(y)
 	     (+ (* m1 s
 		   (bf-rf c2 y 1))
 		(* m m1 1/3 s s s
 		   (bf-rd c2 1 y))
 		(/ (* m s c)
 		   (sqrt y))))))
+    ;; In case phi is outside of [-%pi/2,%pi/2], use
+    ;;
+    ;;   E(phi|m) = 2*sgn(phi)*E(m) - E(sgn(phi)*%pi-phi|m)
+    ;;
+    ;; This can happen when phi is numerically reduced to that range
+    ;; by subtracting multiples of %pi.
     (if (minusp c)
 	(- (* (if (minusp s) -2 2)
 	      (bf-elliptic-ec m))
 	   (base s (- c)))
 	(base s c))))
 
-;; For real m > 1, with s = sin(phi), c = cos(phi) and y = 1 -
-;; m*sin(phi)^2, DLMF 19.25.11 scaled by sin(phi)^2 gives
+;; For real phi and real m > 1, with s = sin(phi), c = cos(phi) and y
+;; = 1 - m*sin(phi)^2, DLMF 19.25.11 scaled by sin(phi)^2 gives
 ;;
-;; elliptic_e(phi, m) = ((m-1)/3)*s^3*rd(y, 1, c^2) + s*sqrt(y)/c
+;;   elliptic_e(phi, m) = ((m-1)/3)*s^3*rd(y, 1, c^2) + s*sqrt(y)/c
 ;;
 ;; for 0 <= phi up to the turning point, where y = 0.  Past it, the
 ;; real part stays at its value at the turning point, which is
@@ -1163,31 +1176,43 @@
 	   (* 2 k
 	      (bf-elliptic-ec m))))))
 
-;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
-;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
+;; Main entry for computing E(phi|m) for real or complex values of phi
+;; and m.  Different algorithms are used depending on whether phi and
+;; m are real.
 ;;
+;;   elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
+;;      - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
 ;;
 ;; or 
-;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
-;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
+;;   elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
+;;      - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
 ;;
 (defun bf-elliptic-e (phi m)
+  ;; Handle case for real phi and real m, m > 1
   (when (and (realp phi) (realp m) (> m 1))
     (return-from bf-elliptic-e
       (bf-elliptic-e-m>1 phi m)))
+  ;; Handle the general case where phi or m is complex, but m is not 1.
   (when (and (or (complexp phi) (complexp m))
 	     (/= m 1))
     (return-from bf-elliptic-e
       (bf-with-accurate-parts #'bf-elliptic-e-terms phi m)))
+  ;; Handle all other cases
   (flet ((base (phi m)
+	   ;; The base case where phi is (approximately) in the
+	   ;; interval [-%pi/2, %pi/2].  Round-off make make phi
+	   ;; slightly outside the interval.
 	   (let* ((s (sin phi))
 		  (c (cos phi)))
-	     (cond ((and (realp phi) (realp m) (> m 0) (< m 1))
+	     (cond ((and (realp phi)
+			 (realp m) (< 0 m 1))
+		    ;; Special routine for real phi and m with 0 < m < 1.
 		    (bf-elliptic-e-0<m<1 s c m))
 		   ((= m 1)
 		    ;; A&S 17.4.25
 		    s)
 		   (t
+		    ;; E(phi|m) = s*rf(c^2, 1-m*s^2,1) - m/3*s^3*rd(c^2,1-m*s^2, 1)
 		    (let ((c2 (* c c))
 			  (s2 (- 1 (* m s s))))
 		      (- (* s (bf-rf c2 s2 1))
@@ -1196,10 +1221,11 @@
 			    (bf-rd c2 s2 1)))))))))
     ;; Elliptic E is quasi-periodic wrt to phi:
     ;;
-    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
+    ;;   E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
     (let* ((bfpi (%pi phi))
 	   (period (round (realpart phi) bfpi)))
-      (+ (base (- phi (* bfpi period)) m)
+      (+ (base (- phi (* bfpi period))
+	       m)
 	 (* 2 period (bf-elliptic-ec m))))))
     
 
