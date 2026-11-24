@@ -8127,6 +8127,28 @@ block([domain : complex],
 [true, true, true, true]$
 
 
+/* Bug #5075: "Antiderivative of sin(x^3) does not differentiate back, and under domain: complex it is wrong for negative x" */
+
+block([domain : complex, nv],
+  local(nv),
+  nv(e) := float(rectform(expand(float(rectform(e))))),
+  map(lambda([f], block([F : integrate(f, x)],
+        map(lambda([ab], is(cabs(nv(subst(x = ab[2], F) - subst(x = ab[1], F)) - quad_qags(f, x, ab[1], ab[2])[1]) < 1e-9)),
+            [[0.5, 1.5], [-1.5, -0.7], [-0.5, 0.6]]))),
+      [sin(x^3), cos(x^3), x*sin(x^3), x^2*cos(x^5)]));
+[[true, true, true], [true, true, true], [true, true, true], [true, true, true]]$
+
+block([domain : complex],
+  map(lambda([f, a, b], is(cabs(float(rectform(expand(float(rectform(integrate(f, x, a, b)))))) - quad_qags(f, x, a, b)[1]) < 1e-9)),
+      [sin(x^3), sin(x^3), cos(x^3), x*sin(x^3)], [0, -3/2, -2, -1], [1, -7/10, -1, 0]));
+[true, true, true, true]$
+
+/* Answers with polylogarithms keep the variable positive, else this takes minutes with domain : complex: */
+block([domain : complex],
+  is(abs(float(rectform(expand(float(rectform(integrate(log(cot(x) - 1), x, 0, %pi/4)))))) - float(%pi*log(2)/8)) < 1e-12));
+true$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -219,7 +219,12 @@
     (setq yyy (multiple-value-bind (num denom)
 		  (with-default-quotient-dispflags (num-denom-split yyy))
 		(div ($expand num) ($expand denom))))
-    (let ((rischp risch-var)
+    ;; RISPLIT takes RISCHP, the variable of integration, to be positive.
+    ;; With domain complex the antiderivatives keep powers like
+    ;; (%i*x^3)^(1/3), whose parts would then be wrong for negative x, so
+    ;; RISCHP is NIL there. Not if YYY has a polylogarithm, as for
+    ;; log(tan(x)), where that makes definite integrals very slow.
+    (let ((rischp (unless (and (eq $domain '$complex) (freeof '$li yyy)) risch-var))
 	  (rp-polylogp t)
 	  $logarc $exponentialize result)
      (if (let ($listconstvars) (some #'decl-complexp (cdr ($listofvars yyy))))

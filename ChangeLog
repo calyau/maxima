@@ -47,6 +47,7 @@ Bug fixes for numbered bugs:
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
+* \#5075 Antiderivative of sin(x^3) does not differentiate back, and under domain: complex it is wrong for negative x
 * \#5078 carg() of tan() or tanh() of a complex number is off by %pi when the real part of the result is negative
 * \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
