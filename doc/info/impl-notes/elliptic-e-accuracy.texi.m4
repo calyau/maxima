@@ -641,6 +641,7 @@ for bigfloats.
 
 Double-float tests:
 
+@need 5450
 @tex
 \bigskip
 @end tex
@@ -736,6 +737,7 @@ with exact values from mpmath.
 
 Bigfloat tests:
 
+@need 5070
 @tex
 \bigskip
 @end tex
@@ -1193,6 +1195,7 @@ m4_mathdot(<<<10^{250}>>>, <<<10²⁵⁰>>>)
 
 Double-float examples, with reference values from mpmath at the exact inputs:
 
+@need 4690
 @tex
 \bigskip
 @end tex
@@ -1800,6 +1803,7 @@ in complex arithmetic past the turning point.
 Errors below are the worst errors in ulps of the real and imaginary parts, measured separately. References are from mpmath at 260 digits, at the exact inputs. ``Before'' is the code without the changes of either part. The change of @ref{p1,,part 1} does not affect
 m4_mathdot(<<<m > 1>>>, <<<m > 1>>>)
 
+@need 6590
 @tex
 \bigskip
 @end tex
@@ -2114,6 +2118,7 @@ m4_mathdot(<<<2^{-109}>>>, <<<2⁻¹⁰⁹>>>)
 
 Double-float tests:
 
+@need 6020
 @tex
 \bigskip
 @end tex
