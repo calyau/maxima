@@ -1403,7 +1403,8 @@ ignoring dummy variables and array indices."
 
 (defun simplim%mabs (e x pt)
  (let ((lim (limit (cadr e) x pt 'think)))
-	(cond ((or (eq lim '$zeroa) (eql lim 0) (eq lim '$ind)) lim)
+	(cond ((null lim) (throw 'limit t)) ; LIMIT found no limit
+	      ((or (eq lim '$zeroa) (eql lim 0) (eq lim '$ind)) lim)
 	      ((eq lim '$zerob) '$zeroa)
 		  ((eq lim '$und) '$und)
 		  ((or (eq lim '$minf) (eq lim '$inf) (eq lim '$infinity)) '$inf)
@@ -2288,7 +2289,9 @@ ignoring dummy variables and array indices."
     (t '$und)))
 
 (defun simplimexpt (bas expo bl el)
-  (cond ((or (eq bl '$und) (eq el '$und)) '$und)
+  (cond ;; LIMIT found no limit for the base or the exponent.
+        ((or (null bl) (null el)) (throw 'limit t))
+        ((or (eq bl '$und) (eq el '$und)) '$und)
         ;; Handle ind^XXX, from now on it is safe to assume that bl =/= $ind
         ((eq bl '$ind)
 			(limit-ind-to-power bas expo el))

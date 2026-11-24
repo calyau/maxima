@@ -2016,6 +2016,29 @@ block([expr : (1+1/x)^(x/log(x))*(1+log(log(x))/x)^(-log(x)/log(log(x)))*gamma(x
 true$
 
 
+/* Bug #5902: "limit() and tlimit() take a failed inner limit for false" */
+
+block([r],
+  r : errcatch(tlimit(atanh((expintegral_e1(x)*x*exp(x))/(2+abs(expintegral_e1(x)*x*exp(x)))), x, inf)),
+  is(r = [] or r = [atanh(1/3)] or not freeof('limit, r)));
+true$
+
+block([r : limit(expintegral_e1(1/x)/(abs(expintegral_e1(1/x))*(x+1)), x, 0, plus)],
+  is(r = 1 or not freeof('limit, r)));
+true$
+
+map(lambda([r, v], is(r = v or not freeof('limit, r))),
+    [tlimit((atanh(x)/x)*erfc(1/x), x, 0, plus), tlimit((erfc(1/x)^3-x/sin(x)^2)^2, x, 0, plus)],
+    [0, inf]);
+[true, true]$
+
+[limit(sqrt((sin(x)/x)^2+1)-1, x, inf),
+ tlimit((exp(x/log(x))-exp(x)+exp(-x))/x^(1/log(x)), x, inf),
+ tlimit((exp(x/log(x))-exp(x)+exp(-x))/exp(x), x, inf),
+ tlimit(log(gamma(x))/log(log(gamma(x))), x, inf)];
+[0, minf, -1, inf]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

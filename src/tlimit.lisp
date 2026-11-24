@@ -269,6 +269,9 @@
        ;; which is wrong for x near 0.
        (let ((g (gensym)))
          (putprop g t 'internal) ; ask no questions about G
+         ;; Display G as VAR, so that messages about the new expression
+         ;; name the limit variable.
+         (putprop g var 'reversealias)
          (with-new-context (context)
            (make-limit-assumptions g new-val (if (eq new-val '$zerob) '$minus '$plus))
            (let ((*preserve-direction* t))

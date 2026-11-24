@@ -393,6 +393,7 @@ Bug fixes for numbered bugs:
 * \#5897 taylor() of lambert_w() fails at expansion points other than 0, slowly in tlimit()
 * \#5899 limit() and gruntz() give minf for some limits of nested logarithms that are inf
 * \#5900 taylor(), tlimit() and limit() enter the Lisp debugger: Illegal kernel in `adjoin-pvar'
+* \#5902 limit() and tlimit() take a failed inner limit for false
 
 Bug fixes for unnumbered bugs:
 ------------------------------
