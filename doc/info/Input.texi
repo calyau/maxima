@@ -250,8 +250,15 @@ Closes the transcript file opened by @mref{writefile} or @mrefdot{appendfile}
 @defvr {Option variable} batch_answers_from_file
 Default value: @code{false}
 
-If @code{true}, then @code{batch} reads answers to interactive questions
-from its input file or stream.
+If @code{true}, then a question that a statement of batch input asks
+reads its answer from that input: from the file or stream that
+@mref{batch} or @mref{demo} reads, or from the string of
+@code{--batch-string} or @code{--run-string}. Each statement goes by the
+value of @code{batch_answers_from_file} when it starts, so setting it in
+the input changes where the questions of the statements that follow read
+their answers. While it is @code{false}, they read them from where they
+would outside the batch input, normally the terminal. @mref{reset} does
+not change @code{batch_answers_from_file}.
 
 Example:
 
@@ -271,11 +278,17 @@ statements that follow as further answers.
 @mref{with_answers} answers questions in batch files too, and within
 its scope it takes precedence over @code{batch_answers_from_file}. Test
 files, as run by @mref{run_testsuite} or by @code{batch} with the option
-@code{test}, ignore @code{batch_answers_from_file}: their questions must
-be answered with @code{with_answers}.
+@code{test}, must answer their questions with @code{with_answers} while
+@code{batch_answers_from_file} is @code{false}. While it is @code{true},
+they read the answers from the file, as test files did before
+@code{with_answers} existed. A test file starts with the value
+@code{batch_answers_from_file} has when @code{batch} is called, or with
+the option @code{answers_from_file} of @code{run_testsuite}, and can set
+it itself. See @mrefdot{run_testsuite}
 
-The command-line option @code{--batch-string} binds
-@code{batch_answers_from_file} to @code{true}. See also
+For the questions of @code{--batch-string} to read their answers from
+the string, set @code{batch_answers_from_file} to @code{true} there, as
+in @code{--batch-string='batch_answers_from_file : true$ ...'}. See also
 @mref{command_line_options} and @mrefdot{with_answers}
 
 @opencatbox{Categories:}

@@ -95,9 +95,27 @@ pos$
 @end example
 
 Ein Test, der eine Frage au@ss{}erhalb von @code{with_answers} stellt, schl@"agt
-fehl, auch wenn der Code, der die Frage gestellt hat, den Fehler abf@"angt. Die
-Antworten werden nie aus der Testdatei selbst gelesen, so dass die folgenden
-Tests wie gewohnt ausgef@"uhrt werden.
+fehl, auch wenn der Code, der die Frage gestellt hat, den Fehler abf@"angt. Ohne
+die unten beschriebene Einstellung werden die Antworten nie aus der Testdatei
+selbst gelesen, so dass die folgenden Tests wie gewohnt ausgef@"uhrt werden.
+
+Testdateien, die entstanden sind, bevor es @code{with_answers} gab, beantworten
+Fragen stattdessen mit den Anweisungen, die auf die Eingabe folgen, wie in
+
+@example
+asksign(x); pos;
+pos$
+@end example
+
+Eine solche Datei kann weiterhin ausgef@"uhrt werden, wenn sie in einem eigenen
+Test die Optionsvariable @code{batch_answers_from_file} auf @code{true} setzt,
+was f@"ur den Rest der Datei gilt, oder wenn @code{run_testsuite} mit
+@code{answers_from_file = true} aufgerufen wird, oder mit @code{batch} und der
+Option @code{test}, wenn @code{batch_answers_from_file} beim Aufruf von
+@code{batch} den Wert @code{true} hat. Sonst beginnt jede Testdatei mit dem Wert
+@code{false} f@"ur @code{batch_answers_from_file}. @mref{reset} @"andert die
+Variable nicht. Stellt ein Test mehr oder weniger Fragen, als die Datei
+beantwortet, wird der Rest der Datei versetzt gelesen.
 
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
 

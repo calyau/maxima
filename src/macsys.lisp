@@ -84,6 +84,27 @@
   (declare (ignore unused))
   0)
 
+;; Call FN for a statement of the batch input INPUT-STREAM. A question in the
+;; statement reads its answer from the input while batch_answers_from_file
+;; is true when the statement starts, and otherwise from the streams outside
+;; all batch input, kept in *OUTSIDE-BATCH-STREAMS*.
+(defun call-with-batch-answers (fn input-stream)
+  (let ((*outside-batch-streams*
+          (or *outside-batch-streams*
+              (list *query-io* *standard-input* *answers-from-file*))))
+    (if $batch_answers_from_file
+      (let ((*query-io* (make-two-way-stream input-stream
+                                             (make-string-output-stream)))
+            (*standard-input* input-stream)
+            (*answers-from-file* t))
+        (funcall fn))
+      (destructuring-bind (query-io standard-input answers-from-file)
+          *outside-batch-streams*
+        (let ((*query-io* query-io)
+              (*standard-input* standard-input)
+              (*answers-from-file* answers-from-file))
+          (funcall fn))))))
+
 (defun continue (&key ((:stream input-stream) *standard-input*) batch-or-demo-flag one-shot)
   (declare (special *socket-connection* *maxima-run-string*))
   (if *maxima-run-string* (setq batch-or-demo-flag :batch))
@@ -143,7 +164,11 @@
 			   ($quit))
 			  (t (go top)))))
 	     (cond ((and (consp r) (keywordp (car r)))
-		    (break-call (car r) (cdr r) 'break-command)
+		    (if batch-or-demo-flag
+		      (call-with-batch-answers
+		       #'(lambda () (break-call (car r) (cdr r) 'break-command))
+		       input-stream)
+		      (break-call (car r) (cdr r) 'break-command))
 		    #+(or sbcl cmu)
 		    (if (and (not batch-or-demo-flag)
 			     (not (eq input-stream *standard-input*)))
@@ -159,7 +184,10 @@
 	(setq time-before (get-internal-run-time)
 	      etime-before (get-internal-real-time))
 	(setq area-before (used-area))
-	(setq $% (toplevel-macsyma-eval $__))
+	(setq $% (if batch-or-demo-flag
+		     (call-with-batch-answers
+		      #'(lambda () (toplevel-macsyma-eval $__)) input-stream)
+		     (toplevel-macsyma-eval $__)))
 	#+(or sbcl cmu)
 	(if (and (not batch-or-demo-flag)
 		 (not (eq input-stream *standard-input*)))
@@ -207,11 +235,17 @@
 	(when (eq batch-or-demo-flag ':demo)
           (princ (break-prompt))
           (finish-output)
-	  (let (quitting)
+	  (let (quitting
+		;; The pause reads from outside the demo file.
+		(*standard-input* (if *outside-batch-streams*
+				      (second *outside-batch-streams*)
+				      *standard-input*)))
 	    (loop
 	      ;;those are common lisp characters you're reading here
+	      ;; At the end of the input, the demo goes on as after <enter>.
 	      (case (read-char #+(or sbcl cmu) *standard-input*
-			       #-(or sbcl cmu) *terminal-io*)
+			       #-(or sbcl cmu) *terminal-io*
+			       nil #\newline)
                 ((#\page)
                  (fresh-line)
                  (princ (break-prompt))
@@ -321,9 +355,11 @@
   entries               ; the answers not used yet, each a list
                         ; (ELEMENT SUBJECT ANSWER)
   failure               ; the first failure, as arguments to MERROR
+  printed               ; true once MERROR printed the message of FAILURE
   answered              ; the element of the answer given last
   subject               ; the subject of the question it answered
-  test-file)            ; true when TEST-BATCH set it up, without answers
+  test-file)            ; for TEST-BATCH, which sets it up without answers:
+                        ; $RUN_TESTSUITE or $BATCH, whichever runs the file
 
 ;; The kinds of subject written as forms, with their number of arguments.
 ;; Any other symbol on the left side is the name of a function that asks.
@@ -359,8 +395,8 @@
                             (eql (cdr (assoc (caar lhs) *answer-subjects*))
                                  (length (cdr lhs)))))
              (merror (intl:gettext "with_answers: the left side of ~M is not a subject.~%~
-                                    A subject is sign(x), zero(x), integer(x), even(x), odd(x),~%~
-                                    equal(a, b) or the name of the function that asks. To give~%~
+                                    A subject is sign(x), zero(x), integer(x), even(x), odd(x), ~
+                                    equal(a, b) or the name of the function that asks. To give ~
                                     an equation as an answer, write it as a string.")
                      element))
            (list element
@@ -372,13 +408,26 @@
         (t
          (list element nil element))))
 
+;; Signal the error in MERROR-ARGS for WA. MERROR prints its message unless
+;; $ERRORMSG is false or *MERROR-SIGNALS-$ERROR-P* is true. Once it printed
+;; the failure of WA, it signals it again without printing it, and TEST-BATCH
+;; prints a failure only if MERROR never did.
+(defun with-answers-signal (wa merror-args)
+  (cond ((with-answers-printed wa)
+         (let (($errormsg nil))
+           (apply #'merror merror-args)))
+        (t
+         (when (and $errormsg (not *merror-signals-$error-p*))
+           (setf (with-answers-printed wa) t))
+         (apply #'merror merror-args))))
+
 ;; Remember the first failure and signal it. Code that asked the question
 ;; may catch the error, but $WITH_ANSWERS or TEST-BATCH reports it anyway.
 (defun with-answers-fail (&rest merror-args)
   (let ((wa *with-answers*))
     (unless (with-answers-failure wa)
       (setf (with-answers-failure wa) merror-args))
-    (apply #'merror merror-args)))
+    (with-answers-signal wa merror-args)))
 
 ;; True if the subject GIVEN in an answer fits SUBJECT, the question's.
 (defun answer-subject-fits-p (given subject)
@@ -389,6 +438,20 @@
          (= (length given) (length subject))
          (every #'like (cdr given) (cdr subject)))))
 
+;; How a test file can let its questions read their answers from the file,
+;; for the function in the TEST-FILE slot of WA.
+(defun answers-from-file-hint (wa)
+  (format nil
+          (if (eq (with-answers-test-file wa) '$run_testsuite)
+            (intl:gettext
+             "To read the answers from the test file instead, as before, set ~
+              batch_answers_from_file : true in an earlier problem of the ~
+              test file, or call run_testsuite with answers_from_file = true.")
+            (intl:gettext
+             "To read the answers from the test file instead, as before, set ~
+              batch_answers_from_file : true in an earlier problem of the ~
+              test file, or before calling batch."))))
+
 ;; Return the next answer to the question MSG about SUBJECT.
 (defun with-answers-answer (msg subject)
   (let ((wa *with-answers*))
@@ -397,7 +460,7 @@
       (setq msg (list '(mtext) subject "()")))
     ;; Once something did not fit, every further question fails as well.
     (when (with-answers-failure wa)
-      (apply #'merror (with-answers-failure wa)))
+      (with-answers-signal wa (with-answers-failure wa)))
     (let ((entry (pop (with-answers-entries wa))))
       ;; INVALID-ANSWER reports these if the caller rejects the answer.
       (setf (with-answers-answered wa) (first entry)
@@ -407,13 +470,13 @@
       (cond ((null entry)
              (cond ((and (with-answers-test-file wa) subject)
                     (with-answers-fail
-                     (intl:gettext "~M~%A question in a test file needs an answer from with_answers.~%~
-                                    The missing answer is ~:M = ...")
-                     msg subject))
+                     (intl:gettext "~M~%This test asks a question, so it must be wrapped in with_answers, as in~%~
+                                    with_answers([~:M = ...], <test input>).~%~A")
+                     msg subject (answers-from-file-hint wa)))
                    ((with-answers-test-file wa)
                     (with-answers-fail
-                     (intl:gettext "~M~%A question in a test file needs an answer from with_answers.")
-                     msg))
+                     (intl:gettext "~M~%This test asks a question, so it must be wrapped in with_answers.~%~A")
+                     msg (answers-from-file-hint wa)))
                    (subject
                     (with-answers-fail
                      (intl:gettext "with_answers: no answer left for the question~%~M~%~
@@ -434,7 +497,7 @@
              (if (symbolp (second entry))
                (with-answers-fail
                 (intl:gettext "with_answers: ~:M does not fit the question~%~M~%~
-                               The answer must be ~:M = ... To give an equation as an answer,~%~
+                               The answer must be ~:M = ... To give an equation as an answer, ~
                                write it as a string.")
                 (first entry) msg subject)
                (with-answers-fail
@@ -455,7 +518,7 @@
       (let ((*with-answers* wa))
         (setq value (mevaln exprs)))
       (when (with-answers-failure wa)
-        (apply #'merror (with-answers-failure wa)))
+        (with-answers-signal wa (with-answers-failure wa)))
       (when (with-answers-entries wa)
         (merror (intl:gettext "with_answers: these answers were not used: ~:M")
                 (cons '(mlist) (mapcar #'first (with-answers-entries wa)))))

@@ -201,8 +201,11 @@ re-parseable line (`string()`/`grind()` do the same for one expression):
 display2d:false$ diff(sin(x)/x,x);   =>  cos(x)/x-sin(x)/x^2
 ```
 
-**Interactive prompts eat the next statement**: `asksign`/`askinteger`/`read`
-take it as their answer. `retrieve` reads it with `mread-noprompt`, so it needs
+**Interactive prompts read the standard input**, under `--batch-string` too,
+so with nothing on stdin the first question fails with `RETRIEVE: End of file
+encountered.` After `batch_answers_from_file:true$` they **eat the next
+statement** instead: `asksign`/`askinteger`/`read` take it as their answer.
+`retrieve` reads it with `mread-noprompt`, so it needs
 its own `;`/`$` but may sit on the same line (`asksign(a); pos; 2+2;` works). A
 mid-script `asksign` eats your next expression: one it cannot use is an error
 (`invalid-answer`, `src/macsys.lisp`), one it can use shifts the rest
@@ -333,7 +336,11 @@ test asserting on labelled output fails under them. **`--quiet` is fine.**
 
 A file with registered known failures reports every one of them under bare
 `batch` and none under the suite, which tolerates them by number. Both take
-answers only from `with_answers` and ignore `$batch_answers_from_file`.
+answers only from `with_answers` while `batch_answers_from_file` is false.
+A file starts with its value when `batch` is called, or under `run_testsuite`
+with the option `answers_from_file` (false by default), and can set it
+itself, which `reset()` leaves alone. While it is true, a question reads the
+statement after its input, as before `with_answers`.
 **Never conclude "I broke this" from bare `batch`.**
 
 ### The accounting rule
@@ -427,17 +434,20 @@ abs(x)$
   `with_answers` itself fails on a wrong subject, an invalid answer, too few
   answers or unused ones (`with-answers-answer`, `src/macsys.lisp`). For a
   missing, wrong or invalid answer the error gives the subject to use, as in
-  `The missing answer is sign(a) = ...`, so copy it from there: a subject is
+  `The missing answer is sign(a) = ...`, and for a question outside
+  `with_answers` as in `with_answers([sign(a) = ...], <test input>)`, so
+  copy it from there: a subject is
   what the question shows, not the argument, and `asksign(-a^3)` asks about
   `a`.
   `read`, `readonly` and `entermatrix` take their name as subject
   (`read = 1+2`).
   Questions answered this way are not printed, so `ask_hide_prompt` is not
   needed. Dropping a statement's `, ask_hide_prompt` also drops a second
-  evaluation: `u, flag;` evaluates `u` twice (`ev`), `u;` once. An old-style
-  bare answer after the input fails at the first question and shifts the
-  rest of the file. A file that ends without an expected value fails its
-  last problem, and `run_testsuite` goes on with the next file.
+  evaluation: `u, flag;` evaluates `u` twice (`ev`), `u;` once. Unless the
+  file opts in (see `batch(f, 'test)` above), an old-style bare answer after
+  the input fails at the first question and shifts the rest of the file. New
+  tests use `with_answers` in any case. A file that ends without an expected
+  value fails its last problem, and `run_testsuite` goes on with the next file.
 
 - **Bigfloat literals convert at READ time** with the ambient `fpprec`, not the
   one in force when the statement runs:

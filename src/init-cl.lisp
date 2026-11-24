@@ -23,16 +23,6 @@
   "If a run-time error or warning is called, then $QUIT Maxima with a
 non-zero exit code. Should only be set by the command-line option
 --quit-on-error.")
-(defmvar $batch_answers_from_file nil
-  "If T, then during batch testing, if Maxima asks a question, then the
-answer is read from the input file that is being batched. This flag is
-set to T by the command-line option --batch-string.
-
-To disable it,
-
-maxima [options] --batch-string='batch_answers_from_file:false; ...'
-
-")
 
 (defun shadow-string-assignment (var value)
   (cond
@@ -415,13 +405,8 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	 (make-cl-option :names '("--batch-string")
 			 :argument "<string>"
 			 :action #'(lambda (string)
-				     (declare (special $batch_answers_from_file))
-				     (setf $batch_answers_from_file t
-					   *answers-from-file* t
-					   input-stream (make-string-input-stream string))
-				     ;; see RETRIEVE in macsys.lisp
-				     (setf *standard-input* input-stream)
-				     (setf *query-io* (make-two-way-stream input-stream (make-string-output-stream)))
+				     (setf input-stream
+					   (make-string-input-stream string))
 				     (setf batch-flag :batch))
 			 :help-string
 			 "Process maxima command(s) <string> in batch mode.")

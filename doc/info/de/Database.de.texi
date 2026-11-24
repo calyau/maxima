@@ -1790,7 +1790,8 @@ Frage in der Form an, die die Liste der Antworten erwartet, wie in
 
 In Testdateien, die mit der Funktion @mref{run_testsuite} oder mit der Funktion
 @mref{batch} und der Option @code{test} ausgef@"uhrt werden, muss jede Frage mit
-@code{with_answers} beantwortet werden.
+@code{with_answers} beantwortet werden, es sei denn, die Testdatei liest die
+Antworten aus der Datei selbst, siehe @mrefdot{run_testsuite}
 
 Beispiele:
 

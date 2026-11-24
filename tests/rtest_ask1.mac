@@ -312,3 +312,48 @@ errcatch(with_answers([sign(b) = neg], laplace(1/(t + a), t, s)));
 /* The messages show the prompt of read without the newline that print ends it with: */
 (errcatch(with_answers([sign(a) = pos], read("Enter:"))), error[3]);
 "Enter:"$
+
+/* A test file can read its answers from the file, as test files did before with_answers: */
+
+batch_answers_from_file : true;
+true$
+
+asksign(a); pos;
+pos$
+
+[asksign(b), read("Enter:")]; neg; 1+2;
+[neg, 3]$
+
+/* with_answers still answers the questions inside it: */
+with_answers([sign(a) = neg], asksign(a));
+neg$
+
+batch_answers_from_file : false;
+false$
+
+/* A message that was printed is not printed again when the error is signaled again: */
+
+block([s : make_string_output_stream(), out, i],
+  with_stdout(s, errcatch(with_answers([sign(b) = pos], errcatch(asksign(a))))),
+  out : get_output_stream_string(s),
+  i : ssearch("does not fit", out),
+  [integerp(i), ssearch("does not fit", out, sequal, i + 1)]);
+[true, false]$
+
+block([s : make_string_output_stream(), out, i],
+  with_stdout(s, errcatch(with_answers([], [errcatch(asksign(a)), errcatch(asksign(b))]))),
+  out : get_output_stream_string(s),
+  i : ssearch("no answer left", out),
+  [integerp(i), ssearch("no answer left", out, sequal, i + 1)]);
+[true, false]$
+
+/* batch_answers_from_file is true or false: */
+(errcatch(batch_answers_from_file : 1), batch_answers_from_file);
+false$
+
+/* reset() leaves batch_answers_from_file as it is: */
+(batch_answers_from_file : true, reset(), batch_answers_from_file);
+true$
+
+batch_answers_from_file : false;
+false$

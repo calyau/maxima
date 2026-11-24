@@ -76,7 +76,8 @@ are known bugs, append ((mlist) "rtest_abs" 42 43) to the file
 list in testsuite.lisp.
 
 Finally, build Maxima and run the test suite. A test that asks a question
-outside with_answers fails, and its report shows the question. See (9)(h).
+outside with_answers fails, and its report shows the question and how to
+wrap the test in with_answers. See (9)(h).
 
 Once your test file runs to completion, commit it.
 
@@ -162,7 +163,20 @@ with_answers fails if a question has another subject, an answer is not
 valid, or there are too few or too many answers. For a missing, wrong or
 invalid answer, the message gives the answer to put into the list, as in
 "The missing answer is sign(x) = ...". Either way the rest of the file
-runs as usual, since questions never read from the file itself.
+runs as usual, since questions never read from the file itself unless
+the file opts in, as described below.
 read(), readonly() and entermatrix() take their input from with_answers
 too, with their names as subjects, as in read = 1+2. See ? with_answers
 for the subjects and for answers given as strings.
+
+Test files written before with_answers existed answer questions with the
+statements that follow the input, as in
+
+  asksign(x); pos;
+  pos$
+
+Such a file still runs if it sets batch_answers_from_file : true in a
+problem of its own, which holds for the rest of the file, even after
+reset(), with run_testsuite(answers_from_file = true), or with
+batch(file, test) if batch_answers_from_file is true when batch is
+called. New tests should use with_answers.

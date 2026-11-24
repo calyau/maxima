@@ -309,7 +309,6 @@
     ($batch tem	'$demo)))
 
 (defun batch-stream (in-stream demo &key truename)
-  (declare (special $batch_answers_from_file))
   (let ($load_pathname)
     (let*
       ((*read-base* 10.)
@@ -317,12 +316,7 @@
        (in-stream-string-rep
         (if stream-truename
           (setq $load_pathname (cl:namestring stream-truename))
-          (format nil "~A" in-stream)))
-       (*query-io* (if $batch_answers_from_file
-		       (make-two-way-stream in-stream (make-string-output-stream)) *query-io*))
-       (*standard-input* (if $batch_answers_from_file
-			     in-stream *standard-input*))
-       (*answers-from-file* (or $batch_answers_from_file *answers-from-file*)))
+          (format nil "~A" in-stream))))
       (when (not *maxima-quiet*)
         (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep))
       (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))
@@ -512,7 +506,8 @@
 ;;   4.  Total number of tests in the file
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
-			    (show-all nil) (showtime nil))
+			    (show-all nil) (showtime nil) (from-testsuite nil)
+			    (answers-from-file $batch_answers_from_file))
   (let (result
 	next-result
 	next
@@ -541,6 +536,9 @@
 	(*query-io* *query-io*)
 	(*standard-input* *standard-input*)
 	answers
+	;; A test file reads answers from itself if ANSWERS-FROM-FILE is true
+	;; or it sets this itself, until the file ends.
+	($batch_answers_from_file answers-from-file)
     (filename-basename (unix-like-basename filename)))
     
     (cond (*collect-errors*
@@ -558,7 +556,8 @@
 	(progn
 	  (setq strm (open filename :direction :input))
 	  ;; Questions get their answers from with_answers only, see ANSWERS
-	  ;; below, and nothing else that reads input may read the test file.
+	  ;; below, and nothing else that reads input may read the test file,
+	  ;; unless the file reads its answers from itself, see FROM-FILE.
 	  (setq *query-io* (make-two-way-stream (make-string-input-stream "") out)
 		*standard-input* (make-string-input-stream ""))
 	  (setq start-real-time (get-internal-real-time))
@@ -576,14 +575,28 @@
 	    (setf *standard-output* tmp-output)
 	    ;; A question outside with_answers fails the problem, even if
 	    ;; the code that asked it catches the error.
-	    (setq answers (make-with-answers :test-file t))
+	    (setq answers (make-with-answers
+			   :test-file (if from-testsuite '$run_testsuite '$batch)))
 	  
 	    (unwind-protect
 		 (progn
 		   (setq test-start-run-time (get-internal-run-time))
 		   (setq test-start-real-time (get-internal-real-time))
-		   (let (($errormsg t)
-			 (*with-answers* answers))
+		   (let* (($errormsg t)
+			  ;; With answers from the file, as before with_answers, a
+			  ;; question reads the statement that follows the input.
+			  (from-file $batch_answers_from_file)
+			  (*query-io* (if from-file
+					  (make-two-way-stream strm *standard-output*)
+					  *query-io*))
+			  (*standard-input* (if from-file strm *standard-input*))
+			  (*answers-from-file* (or from-file *answers-from-file*))
+			  (*with-answers* (if from-file nil answers))
+			  ;; Batch input that the problem reads takes its answers
+			  ;; from where the problem does, unless it reads them
+			  ;; from itself.
+			  (*outside-batch-streams*
+			   (list *query-io* *standard-input* *answers-from-file*)))
 		     (setq result (meval* `(($errcatch) ,(third expr)))))
 		   (setq result (if ($emptyp result) 'error-catch (second result)))
 		   (setq test-end-run-time (get-internal-run-time))
@@ -616,7 +629,9 @@
 		(format out (intl:gettext "~%~%Result:~%"))
 		(format out "~a" (get-output-stream-string tmp-output))
 		(displa $%)
-		(when failure
+		;; The output above shows the failure, unless the code that asked
+		;; caught the error without printing it.
+		(when (and failure (not (with-answers-printed answers)))
 		  (format t "~%")
 		  (apply #'mtell failure)
 		  (format t "~%"))
@@ -630,7 +645,7 @@
 		     (push i unexpected-pass)
 		     (format t
 			     (intl:gettext "~%... Which was correct, but was expected ~
-                              to be wrong due to a known bug in~% Maxima or ~A.~%")
+                              to be wrong due to a known bug in Maxima or ~A.~%")
 			     (lisp-implementation-type)))
 		    (correct
 		     (if show-all (format t (intl:gettext "~%... Which was correct.~%"))))
@@ -1677,7 +1692,7 @@
 		      :test #'string=))
 	   (mwarning "Unknown test: " test)))))
   
-(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug (answers_from_file t answers-from-file-p))
+(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug answers_from_file)
   "Run the testsuite.  Options are
   tests                List of tests to run
   display_all          Display output from each test entry
@@ -1685,9 +1700,9 @@
   time                 Display time to run each test entry
   share_tests          Whether to include the share testsuite or not
   debug                Set to enable some debugging prints
-  answers_from_file    No effect, accepted for compatibility.
+  answers_from_file    Let questions read their answers from the test file,
+                       as before with_answers
 "
-  (declare (ignore answers_from_file))
   (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
@@ -1703,8 +1718,8 @@
       (merror (intl:gettext "run_testsuite: time must be true, false, or all; found: ~M") time))
     (unless (member share_tests '(t nil $only))
       (merror (intl:gettext "run_testsuite: share_tests must be true, false or only: found ~M") share_tests))
-    (when answers-from-file-p
-      (mwarning (intl:gettext "run_testsuite: answers_from_file has no effect. Questions in test files are answered with with_answers.")))
+    (unless (member answers_from_file '(t nil))
+      (merror (intl:gettext "run_testsuite: answers_from_file must be true or false; found: ~M") answers_from_file))
     
     (setq *collect-errors* nil)
 
@@ -1789,7 +1804,9 @@
 			      (multiple-value-setq (filename diff upass test-count)
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs
-					    :show-all display_all :showtime time))
+					    :show-all display_all :showtime time
+					    :from-testsuite t
+					    :answers-from-file answers_from_file))
 			      (incf total-count test-count)
 			      (when (or (rest diff) (rest upass))
 				(incf error-count (length (rest diff)))

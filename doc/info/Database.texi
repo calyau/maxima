@@ -2009,7 +2009,9 @@ the list takes, as in @code{The missing answer is sign(b) = ...}. Within
 nested calls of @code{with_answers}, the innermost one answers all questions.
 
 In test files, as run by @mref{run_testsuite} or by @mref{batch} with the
-option @code{test}, every question must be answered by @code{with_answers}.
+option @code{test}, every question must be answered by @code{with_answers},
+unless the test file reads its answers from the file, see
+@mrefdot{run_testsuite}
 
 Examples:
 

@@ -1940,6 +1940,13 @@
   boolean
   :properties ((evflag t)))
 
+(defmvar $batch_answers_from_file nil
+  "If T, then when Maxima asks a question while it batches a file, a stream
+or the string of --batch-string, the answer is read from that input.
+reset() does not change it."
+  boolean
+  no-reset)
+
 (defvar *answers-from-file* nil
   "True while the answers to questions come from a batch file, a test file
 or a --batch-string, rather than from a user.")
@@ -1948,6 +1955,12 @@ or a --batch-string, rather than from a user.")
   "While with_answers evaluates its expressions, the WITH-ANSWERS structure
 that holds the answers to their questions. TEST-BATCH binds one without
 answers for each problem.")
+
+(defvar *outside-batch-streams* nil
+  "While Maxima evaluates batch input, the values of *QUERY-IO*,
+*STANDARD-INPUT* and *ANSWERS-FROM-FILE* outside all batch input, as a
+list. Questions read their answers from these while batch_answers_from_file
+is false, and so does the pause of a demo. See CALL-WITH-BATCH-ANSWERS.")
 
 ;;------------------------------------------------------------------------
 
