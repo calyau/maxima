@@ -40,7 +40,7 @@ table.multitable th, table.multitable td { border: 1px solid #999; padding: 0.25
 @end titlepage
 @end iftex
 
-This document records the work on bug @uref{https://sourceforge.net/p/maxima/bugs/5887/, #5887}, accuracy problems in @code{elliptic_e} and @code{elliptic_ec} for real parameters. It explains what was wrong, what the changes to @code{src/ellipt.lisp} do, and the measurements behind them. It has three parts:
+This document records the work on bug @uref{https://sourceforge.net/p/maxima/bugs/5887/, #5887}, accuracy problems in @code{elliptic_e} and @code{elliptic_ec}, for real and complex arguments. It explains what was wrong, what the changes to @code{src/ellipt.lisp} do, and the measurements behind them. It has three parts:
 
 @enumerate
 @item
