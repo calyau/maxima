@@ -548,7 +548,8 @@
 		       (open (alter-pathname filename :type "ERR") :direction :output :if-exists :supersede)
 		     (file-error () nil))))
 	   (when error-log
-	     (format t (intl:gettext "~%batch: write error log to ~a") error-log)
+	     (format t (intl:gettext "~%batch: write error log to ~a")
+		     (if (typep error-log 'file-stream) (namestring error-log) error-log))
 	     (format error-log (intl:gettext "~%/* Maxima error log from tests in ~A") filename)
 	     (format error-log " */~2%"))))
  

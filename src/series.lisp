@@ -164,7 +164,7 @@ integration / differentiation variable."))
   (unless (smono exp var)
     (powerseries-expansion-error
      (intl:gettext "Can't substitute the value~%~M~%~
-                    into another expansion because it isn't a monomial in the~
+                    into another expansion because it isn't a monomial in the ~
                     expansion variable.")
      (out-of exp)))
   (maxima-substitute exp 'sp2var (simplify s)))
