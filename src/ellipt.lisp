@@ -1291,7 +1291,7 @@
 ;;   elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
 ;;      - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
 ;;
-;; or 
+;; or
 ;;   elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
 ;;      - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
 ;;
@@ -1308,7 +1308,7 @@
   ;; Handle all other cases
   (flet ((base (phi m)
 	   ;; The base case where phi is (approximately) in the
-	   ;; interval [-%pi/2, %pi/2].  Round-off make make phi
+	   ;; interval [-%pi/2, %pi/2].  Round-off may make phi
 	   ;; slightly outside the interval.
 	   (let* ((s (sin phi))
 		  (c (cos phi)))
@@ -1327,7 +1327,7 @@
 			 (* (/ m 3)
 			    (* s s s)
 			    (bf-rd c2 s2 1)))))))))
-    ;; Elliptic E is quasi-periodic wrt to phi:
+    ;; Elliptic E is quasi-periodic in phi:
     ;;
     ;;   E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
     (let* ((bfpi (%pi phi))
@@ -1335,7 +1335,6 @@
       (+ (base (- phi (* bfpi period))
 	       m)
 	 (* 2 period (bf-elliptic-ec m))))))
-    
 
 ;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
 ;;
@@ -1394,6 +1393,7 @@
 	 ;; accurately.
 	 (bf-with-accurate-parts #'bf-elliptic-ec-terms m))
 	(t
+	 ;; Handle real m < 0
 	 (values (bf-elliptic-ec-terms m)))))
 
 ;;; Elliptic PI
