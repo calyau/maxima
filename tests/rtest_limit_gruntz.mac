@@ -399,6 +399,65 @@ gruntz(tanh(x), x, inf);
 [minf, minf, inf, inf, minf]$
 
 
+/* Bug #5899: "limit() and gruntz() give minf for some limits of nested logarithms that are inf" */
+
+[limit((log(log(x*log(x)))-log(log(x+log(x))))*x, x, inf),
+ gruntz((log(log(x*log(x)))-log(log(x+log(x))))*x, x, inf)];
+[inf, inf]$
+
+[limit((log(log(x*log(x)))-log(log(x+1)))*x*log(x), x, inf),
+ gruntz((log(log(x*log(x)))-log(log(x+1)))*x*log(x), x, inf)];
+[inf, inf]$
+
+[limit(exp((log(log(x+log(x)))-log(log(sqrt(x))))*x*log(x)), x, inf),
+ gruntz(exp((log(log(x+log(x)))-log(log(sqrt(x))))*x*log(x)), x, inf)];
+[inf, inf]$
+
+[limit((log(log(log(x^x)))-log(log(log(exp(x)+1))))*x, x, inf),
+ gruntz((log(log(log(x^x)))-log(log(log(exp(x)+1))))*x, x, inf)];
+[inf, inf]$
+
+[limit((log(log(log(x^x)))-log(log(log(exp(x)+x))))*x, x, inf),
+ gruntz((log(log(log(x^x)))-log(log(log(exp(x)+x))))*x, x, inf)];
+[inf, inf]$
+
+[limit((log(log(log(x^x)))-log(log(log(exp(x)+x))))*x*log(x)*log(log(x)), x, inf),
+ gruntz((log(log(log(x^x)))-log(log(log(exp(x)+x))))*x*log(x)*log(log(x)), x, inf)];
+[inf, inf]$
+
+[limit((log(log(x+log(x)))-log(log(x+1)))*exp(x)*x*log(x), x, inf),
+ gruntz((log(log(x+log(x)))-log(log(x+1)))*exp(x)*x*log(x), x, inf)];
+[inf, inf]$
+
+/* Sums of products that tend to 0, with signs of both kinds: */
+
+[limit((log(log(log(x+1)))-log(log(log(2*x))))*(log(log(x+1/x))-log(log(x*log(x))))*exp(x)/x, x, inf),
+ gruntz((log(log(log(x+1)))-log(log(log(2*x))))*(log(log(x+1/x))-log(log(x*log(x))))*exp(x)/x, x, inf)];
+[inf, inf]$
+
+[limit((log(log(x^2*log(x)))-log(log(x^2)))*(log(log(log(x^2*log(x))))-log(log(log(2*x))))*exp(x), x, inf),
+ gruntz((log(log(x^2*log(x)))-log(log(x^2)))*(log(log(log(x^2*log(x))))-log(log(log(2*x))))*exp(x), x, inf)];
+[inf, inf]$
+
+gruntz((log(log(x+log(x)))-log(log(x*(1+1/log(x)))))*(log(log(2*x))-log(log(exp(x^2))))*x*log(x), x, inf);
+inf$
+
+gruntz((exp(2*x)*(log(x+1)-log(x))*(exp(-1/x)-1))^2, x, inf);
+inf$
+
+[limit(((log(log(x*log(x)))-log(log(x+log(x))))*x*exp(x))^3, x, inf),
+ gruntz(((log(log(x*log(x)))-log(log(x+log(x))))*x*exp(x))^3, x, inf)];
+[inf, inf]$
+
+/* No questions about a parameter: */
+block([],
+  local(a),
+  assume(a < 0),
+  [gruntz((log(log(x^x))-log(log(exp(x))))*exp(x)*x^a, x, inf),
+   limit(((log(x^2+a*x)-log(2*x))*x^a*log(x))/((log(x+a)-log(x+1))*exp(a*x)), x, inf)]);
+[inf, minf]$
+
+
 /* Any leftover facts, contexts, or values? */
 facts();
 []$

@@ -391,6 +391,7 @@ Bug fixes for numbered bugs:
 * \#5894 limit(gamma_incomplete(2/3,-1-1/x),x,inf) gives -76*%e/27
 * \#5896 integrate(2^x*sqrt(x+1), x) returns a noun form
 * \#5897 taylor() of lambert_w() fails at expansion points other than 0, slowly in tlimit()
+* \#5899 limit() and gruntz() give minf for some limits of nested logarithms that are inf
 
 Bug fixes for unnumbered bugs:
 ------------------------------

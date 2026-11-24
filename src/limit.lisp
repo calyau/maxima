@@ -4773,7 +4773,11 @@ ignoring dummy variables and array indices."
 ;;; mrv sign of x --> -x is -2. 
 
 (defun mrv-sign (e x)
-	(let ((sgn (mrv-sign-helper e x)))
+	(let ((sgn (if (and (mtimesp e) (not (freeof x e)))
+                       ;; Only the sign is needed here, so MRV-SIGN-PRODUCT
+                       ;; need not take a limit to see whether e is bounded.
+                       (mrv-sign-product e x t)
+                       (mrv-sign-helper e x))))
 	 (if (null sgn) (throw 'taylor-catch nil) (max -1 (min 1 sgn)))))
 
 ;; Map {$neg, $zero, $pos} --> {-1, 0, 1}. For all other inputs, throw an error
@@ -4842,9 +4846,13 @@ ignoring dummy variables and array indices."
               ;; no inf terms, no positive terms, return either -2 or -1
 			  ((and (null infterms) (null posterms))
 			  	(if minfterms -2 -1))
-			  ;; no min or inf terms, hope csign can do it
+			  ;; no min or inf terms, hope csign can do it, else use the
+			  ;; leading term
 			  ((and (null infterms) (null minfterms))
-				 (mrv-sign-to-number ($csign e)))
+                           (let ((sgn ($csign e)))
+                             (if (member sgn '($neg $zero $pos))
+                                 (mrv-sign-to-number sgn)
+                                 (mrv-sign-leadterm e x))))
               ;; both minf terms and inf terms
 			  (t 
 			    ;; do the inf or minf terms dominate?
@@ -4858,21 +4866,40 @@ ignoring dummy variables and array indices."
 					        (setq a (fapply 'mplus (append negterms posterms infterms)))
 						    (setq b (mul -1 (fapply 'mplus minfterms)))
 						    (setq qq (tlimit-taylor (sratsimp (sub (div a b) 1)) x '$inf 0 3))
-                             ;; TLIMIT-TAYLOR fails for some sums of nested
-                             ;; logarithms. Then use the leading term.
-                             (or (and qq
+                             ;; The leading term gives the sign. TLIMIT-TAYLOR
+                             ;; can cut off a/b-1 before its leading term, so
+                             ;; use its result only when the leading term fails.
+                             (or (catch 'taylor-catch (mrv-sign-leadterm e x))
+                                 (and qq
                                       (catch 'taylor-catch
                                         (mrv-sign ($ratdisrep qq) x)))
-                                 (mrv-sign-leadterm e x))))
+                                 (throw 'taylor-catch nil))))
 					   (t 
 				          (throw 'taylor-catch nil)))))))
 
 ;; Return the mrv-sign of the expression e, where e is a product.
-(defun mrv-sign-product (e x)
+;; With SIGN-ONLY true, only the sign of the result is meaningful.
+(defun mrv-sign-product (e x &optional sign-only)
   (let ((ee (mapcar #'(lambda (q) (mrv-sign-helper q x)) (cdr e))))
   (cond
      ;; unable to find the sign of one term, dispatch csign on e.
 	 ((some #'null ee) (mrv-sign-to-number ($csign e)))
+     ;; A factor with mrv sign 2 or -2 times a factor that depends on x
+     ;; and has mrv sign 1 or -1. The second factor may tend to zero, so
+     ;; the product may be bounded or not, and its limit decides.
+     ;; MRV-SIGN-SUM takes 1 and -1 to mean bounded.
+     ((and (not sign-only)
+           (some #'(lambda (s) (eql (abs s) 2)) ee)
+           (some #'(lambda (q s) (and (eql (abs s) 1) (not (freeof x q)))) (cdr e) ee)
+           ;; $LIMIT may ask about other variables, as in x^a.
+           (every #'(lambda (v) (eq v x)) (cdr ($listofvars e))))
+      (let ((sgn (reduce '* (mapcar #'signum ee)))
+            (lim ($limit e x '$inf)))
+        (cond
+          ((and (eql sgn 1) (eq lim '$inf)) 2)
+          ((and (eql sgn -1) (eq lim '$minf)) -2)
+          ((and (freeof x lim) (not (amongl (cons '%limit extended-reals) lim))) sgn)
+          (t (throw 'taylor-catch nil)))))
      (t (max -2 (min 2 (reduce '* ee)))))))
 
 ;; Return the mrv-sign of the expression e, where the operator of e is log. To 
