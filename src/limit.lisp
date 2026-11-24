@@ -47,7 +47,7 @@
   "A list of all problems in the stack of recursive calls to simplimplus.")
 
 (defmvar limit-answers ()
-  "An association list for storing limit answers.")
+  "NIL, or a hash table of the limit answers found so far. See PUTLIMVAL.")
 
 (defmvar limit-using-taylor ()
   "Is the current limit computation using taylor expansion?")
@@ -72,15 +72,43 @@
 ;;	   v)
 ;;	  (t ()))))
 
-(defun putlimval (e v &aux exp)
+(defun limit-answer-hash (e &optional (depth 6))
+  "Return a hash code of E, the same for any two expressions that are
+  ALIKE1. Subexpressions more than DEPTH levels down add only their
+  operators."
+  (cond ((or (symbolp e) (integerp e))
+         (logand (sxhash e) #xffffff))
+        ((or (atom e) (atom (car e)))
+         0)
+        ;; Only the operator counts past DEPTH, and for the forms that ALIKE1
+        ;; compares by their own rules.
+        ((or (<= depth 0) (member (caar e) '(mrat mpois bigfloat)))
+         (logand (sxhash (caar e)) #xffffff))
+        (t
+         (let ((h (logand (sxhash (caar e)) #xffffff)))
+           ;; Multiplying by 31 makes the argument order count. Masking to 24
+           ;; bits keeps every value here a fixnum in every Lisp.
+           (dolist (arg (cdr e) h)
+             (setq h (logand (+ (* 31 h) (limit-answer-hash arg (1- depth)))
+                             #xffffff)))))))
+
+;; LIMIT-ANSWERS maps the LIMIT-ANSWER-HASH of ((%LIMIT) E VAR VAL) to an
+;; alist of such keys and their answers, so that a lookup compares with
+;; ALIKE1 only the keys of the same hash. Some limits that fail collect
+;; thousands of answers.
+(defun putlimval (e v &aux exp h)
   (setq exp `((%limit) ,e ,var ,val))
-  (unless (assolike exp limit-answers)
-    (push (cons exp v) limit-answers))
+  (unless limit-answers
+    (setq limit-answers (make-hash-table)))
+  (setq h (limit-answer-hash exp))
+  (unless (assolike exp (gethash h limit-answers))
+    (push (cons exp v) (gethash h limit-answers)))
   v)
 
 (defun getlimval (e)
   (let ((exp (cons '(%limit) (list e var val))))
-    (assolike exp limit-answers)))
+    (and limit-answers
+         (assolike exp (gethash (limit-answer-hash exp) limit-answers)))))
 
 (defmacro limit-catch (exp var val)
   `(let ((errorsw t))
