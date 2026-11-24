@@ -1076,6 +1076,9 @@
 
 ;;; Numerical evaluation of elliptic_e and elliptic_ec for real and
 ;;; complex values.
+;;;
+;;; The algorithms are somewhat complex.  See the documentation in
+;;; doc/info/impl-notes/elliptic-e-accuracy.texi.m4.
 
 ;; BF-ELLIPTIC-E-0<M<1 computes elliptic_e(phi, m) for real m with
 ;; 0 < m < 1 and real phi reduced to about [-pi/2, pi/2].  Its
@@ -1176,6 +1179,111 @@
 	   (* 2 k
 	      (bf-elliptic-ec m))))))
 
+;; For complex arguments, the real and imaginary parts of elliptic_e
+;; and elliptic_ec can be much smaller than the addends of the
+;; formulas for elliptic_e and elliptic_ec which then cancel producing
+;; round-off.
+;;
+;; BF-ELLIPTIC-EC-TERMS and BF-ELLIPTIC-E-TERMS return the value from
+;; the formulas and B, the sum of the magnitudes of the terms.  Each
+;; part of the value then has an absolute error of about B times the
+;; working precision.
+
+;; elliptic_ec(m) = t1 - t2, where
+;;
+;;   t1 = rf(0, 1-m, 1)
+;;   t2 = (m/3)*rd(0, 1-m, 1)
+;;
+;; and B = |t1| + |t2|.
+(defun bf-elliptic-ec-terms (m)
+  (let* ((m1 (- 1 m))
+	 (rf (bf-rf 0 m1 1))
+	 (rd (* m 1/3 (bf-rd 0 m1 1))))
+    (values (- rf rd)
+	    (+ (abs rf) (abs rd)))))
+
+;; elliptic_e(phi, m) = t1 - t2 + 2*k*elliptic_ec(m), where
+;;
+;;   k = round(Re(phi)/%pi)
+;;   s = sin(phi - k*%pi), c = cos(phi - k*%pi), y = 1 - m*s^2
+;;   t1 = s*rf(c^2, y, 1)
+;;   t2 = (m/3)*s^3*rd(c^2, y, 1)
+;;
+;; and B = |t1| + |t2| + 2*|k|*B(elliptic_ec(m)), with B(elliptic_ec(m))
+;; from BF-ELLIPTIC-EC-TERMS.
+(defun bf-elliptic-e-terms (phi m)
+  (let* ((bfpi (%pi phi))
+	 (k (round (realpart phi) bfpi))
+	 (s (sin (- phi (* bfpi k))))
+	 (c (cos (- phi (* bfpi k))))
+	 (c2 (* c c))
+	 (y (- 1 (* m s s)))
+	 (t1 (* s (bf-rf c2 y 1)))
+	 (t2 (* (/ m 3) s s s (bf-rd c2 y 1))))
+    (if (zerop k)
+	(values (- t1 t2)
+		(+ (abs t1) (abs t2)))
+	(multiple-value-bind (ec b)
+	    (bf-elliptic-ec-terms m)
+	  (values (+ (- t1 t2) (* 2 k ec))
+		  (+ (abs t1) (abs t2) (* 2 (abs k) b)))))))
+
+;; Call FN, which returns a value and the B described above.  If a
+;; part of the value is not exactly zero and its estimated error is
+;; too large (see *ACCURATE-PARTS-THRESHOLD*), recompute with enough
+;; extra precision that its estimated error, about B times the
+;; working precision, is at most half a unit in its last place,
+;; doubling the extra precision until it is.  As in BF-1-M*SIN^2,
+;; BIND-FPPREC takes decimal digits, and 30103/100000 > log10(2).
+
+;; The value from FN is used when, for each part that is not exactly
+;; zero, B <= 2^*ACCURATE-PARTS-THRESHOLD* * |part|.  The error of
+;; such a part is then estimated at no more than about
+;; 2^*ACCURATE-PARTS-THRESHOLD* units in its last place.
+;;
+;; The value of 2 was determined experimentally.  It trades off
+;; computation time vs accuracy.  For larger values, we use extra
+;; precision less often, but the accuracy is reduced.  A value between
+;; 2 and 3 is probably best.
+(defparameter *accurate-parts-threshold* 2)
+
+(defun bf-with-accurate-parts (fn &rest args)
+  ;; True if, for each part of V that is not exactly zero,
+  ;; B <= 2^BITS * |part|.
+  (flet ((accurate-p (v b bits)
+	   (flet ((ok (part)
+		    (or (zerop part)
+			(<= b (* (abs part) (expt 2 bits))))))
+	     (and (ok (realpart v))
+		  (ok (imagpart v))))))
+    (multiple-value-bind (v b)
+	(apply fn args)
+      (if (accurate-p v b *accurate-parts-threshold*)
+	  v
+	  (let* ((x (realpart (first args)))
+		 (p (float-digits x))
+		 (small (min (abs (realpart v)) (abs (imagpart v)))))
+	    (loop for extra = (+ 8 (if (zerop small)
+				       p
+				       (max 0 (ceiling (log (/ b small) 2)))))
+		    then (* 2 extra)
+		  do (multiple-value-bind (v2 b2)
+			 (maxima::bind-fpprec (ceiling (* (+ p extra 8) 30103)
+						       100000)
+			   (apply fn (mapcar #'bigfloat args)))
+		       ;; With P + EXTRA + 8 bits, the error of a part is
+		       ;; about B2*2^-(P+EXTRA+8).  Half a unit in the last
+		       ;; place of a P-bit part is at least
+		       ;; |part|*2^-(P+1), so require
+		       ;; B2 <= 2^(EXTRA+7) * |part|.
+		       (when (or (accurate-p v2 b2 (+ extra 7))
+				 (> extra (* 16 p)))
+			 (return
+			   (if (typep x 'cl:float)
+			       (complex (float (realpart v2) x)
+					(float (imagpart v2) x))
+			       (bigfloat v2)))))))))))
+
 ;; Main entry for computing E(phi|m) for real or complex values of phi
 ;; and m.  Different algorithms are used depending on whether phi and
 ;; m are real.
@@ -1249,123 +1357,46 @@
 
 (defun bf-elliptic-ec (m)
   (cond ((= m 0)
-	 (if (typep m 'bigfloat)
-	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
-	     (float (/ pi 2) 1e0)))
+	 (/ (%pi m) 2))
 	((= m 1)
-	 (if (typep m 'bigfloat)
-	     (bigfloat 1)
-	     1e0))
-	((and (realp m) (> m 0) (< m 1))
+	 (float 1 (realpart m)))
+	((and (realp m) (< 0 m 1))
+	 ;; DLMF 19.25.1:
+	 ;;
+	 ;;  E(m) = (1 - m)*Rf(0, 1 - m, 1) + m*(1 - m)/3*Rd(0, 1, 1 - m)
 	 (let ((m1 (- 1 m)))
 	   (+ (* m1 (bf-rf 0 m1 1))
-	      (* m m1 1/3 (bf-rd 0 1 m1)))))
+	      (* m m1 1/3
+		 (bf-rd 0 1 m1)))))
 	((and (realp m) (> m 1))
-	 (let* ((m1/m (/ (- m 1) m))
-		(f (/ m1/m (* 3 (sqrt m)))))
+	 ;; Based on the formula for E(phi|m) in bf-elliptic-e-m>1
+	 ;; with phi=pi/2 and m > 1.
+	 ;;
+	 ;; This reduces to
+	 ;;
+	 ;;   E(m) = f*Rd(0, 1, (m - 1)/m) + %i*f*Rd(0, 1, 1/m)
+	 ;;
+	 ;; where
+	 ;;
+	 ;;   f = ((m-1)/m)/(3*sqrt(m))
+	 ;;
+	 ;; Note that we want (m - 1)/m instead of (1 - 1/m) because
+	 ;; the latter cancels for m near 1, but m - 1 is exact for m
+	 ;; near 1.
+	 (let* ((m1/m (/ (- m 1)
+			 m))
+		(f (/ m1/m
+		      (* 3 (sqrt m)))))
 	   (complex (* f (bf-rd 0 1 m1/m))
 		    (* f (bf-rd 0 1 (/ m))))))
 	((complexp m)
+	 ;; For complex m, we need extra care to compute E(m)
+	 ;; accurately.
 	 (bf-with-accurate-parts #'bf-elliptic-ec-terms m))
 	(t
 	 (values (bf-elliptic-ec-terms m)))))
 
-;; For complex arguments, the real and imaginary parts of elliptic_e
-;; and elliptic_ec can be much smaller than the terms of the formulas
-;; above, which then cancel.  BF-ELLIPTIC-EC-TERMS and
-;; BF-ELLIPTIC-E-TERMS return the value from the formulas and B, the
-;; sum of the magnitudes of the terms.  Each part of the value then
-;; has an absolute error of about B times the working precision.
-
-;; elliptic_ec(m) = t1 - t2, where
-;;
-;;   t1 = rf(0, 1-m, 1)
-;;   t2 = (m/3)*rd(0, 1-m, 1)
-;;
-;; and B = |t1| + |t2|.
-(defun bf-elliptic-ec-terms (m)
-  (let* ((m1 (- 1 m))
-	 (rf (bf-rf 0 m1 1))
-	 (rd (* m 1/3 (bf-rd 0 m1 1))))
-    (values (- rf rd)
-	    (+ (abs rf) (abs rd)))))
-
-;; elliptic_e(phi, m) = t1 - t2 + 2*k*elliptic_ec(m), where
-;;
-;;   k = round(Re(phi)/%pi)
-;;   s = sin(phi - k*%pi), c = cos(phi - k*%pi), y = 1 - m*s^2
-;;   t1 = s*rf(c^2, y, 1)
-;;   t2 = (m/3)*s^3*rd(c^2, y, 1)
-;;
-;; and B = |t1| + |t2| + 2*|k|*B(elliptic_ec(m)), with B(elliptic_ec(m))
-;; from BF-ELLIPTIC-EC-TERMS.
-(defun bf-elliptic-e-terms (phi m)
-  (let* ((bfpi (%pi phi))
-	 (k (round (realpart phi) bfpi))
-	 (s (sin (- phi (* bfpi k))))
-	 (c (cos (- phi (* bfpi k))))
-	 (c2 (* c c))
-	 (y (- 1 (* m s s)))
-	 (t1 (* s (bf-rf c2 y 1)))
-	 (t2 (* (/ m 3) s s s (bf-rd c2 y 1))))
-    (if (zerop k)
-	(values (- t1 t2)
-		(+ (abs t1) (abs t2)))
-	(multiple-value-bind (ec b)
-	    (bf-elliptic-ec-terms m)
-	  (values (+ (- t1 t2) (* 2 k ec))
-		  (+ (abs t1) (abs t2) (* 2 (abs k) b)))))))
-
-;; Call FN, which returns a value and the B described above.  If a
-;; part of the value is not exactly zero and its estimated error is
-;; too large (see *ACCURATE-PARTS-THRESHOLD*), recompute with enough
-;; extra precision that its estimated error, about B times the
-;; working precision, is at most half a unit in its last place,
-;; doubling the extra precision until it is.  As in BF-1-M*SIN^2,
-;; BIND-FPPREC takes decimal digits, and 30103/100000 > log10(2).
-
-;; The value from FN is used when, for each part that is not exactly
-;; zero, B <= 2^*ACCURATE-PARTS-THRESHOLD* * |part|.  The error of
-;; such a part is then estimated at no more than about
-;; 2^*ACCURATE-PARTS-THRESHOLD* units in its last place.
-(defparameter *accurate-parts-threshold* 2)
-
-(defun bf-with-accurate-parts (fn &rest args)
-  ;; True if, for each part of V that is not exactly zero,
-  ;; B <= 2^BITS * |part|.
-  (flet ((accurate-p (v b bits)
-	   (flet ((ok (part)
-		    (or (zerop part)
-			(<= b (* (abs part) (expt 2 bits))))))
-	     (and (ok (realpart v))
-		  (ok (imagpart v))))))
-    (multiple-value-bind (v b)
-	(apply fn args)
-      (if (accurate-p v b *accurate-parts-threshold*)
-	  v
-	  (let* ((x (realpart (first args)))
-		 (p (float-digits x))
-		 (small (min (abs (realpart v)) (abs (imagpart v)))))
-	    (loop for extra = (+ 8 (if (zerop small)
-				       p
-				       (max 0 (ceiling (log (/ b small) 2)))))
-		    then (* 2 extra)
-		  do (multiple-value-bind (v2 b2)
-			 (maxima::bind-fpprec (ceiling (* (+ p extra 8) 30103)
-						       100000)
-			   (apply fn (mapcar #'bigfloat args)))
-		       ;; With P + EXTRA + 8 bits, the error of a part is
-		       ;; about B2*2^-(P+EXTRA+8).  Half a unit in the last
-		       ;; place of a P-bit part is at least
-		       ;; |part|*2^-(P+1), so require
-		       ;; B2 <= 2^(EXTRA+7) * |part|.
-		       (when (or (accurate-p v2 b2 (+ extra 7))
-				 (> extra (* 16 p)))
-			 (return
-			   (if (typep x 'cl:float)
-			       (complex (float (realpart v2) x)
-					(float (imagpart v2) x))
-			       (bigfloat v2)))))))))))
+;;; Elliptic PI
 
 (defun bf-elliptic-pi-complete (n m)
   (+ (bf-rf 0 (- 1 m) 1)
