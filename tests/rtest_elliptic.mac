@@ -1188,7 +1188,7 @@ block([ref : [0,
 closeto(elliptic_e(1,1.23) - 0.7935821331230606, 1e-15); 
 true;
 
-closeto(elliptic_e(1,2.0) - (0.09311292177217778*%i+0.5990701173677968), 1e-15);
+closeto(elliptic_e(1,2.0) - (0.093112921772178507*%i+0.5990701173677961), 1e-15);
 true;
 
 closeto(elliptic_e(1,1.23b0)- 7.9358213312306066216147457280131b-1, 1b-32);
@@ -1568,7 +1568,7 @@ block([u : 3e5 + 4e5*%i, m : 1.0 + 1e-12*%i],
 [true, true];
 
 /* Real u, m > 1: reciprocal-modulus transformation. */
-[closeto(jacobi_epsilon(1.0, 2.0) - 5.8904862888974309e-1, 1.3080e-16),
+[closeto(jacobi_epsilon(1.0, 2.0) - 5.8904862888974309e-1, 7.7716e-16),
  closeto(jacobi_epsilon(1.0b0, 2.0b0) - 5.89048628889743088308388082799087b-1, 6.1630b-33)];
 [true, true];
 
@@ -1695,7 +1695,7 @@ true;
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 1.2948e-15),
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 2.7466e-15),
  closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
@@ -2364,4 +2364,476 @@ done;
 [true, true];
 
 (fpprec:oldfpprec, kill(oldfpprec), done);
+done;
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+
+/*
+ * elliptic_e and elliptic_ec lose accuracy for m near 1 and phi near
+ * pi/2.  Reference values from mpmath.
+ */
+closeto_relerr(elliptic_e(float(%pi/2), float(1-2^-53)), 1.0000000000000011,
+               4.0001*2^-53);
+true;
+
+/* This and the next fail on CLISP, whose double-float cos has an
+   absolute error of about 3e-20 near %pi/2. */
+closeto_relerr(elliptic_e(float(%pi/2)-2^-40, float(1-2^-53)),
+               1.0000000000000011,
+               2.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_e(float(%pi/2), float(1-2^-27)), 1.0000000381610592,
+               2.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_e(2^-20-float(%pi/2), float(1-2^-40)),
+               -1.0000000000056633,
+               2.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_e(10.0, float(1-2^-40)), 6.5440211109296428,
+               1.2225*2^-53);
+true;
+
+closeto_relerr(elliptic_e(float(%pi/2)+2^-52, float(1-2^-53)),
+               1.0000000000000011,
+               6.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_e(-float(%pi/2)-2^-52, float(1-2^-53)),
+               -1.0000000000000011,
+               6.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_ec(float(1-2^-53)), 1.0000000000000011,
+               4.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_ec(float(1-2^-40)), 1.0000000000067072,
+               2.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_ec(float(1-2^-27)), 1.0000000381610592,
+               4.0001*2^-53);
+true;
+
+closeto_relerr(elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)),
+               1.000000000000000000000000000014019b0,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_e(bfloat(%pi/2)-2^-60, bfloat(1-2^-100)),
+               1.000000000000000000000000000014019b0,
+               4.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_e(bfloat(%pi/2), bfloat(1-2^-50)),
+               1.000000000000008089073355640920771b0,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_e(2^-30-bfloat(%pi/2), bfloat(1-2^-80)),
+               -9.999999999999999995663276044630384b-1,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_e(10b0, bfloat(1-2^-80)),
+               6.544021110889369813404818691403004b0,
+               1.2225*2^-109);
+true;
+
+closeto_relerr(elliptic_e(-bfloat(%pi/2), bfloat(1-2^-100)),
+               -1.000000000000000000000000000014019b0,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_ec(bfloat(1-2^-100)),
+               1.000000000000000000000000000014019b0,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(elliptic_ec(bfloat(1-2^-50)),
+               1.000000000000008089073355640920771b0,
+               2.0001*2^-109);
+true;
+
+
+/*
+ * elliptic_e and elliptic_ec lose accuracy for real m > 1.  The real
+ * and imaginary parts are checked separately, since the real part can
+ * be much smaller than the imaginary part.  Reference values from
+ * mpmath.
+ */
+closeto_relerr(elliptic_e(0.5, 2.0), 4.56992352075574e-1,
+               1.0001*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_e(1.0, 2.0)), 5.990701173677961e-1,
+               1.6694*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.0, 2.0)), 9.3112921772178507e-2,
+               2.6850*2^-53);
+true;
+
+closeto_relerr(elliptic_e(float(%pi/4)-2^-30, 2.0), 5.9907011736776931e-1,
+               1.6694*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_e(float(%pi/4)+2^-30, 2.0)),
+               5.990701173677961e-1,
+               1.6694*2^-53);
+true;
+
+/* Fails on CLISP, whose (expt x 3/2) has an error of up to about
+   2.6 ulps. */
+closeto_relerr(imagpart(elliptic_e(float(%pi/4)+2^-30, 2.0)),
+               2.6796243306859025e-14,
+               1.0607*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_e(1.25, 1.25)), 8.1286533580320924e-1,
+               1.2304*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.25, 1.25)), 3.470937738124192e-2,
+               1.0001*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_e(1.0, 2.0^60)), 7.3145903963357984e-10,
+               1.0001*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.0, 2.0^60)), 4.9359664058573775e+8,
+               2.1754*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_e(-12.5, 180.0)), -4.1259995195037558e-1,
+               1.2119*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(-12.5, 180.0)), -1.0599408768196068e+2,
+               1.0001*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_ec(2.0)), 5.990701173677961e-1,
+               1.6694*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(2.0)), 5.990701173677961e-1,
+               1.6694*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_ec(float(1+2^-20))), 9.9999627219983125e-1,
+               2.0001*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(float(1+2^-20))), 7.4901378871664477e-7,
+               2.5466*2^-53);
+true;
+
+closeto_relerr(realpart(elliptic_ec(1e16)), 7.8539816339744832e-9,
+               1.0001*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(1e16)), 9.9999999999999898e+7,
+               1.3423*2^-53);
+true;
+
+closeto_relerr(elliptic_e(0.5b0, 2b0), 4.569923520755739993814727170484775b-1,
+               2.1884*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_e(1b0, 2b0)),
+               5.990701173677961037199612461401619b-1,
+               3.3386*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1b0, 2b0)),
+               9.311292177217850720981546161504105b-2,
+               2.6850*2^-109);
+true;
+
+closeto_relerr(elliptic_e(bfloat(%pi/4)-2^-60, 2b0),
+               5.990701173677961037199612453785669b-1,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_e(bfloat(%pi/4)+2^-60, 2b0)),
+               5.990701173677961037199612461401619b-1,
+               3.3386*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(bfloat(%pi/4)+2^-60, 2b0)),
+               7.615950786488135987070764020925057b-28,
+               3.1821*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_e(1.25b0, 1.25b0)),
+               8.128653358032092422716608772225758b-1,
+               2.4605*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.25b0, 1.25b0)),
+               3.470937738124191989696594617835021b-2,
+               3.6015*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_e(1b0, bfloat(2^60))),
+               7.314590396335798406049738501403849b-10,
+               3.8198*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1b0, bfloat(2^60))),
+               4.935966405857377460710759156379883b+8,
+               1.0877*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_e(-12.5b0, 180b0)),
+               -4.125999519503755819299131038784289b-1,
+               2.0002*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(-12.5b0, 180b0)),
+               -1.059940876819606834197430913969843b+2,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_ec(2b0)),
+               5.990701173677961037199612461401619b-1,
+               3.3386*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(2b0)),
+               5.990701173677961037199612461401619b-1,
+               3.3386*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_ec(bfloat(1+2^-50))),
+               9.999999999999919109266443590844445b-1,
+               2.0001*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(1+2^-50))),
+               6.975736996017261475571333796820181b-16,
+               1.2733*2^-109);
+true;
+
+closeto_relerr(realpart(elliptic_ec(bfloat(10^16))),
+               7.8539816339744831943313788828798b-9,
+               1.8973*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(10^16))),
+               9.999999999999989846512447463871835b+7,
+               4.0266*2^-109);
+true;
+
+
+(fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
+done;
+
+
+/*
+ * Complex arguments.  Each part is checked separately.  References
+ * are from mpmath at 90 digits, at the exact inputs.
+ */
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+closeto_relerr(u, v, tol) :=
+  block([e], e : cabs(u - v)/cabs(v), if e <= tol then true else e);
+
+/* Complex m near 1. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2), float(1-2^-50)-2^-51*%i)),
+               1.0000000000000081,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2), float(1-2^-50)-2^-51*%i)),
+               3.929199271788837e-15,
+               1.0*2^-53);
+true;
+
+/* Complex m near 1, phi below %pi/2. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2)-2^-20,
+                                   float(1-2^-30)+2^-31*%i)),
+               1.0000000052523338,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2)-2^-20,
+                                   float(1-2^-30)+2^-31*%i)),
+               -2.4991357308149325e-9,
+               1.0*2^-53);
+true;
+
+/* elliptic_ec, complex m near 1. */
+closeto_relerr(realpart(elliptic_ec(float(1-2^-40)+2^-41*%i)),
+               1.0000000000067345,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(float(1-2^-40)+2^-41*%i)),
+               -3.235482944432748e-12,
+               1.0*2^-53);
+true;
+
+/* Re m > 1, before the turning point. */
+closeto_relerr(realpart(elliptic_e(0.5, 2.0+2^-45*%i)), 4.56992352075574e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(0.5, 2.0+2^-45*%i)),
+               -6.7051450261676717e-16,
+               1.0*2^-53);
+true;
+
+/* Re m > 1, large m. */
+closeto_relerr(realpart(elliptic_e(1.0, 2.0^30+2^-10*%i)),
+               2.3975299843018238e-5,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1.0, 2.0^30+2^-10*%i)),
+               -1.5063373863106627e+4,
+               1.0*2^-53);
+true;
+
+/* elliptic_ec, Re m just above 1. */
+closeto_relerr(realpart(elliptic_ec(float(1+2^-20)+2^-60*%i)),
+               9.9999627219983125e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(float(1+2^-20)+2^-60*%i)),
+               -7.4901378871981834e-7,
+               1.0*2^-53);
+true;
+
+/* Complex phi near %pi/2, m near 1. */
+closeto_relerr(realpart(elliptic_e(float(%pi/2)+2^-30*%i, float(1-2^-40))),
+               1.0000000000067072,
+               2.0000*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(float(%pi/2)+2^-30*%i, float(1-2^-40))),
+               8.8817827852794716e-16,
+               1.0*2^-53);
+true;
+
+/* Complex phi and m. */
+closeto_relerr(realpart(elliptic_e(2.875-1.3125*%i, 3.0625-0.1875*%i)),
+               1.9543953709731864e-1,
+               1.0*2^-53);
+true;
+
+closeto_relerr(imagpart(elliptic_e(2.875-1.3125*%i, 3.0625-0.1875*%i)),
+               -4.9413895389833289e-2,
+               1.0*2^-53);
+true;
+
+/* Complex m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)-2^-101*%i)),
+               1.000000000000000000000000000014043b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(bfloat(%pi/2), bfloat(1-2^-100)-2^-101*%i)),
+               6.907309452222480139094610591822567b-30,
+               1.0*2^-109);
+true;
+
+/* elliptic_ec, complex m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_ec(bfloat(1-2^-90)+2^-91*%i)),
+               1.000000000000000000000000012980452b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(1-2^-90)+2^-91*%i)),
+               -6.373185087321694128240936424184316b-27,
+               1.0*2^-109);
+true;
+
+/* Re m > 1, before the turning point, bigfloat. */
+closeto_relerr(realpart(elliptic_e(0.5b0, 2b0+2^-100*%i)),
+               4.569923520755739993814727170484775b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(0.5b0, 2b0+2^-100*%i)),
+               -1.861051597875549206025434200161865b-32,
+               1.0*2^-109);
+true;
+
+/* Re m > 1, large m, bigfloat. */
+closeto_relerr(realpart(elliptic_e(1b0, bfloat(2^60)+2^-20*%i)),
+               7.314592437803655975185770279833863b-10,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(1b0, bfloat(2^60)+2^-20*%i)),
+               -4.935966405857377460710759156379883b+8,
+               1.0*2^-109);
+true;
+
+/* elliptic_ec, Re m just above 1, bigfloat. */
+closeto_relerr(realpart(elliptic_ec(bfloat(1+2^-50)+2^-120*%i)),
+               9.999999999999919109266443590844445b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_ec(bfloat(1+2^-50)+2^-120*%i)),
+               -6.975736996017261475637970122308713b-16,
+               1.0*2^-109);
+true;
+
+/* Complex phi near %pi/2, m near 1, bigfloat. */
+closeto_relerr(realpart(elliptic_e(bfloat(%pi/2)+2^-60*%i, bfloat(1-2^-90))),
+               1.000000000000000000000000012956168b0,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(bfloat(%pi/2)+2^-60*%i, bfloat(1-2^-90))),
+               2.46519032843301399119989975745551b-32,
+               1.0*2^-109);
+true;
+
+/* Complex phi and m, bigfloat. */
+closeto_relerr(realpart(elliptic_e(2.875b0-1.3125b0*%i, 3.0625b0-0.1875b0*%i)),
+               1.954395370973186391274430276519419b-1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(imagpart(elliptic_e(2.875b0-1.3125b0*%i, 3.0625b0-0.1875b0*%i)),
+               -4.941389538983328859081980976049435b-2,
+               1.0*2^-109);
+true;
+
+/* Purely imaginary phi and real m: the real part is exactly zero. */
+realpart(elliptic_e(0.75*%i, 0.5));
+0;
+
+closeto_relerr(imagpart(elliptic_e(0.75*%i, 0.5)), 0.78759158169920178,
+               1.2697*2^-53);
+true;
+
+realpart(elliptic_e(0.75b0*%i, 0.5b0));
+0;
+
+closeto_relerr(imagpart(elliptic_e(0.75b0*%i, 0.5b0)),
+               7.875915816992017776360759918948034b-1,
+               2.5394*2^-109);
+true;
+
+(fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
