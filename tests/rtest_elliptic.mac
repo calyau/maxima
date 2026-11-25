@@ -2835,6 +2835,9 @@ closeto_relerr(imagpart(elliptic_e(0.75b0*%i, 0.5b0)),
                2.5394*2^-109);
 true;
 
+(fpprec:oldfpprec, kill(oldfpprec), done);
+done;
+
 /*
  * Accuracy of elliptic_pi where 1-n*sin(phi)^2 or 1-m*sin(phi)^2
  * cancels: n or m near 1 with phi near %pi/2, phi near the pole
