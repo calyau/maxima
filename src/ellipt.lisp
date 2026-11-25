@@ -3662,7 +3662,8 @@ first kind:
 ;; Signal the error for elliptic_pi when m = 1 or n = 1 and the
 ;; complete integral, which is infinite, is needed.
 (defun elliptic-pi-undefined (n phi m)
-  (merror (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined: the integral diverges for abs(phi) >= %pi/2 when ~A = 1.")
+  (merror (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined: ~%  ~ 
+  the integral diverges for abs(phi) >= %pi/2 when ~A = 1.")
 	  n phi m
 	  (if (onep1 m) "m" "n")))
 
