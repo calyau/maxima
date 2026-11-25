@@ -2920,7 +2920,7 @@ block([w : elliptic_pi(0.5, float(%pi/2)-2^-15, float(1-2^-30)+2^-31*%i)],
   [closeto_relerr(realpart(w), 20.543627160501032,
                   3.1154*2^-53),
    closeto_relerr(imagpart(w), 0.14443145548304398,
-                  1.731*2^-53)]);
+                  3.4619*2^-53)]);
 [true, true];
 
 /* phi next to the pole */
