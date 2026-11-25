@@ -3392,5 +3392,24 @@ closeto_relerr(elliptic_pi(-100000b0, 1b0, -300000b0),
                1.5241*2^-109);
 true;
 
+/*
+ * elliptic_pi with m = 1 or n = 1 and an exact phi past %pi/2 signals
+ * an error.
+ */
+errcatch(elliptic_pi(1/2, 3*%pi/2, 1));
+[];
+
+errcatch(elliptic_pi(1, -5*%pi/2, 1/2));
+[];
+
+errcatch(elliptic_pi(n, 2*%pi/3, 1));
+[];
+
+errcatch(elliptic_pi(1/2, 2, 1));
+[];
+
+elliptic_pi(1/2, %pi/3, 1);
+elliptic_pi(1/2, %pi/3, 1);
+
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;

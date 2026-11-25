@@ -3696,7 +3696,8 @@ first kind:
 				       (bigfloat:to phi)
 				       (bigfloat:to m)))))
       ((and (or (onep1 m) (onep1 n))
-	    (alike1 (ftake 'mabs phi) (div '$%pi 2)))
+	    (or (alike1 (ftake 'mabs phi) (div '$%pi 2))
+		(elliptic-period-count phi)))
        ;; The complete integral is infinite for m = 1 or n = 1.
        (elliptic-pi-undefined n phi m))
       ((zerop1 n)
