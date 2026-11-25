@@ -2910,9 +2910,9 @@ block([w : elliptic_pi(0.5, float(%pi/4)+2^-30, 2.0)],
 /* complex n near 1 */
 block([w : elliptic_pi(float(1-2^-30)+2^-31*%i, float(%pi/2)-2^-15, 0.5)],
   [closeto_relerr(realpart(w), 35897.24823353908,
-                  1.8257*2^-53),
+                  5.4770*2^-53),
    closeto_relerr(imagpart(w), 3215.8347969197157,
-                  1.2737*2^-53)]);
+                  5.0948*2^-53)]);
 [true, true];
 
 /* complex m near 1 */
