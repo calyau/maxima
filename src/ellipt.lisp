@@ -1193,7 +1193,7 @@
 
 ;; For complex arguments, the real and imaginary parts of elliptic_e
 ;; and elliptic_ec can be much smaller than the addends of the
-;; formulas for elliptic_e and elliptic_ec which then cancel producing
+;; formulas for elliptic_e and elliptic_ec which then cancel, producing
 ;; round-off.
 ;;
 ;; BF-ELLIPTIC-EC-TERMS and BF-ELLIPTIC-E-TERMS return the value from
