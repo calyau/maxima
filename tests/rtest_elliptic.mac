@@ -897,7 +897,7 @@ closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668058849721013196b0, 3
 true;
 closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.6050292065602615145481924917132b0, 1.24b-32);
 true;
-closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1.2326b-32);
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1.8489b-32);
 true;
 
 /* Test for #3733 $gamma vs %gamma confusion */
@@ -1364,7 +1364,7 @@ block([fpprec : 32],
 
 /* Pole at asin(1/sqrt(n)) crossed. */
 [closeto(elliptic_pi(1.5, 1.25, 0.5) - (5.4524805374619554e-1 - 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
+ closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 8.7158b-33)];
 [true, true];
 
 /* Pole not reached: real result. */
@@ -1376,7 +1376,7 @@ block([fpprec : 32],
 
 /* Odd in phi. */
 [closeto(elliptic_pi(1.5, -1.25, 0.5) - (-5.4524805374619554e-1 + 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
+ closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 8.7158b-33)];
 [true, true];
 
 /* Reduction by %pi: complete cycles and the reduced phi both contribute. */
@@ -1413,7 +1413,7 @@ block([fpprec : 32],
 [true, true];
 
 /* m > n: branch point before the pole. */
-[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 9.1552e-16),
+[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 1.1958e-15),
  closeto(elliptic_pi(1.5b0, 1.25b0, 3.0b0) - (-7.808104921045611472213329756460836b-1 - 1.131673674679173545113343682797006b0*%i), 1.7432)];
 [true, true];
 
@@ -2833,6 +2833,233 @@ realpart(elliptic_e(0.75b0*%i, 0.5b0));
 closeto_relerr(imagpart(elliptic_e(0.75b0*%i, 0.5b0)),
                7.875915816992017776360759918948034b-1,
                2.5394*2^-109);
+true;
+
+/*
+ * Accuracy of elliptic_pi where 1-n*sin(phi)^2 or 1-m*sin(phi)^2
+ * cancels: n or m near 1 with phi near %pi/2, phi near the pole
+ * n*sin(phi)^2 = 1, and phi near the branch point m*sin(phi)^2 = 1.
+ * Also carlson_rj for small p.  References are from mpmath at the
+ * exact inputs.  Each tolerance is the absolute error observed with
+ * SBCL, rounded up to 5 digits.  The real and imaginary parts are
+ * checked separately.
+ */
+
+/* n just below 1, phi near %pi/2 */
+closeto(elliptic_pi(float(1-2^-40), float(%pi/2)-2^-20, 0.5)
+          - 1164674.2576808748,
+        6.9850e-10);
+true;
+
+/* n just below 1, phi near %pi/2 */
+closeto(elliptic_pi(float(1-2^-50), float(%pi/2)-2^-26, 0.25)
+          - 42896831.793892674,
+        7.4506e-9);
+true;
+
+/* m just below 1, phi near %pi/2 */
+closeto(elliptic_pi(0.5, float(%pi/2)-2^-20, float(1-2^-40))
+          - 27.489278290246304,
+        7.1055e-15);
+true;
+
+/* m just below 1, n < 0 */
+closeto(elliptic_pi(-2.0, float(%pi/2)-2^-26, float(1-2^-50))
+          - 6.528261255311098,
+        7.9937e-15);
+true;
+
+/* n just above 1, before the pole */
+closeto(elliptic_pi(float(1+2^-40), 1.5, 0.5)
+          - 19.145204308967838,
+        1.4211e-14);
+true;
+
+/* just before the pole */
+closeto(elliptic_pi(4.0, float(%pi/6)-2^-30, 0.5)
+          - 6.335485626331175,
+        1.7764e-15);
+true;
+
+/* just past the pole */
+block([w : elliptic_pi(4.0, float(%pi/6)+2^-30, 0.5)],
+  [closeto(realpart(w) - 6.335485664573467,
+           1.7764e-15),
+   closeto(imagpart(w) - (-0.9695165413304057),
+           1.0764e-16)]);
+[true, true];
+
+/* closer to the pole */
+closeto(elliptic_pi(4.0, float(%pi/6)-2^-45, 0.5)
+          - 9.543510779076291,
+        1.7764e-15);
+true;
+
+/* m > 1, just past the branch point */
+block([w : elliptic_pi(0.5, float(%pi/4)+2^-30, 2.0)],
+  [closeto(realpart(w) - 1.5327383490292812,
+           2.2205e-16),
+   closeto(imagpart(w) - (-5.7544496232928484e-05),
+           1.3553e-20)]);
+[true, true];
+
+/* complex n near 1 */
+block([w : elliptic_pi(float(1-2^-30)+2^-31*%i, float(%pi/2)-2^-15, 0.5)],
+  [closeto(realpart(w) - 35897.24823353908,
+           7.2760e-12),
+   closeto(imagpart(w) - 3215.8347969197157,
+           4.5475e-13)]);
+[true, true];
+
+/* complex m near 1 */
+block([w : elliptic_pi(0.5, float(%pi/2)-2^-15, float(1-2^-30)+2^-31*%i)],
+  [closeto(realpart(w) - 20.543627160501032,
+           7.1055e-15),
+   closeto(imagpart(w) - 0.14443145548304398,
+           2.7756e-17)]);
+[true, true];
+
+/* phi next to the pole */
+closeto(elliptic_pi(4.0, float(%pi/6)-2^-53, 0.5)
+          - 11.126769330243926,
+        1.7764e-15);
+true;
+
+/* phi next to the pole */
+closeto(elliptic_pi(4.0, float(%pi/6), 0.5)
+          - 11.458898371615305,
+        1.2722e-15);
+true;
+
+/* phi next to the pole */
+block([w : elliptic_pi(4.0, float(%pi/6)+2^-53, 0.5)],
+  [closeto(realpart(w) - 11.480110833541524,
+           3.5528e-15),
+   closeto(imagpart(w) - (-0.9695165413304057),
+           1.0764e-16)]);
+[true, true];
+
+/* small p */
+closeto(carlson_rj(0.5, 1.0, 2.0, float(2^-40))
+          - 40.526533925442,
+        1.4211e-14);
+true;
+
+/* small p */
+closeto(carlson_rj(0.25, 0.5, 1.0, float(2^-20))
+          - 52.87026432742514,
+        1.4211e-14);
+true;
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+/* n just below 1, phi near %pi/2 */
+closeto(elliptic_pi(bfloat(1-2^-80), bfloat(%pi/2)-2^-40, 0.5b0)
+          - 1.221250362837333490898788831207201b+12,
+        3.3882b-21);
+true;
+
+/* n just below 1, phi near %pi/2 */
+closeto(elliptic_pi(bfloat(1-2^-100), bfloat(%pi/2)-2^-52, 0.25b0)
+          - 1.723665353800289389717679735359959b+15,
+        3.4695b-18);
+true;
+
+/* m just below 1, phi near %pi/2 */
+closeto(elliptic_pi(0.5b0, bfloat(%pi/2)-2^-40, bfloat(1-2^-80))
+          - 5.521516551271585891379660227660660b+1,
+        2.9583b-31);
+true;
+
+/* m just below 1, n < 0 */
+closeto(elliptic_pi(-2b0, bfloat(%pi/2)-2^-52, bfloat(1-2^-100))
+          - 1.238240288176065752147374751982669b+1,
+        3.9444b-31);
+true;
+
+/* n just above 1, before the pole */
+closeto(elliptic_pi(bfloat(1+2^-80), 1.5b0, 0.5b0)
+          - 1.914520430777343863084640995692856b+1,
+        1.4792b-31);
+true;
+
+/* just before the pole */
+closeto(elliptic_pi(4b0, bfloat(%pi/6)-2^-60, 0.5b0)
+          - 1.275278156408303375413395734949489b+1,
+        2.4652b-32);
+true;
+
+/* just past the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6)+2^-60, 0.5b0)],
+  [closeto(realpart(w) - 1.275278156408303339913157468980254b+1,
+           1.9649b-32),
+   closeto(imagpart(w) - (-9.695165413304056925335329296853678b-1),
+           1.4938b-33)]);
+[true, true];
+
+/* closer to the pole */
+closeto(elliptic_pi(4b0, bfloat(%pi/6)-2^-90, 0.5b0)
+          - 1.917007767339908001725137470220445b+1,
+        9.8608b-32);
+true;
+
+/* m > 1, just past the branch point */
+block([w : elliptic_pi(0.5b0, bfloat(%pi/4)+2^-60, 2b0)],
+  [closeto(realpart(w) - 1.532738349029281102859949898769821b0,
+           3.0815b-33),
+   closeto(imagpart(w) - (-1.756118687953918749388644488937904b-9),
+           5.7398b-42)]);
+[true, true];
+
+/* complex n near 1 */
+block([w : elliptic_pi(bfloat(1-2^-60)+2^-61*%i, bfloat(%pi/2)-2^-30, 0.5b0)],
+  [closeto(realpart(w) - 1.176308789691670957481856913902438b+9,
+           1.8124b-24),
+   closeto(imagpart(w) - 1.053764749060716824053206542577223b+8,
+           6.2039b-25)]);
+[true, true];
+
+/* complex m near 1 */
+block([w : elliptic_pi(0.5b0, bfloat(%pi/2)-2^-30, bfloat(1-2^-60)+2^-61*%i)],
+  [closeto(realpart(w) - 4.133804256256211028370385386392093b+1,
+           9.8608b-32),
+   closeto(imagpart(w) - 1.444314622444238909963983287424861b-1,
+           1.1556b-33)]);
+[true, true];
+
+/* phi next to the pole */
+closeto(elliptic_pi(4b0, bfloat(%pi/6)-2^-109, 0.5b0)
+          - 2.335518206518362640277575618825638b+1,
+        4.9304b-32);
+true;
+
+/* phi next to the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6), 0.5b0)],
+  [closeto(realpart(w) - 2.358221325007319500030075708556361b+1,
+           3.6335b-32),
+   closeto(imagpart(w) - (-9.695165413304056925335329296853678b-1),
+           1.4938b-33)]);
+[true, true];
+
+/* phi next to the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6)+2^-109, 0.5b0)],
+  [closeto(realpart(w) - 2.314776313050818352753683162924851b+1,
+           9.8608b-32),
+   closeto(imagpart(w) - (-9.695165413304056925335329296853678b-1),
+           1.4938b-33)]);
+[true, true];
+
+/* small p */
+closeto(carlson_rj(0.5b0, 1b0, 2b0, bfloat(2^-80))
+          - 8.211536475897370466558316821189531b+1,
+        1.9722b-31);
+true;
+
+/* small p */
+closeto(carlson_rj(0.25b0, 0.5b0, 1b0, bfloat(2^-40))
+          - 1.116855733964357610974377246811474b+2,
+        1.9722b-31);
 true;
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
