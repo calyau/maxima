@@ -3066,5 +3066,172 @@ closeto_relerr(carlson_rj(0.25b0, 0.5b0, 1b0, bfloat(2^-40)),
                1.1461*2^-109);
 true;
 
+/*
+ * elliptic_pi for m = 1 or n = 1, where the complete integral is
+ * infinite.  The value is finite for abs(phi) < %pi/2.  Beyond that
+ * elliptic_pi is undefined and signals an error.
+ */
+
+/* m = 1 */
+closeto_relerr(elliptic_pi(0.5, 1.0, 1.0),
+               1.4830998734200773,
+               1.0*2^-53);
+true;
+
+/* m = 1, negative phi */
+closeto_relerr(elliptic_pi(0.5, -1.0, 1.0),
+               -1.4830998734200773,
+               1.0*2^-53);
+true;
+
+/* m = 1, past the pole */
+block([w : elliptic_pi(4.0, 1.0, 1.0)],
+  [closeto_relerr(realpart(w), 0.04735605279646549,
+                  19.797*2^-53),
+   closeto_relerr(imagpart(w), -1.0471975511965979,
+                  1.9099*2^-53)]);
+[true, true];
+
+/* n = 1 */
+closeto_relerr(elliptic_pi(1.0, 1.5, 0.5),
+               19.14520430777344,
+               1.0*2^-53);
+true;
+
+/* n = 1 and m = 1 */
+closeto_relerr(elliptic_pi(1.0, 1.0, 1.0),
+               2.0543329332562488,
+               1.0*2^-53);
+true;
+
+/* m = 1 */
+closeto_relerr(elliptic_pi(0.5b0, 1b0, 1b0),
+               1.483099873420077332688763277655338b0,
+               1.3486*2^-109);
+true;
+
+/* m = 1, negative phi */
+closeto_relerr(elliptic_pi(0.5b0, -1b0, 1b0),
+               -1.483099873420077332688763277655338b0,
+               1.3486*2^-109);
+true;
+
+/* m = 1, past the pole */
+block([w : elliptic_pi(4b0, 1b0, 1b0)],
+  [closeto_relerr(realpart(w), 4.735605279646549137695914944058017b-2,
+                  11.879*2^-109),
+   closeto_relerr(imagpart(w), -1.047197551196597746154214461093168b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n = 1 */
+closeto_relerr(elliptic_pi(1b0, 1.5b0, 0.5b0),
+               1.914520430777343863084532365631355b+1,
+               1.0*2^-109);
+true;
+
+/* n = 1 and m = 1 */
+closeto_relerr(elliptic_pi(1b0, 1b0, 1b0),
+               2.054332933256248668692451886877465b0,
+               1.0*2^-109);
+true;
+
+errcatch(elliptic_pi(0.5, 2.0, 1.0));
+[];
+
+errcatch(elliptic_pi(1.0, -2.0, 0.5));
+[];
+
+errcatch(elliptic_pi(0.5b0, 2b0, 1b0));
+[];
+
+errcatch(elliptic_pi(1b0, 5b0, 0.5b0));
+[];
+
+/*
+ * elliptic_pi where the reduction of phi by a multiple of %pi matters:
+ * the reduced angle is near %pi/2 with n or m near 1, or near a pole.
+ */
+
+/* n near 1, phi near 3*%pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-20), float(3*%pi/2)-2^-12, 0.5),
+               6466.962800896766,
+               1.0*2^-53);
+true;
+
+/* m near 1, phi near 5*%pi/2 */
+closeto_relerr(elliptic_pi(0.5, float(5*%pi/2)-2^-12, float(1-2^-20)),
+               76.45052512914408,
+               1.6743*2^-53);
+true;
+
+/* m near 1, phi near -7*%pi/2 */
+closeto_relerr(elliptic_pi(0.5, 2^-12-float(7*%pi/2), float(1-2^-20)),
+               -107.22870834804223,
+               2.3875*2^-53);
+true;
+
+/* n near 1, phi near 201*%pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-20), float(201*%pi/2)-2^-12, 0.5),
+               456701.1298407933,
+               1.148*2^-53);
+true;
+
+/* just before the pole at 19*%pi/6 */
+block([w : elliptic_pi(4.0, float(19*%pi/6)-2^-20, 0.5)],
+  [closeto_relerr(realpart(w), 3.3596599008874777,
+                  1.1906*2^-53),
+   closeto_relerr(imagpart(w), -5.817099247982434,
+                  1.0*2^-53)]);
+[true, true];
+
+/* just past the pole at 19*%pi/6 */
+block([w : elliptic_pi(4.0, float(19*%pi/6)+2^-20, 0.5)],
+  [closeto_relerr(realpart(w), 3.3596600957161042,
+                  2.3812*2^-53),
+   closeto_relerr(imagpart(w), -6.78661578931284,
+                  1.1788*2^-53)]);
+[true, true];
+
+/* n near 1, phi near 3*%pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-50), bfloat(3*%pi/2)-2^-30, 0.5b0),
+               2.221351896421582958348664040574534b+8,
+               1.0*2^-109);
+true;
+
+/* m near 1, phi near 5*%pi/2 */
+closeto_relerr(elliptic_pi(0.5b0, bfloat(5*%pi/2)-2^-30, bfloat(1-2^-50)),
+               1.808549965178413332382772494058663b+2,
+               1.4155*2^-109);
+true;
+
+/* m near 1, phi near -7*%pi/2 */
+closeto_relerr(elliptic_pi(0.5b0, 2^-30-bfloat(7*%pi/2), bfloat(1-2^-50)),
+               -2.532219910577545504779723259520282b+2,
+               2.022*2^-109);
+true;
+
+/* n near 1, phi near 201*%pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-50), bfloat(201*%pi/2)-2^-30, 0.5b0),
+               1.498089795170108950202648651238456b+10,
+               1.1468*2^-109);
+true;
+
+/* just before the pole at 19*%pi/6 */
+block([w : elliptic_pi(4b0, bfloat(19*%pi/6)-2^-50, 0.5b0)],
+  [closeto_relerr(realpart(w), 9.776955916932657246296813740730601b0,
+                  3.2731*2^-109),
+   closeto_relerr(imagpart(w), -5.817099247982434155201197578112207b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* just past the pole at 19*%pi/6 */
+block([w : elliptic_pi(4b0, bfloat(19*%pi/6)+2^-50, 0.5b0)],
+  [closeto_relerr(realpart(w), 9.776955916932657429129786377406766b0,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -6.786615789312839847734730507797575b0,
+                  1.0*2^-109)]);
+[true, true];
+
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;

@@ -1494,27 +1494,37 @@
 (defun bf-elliptic-pi (n phi m)
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
-  (flet ((base (n phi m)
+  (flet ((base (n phi m sign)
 	   ;; elliptic_pi(n,phi,m) =
 	   ;;   sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
 	   ;;   - (-n / 3) * sin(phi)^3
 	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-n*sin(phi)^2)
+	   ;;
+	   ;; PHI is the unreduced angle and SIGN is (-1)^k, where
+	   ;; phi - k*%pi is the reduced angle.  The sine of the
+	   ;; reduced angle is SIGN*sin(phi) and the squares of its
+	   ;; sine and cosine are those of PHI, so the reduced angle,
+	   ;; which has round-off, is not needed.
 	   (let* ((nn (- n))
-		  (sin-phi (sin phi))
+		  (sin-phi (* sign (sin phi)))
 		  (cos-phi (cos phi))
 		  (k2sin (bf-1-m*sin^2 phi m)))
 	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
 		(* (/ nn 3) (expt sin-phi 3)
 		   (bf-rj (expt cos-phi 2) k2sin 1.0
 			  (bf-1-m*sin^2 phi n)))))))
-    ;; FIXME: Reducing the arg by pi has significant round-off.
-    ;; Consider doing something better.
-    (let* ((bf-pi (%pi (realpart phi)))
-	   (cycles (round (realpart phi) bf-pi))
-	   (rem (- phi (* cycles bf-pi))))
-	(let ((complete (bf-elliptic-pi-complete n m)))
-	  (+ (* 2 cycles complete)
-	     (base n rem m))))))
+    (let* ((cycles (round (realpart phi) (%pi (realpart phi))))
+	   (sign (if (evenp cycles) 1 -1)))
+      (cond ((zerop cycles)
+	     (base n phi m sign))
+	    ((or (= m 1) (= n 1))
+	     ;; The complete integral is infinite for m = 1 or n = 1.
+	     (maxima::merror
+	      (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined.")
+	      (maxima::to n) (maxima::to phi) (maxima::to m)))
+	    (t
+	     (+ (* 2 cycles (bf-elliptic-pi-complete n m))
+		(base n phi m sign)))))))
 
 ;; For real n > 1, the integrand of elliptic_pi has simple poles at
 ;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
@@ -1572,12 +1582,12 @@
 	     (crossings (+ (if (<= m 1)
 			       (* 2 cycles)
 			       0)
-			   ;; Use the same values of 1-n*sin(rem)^2 and
-			   ;; 1-m*sin(rem)^2 as bf-elliptic-pi, so that
+			   ;; Use the same values of 1-n*sin(phi)^2 and
+			   ;; 1-m*sin(phi)^2 as bf-elliptic-pi, so that
 			   ;; this agrees with the branch taken by bf-rj
 			   ;; when rem is next to the pole.
-			   (if (and (minusp (bf-1-m*sin^2 rem n))
-				    (>= (bf-1-m*sin^2 rem m) 0))
+			   (if (and (minusp (bf-1-m*sin^2 phi n))
+				    (>= (bf-1-m*sin^2 phi m) 0))
 			       (signum rem)
 			       0))))
 	(if (zerop crossings)
