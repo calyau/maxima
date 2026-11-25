@@ -3233,5 +3233,18 @@ block([w : elliptic_pi(4b0, bfloat(19*%pi/6)+2^-50, 0.5b0)],
                   1.0*2^-109)]);
 [true, true];
 
+/*
+ * elliptic_pi with phi = %pi/2 or -%pi/2 and m = 1 or n = 1 is
+ * undefined and signals an error.
+ */
+errcatch(elliptic_pi(1/2, %pi/2, 1));
+[];
+
+errcatch(elliptic_pi(1, %pi/2, 1/2));
+[];
+
+errcatch(elliptic_pi(n, -%pi/2, 1));
+[];
+
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;

@@ -1519,9 +1519,9 @@
 	     (base n phi m sign))
 	    ((or (= m 1) (= n 1))
 	     ;; The complete integral is infinite for m = 1 or n = 1.
-	     (maxima::merror
-	      (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined.")
-	      (maxima::to n) (maxima::to phi) (maxima::to m)))
+	     (maxima::elliptic-pi-undefined (maxima::to n)
+					    (maxima::to phi)
+					    (maxima::to m)))
 	    (t
 	     (+ (* 2 cycles (bf-elliptic-pi-complete n m))
 		(base n phi m sign)))))))
@@ -3599,6 +3599,13 @@ first kind:
 ;; As with E and F, we do not use the modular angle alpha but the
 ;; parameter m = sin(alpha)^2.
 ;;
+;; Signal the error for elliptic_pi when m = 1 or n = 1 and the
+;; complete integral, which is infinite, is needed.
+(defun elliptic-pi-undefined (n phi m)
+  (merror (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined: the integral diverges for abs(phi) >= %pi/2 when ~A = 1.")
+	  n phi m
+	  (if (onep1 m) "m" "n")))
+
 (def-simplifier elliptic_pi (n phi m)
   (let (args)
     (cond
@@ -3628,6 +3635,10 @@ first kind:
 	 (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
 				       (bigfloat:to phi)
 				       (bigfloat:to m)))))
+      ((and (or (onep1 m) (onep1 n))
+	    (alike1 (ftake 'mabs phi) (div '$%pi 2)))
+       ;; The complete integral is infinite for m = 1 or n = 1.
+       (elliptic-pi-undefined n phi m))
       ((zerop1 n)
        (ftake '%elliptic_f phi m))
       ((zerop1 m)
