@@ -2058,6 +2058,31 @@ map(lambda([r, v], is(r = v or not freeof('limit, r))),
 [neg, true]$
 
 
+/* Bug #5905: "limit(exp(inf*infinity/2)) and similar exhaust the control stack" */
+
+/* The right value, or the expression left with its infinities: */
+map(lambda([r, v], is(r = v or (not atom(r) and not freeof(inf, minf, infinity, r)))),
+    [limit(exp(inf*infinity/2)),
+     limit(exp(sqrt(2)*inf*infinity)),
+     limit(exp(sqrt(2)/(inf*minf))),
+     limit(exp(inf*sin(inf))),
+     limit(exp(inf^infinity)),
+     limit(exp(inf*infinity/2+1)),
+     limit(exp(sin(inf*infinity/2))),
+     limit(2^(inf*infinity/2))],
+    [und, und, 1, und, und, und, und, und]);
+[true, true, true, true, true, true, true, true]$
+
+/* An error, or the right value: */
+[member(errcatch(limit(exp(inf/(2*zeroa)))), [[], [inf]]),
+ member(errcatch(limit(exp(sqrt(2)*minf/zerob))), [[], [inf]])];
+[true, true]$
+
+[limit(exp(inf*infinity/2)+inf+minf),
+ limit(exp(inf*infinity/2)*zeroa*inf)];
+[und, und]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

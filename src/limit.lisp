@@ -628,6 +628,9 @@ ignoring dummy variables and array indices."
     (t (let ((*simpinf-times-args* (cons arguments *simpinf-times-args*)))
          (simplimit (cons '(mtimes) arguments) var val)))))
 
+(defvar *simpinf-expt-args* nil
+  "The argument lists of the calls of SIMPINF-EXPT waiting for SIMPINF.")
+
 (defun simpinf-expt (base exponent)
   ;; In the comments below, zero* represents one of 0, zeroa, zerob.
   ;;
@@ -668,9 +671,17 @@ ignoring dummy variables and array indices."
     ;; inf,minf,zeroa,zerob or 0.
     (t
      (cond
+       ;; For a = %e, the rewrite below gives a^b back, and SIMPINF can bring
+       ;; the same BASE and EXPONENT back here, as for %e^(inf*infinity/2).
+       ;; Return a^b as it is then, or the two would call each other without end.
+       ((member (list base exponent) *simpinf-expt-args* :test #'alike)
+        (list '(mexpt) base exponent))
+
        ;; When a isn't crazy, try a^b = e^(b log(a))
        ((not (amongl (append *infinitesimals* *infinities*) base))
-        (simpinf (m^ '$%e (m* exponent `((%log) ,base)))))
+        (let ((*simpinf-expt-args*
+                (cons (list base exponent) *simpinf-expt-args*)))
+          (simpinf (m^ '$%e (m* exponent `((%log) ,base))))))
 
        ;; No idea. Just return what we've found so far.
        (t (list '(mexpt) base exponent))))))
