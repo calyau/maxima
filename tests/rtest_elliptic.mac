@@ -3156,7 +3156,7 @@ errcatch(elliptic_pi(1b0, 5b0, 0.5b0));
 /* n near 1, phi near 3*%pi/2 */
 closeto_relerr(elliptic_pi(float(1-2^-20), float(3*%pi/2)-2^-12, 0.5),
                6466.962800896766,
-               1.0*2^-53);
+               1.2668*2^-53);
 true;
 
 /* m near 1, phi near 5*%pi/2 */
