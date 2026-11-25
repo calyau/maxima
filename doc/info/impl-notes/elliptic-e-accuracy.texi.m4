@@ -1064,14 +1064,37 @@ m4_displaymath(
 <<<\phi_0 = \arcsin\frac{1}{\sqrt m} .>>>,
 <<<φ₀ = arcsin 1/√m .>>>)
 
-Below
-m4_mathcomma(<<<\phi_0>>>, <<<φ₀>>>)
+In
+
+m4_displaymath(
+<<<E(\phi\,|\,m) = \int_0^{\phi}\sqrt{1 - m\sin^2\theta}\,d\theta ,>>>,
+<<<E(φ | m) = ∫₀^φ√(1 − m sin²θ) dθ,>>>)
+
+the integrand is real for
+m4_mathcomma(<<<0 \le \theta \le \phi_0>>>, <<<0 ≤ θ ≤ φ₀>>>)
+and is
+m4_mathcomma(<<<i\sqrt{m\sin^2\theta - 1}>>>, <<<i√(m sin²θ − 1)>>>)
+purely imaginary, for
+m4_mathdot(<<<\phi_0 < \theta \le \pi/2>>>, <<<φ₀ < θ ≤ π/2>>>)
+So
 m4_math(<<<E(\phi\,|\,m)>>>, <<<E(φ | m)>>>)
-is real. Above it, the integrand
-m4_math(<<<\sqrt{1 - m\sin^2\theta}>>>, <<<√(1 − m sin²θ)>>>)
-is imaginary, so
-m4_math(<<<E>>>, <<<E>>>)
-is complex.
+is real for
+m4_mathdot(<<<0 \le \phi \le \phi_0>>>, <<<0 ≤ φ ≤ φ₀>>>)
+For
+m4_mathcomma(<<<\phi_0 < \phi \le \pi/2>>>, <<<φ₀ < φ ≤ π/2>>>)
+the integral from 0 to
+m4_math(<<<\phi_0>>>, <<<φ₀>>>)
+gives the real part, and the integral from
+m4_math(<<<\phi_0>>>, <<<φ₀>>>)
+to
+m4_math(<<<\phi>>>, <<<φ>>>)
+gives the imaginary part:
+
+m4_displaymath(
+<<<\mathrm{Re}\,E(\phi\,|\,m) = E(\phi_0\,|\,m) = \mathrm{Re}\,E(m), \qquad \mathrm{Im}\,E(\phi\,|\,m) = \int_{\phi_0}^{\phi}\sqrt{m\sin^2\theta - 1}\,d\theta .>>>,
+<<<Re E(φ | m) = E(φ₀ | m) = Re E(m), Im E(φ | m) = ∫_φ₀^φ√(m sin²θ − 1) dθ .>>>)
+
+The real part does not change past the turning point. This is the sign of the imaginary part used by Maxima before the change, mpmath and Wolfram|Alpha.
 
 @section Summary of the Change
 @anchor{s2-1}
@@ -1315,20 +1338,12 @@ m4_mathcomma(<<<\phi_0 < \pi/2>>>, <<<φ₀ < π/2>>>)
 m4_math(<<<c>>>, <<<c>>>)
 is bounded away from 0.
 
-@strong{Past the turning point.} For
-m4_mathcomma(<<<\phi_0 < \theta \le \pi/2>>>, <<<φ₀ < θ ≤ π/2>>>)
-m4_mathcomma(<<<\sqrt{1 - m\sin^2\theta} = i\sqrt{m\sin^2\theta - 1}>>>, <<<√(1 − m sin²θ) = i√(m sin²θ − 1)>>>)
-so the real part of
-m4_math(<<<E>>>, <<<E>>>)
-stays at its value at
+@strong{Past the turning point.} As in the introduction to this part, the real part is the value at
 m4_mathcomma(<<<\phi_0>>>, <<<φ₀>>>)
-and
-
-m4_displaymath(
-<<<\mathrm{Im}\,E(\phi\,|\,m) = \int_{\phi_0}^{\phi}\sqrt{m\sin^2\theta - 1}\,d\theta .>>>,
-<<<Im E(φ | m) = ∫_φ₀^φ√(m sin²θ − 1) dθ .>>>)
-
-This is the sign used by Maxima before the change, mpmath and Wolfram|Alpha.
+and the imaginary part is the integral from
+m4_math(<<<\phi_0>>>, <<<φ₀>>>)
+to
+m4_mathdot(<<<\phi>>>, <<<φ>>>)
 
 The real part is the form above at
 m4_mathcomma(<<<\phi = \phi_0>>>, <<<φ = φ₀>>>)

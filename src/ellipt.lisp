@@ -1126,13 +1126,20 @@
 	(base s c))))
 
 ;; For real phi and real m > 1, with s = sin(phi), c = cos(phi) and y
-;; = 1 - m*sin(phi)^2, DLMF 19.25.11 scaled by sin(phi)^2 gives
+;; = 1 - m*sin(phi)^2, the integrand sqrt(1 - m*sin(theta)^2) of
+;; elliptic_e(phi, m) is real for 0 <= theta <= phi0, where phi0 =
+;; asin(1/sqrt(m)) is the turning point, at which y = 0, and is
+;; %i*sqrt(m*sin(theta)^2 - 1) for phi0 < theta <= %pi/2.  So for 0 <=
+;; phi <= %pi/2, the integral from 0 to min(phi, phi0) is the real
+;; part, and the integral from phi0 to phi, if phi > phi0, is the
+;; imaginary part.
+;;
+;; Up to the turning point, DLMF 19.25.11 scaled by sin(phi)^2 gives
 ;;
 ;;   elliptic_e(phi, m) = ((m-1)/3)*s^3*rd(y, 1, c^2) + s*sqrt(y)/c
 ;;
-;; for 0 <= phi up to the turning point, where y = 0.  Past it, the
-;; real part stays at its value at the turning point, which is
-;; realpart(elliptic_ec(m)), and with s1^2 = -y/(m-1),
+;; Past it, the real part stays at its value at the turning point,
+;; which is realpart(elliptic_ec(m)), and with s1^2 = -y/(m-1),
 ;;
 ;; imagpart(elliptic_e(phi, m)) = ((m-1)/3)*s1^3*rd(m*c^2/(m-1), m*s^2, 1)
 ;;
@@ -1153,9 +1160,14 @@
 	 (a (abs s))
 	 (c (abs (cos phi)))
 	 ;; The imaginary part is proportional to |y|^(3/2), so y is
-	 ;; needed to full relative accuracy.  1 - m*sin(phi)^2 has a
-	 ;; relative error of about 1 + 1/|y| times the working
-	 ;; precision.  Recompute it for |y| <= 1, where that exceeds 2.
+	 ;; needed to full relative accuracy.  Past the turning point,
+	 ;; m*sin(phi)^2 = 1 + |y|, so computing 1 - m*sin(phi)^2
+	 ;; directly gives y a relative error of about (1 + 1/|y|)
+	 ;; rounding units, which is more than 2 for |y| < 1.  So use
+	 ;; extra precision for |y| <= 1.  This includes all y before
+	 ;; the turning point, where 0 < y <= 1.  Before the turning
+	 ;; point, s*sqrt(y)/c is nearly all of the value when m is
+	 ;; near 1, so y is needed accurately there too.
 	 (y (bf-1-m*sin^2 phi m 1))
 	 (e (if (>= y 0)
 		(+ (* (- m 1) 1/3 a a a
