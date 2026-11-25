@@ -3011,7 +3011,7 @@ true;
 /* m > 1, just past the branch point */
 block([w : elliptic_pi(0.5b0, bfloat(%pi/4)+2^-60, 2b0)],
   [closeto_relerr(realpart(w), 1.532738349029281102859949898769821b0,
-                  1.3049*2^-109),
+                  3.9146*2^-109),
    closeto_relerr(imagpart(w), -1.756118687953918749388644488937904b-9,
                   2.1214*2^-109)]);
 [true, true];
@@ -3410,6 +3410,108 @@ errcatch(elliptic_pi(1/2, 2, 1));
 
 elliptic_pi(1/2, %pi/3, 1);
 elliptic_pi(1/2, %pi/3, 1);
+
+/*
+ * elliptic_pi for m > 1 with phi past the branch point, where the real
+ * part is constant.  Reference values from numerical integration
+ * with mpmath.
+ */
+
+/* n > m > 1 */
+block([w : elliptic_pi(4.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), -0.2217095718832212,
+                  1.1277*2^-53),
+   closeto_relerr(imagpart(w), -0.60591146282320552,
+                  4.9513*2^-53)]);
+[true, true];
+
+/* large n, n > m > 1 */
+block([w : elliptic_pi(1000.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), -0.00071250902372974823,
+                  1.3706*2^-53),
+   closeto_relerr(imagpart(w), -0.048179818359339956,
+                  37.62*2^-53)]);
+[true, true];
+
+/* n > m > 1, large phi */
+block([w : elliptic_pi(4.0, 1000.0, 2.0)],
+  [closeto_relerr(realpart(w), -141.2289972896119,
+                  1.0*2^-53),
+   closeto_relerr(imagpart(w), -312.06283282087372,
+                  9.8442*2^-53)]);
+[true, true];
+
+/* 1 < n < m, past the pole */
+block([w : elliptic_pi(2.0, 1.25, 4.0)],
+  [closeto_relerr(realpart(w), -0.3639605746942993,
+                  4.1214*2^-53),
+   closeto_relerr(imagpart(w), -0.74358338050070666,
+                  1.3449*2^-53)]);
+[true, true];
+
+/* n << 0 */
+block([w : elliptic_pi(-1000.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), 0.050309958921609135,
+                  6.2115*2^-53),
+   closeto_relerr(imagpart(w), -0.0015625742064765913,
+                  24.999*2^-53)]);
+[true, true];
+
+/* n << 0, large phi */
+block([w : elliptic_pi(-1000.0, 1000.0, 2.0)],
+  [closeto_relerr(realpart(w), 32.047443833065019,
+                  5.9912*2^-53),
+   closeto_relerr(imagpart(w), -1.2140538643677514,
+                  1.0*2^-53)]);
+[true, true];
+
+/* n > m > 1 */
+block([w : elliptic_pi(4b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), -2.217095718832211976275301038242615b-1,
+                  1.1277*2^-109),
+   closeto_relerr(imagpart(w), -6.059114628232055225394056192050889b-1,
+                  1.6505*2^-109)]);
+[true, true];
+
+/* large n, n > m > 1 */
+block([w : elliptic_pi(1000b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), -7.125090237297482257356557564620500b-4,
+                  4.1118*2^-109),
+   closeto_relerr(imagpart(w), -4.817981835933995648986484358184135b-2,
+                  12.973*2^-109)]);
+[true, true];
+
+/* n > m > 1, large phi */
+block([w : elliptic_pi(4b0, 1000b0, 2b0)],
+  [closeto_relerr(realpart(w), -1.412289972896119028887366761360546b+2,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -3.120628328208737241656773625486665b+2,
+                  6.5628*2^-109)]);
+[true, true];
+
+/* 1 < n < m, past the pole */
+block([w : elliptic_pi(2b0, 1.25b0, 4b0)],
+  [closeto_relerr(realpart(w), -3.639605746942992988978599313701065b-1,
+                  2.7476*2^-109),
+   closeto_relerr(imagpart(w), -7.435833805007066553024512118041960b-1,
+                  5.3794*2^-109)]);
+[true, true];
+
+/* n << 0 */
+block([w : elliptic_pi(-1000b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), 5.030995892160913538979817751021592b-2,
+                  2.4846*2^-109),
+   closeto_relerr(imagpart(w), -1.562574206476591336860539930101077b-3,
+                  8.7496*2^-109)]);
+[true, true];
+
+/* n << 0, large phi */
+block([w : elliptic_pi(-1000b0, 1000b0, 2b0)],
+  [closeto_relerr(realpart(w), 3.204744383306501924330143907400754b+1,
+                  1.9971*2^-109),
+   closeto_relerr(imagpart(w), -1.214053864367751352744633528305541b0,
+                  1.0*2^-109)]);
+[true, true];
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
