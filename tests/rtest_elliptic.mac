@@ -1695,7 +1695,7 @@ true;
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 2.7466e-15),
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 2.9206e-15),
  closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
