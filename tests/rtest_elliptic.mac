@@ -1358,7 +1358,7 @@ block([fpprec : 32],
  */
 
 /* Complete integral, 0 < m < 1. */
-[closeto(elliptic_pi(1.5, float(%pi/2), 0.5) - (-4.5672031345290990e-1 - 2.7206990463513268*%i), 4.4755e-16),
+[closeto(elliptic_pi(1.5, float(%pi/2), 0.5) - (-4.5672031345290990e-1 - 2.7206990463513268*%i), 4.9651e-16),
  closeto(elliptic_pi(1.5b0, bfloat(%pi/2), 0.5b0) - (-4.567203134529098970084643370829239b-1 - 2.720699046351326775891117386463234b0*%i), 7.2677b-33)];
 [true, true];
 
@@ -2997,7 +2997,7 @@ true;
 /* just past the pole */
 block([w : elliptic_pi(4b0, bfloat(%pi/6)+2^-60, 0.5b0)],
   [closeto_relerr(realpart(w), 1.275278156408303339913157468980254b+1,
-                  1.0*2^-109),
+                  1.2547*2^-109),
    closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
                   1.0*2^-109)]);
 [true, true];
@@ -3041,7 +3041,7 @@ true;
 /* phi next to the pole */
 block([w : elliptic_pi(4b0, bfloat(%pi/6), 0.5b0)],
   [closeto_relerr(realpart(w), 2.358221325007319500030075708556361b+1,
-                  1.0*2^-109),
+                  4.0709*2^-109),
    closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
                   1.0*2^-109)]);
 [true, true];
@@ -3087,7 +3087,7 @@ true;
 /* m = 1, past the pole */
 block([w : elliptic_pi(4.0, 1.0, 1.0)],
   [closeto_relerr(realpart(w), 0.04735605279646549,
-                  19.797*2^-53),
+                  25.076*2^-53),
    closeto_relerr(imagpart(w), -1.0471975511965979,
                   1.9099*2^-53)]);
 [true, true];
@@ -3188,7 +3188,7 @@ block([w : elliptic_pi(4.0, float(19*%pi/6)-2^-20, 0.5)],
 /* just past the pole at 19*%pi/6 */
 block([w : elliptic_pi(4.0, float(19*%pi/6)+2^-20, 0.5)],
   [closeto_relerr(realpart(w), 3.3596600957161042,
-                  2.3812*2^-53),
+                  5.953*2^-53),
    closeto_relerr(imagpart(w), -6.78661578931284,
                   1.1788*2^-53)]);
 [true, true];
@@ -3228,7 +3228,7 @@ block([w : elliptic_pi(4b0, bfloat(19*%pi/6)-2^-50, 0.5b0)],
 /* just past the pole at 19*%pi/6 */
 block([w : elliptic_pi(4b0, bfloat(19*%pi/6)+2^-50, 0.5b0)],
   [closeto_relerr(realpart(w), 9.776955916932657429129786377406766b0,
-                  1.0*2^-109),
+                  1.6366*2^-109),
    closeto_relerr(imagpart(w), -6.786615789312839847734730507797575b0,
                   1.0*2^-109)]);
 [true, true];
@@ -3245,6 +3245,124 @@ errcatch(elliptic_pi(1, %pi/2, 1/2));
 
 errcatch(elliptic_pi(n, -%pi/2, 1));
 [];
+
+/*
+ * elliptic_pi for real n > 1 past the pole and for n << 0, where the
+ * terms of the formula used before cancel.  Reference values from
+ * mpmath.
+ */
+
+/* n > 1, past the pole */
+block([w : elliptic_pi(4.0, 1.0, 0.5)],
+  [closeto_relerr(realpart(w), 0.16227970558001083,
+                  1.5406*2^-53),
+   closeto_relerr(imagpart(w), -0.96951654133040569,
+                  1.0*2^-53)]);
+[true, true];
+
+/* large n, past the pole */
+block([w : elliptic_pi(1000.0, 1.25, 0.5)],
+  [closeto_relerr(realpart(w), -4.1006898392243425e-5,
+                  10.419*2^-53),
+   closeto_relerr(imagpart(w), -0.049710225552755604,
+                  1.0*2^-53)]);
+[true, true];
+
+/* n > 1, past the pole, m < 0 */
+block([w : elliptic_pi(100.0, 1.0, -2.0)],
+  [closeto_relerr(realpart(w), 0.013890277042049115,
+                  1.1249*2^-53),
+   closeto_relerr(imagpart(w), -0.15631555389438434,
+                  1.5994*2^-53)]);
+[true, true];
+
+/* n > 1, large phi */
+block([w : elliptic_pi(100.0, 1000.0, 0.25)],
+  [closeto_relerr(realpart(w), -1.3853487226591245,
+                  4.3311*2^-53),
+   closeto_relerr(imagpart(w), -100.68974938047114,
+                  1.2713*2^-53)]);
+[true, true];
+
+/* n << 0 */
+closeto_relerr(elliptic_pi(-100000.0, 1.0, 0.5),
+               0.0049636552091467821,
+               1.0*2^-53);
+true;
+
+/* n << 0, m < 0 */
+closeto_relerr(elliptic_pi(-1000.0, 1.0, -2.0),
+               0.048297927400597388,
+               2.5882*2^-53);
+true;
+
+/* n << 0, m > 1 */
+closeto_relerr(elliptic_pi(-100000.0, 0.5, 2.0),
+               0.0049547087246786575,
+               1.0*2^-53);
+true;
+
+/* n << 0, large phi */
+closeto_relerr(elliptic_pi(-100000.0, 1000.0, 0.25),
+               3.1655293782258852,
+               2.5273*2^-53);
+true;
+
+/* n > 1, past the pole */
+block([w : elliptic_pi(4b0, 1b0, 0.5b0)],
+  [closeto_relerr(realpart(w), 1.622797055800108338524841864430706b-1,
+                  4.6217*2^-109),
+   closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* large n, past the pole */
+block([w : elliptic_pi(1000b0, 1.25b0, 0.5b0)],
+  [closeto_relerr(realpart(w), -4.100689839224342459295375239783378b-5,
+                  1.4885*2^-109),
+   closeto_relerr(imagpart(w), -4.971022555275560360555423248187645b-2,
+                  1.2573*2^-109)]);
+[true, true];
+
+/* n > 1, past the pole, m < 0 */
+block([w : elliptic_pi(100b0, 1b0, -2b0)],
+  [closeto_relerr(realpart(w), 1.389027704204911535304746660046626b-2,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -1.563155538943843438863202264183295b-1,
+                  1.5994*2^-109)]);
+[true, true];
+
+/* n > 1, large phi */
+block([w : elliptic_pi(100b0, 1000b0, 0.25b0)],
+  [closeto_relerr(realpart(w), -1.385348722659124471236888786443385b0,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -1.006897493804711406229212573403927b+2,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n << 0 */
+closeto_relerr(elliptic_pi(-100000b0, 1b0, 0.5b0),
+               4.963655209146782146797581091336180b-3,
+               1.574*2^-109);
+true;
+
+/* n << 0, m < 0 */
+closeto_relerr(elliptic_pi(-1000b0, 1b0, -2b0),
+               4.829792740059738757216700715958731b-2,
+               2.5882*2^-109);
+true;
+
+/* n << 0, m > 1 */
+closeto_relerr(elliptic_pi(-100000b0, 0.5b0, 2b0),
+               4.954708724678657472859843393128330b-3,
+               3.1536*2^-109);
+true;
+
+/* n << 0, large phi */
+closeto_relerr(elliptic_pi(-100000b0, 1000b0, 0.25b0),
+               3.165529378225885226506466464889920b0,
+               7.5817*2^-109);
+true;
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
