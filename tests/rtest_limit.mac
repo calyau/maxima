@@ -2039,6 +2039,25 @@ map(lambda([r, v], is(r = v or not freeof('limit, r))),
 [0, minf, -1, inf]$
 
 
+/* Bug #4621: "limit(inf*minf);" */
+
+[limit(inf*minf),
+ limit(2*inf*minf),
+ limit(inf*minf^3),
+ limit(minf*inf^2),
+ limit(inf*minf+1),
+ limit(inf*minf*%pi),
+ limit(inf*minf, x, 0)];
+[minf, minf, minf, minf, minf, minf, minf]$
+
+[limit(-inf*minf), limit(exp(inf*minf))];
+[inf, 0]$
+
+/* sign() simplifies such a product with limit(): */
+[sign(inf*minf), is(inf*minf < 0)];
+[neg, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

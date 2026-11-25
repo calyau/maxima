@@ -595,6 +595,9 @@ ignoring dummy variables and array indices."
          ;; Give up!
 	 (t new-expression))))))
 
+(defvar *simpinf-times-args* nil
+  "The argument lists of the calls of SIMPINF-TIMES waiting for SIMPLIMIT.")
+
 (defun simpinf-times (arguments)
   (declare (special exp var val))
   ;; When we have a product, we need to spot that zeroa * zerob = zerob, zeroa *
@@ -615,7 +618,15 @@ ignoring dummy variables and array indices."
          '$infinity
          exp))
 
-    (t (simplimit (cons '(mtimes) arguments) var val))))
+    ;; SIMPLIMIT passes a product free of VAR back to SIMPINF, which can bring
+    ;; the same ARGUMENTS back here, as for inf*minf. Multiply the limits of
+    ;; the factors then, as SIMPLIMIT does for a product that depends on VAR,
+    ;; or the two would call each other without end.
+    ((member arguments *simpinf-times-args* :test #'alike)
+     (simplimtimes arguments))
+
+    (t (let ((*simpinf-times-args* (cons arguments *simpinf-times-args*)))
+         (simplimit (cons '(mtimes) arguments) var val)))))
 
 (defun simpinf-expt (base exponent)
   ;; In the comments below, zero* represents one of 0, zeroa, zerob.
