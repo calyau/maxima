@@ -1441,23 +1441,29 @@
 ;; elliptic_pi(n,m)
 ;;   = Rf(0, 1-m,1) + Rj(0,1-m,1-n)*n/3;
 ;;
-;; For real n > 1, and for real n < -1 with m >= n/2, the two terms
-;; cancel.  There, with w = m/n, use the change of parameter (DLMF
-;; 19.7.8) instead:
+;; For real n > 1 and for real n < -1 the two terms cancel.  There,
+;; use a change of parameter instead.  For n > 1, with w = m/n (DLMF
+;; 19.7.8, where the Rc term is a Cauchy principal value, which is 0):
 ;;
 ;; elliptic_pi(n,m)
-;;   = Rc(0, (1-n)*(1-w)) - Rj(0,1-m,1,1-w)*w/3
+;;   = -Rj(0,1-m,1,1-w)*w/3
 ;;
-;; For n > 1 the first term is a Cauchy principal value, which is 0.
+;; For n < -1, with v = (1-m)/(1-n) (DLMF 19.7.9):
+;;
+;; elliptic_pi(n,m)
+;;   = (Rf(0,1-m,1) - Rj(0,1-m,1,v)*n*v/3)/(1-n)
 (defun bf-elliptic-pi-complete (n m)
-  (if (and (realp n) (realp m) (< m 1)
-	   (or (> n 1)
-	       (and (< n -1) (>= (* 2 m) n))))
-      (let ((w (/ m n)))
-	(- (bf-rc 0 (* (- 1 n) (- 1 w)))
-	   (* 1/3 w (bf-rj 0 (- 1 m) 1 (- 1 w)))))
-      (+ (bf-rf 0 (- 1 m) 1)
-	 (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n))))))
+  (cond ((and (realp n) (realp m) (< m 1) (> n 1))
+	 (let ((w (/ m n)))
+	   (* -1/3 w (bf-rj 0 (- 1 m) 1 (- 1 w)))))
+	((and (realp n) (realp m) (< m 1) (< n -1))
+	 (let ((v (/ (- 1 m) (- 1 n))))
+	   (/ (- (bf-rf 0 (- 1 m) 1)
+		 (* 1/3 n v (bf-rj 0 (- 1 m) 1 v)))
+	      (- 1 n))))
+	(t
+	 (+ (bf-rf 0 (- 1 m) 1)
+	    (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))))
 
 ;; To compute elliptic_pi for all z, we use the property
 ;; (http://functions.wolfram.com/08.06.16.0002.01)
@@ -1521,31 +1527,52 @@
 	   ;; sine and cosine are those of PHI, so the reduced angle,
 	   ;; which has round-off, is not needed.
 	   ;;
-	   ;; Past the pole for real n > 1, and for real n < -1 with
-	   ;; m >= n/2, the terms above cancel.  There, with w = m/n,
-	   ;; use the change of parameter (DLMF 19.7.8) instead:
+	   ;; Past the pole for real n > 1, and for real n < -1, the
+	   ;; terms above cancel.  There, use a change of parameter
+	   ;; instead.  Past the pole, with w = m/n (DLMF 19.7.8):
 	   ;;
 	   ;; elliptic_pi(n,phi,m) =
 	   ;;   sin(phi)*Rc(cos(phi)^2*(1-m*sin(phi)^2),
 	   ;;               (1-n*sin(phi)^2)*(1-w*sin(phi)^2))
 	   ;;   - (w / 3) * sin(phi)^3
 	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-w*sin(phi)^2)
+	   ;;
+	   ;; For n < -1, with v = (1-m)/(1-n) and
+	   ;; r = cos(phi)^2 + v*sin(phi)^2 (DLMF 19.7.9):
+	   ;;
+	   ;; elliptic_pi(n,phi,m) =
+	   ;;   (sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
+	   ;;    - (n*v / 3) * sin(phi)^3
+	   ;;      * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, r)
+	   ;;    - n*sin(phi)*abs(cos(phi))
+	   ;;      * Rc(1-m*sin(phi)^2, (1-n*sin(phi)^2)*r))
+	   ;;   / (1-n)
 	   (let* ((nn (- n))
 		  (sin-phi (* sign (sin phi)))
 		  (cos-phi (cos phi))
 		  (k2sin (bf-1-m*sin^2 phi m))
 		  (p (bf-1-m*sin^2 phi n)))
-	     (if (and (realp n) (realp phi) (realp m) (>= k2sin 0)
-		      (or (minusp p)
-			  (and (< n -1) (>= (* 2 m) n))))
-		 (let* ((w (/ m n))
-			(q (bf-1-m*sin^2 phi w)))
-		   (- (* sin-phi (bf-rc (* (expt cos-phi 2) k2sin) (* p q)))
-		      (* (/ w 3) (expt sin-phi 3)
-			 (bf-rj (expt cos-phi 2) k2sin 1.0 q))))
-		 (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
-		    (* (/ nn 3) (expt sin-phi 3)
-		       (bf-rj (expt cos-phi 2) k2sin 1.0 p)))))))
+	     (cond ((not (and (realp n) (realp phi) (realp m) (>= k2sin 0)
+			      (or (minusp p) (< n -1))))
+		    (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+		       (* (/ nn 3) (expt sin-phi 3)
+			  (bf-rj (expt cos-phi 2) k2sin 1.0 p))))
+		   ((minusp p)
+		    (let* ((w (/ m n))
+			   (q (bf-1-m*sin^2 phi w)))
+		      (- (* sin-phi
+			    (bf-rc (* (expt cos-phi 2) k2sin) (* p q)))
+			 (* (/ w 3) (expt sin-phi 3)
+			    (bf-rj (expt cos-phi 2) k2sin 1.0 q)))))
+		   (t
+		    (let* ((v (/ (- 1 m) (- 1 n)))
+			   (r (+ (expt cos-phi 2) (* v (expt sin-phi 2)))))
+		      (/ (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+			    (* (/ (* n v) 3) (expt sin-phi 3)
+			       (bf-rj (expt cos-phi 2) k2sin 1.0 r))
+			    (* n sin-phi (abs cos-phi)
+			       (bf-rc k2sin (* p r))))
+			 (- 1 n))))))))
     (let* ((cycles (round (realpart phi) (%pi (realpart phi))))
 	   (sign (if (evenp cycles) 1 -1)))
       (cond ((zerop cycles)
