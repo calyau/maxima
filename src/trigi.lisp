@@ -1234,7 +1234,11 @@ the hashtable.")
            ;; Look up atan(extended real, extended real) in a hashtable. When the value
            ;; isn't found in the hashtable, return a nounform.
            ((and (member x *extended-reals*) (member y *extended-reals*))
-            (gethash (list y x) *atan2-extended-real-hashtable* (give-up)))
+            ;; GIVE-UP is not passed as the default of GETHASH: GCL 2.6.14
+            ;; generates invalid C for a default that calls a local function.
+            (multiple-value-bind (val found)
+                (gethash (list y x) *atan2-extended-real-hashtable*)
+              (if found val (give-up))))
 
            ;;When either `x` or `y` is in ($und infinity $ind), give up
            ((or (member x '($und $infinity $ind)) (member y '($und $infinity $ind)))

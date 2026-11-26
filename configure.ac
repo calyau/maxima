@@ -1429,7 +1429,7 @@ flag.)
 fi
 
 if test x"${gcl}" = xtrue; then
-   AC_MSG_CHECKING([if gcl version >= 2.7.0])
+   AC_MSG_CHECKING([if gcl version >= 2.6.14])
    dnl Check gcl version
    dnl Perhaps could be done better, but this is easy to see that we're
    dnl correctly getting the version number of gcl at the expense of
@@ -1445,19 +1445,18 @@ if test x"${gcl}" = xtrue; then
    gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_extra}`
 
    AC_MSG_RESULT([${GCL_VERSION}])
-   dnl GCL 2.6.14 generates invalid C code.
-   if test ${gcl_version} -lt 20700; then
+   if test ${gcl_version} -lt 20614; then
        if test x"${gcl_autodetected}" = xtrue; then
-           AC_MSG_WARN([GCL ${GCL_VERSION} is too old, Maxima needs GCL 2.7.0 or later.
+           AC_MSG_WARN([GCL ${GCL_VERSION} is too old, Maxima needs GCL 2.6.14 or later.
 Not building Maxima with GCL.])
            gcl=false
            lisps_enabled=`echo "${lisps_enabled}" | sed 's/ gcl//g'`
            if test x"${lisps_enabled}" = x; then
                AC_MSG_ERROR([No usable lisp implementation found: GCL ${GCL_VERSION}
-is too old, Maxima needs GCL 2.7.0 or later])
+is too old, Maxima needs GCL 2.6.14 or later])
            fi
        else
-           AC_MSG_ERROR([GCL version ${GCL_VERSION} too old, Maxima needs GCL 2.7.0 or later])
+           AC_MSG_ERROR([GCL version ${GCL_VERSION} too old, Maxima needs GCL 2.6.14 or later])
        fi
    fi
 fi
