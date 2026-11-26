@@ -181,7 +181,8 @@ impl_notes = impl-notes/jacobi-am \
 	impl-notes/jacobi-epsilon \
 	impl-notes/jacobi-sn \
 	impl-notes/inverse-jacobi-accuracy \
-	impl-notes/elliptic-e-accuracy
+	impl-notes/elliptic-e-accuracy \
+	impl-notes/elliptic-pi-accuracy
 impl_notes_texi = $(impl_notes:=.texi)
 
 # Use MathJax, syntax highlighting and style sheets the same way
