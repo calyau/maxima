@@ -1664,7 +1664,16 @@
 		       (* (/ nn 3) (expt sin-phi 3)
 			  (bf-rj (expt cos-phi 2) k2sin 1.0 p))))
 		   ((minusp p)
-		    (let* ((w (/ m n))
+		    ;; This formula is more sensitive to errors in p
+		    ;; and, for m > 1, in 1-m*sin(phi)^2, so compute
+		    ;; them with extra precision up to 1/4.
+		    (let* ((p (if (< 1/16 (abs p) 1/4)
+				  (bf-1-m*sin^2 phi n 1/4)
+				  p))
+			   (k2sin (if (and (> m 1) (< 1/16 k2sin 1/4))
+				      (bf-1-m*sin^2 phi m 1/4)
+				      k2sin))
+			   (w (/ m n))
 			   (q (bf-1-m*sin^2 phi w)))
 		      (- (* sin-phi
 			    (bf-rc (* (expt cos-phi 2) k2sin) (* p q)))

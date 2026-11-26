@@ -3537,5 +3537,42 @@ closeto_relerr(carlson_rj(0.125b0, bfloat(2^32), 1b0, bfloat(2^14)),
                3.052*2^-109);
 true;
 
+/*
+ * elliptic_pi for n > m > 1 with phi between the pole and the branch
+ * point.  Reference values from numerical integration with mpmath.
+ */
+
+/* n = 4, m = 3 */
+block([w : elliptic_pi(4.0, 0.5625, 3.0)],
+  [closeto_relerr(realpart(w), 0.92765145196096069,
+                  1.078*2^-53),
+   closeto_relerr(imagpart(w), -1.8137993642342179,
+                  1.1027*2^-53)]);
+[true, true];
+
+/* n = 6, m = 5 */
+block([w : elliptic_pi(6.0, 0.4375, 5.0)],
+  [closeto_relerr(realpart(w), 1.0235092590657539,
+                  1.9541*2^-53),
+   closeto_relerr(imagpart(w), -1.7207211628636429,
+                  1.1624*2^-53)]);
+[true, true];
+
+/* n = 4, m = 3 */
+block([w : elliptic_pi(4b0, 0.5625b0, 3b0)],
+  [closeto_relerr(realpart(w), 9.276514519609606898441634964846177b-1,
+                  3.234*2^-109),
+   closeto_relerr(imagpart(w), -1.813799364234217850594078257642156b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n = 6, m = 5 */
+block([w : elliptic_pi(6b0, 0.4375b0, 5b0)],
+  [closeto_relerr(realpart(w), 1.023509259065753896045595692326354b0,
+                  1.9541*2^-109),
+   closeto_relerr(imagpart(w), -1.720721162863642932550994042176359b0,
+                  1.0*2^-109)]);
+[true, true];
+
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
