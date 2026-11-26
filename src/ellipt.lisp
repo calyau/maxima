@@ -1453,24 +1453,23 @@
 ;; elliptic_pi(n,m)
 ;;   = (Rf(0,1-m,1) - Rj(0,1-m,1,v)*n*v/3)/(1-n)
 ;;
-;; For real m > 1 the real part is from bf-elliptic-pi-realpart-m>1.
+;; For real m > 1 the real and imaginary parts are from
+;; bf-elliptic-pi-realpart-m>1 and bf-elliptic-pi-imagpart-m>1.
 (defun bf-elliptic-pi-complete (n m)
-  (let ((val
-	  (cond ((and (realp n) (realp m) (< m 1) (> n 1))
-		 (let ((w (/ m n)))
-		   (* -1/3 w (bf-rj 0 (- 1 m) 1 (- 1 w)))))
-		((and (realp n) (realp m) (< n -1))
-		 (let ((v (/ (- 1 m) (- 1 n))))
-		   (/ (- (bf-rf 0 (- 1 m) 1)
-			 (* 1/3 n v (bf-rj 0 (- 1 m) 1 v)))
-		      (- 1 n))))
-		(t
-		 (+ (bf-rf 0 (- 1 m) 1)
-		    (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n))))))))
-    (if (and (realp n) (realp m) (> m 1) (/= n m))
-	(complex (bf-elliptic-pi-realpart-m>1 n m (> n 1))
-		 (imagpart val))
-	val)))
+  (cond ((and (realp n) (realp m) (> m 1) (/= n m))
+	 (complex (bf-elliptic-pi-realpart-m>1 n m (> n 1))
+		  (bf-elliptic-pi-imagpart-m>1 n m 1 0 (- 1 m))))
+	((and (realp n) (realp m) (< m 1) (> n 1))
+	 (let ((w (/ m n)))
+	   (* -1/3 w (bf-rj 0 (- 1 m) 1 (- 1 w)))))
+	((and (realp n) (realp m) (< m 1) (< n -1))
+	 (let ((v (/ (- 1 m) (- 1 n))))
+	   (/ (- (bf-rf 0 (- 1 m) 1)
+		 (* 1/3 n v (bf-rj 0 (- 1 m) 1 v)))
+	      (- 1 n))))
+	(t
+	 (+ (bf-rf 0 (- 1 m) 1)
+	    (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))))
 
 ;; The real part of elliptic_pi(n,phi,m) for real n, phi and m > 1
 ;; when the reduced angle r = phi - k*%pi is positive and past the
@@ -1494,6 +1493,45 @@
 	 (* -3 n (sqrt m)))
       (/ (bf-elliptic-pi-complete (/ n m) (/ m))
 	 (sqrt m))))
+
+;; The imaginary part of elliptic_pi(n,phi,m) in the same case.  S
+;; and C are the sine and cosine of r and Y is 1-m*sin(r)^2 < 0.  It
+;; is -J, where J is the integral from the branch point to r of
+;;
+;;   1/((1-n*sin(x)^2)*sqrt(m*sin(x)^2-1))
+;;
+;; and, for n > m, minus the residue term from the pole, which is
+;; before the branch point.  With m*sin(x)^2 - 1 = (m-1)*sin(u)^2,
+;;
+;;   J = m/(m-n)*elliptic_pi(n*(m-1)/(m-n), chi, 1-m)
+;;
+;; where sin(chi)^2 = -Y/(m-1) and cos(chi)^2 = m*C^2/(m-1).  This
+;; is used for n < m.  For n > m, the change of parameter (DLMF
+;; 19.7.8) for this integral combines with the residue term, and
+;; the imaginary part is
+;;
+;;   -m/(3*n)*sin(chi)^3
+;;      *Rj(cos(chi)^2, m*S^2, 1, cos(chi)^2 + m/n*sin(chi)^2)
+;;    - sqrt(n/((n-1)*(n-m)))
+;;      *atan(S*C*sqrt(n*(n-m)/((n-1)*(-Y))))
+;;
+;; where both terms have the same sign.
+(defun bf-elliptic-pi-imagpart-m>1 (n m s c y)
+  (if (> n m)
+      (let ((s2 (/ (- y) (- m 1)))
+	    (c2 (/ (* m c c) (- m 1))))
+	(- (+ (* (/ m (* 3 n)) (expt (sqrt s2) 3)
+		 (bf-rj c2 (* m s s) 1 (+ c2 (* (/ m n) s2))))
+	      (* (sqrt (/ n (* (- n 1) (- n m))))
+		 (atan (* s c (sqrt (/ (* n (- n m))
+				       (* (- n 1) (- y))))))))))
+      (let ((nn (/ (* n (- m 1)) (- m n))))
+	(* (/ m (- n m))
+	   (if (zerop c)
+	       (bf-elliptic-pi-complete nn (- 1 m))
+	       (bf-elliptic-pi nn
+			       (atan (sqrt (- y)) (* (sqrt m) c))
+			       (- 1 m)))))))
 
 ;; To compute elliptic_pi for all z, we use the property
 ;; (http://functions.wolfram.com/08.06.16.0002.01)
@@ -1578,46 +1616,41 @@
 	   ;;      * Rc(1-m*sin(phi)^2, (1-n*sin(phi)^2)*r))
 	   ;;   / (1-n)
 	   ;;
-	   ;; The last formula is also used when 1-m*sin(phi)^2 < 0,
-	   ;; where the Carlson functions are complex.  There the
-	   ;; real part, which cancels in all of these formulas, is
-	   ;; from bf-elliptic-pi-realpart-m>1.
+	   ;; For real arguments with 1-m*sin(phi)^2 < 0, the real and
+	   ;; imaginary parts are from bf-elliptic-pi-realpart-m>1 and
+	   ;; bf-elliptic-pi-imagpart-m>1.
 	   (let* ((nn (- n))
 		  (sin-phi (* sign (sin phi)))
 		  (cos-phi (cos phi))
 		  (k2sin (bf-1-m*sin^2 phi m))
 		  (p (bf-1-m*sin^2 phi n))
-		  (real (and (realp n) (realp phi) (realp m)))
-		  (val
-		    (cond ((not (and real
-				     (or (< n -1)
-					 (and (>= k2sin 0) (minusp p)))))
-			   (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
-			      (* (/ nn 3) (expt sin-phi 3)
-				 (bf-rj (expt cos-phi 2) k2sin 1.0 p))))
-			  ((minusp p)
-			   (let* ((w (/ m n))
-				  (q (bf-1-m*sin^2 phi w)))
-			     (- (* sin-phi
-				   (bf-rc (* (expt cos-phi 2) k2sin) (* p q)))
-				(* (/ w 3) (expt sin-phi 3)
-				   (bf-rj (expt cos-phi 2) k2sin 1.0 q)))))
-			  (t
-			   (let* ((v (/ (- 1 m) (- 1 n)))
-				  (r (+ (expt cos-phi 2)
-					(* v (expt sin-phi 2)))))
-			     (/ (- (* sin-phi
-				      (bf-rf (expt cos-phi 2) k2sin 1.0))
-				   (* (/ (* n v) 3) (expt sin-phi 3)
-				      (bf-rj (expt cos-phi 2) k2sin 1.0 r))
-				   (* n sin-phi (abs cos-phi)
-				      (bf-rc k2sin (* p r))))
-				(- 1 n)))))))
-	     (if (and real (minusp k2sin) (/= n m))
-		 (complex (* (signum sin-phi)
-			     (bf-elliptic-pi-realpart-m>1 n m (minusp p)))
-			  (imagpart val))
-		 val))))
+		  (real (and (realp n) (realp phi) (realp m))))
+	     (cond ((and real (minusp k2sin) (/= n m))
+		    (* (signum sin-phi)
+		       (complex (bf-elliptic-pi-realpart-m>1 n m (minusp p))
+				(bf-elliptic-pi-imagpart-m>1
+				 n m (abs sin-phi) (abs cos-phi) k2sin))))
+		   ((not (and real (>= k2sin 0)
+			      (or (minusp p) (< n -1))))
+		    (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+		       (* (/ nn 3) (expt sin-phi 3)
+			  (bf-rj (expt cos-phi 2) k2sin 1.0 p))))
+		   ((minusp p)
+		    (let* ((w (/ m n))
+			   (q (bf-1-m*sin^2 phi w)))
+		      (- (* sin-phi
+			    (bf-rc (* (expt cos-phi 2) k2sin) (* p q)))
+			 (* (/ w 3) (expt sin-phi 3)
+			    (bf-rj (expt cos-phi 2) k2sin 1.0 q)))))
+		   (t
+		    (let* ((v (/ (- 1 m) (- 1 n)))
+			   (r (+ (expt cos-phi 2) (* v (expt sin-phi 2)))))
+		      (/ (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+			    (* (/ (* n v) 3) (expt sin-phi 3)
+			       (bf-rj (expt cos-phi 2) k2sin 1.0 r))
+			    (* n sin-phi (abs cos-phi)
+			       (bf-rc k2sin (* p r))))
+			 (- 1 n))))))))
     (let* ((cycles (round (realpart phi) (%pi (realpart phi))))
 	   (sign (if (evenp cycles) 1 -1)))
       (cond ((zerop cycles)

@@ -1325,7 +1325,7 @@ block([fpprec : 32],
 block([fpprec : 32],
   [closeto(elliptic_pi(-1.0, float(%pi/2), 4.0)
            - (0.75088116919581999 - 0.70974869672333212*%i),
-           3.3307e-16),
+           4.003e-16),
    closeto(elliptic_pi(-1b0, bfloat(%pi/2), 4b0)
            - (0.7508811691958199917853697329649665b0
               - 0.7097486967233321186676771004491271b0*%i),
@@ -1398,7 +1398,7 @@ block([fpprec : 32],
 /* Negative phi with a complex result used to signal an error in the
  * float path.
  */
-[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 4.9651e-16),
+[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 7.0217e-16),
  closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 1.3781b-32)];
 [true, true];
 
@@ -3422,7 +3422,7 @@ block([w : elliptic_pi(4.0, 1.25, 2.0)],
   [closeto_relerr(realpart(w), -0.2217095718832212,
                   1.1277*2^-53),
    closeto_relerr(imagpart(w), -0.60591146282320552,
-                  4.9513*2^-53)]);
+                  1.6505*2^-53)]);
 [true, true];
 
 /* large n, n > m > 1 */
@@ -3430,7 +3430,7 @@ block([w : elliptic_pi(1000.0, 1.25, 2.0)],
   [closeto_relerr(realpart(w), -0.00071250902372974823,
                   1.3706*2^-53),
    closeto_relerr(imagpart(w), -0.048179818359339956,
-                  37.62*2^-53)]);
+                  1.0*2^-53)]);
 [true, true];
 
 /* n > m > 1, large phi */
@@ -3438,7 +3438,7 @@ block([w : elliptic_pi(4.0, 1000.0, 2.0)],
   [closeto_relerr(realpart(w), -141.2289972896119,
                   1.0*2^-53),
    closeto_relerr(imagpart(w), -312.06283282087372,
-                  9.8442*2^-53)]);
+                  3.2814*2^-53)]);
 [true, true];
 
 /* 1 < n < m, past the pole */
@@ -3454,7 +3454,7 @@ block([w : elliptic_pi(-1000.0, 1.25, 2.0)],
   [closeto_relerr(realpart(w), 0.050309958921609135,
                   6.2115*2^-53),
    closeto_relerr(imagpart(w), -0.0015625742064765913,
-                  24.999*2^-53)]);
+                  3.7499*2^-53)]);
 [true, true];
 
 /* n << 0, large phi */
@@ -3462,7 +3462,7 @@ block([w : elliptic_pi(-1000.0, 1000.0, 2.0)],
   [closeto_relerr(realpart(w), 32.047443833065019,
                   5.9912*2^-53),
    closeto_relerr(imagpart(w), -1.2140538643677514,
-                  1.0*2^-53)]);
+                  3.2948*2^-53)]);
 [true, true];
 
 /* n > m > 1 */
@@ -3470,7 +3470,7 @@ block([w : elliptic_pi(4b0, 1.25b0, 2b0)],
   [closeto_relerr(realpart(w), -2.217095718832211976275301038242615b-1,
                   1.1277*2^-109),
    closeto_relerr(imagpart(w), -6.059114628232055225394056192050889b-1,
-                  1.6505*2^-109)]);
+                  3.3009*2^-109)]);
 [true, true];
 
 /* large n, n > m > 1 */
@@ -3478,7 +3478,7 @@ block([w : elliptic_pi(1000b0, 1.25b0, 2b0)],
   [closeto_relerr(realpart(w), -7.125090237297482257356557564620500b-4,
                   4.1118*2^-109),
    closeto_relerr(imagpart(w), -4.817981835933995648986484358184135b-2,
-                  12.973*2^-109)]);
+                  1.0*2^-109)]);
 [true, true];
 
 /* n > m > 1, large phi */
@@ -3486,7 +3486,7 @@ block([w : elliptic_pi(4b0, 1000b0, 2b0)],
   [closeto_relerr(realpart(w), -1.412289972896119028887366761360546b+2,
                   1.0*2^-109),
    closeto_relerr(imagpart(w), -3.120628328208737241656773625486665b+2,
-                  6.5628*2^-109)]);
+                  4.9221*2^-109)]);
 [true, true];
 
 /* 1 < n < m, past the pole */
@@ -3494,7 +3494,7 @@ block([w : elliptic_pi(2b0, 1.25b0, 4b0)],
   [closeto_relerr(realpart(w), -3.639605746942992988978599313701065b-1,
                   2.7476*2^-109),
    closeto_relerr(imagpart(w), -7.435833805007066553024512118041960b-1,
-                  5.3794*2^-109)]);
+                  1.0*2^-109)]);
 [true, true];
 
 /* n << 0 */
@@ -3502,7 +3502,7 @@ block([w : elliptic_pi(-1000b0, 1.25b0, 2b0)],
   [closeto_relerr(realpart(w), 5.030995892160913538979817751021592b-2,
                   2.4846*2^-109),
    closeto_relerr(imagpart(w), -1.562574206476591336860539930101077b-3,
-                  8.7496*2^-109)]);
+                  2.4999*2^-109)]);
 [true, true];
 
 /* n << 0, large phi */
@@ -3510,7 +3510,7 @@ block([w : elliptic_pi(-1000b0, 1000b0, 2b0)],
   [closeto_relerr(realpart(w), 3.204744383306501924330143907400754b+1,
                   1.9971*2^-109),
    closeto_relerr(imagpart(w), -1.214053864367751352744633528305541b0,
-                  1.0*2^-109)]);
+                  1.6474*2^-109)]);
 [true, true];
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
