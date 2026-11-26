@@ -398,6 +398,7 @@ Bug fixes for numbered bugs:
 * \#5900 taylor(), tlimit() and limit() enter the Lisp debugger: Illegal kernel in `adjoin-pvar'
 * \#5902 limit() and tlimit() take a failed inner limit for false
 * \#5905 limit(exp(inf*infinity/2)) and similar exhaust the control stack
+* \#5906 asksign() asks again about a quantity whose sign it was told in another form
 
 Bug fixes for unnumbered bugs:
 ------------------------------

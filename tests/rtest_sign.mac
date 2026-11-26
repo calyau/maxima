@@ -3497,6 +3497,22 @@ block([i, j],
 [true, true, true, true]$
 
 
+/* Bug #5906: "asksign() asks about c*(e-c*d) after it was told the sign of c*(c*d-e)" */
+
+with_answers([sign(c*(c*d-e)) = pos],
+  [block([ratvars : [e, d, c]], asksign(c^2*d-c*e)), asksign(c*(e-c*d)), asksign(2*c*(c*d-e)/3)]);
+[pos, neg, pos]$
+
+with_answers([sign(c*(c*d-e)) = zero],
+  [block([ratvars : [e, d, c]], asksign(c^2*d-c*e)), asksign(c*(e-c*d))]);
+[zero, zero]$
+
+/* An earlier answer about a quantity that is zero without simplifying to it: */
+with_answers([sign((a/e-b/e^2)^2-a^2/e^2+2*a*b/e^3-b^2/e^4) = zero, sign(e) = pos],
+  [asksign((a/e-b/e^2)^2-a^2/e^2+2*a*b/e^3-b^2/e^4), asksign(e)]);
+[zero, pos]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -1032,6 +1032,23 @@
 	((eq '$pnz x) '$pnz)	 ;COMPLEX expression encountered here.
 	(t '$zero)))
 
+;; The sign of E that an earlier answer of the user about X implies, where E
+;; is a nonzero rational multiple of X, or NIL. A question takes its form from
+;; the order of the variables in VARLIST, so a question about the same
+;; quantity can come in another form, as c*(c*d-e) after c*(e-c*d).
+(defun local-sign-of-multiple (e)
+  ;; The simplifier may call SIGN, which sets these, and RAT would report
+  ;; each float it replaces.
+  (let (sign minus odds evens factored varlist genvar ($ratprint nil))
+    (dolist (l *local-signs*)
+      ;; The quotient fails where X is zero but not simplified to it, as a
+      ;; discriminant can be.
+      (let ((r (ignore-rat-err (sratsimp (div e (car l))))))
+        (when (and (mnump r) (not (zerop1 r)))
+          (return (if (mminusp r)
+                    (flip (cdr l))
+                    (cdr l))))))))
+
 ;; When asksign is called on an expression that involves a symbol with the
 ;; internal property and Maxima's sign function can only determine that the
 ;; sign is pnz, nz, or similar, asksign1 returns '$pnz. This causes asksign01,
@@ -1054,7 +1071,8 @@
           (if minus (setq sign (flip sign) domain (flip domain)))
           (setq $askexp
                 (lmul (nconc odds (mapcar #'(lambda (l) (power l 2)) evens))))))
-       (setq sign (cdr (assol $askexp *local-signs*)))
+       (setq sign (or (cdr (assol $askexp *local-signs*))
+                      (local-sign-of-multiple $askexp)))
        (ensure-sign $askexp domain squared)))))
 
 (defun match-sign (sgn domain expression squared)
