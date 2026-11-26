@@ -872,26 +872,54 @@
 ;;   en = (p-x)*(p-y)*(p-z)
 ;;   dn = (sqrt(p)+sqrt(x))*(sqrt(p)+sqrt(y))*(sqrt(p)+sqrt(z))
 ;;
-;; When p is much smaller than x, y and z, en/dn^2 is near -1 and the
-;; sum cancels.  Since p-x = (sqrt(p)-sqrt(x))*(sqrt(p)+sqrt(x)),
+;; Since p-x = (sqrt(p)-sqrt(x))*(sqrt(p)+sqrt(x)),
 ;;
-;;   en/dn^2 = (ax-1)*(ay-1)*(az-1),  ax = 2*sqrt(p)/(sqrt(p)+sqrt(x))
+;;   en/dn^2 = tx*ty*tz,  tx = (sqrt(p)-sqrt(x))/(sqrt(p)+sqrt(x))
 ;;
-;; and likewise for ay and az, so
+;; and likewise for ty and tz.  When the product is near -1, the sum
+;; cancels.
+;;
+;; For real square roots, |tx| = 1 - wx, where wx is 2*sqrt(x) or
+;; 2*sqrt(p), whichever is smaller, divided by sqrt(p)+sqrt(x), and
+;; 0 <= wx <= 1.  If an even number of tx, ty and tz are negative,
+;; the result is 1 + |tx|*|ty|*|tz|.  Otherwise it is
+;;
+;;   1 - (1-wx)*(1-wy)*(1-wz) = wx + |tx|*(wy + |ty|*wz)
+;;
+;; In both cases all the terms are nonnegative.
+;;
+;; For complex square roots, with ax = 2*sqrt(p)/(sqrt(p)+sqrt(x)),
+;; and likewise for ay and az,
 ;;
 ;;   1 + en/dn^2 = ax+ay+az - (ax*ay+ax*az+ay*az) + ax*ay*az
 ;;
 ;; which does not cancel when ax, ay and az are small.
 (defun bf-rj-rc-arg (en dn pnroot xnroot ynroot znroot)
-  (let ((r (+ 1 (/ en (* dn dn)))))
-    (if (< (abs r) 1/2)
-	(let ((ax (/ (* 2 pnroot) (+ pnroot xnroot)))
-	      (ay (/ (* 2 pnroot) (+ pnroot ynroot)))
-	      (az (/ (* 2 pnroot) (+ pnroot znroot))))
-	  (+ (- (+ ax ay az)
-		(+ (* ax ay) (* ax az) (* ay az)))
-	     (* ax ay az)))
-	r)))
+  (if (and (realp pnroot) (realp xnroot) (realp ynroot) (realp znroot))
+      (let ((negative 0)
+	    (prod 1)
+	    (sum 0))
+	(dolist (root (list znroot ynroot xnroot))
+	  (let* ((d (- pnroot root))
+		 (s (+ pnroot root))
+		 (tn (/ (abs d) s)))
+	    (when (minusp d)
+	      (incf negative))
+	    (setf sum (+ (/ (* 2 (if (minusp d) pnroot root)) s)
+			 (* tn sum)))
+	    (setf prod (* prod tn))))
+	(if (oddp negative)
+	    sum
+	    (+ 1 prod)))
+      (let ((r (+ 1 (/ en (* dn dn)))))
+	(if (< (abs r) 1/2)
+	    (let ((ax (/ (* 2 pnroot) (+ pnroot xnroot)))
+		  (ay (/ (* 2 pnroot) (+ pnroot ynroot)))
+		  (az (/ (* 2 pnroot) (+ pnroot znroot))))
+	      (+ (- (+ ax ay az)
+		    (+ (* ax ay) (* ax az) (* ay az)))
+		 (* ax ay az)))
+	    r))))
 
 (defun bf-rj1 (x y z p)
   (let* ((xn x)
