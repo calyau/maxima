@@ -8149,6 +8149,38 @@ block([domain : complex],
 true$
 
 
+/* Bug #5907: "risch() and integrate() answers with x^(1/3) or %e^(log(x)/3) are wrong for x < 0" */
+
+block([f, F],
+  f : 8*(1/(x-1)+1)^(1/3)*(x-1)^(1/3)/(x-(1/(x-1)+1)*(x-1)^2-1),
+  F : integrate(f, x),
+  [freeof(log(x), F),
+   is(abs(float(rectform(subst(x = -8, diff(F, x) - f)))) < 1e-12)]);
+[true, true]$
+
+block([f : x^(1/3)/(x+1), g : %e^(log(x)/3)/(x+1), F, G],
+  F : risch(f, x),
+  G : risch(g, x),
+  [freeof(log(x), F),
+   map(lambda([p], [is(abs(float(rectform(subst(x = p, diff(F, x) - f)))) < 1e-12),
+                    is(abs(float(rectform(subst(x = p, diff(G, x) - g)))) < 1e-12)]),
+       [-8, -1/2, 1/2, 8])]);
+[true, [[true, true], [true, true], [true, true], [true, true]]]$
+
+block([r : integrate(%e^(log(x)/3)*sin(x), x)],
+  [risch(%e^(log(x)/3), x), risch(%e^(log(x)/3)*log(x), x),
+   is(cabs(float(rectform(subst(x = -0.5, diff(r, x) - %e^(log(x)/3)*sin(x))))) < 1e-9)]);
+[3*%e^(log(x)/3)*x/4, %e^(log(x)/3)*(12*x*log(x) - 9*x)/16, true]$
+
+block([fs : [%e^(log(x)/3)*cos(x)^2/x, sin(x)^2*%e^(log(x)/5)], Fs],
+  Fs : [risch(fs[1], x), integrate(fs[2], x)],
+  map(lambda([F, f],
+        map(lambda([p], is(cabs(float(rectform(subst(x = p, diff(F, x) - f)))) < 1e-9)),
+            [-2.3, -1.2, 1.3, 2.5])),
+      Fs, fs));
+[[true, true, true, true], [true, true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

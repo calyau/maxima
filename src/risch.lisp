@@ -98,6 +98,18 @@
   (and (mqapplyp exp) (eq (subfunname exp) '$li)
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
+;; T if E has a power %e^u whose exponent u satisfies TEST.
+(defun exp-power-p (e test)
+  (cond ((atom e) nil)
+        ((specrepp e) (exp-power-p (specdisrep e) test))
+        ((and (mexptp e) (eq (cadr e) '$%e) (funcall test (caddr e))))
+        (t (some #'(lambda (a) (exp-power-p a test)) (cdr e)))))
+
+;; T if E has a power %e^u that is the principal value of an odd root, such
+;; as %e^(log(x)/3) with domain : real, see ODD-ROOT-LOG-TERM-P.
+(defun odd-root-exp-log-p (e)
+  (exp-power-p e #'odd-root-log-term-p))
+
 (defun rischint (exp risch-intvar &aux ($logarc nil) ($exponentialize nil)
                      ($gcd '$algebraic) ($algebraic t) (implicit-real t)
                      ($float nil) ($numer nil)
@@ -153,11 +165,22 @@
      (return (cond ((atom (cdr z))
 		    (disrep (car z) risch-ratform))
 		   (t
-		    (let (($logsimp t)
-			  ($%e_to_numlog t))
-		      (simplify (list* '(mplus)
+		    ;; INTSETUP writes a radical such as x^(1/3) as %e^(log(x)/3),
+		    ;; which %e_to_numlog turns back, but SIMPLIFY does so only in the
+		    ;; parts of the answer that are not simplified yet. For an odd root,
+		    ;; see ODD-ROOT-LOG-TERM-P, the two differ for x < 0, so then
+		    ;; resimplify all of it, unless the integrand has such a power
+		    ;; itself, which must stay as it is. Other powers keep their value,
+		    ;; and turning them back in the integrals left over sends TRIGIN1
+		    ;; into code that splits their roots wrongly.
+		    (let* (($logsimp t)
+			   ($%e_to_numlog (not (odd-root-exp-log-p exp)))
+			   (ans (list* '(mplus)
 				       (disrep (car z) risch-ratform)
-				       (cdr z)))))))
+				       (cdr z))))
+		      (if (and $%e_to_numlog (odd-root-exp-log-p ans))
+			(resimplify ans)
+			(simplify ans))))))
    noun
      (return (list '(%integrate) exp risch-intvar))))
 
