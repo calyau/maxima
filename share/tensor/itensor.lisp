@@ -2194,23 +2194,14 @@
    (setq left (cons term left))
    (go loop)))
 
-(defun idiffexpt1 (e x)
-;; RETURN: n*v^n*rename(v'/v) where e=v^n
-  (list '(mtimes) (caddr e) e
-;;    ($rename
-      (list '(mtimes) (list '(mexpt) (cadr e) -1)
-             (idiff (cadr e) x)
-      )
-;;    )
-  )
-)
-
 (defun idiffexpt (e x)
   (if (mnump (caddr e))
       (mul3 (caddr e) (power (cadr e) (addk (caddr e) -1)) (idiff (cadr e) x))
-      (mul2 e (add2 (mul3 (power (cadr e) -1) (caddr e) (idiff (cadr e) x))
-            (mul2 (simplifya (list '(%log) (cadr e)) t)
-              (idiff (caddr e) x))))))
+      (let ((dexp (idiff (caddr e) x)))
+        (mul2 e (add2 (mul3 (power (cadr e) -1) (caddr e) (idiff (cadr e) x))
+                      (if (zerop1 dexp)
+                          0
+                          (mul2 (simplifya (list '(%log) (cadr e)) t) dexp)))))))
 
 (defmfun idiffint (e x)
   (let (a)
@@ -2329,13 +2320,13 @@
 (defmfun idiff (e x)
   (cond
          (($constantp e) 0.)
-	     ((alike1 e x) 1.)
+	     ;; ((alike1 e x) 1.) ; removed: x is an index label, not a variable
 	     ((or (atom e) (member 'array (cdar e) :test #'eq))
 ;;	      (ichainrule e x))
 ;;        (idiff%deriv (list e x 1)))
           0)
 	     ((kindp (caar e) '$constant) 0.)                    ;New line added
-	     ((eq (caar e) 'mrat) (ratdx e x))
+	     ((eq (caar e) 'mrat) (idiff (ratdisrep e) x))
 	     ((eq (caar e) 'mplus)
 	      (simplus (cons '(mplus) (idiffmap (cdr e) x))
 		       1.
@@ -2351,7 +2342,7 @@
 		     (cdr e))))
 	     ((eq (caar e) 'mtimes)
  	      (addn (idifftimes (cdr e) x) t))
-	     ((eq (caar e) 'mexpt) (idiffexpt1 e x))
+	     ((eq (caar e) 'mexpt) (idiffexpt e x))
 	((rpobj e) (diffrpobj e x))
     ((and (boundp '$imetric) (eq (caar e) '%determinant)
       (eq (cadr e) $imetric))
