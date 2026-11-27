@@ -6565,10 +6565,64 @@ first kind:
 
 ;; Jacobi theta functions with nome q, |q| < 1, equivalent to DLMF
 ;; 20.2.1-20.2.4, with q^(1/4) factored out of theta1 and theta2.
-;; q^(1/4) is the principal value.
+;; q^(1/4) is the principal value.  Equivalently, q = exp(%i*%pi*tau)
+;; with
+;;
+;;   tau = -%i*log(q)/%pi
+;;
+;; using the principal log, so that -1 < Re(tau) <= 1, Im(tau) > 0 and
+;; q^(1/4) = exp(%i*%pi*tau/4).
+;;
+;; The series converge slowly when |q| is near 1, and the terms can be
+;; large when |Im(z)| is large.  So (z, tau) is first reduced using
+;; the modular transformations
+;;
+;;   tau -> tau + 1 (DLMF 20.7.26-20.7.29):
+;;     theta1(z|tau+1) = exp(%i*%pi/4)*theta1(z|tau)
+;;     theta2(z|tau+1) = exp(%i*%pi/4)*theta2(z|tau)
+;;     theta3(z|tau+1) = theta4(z|tau)
+;;     theta4(z|tau+1) = theta3(z|tau)
+;;
+;;   tau -> tau' = -1/tau (DLMF 20.7.30-20.7.33):
+;;     theta1(z|tau) = -%i*A*theta1(z*tau'|tau')
+;;     theta2(z|tau) = A*theta4(z*tau'|tau')
+;;     theta3(z|tau) = A*theta3(z*tau'|tau')
+;;     theta4(z|tau) = A*theta2(z*tau'|tau')
+;;   where A = (-%i*tau)^(-1/2)*exp(%i*tau'*z^2/%pi)
+;;
+;; until |Re(tau)| <= 1/2 and |tau| >= 1, so that |q| <=
+;; exp(-%pi*sqrt(3)/2) < 0.066.  Before each transformation, z is
+;; reduced to |Re(z)| <= %pi/2 and |Im(z)| <= %pi*Im(tau)/2 using the
+;; quasi-periodicity (DLMF 20.2.6-20.2.9):
+;;
+;;   theta_j(z + n*%pi|tau) = (-1)^n*theta_j(z|tau), j = 1, 2
+;;   theta_j(z + n*%pi|tau) = theta_j(z|tau), j = 3, 4
+;;   theta_j(z + n*%pi*tau|tau) = s^n*q^(-n^2)*exp(-2*%i*n*z)*theta_j(z|tau)
+;;
+;; where s = -1 for j = 1, 4 and s = 1 for j = 2, 3.  The factors
+;; from the transformations are accumulated as a power of
+;; exp(%i*%pi/4), kept exactly, and the log of the remaining factor.
+
+;; exp(%i*%pi*k/4), with the precision of the real float X.
+(defun bf-jacobi-theta-root-of-unity (k x)
+  (let ((r (sqrt (/ (float 1 x) 2))))
+    (ecase (mod k 8)
+      (0 1)
+      (1 (complex r r))
+      (2 (complex 0 1))
+      (3 (complex (- r) r))
+      (4 -1)
+      (5 (complex (- r) (- r)))
+      (6 (complex 0 -1))
+      (7 (complex r (- r))))))
+
+;; %i*w
+(defun bf-jacobi-theta-mul-i (w)
+  (complex (- (imagpart w)) (realpart w)))
 
 ;; The terms of each series are summed until they are negligible
-;; compared to the first term.
+;; compared to the first term for theta1 and theta2, and to the n = 1
+;; term for theta3 and theta4.
 
 ;; 2*q^(1/4)*sum((-1)^n*q^(n*(n+1))*sin((2*n+1)*z), n, 0, inf)
 ;;
@@ -6625,8 +6679,11 @@ first kind:
 ;; 1 + 2*sum(q^(n^2)*cos(2*n*z), n, 1, inf)
 ;;
 ;; With y = Im(z), |cos(2*n*z)| <= cosh(2*n*y) <= exp(2*n*|y|).  The
-;; first term is 1, so the sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps.
-;; ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
+;; sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps*|q|*exp(2*|y|), that
+;; is, when the term is negligible compared to the n = 1 term, not the
+;; leading 1.  Otherwise, for tiny q, the n = 1 term would be dropped,
+;; although it can be all of the imaginary part.  ey2 = exp(2*|y|) and
+;; ey = exp(2*n*|y|).
 (defun bf-jacobi-theta3-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
@@ -6640,7 +6697,7 @@ first kind:
 	     (setf qn2 (* qn2 q2)
 		   qn (* qn qn2)
 		   ey (* ey ey2))
-	     (when (<= (* (abs qn) ey) eps)
+	     (when (<= (* (abs qn) ey) (* eps (abs q) ey2))
 	       (return))
 	     (setf sum (+ sum (* qn (cos (* 2 n z))))))
     (+ 1 (* 2 sum))))
@@ -6648,8 +6705,11 @@ first kind:
 ;; 1 + 2*sum((-1)^n*q^(n^2)*cos(2*n*z), n, 1, inf)
 ;;
 ;; With y = Im(z), |cos(2*n*z)| <= cosh(2*n*y) <= exp(2*n*|y|).  The
-;; first term is 1, so the sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps.
-;; ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
+;; sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps*|q|*exp(2*|y|), that
+;; is, when the term is negligible compared to the n = 1 term, not the
+;; leading 1.  Otherwise, for tiny q, the n = 1 term would be dropped,
+;; although it can be all of the imaginary part.  ey2 = exp(2*|y|) and
+;; ey = exp(2*n*|y|).
 (defun bf-jacobi-theta4-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
@@ -6665,21 +6725,109 @@ first kind:
 		   qn (* qn qn2)
 		   ey (* ey ey2)
 		   s (- s))
-	     (when (<= (* (abs qn) ey) eps)
+	     (when (<= (* (abs qn) ey) (* eps (abs q) ey2))
 	       (return))
 	     (setf sum (+ sum (* s qn (cos (* 2 n z))))))
     (+ 1 (* 2 sum))))
 
+;; theta_j(z,q) for j = 1, 2, 3, 4 and 0 < |q| < 1, computed with the
+;; current precision.
+(defun bf-jacobi-theta-reduced (j z q)
+  (let* ((one (float 1 (realpart (+ z q))))
+	 (bfpi (%pi one))
+	 (lq (log q))
+	 (tau (complex (/ (imagpart lq) bfpi)
+		       (- (/ (realpart lq) bfpi))))
+	 (eighths 0)
+	 (logfac 0))
+    (loop
+      ;; Make |Re(tau)| <= 1/2.
+      (let ((k (round (realpart tau))))
+	(unless (zerop k)
+	  (setf tau (- tau k))
+	  (if (<= j 2)
+	      (incf eighths k)
+	      (when (oddp k)
+		(setf j (- 7 j))))))
+      ;; Make |Im(z)| <= %pi*Im(tau)/2.
+      (let ((n (round (imagpart z) (* bfpi (imagpart tau)))))
+	(unless (zerop n)
+	  (setf z (- z (* n bfpi tau)))
+	  (when (and (oddp n) (or (= j 1) (= j 4)))
+	    (incf eighths 4))
+	  (setf logfac
+		(- logfac
+		   (* n (bf-jacobi-theta-mul-i
+			 (+ (* n bfpi tau) (* 2 z))))))))
+      ;; Make |Re(z)| <= %pi/2.
+      (let ((n (round (realpart z) bfpi)))
+	(unless (zerop n)
+	  (setf z (- z (* n bfpi)))
+	  (when (and (oddp n) (<= j 2))
+	    (incf eighths 4))))
+      (when (>= (abs tau) 1)
+	(return))
+      ;; Apply tau -> -1/tau.
+      (let ((tau1 (/ -1 tau)))
+	(setf logfac
+	      (+ logfac
+		 (* -1/2 (log (complex (imagpart tau) (- (realpart tau)))))
+		 (/ (bf-jacobi-theta-mul-i (* tau1 z z)) bfpi)))
+	(when (= j 1)
+	  (decf eighths 2))
+	(setf j (ecase j (1 1) (2 4) (3 3) (4 2)))
+	(setf z (* z tau1)
+	      tau tau1)))
+    ;; |Re(tau)| <= 1/2 here, so |arg(q)| <= %pi/2 and the principal
+    ;; q^(1/4) used in the series is exp(%i*%pi*tau/4).
+    (let ((q (exp (bf-jacobi-theta-mul-i (* bfpi tau)))))
+      (* (bf-jacobi-theta-root-of-unity eighths one)
+	 (if (zerop logfac) 1 (exp logfac))
+	 (ecase j
+	   (1 (bf-jacobi-theta1-series z q))
+	   (2 (bf-jacobi-theta2-series z q))
+	   (3 (bf-jacobi-theta3-series z q))
+	   (4 (bf-jacobi-theta4-series z q)))))))
+
 ;; theta_j(z,q) for j = 1, 2, 3, 4 and |q| < 1.
+;;
+;; The reduction of z and the factors from the transformations lose
+;; accuracy when |z| is large or when Im(tau) is large or small.  The
+;; quantity |z|^2/Im(tau) is unchanged by tau -> -1/tau, z -> z*tau',
+;; so the computation is done in bigfloat with enough extra bits to
+;; cover the loss, and the result rounded to the precision of the
+;; arguments.  This is done for double-float arguments too, since the
+;; reduced z and tau can lie outside the double-float range.
 (defun bf-jacobi-theta (j z q)
-  (if (zerop q)
-      (let ((one (float 1 (realpart (+ z q)))))
-	(if (<= j 2) (* 0 one) one))
-      (ecase j
-	(1 (bf-jacobi-theta1-series z q))
-	(2 (bf-jacobi-theta2-series z q))
-	(3 (bf-jacobi-theta3-series z q))
-	(4 (bf-jacobi-theta4-series z q)))))
+  (let ((one (float 1 (realpart (+ z q)))))
+    (cond
+      ((zerop q)
+       (if (<= j 2) (* 0 one) one))
+      (t
+       (let* ((absz (abs z))
+	      (imtau (/ (- (log (abs q))) (%pi one)))
+	      (extra (+ 16
+			(integer-length
+			 (ceiling (+ 1 absz (/ (* absz absz) imtau)
+				     imtau (/ imtau))))))
+	      (real-result-p (and (realp z) (realp q)
+				  (or (plusp q) (>= j 3))))
+	      (result
+		(if (or (typep z '(or bigfloat complex-bigfloat))
+			(typep q '(or bigfloat complex-bigfloat)))
+		    (with-extra-precision (extra (z q))
+		      (bf-jacobi-theta-reduced j z q))
+		    (maxima::bind-fpprec
+			(ceiling (* (+ (float-digits one) extra) 30103) 100000)
+		      (let ((r (bf-jacobi-theta-reduced j (bigfloat z)
+							(bigfloat q))))
+			(if (complexp r)
+			    (cl:complex (float (realpart r) one)
+					(float (imagpart r) one))
+			    (float r one)))))))
+	 (if real-result-p
+	     (realpart result)
+	     result))))))
 
 (in-package :maxima)
 

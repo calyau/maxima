@@ -125,3 +125,76 @@ true$
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done$
+
+/* |q| near 1, large |Im(z)| and tiny q */
+(oldfpprec:fpprec, fpprec:32, done);
+done$
+
+closeto_relerr(u, v, tol) :=
+  block([e],
+    e : max(if imagpart(v) = 0 then 0
+                else abs(imagpart(u - v)/imagpart(v)),
+            if realpart(v) = 0 then 0
+                else abs(realpart(u - v)/realpart(v))),
+    if e <= tol then true else e);
+closeto_relerr(u, v, tol) :=
+  block([e],
+    e : max(if imagpart(v) = 0 then 0
+                else abs(imagpart(u - v)/imagpart(v)),
+            if realpart(v) = 0 then 0
+                else abs(realpart(u - v)/realpart(v))),
+    if e <= tol then true else e)$
+
+closeto_relerr(jacobi_theta(3, 2.5, -0.95),
+               3.82886762232925491699562948293039557b-7,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(4, 0.5, 0.9),
+               1.02552944159021554574592324666753591b-4,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(3, 0.25, 0.999),
+               4.15561365015741164159619364360019381b-26,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(4, 0.5 + 0.125*%i, 0.996*%i),
+               6.75192781606995046505494470000900724b-25
+               - 4.20429618771710385420294923747628072b-25*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(1, 0.75 - 0.5*%i, 0.6 + 0.79*%i),
+               -36655991474756.388094658318107667483b0
+               + 51435768798923.8218029531640452003807b0*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(3, 1.0 + 2.0*%i, 0.5),
+               141.539767444024128390548169645133944b0
+               + 78.9277941008500546664999691756319892b0*%i,
+               2^-53);
+true$
+
+/* The imaginary part comes only from the n = 1 term */
+closeto_relerr(jacobi_theta(4, 1.0788852662815076 + 36.80453071432967*%i,
+                            5.536541143996356e-182),
+               1b0 + 4.28247392031113925614781147367140894b-150*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(3, 1b0, 0.998046875b0),
+               2.89361633717131042120696094968234854b-221,
+               2^-106);
+true$
+
+closeto_relerr(jacobi_theta(2, 3b0, -0.9998779296875b0*%i),
+               -3.00908063039521425202499925228126688b-1473
+               + 1.24640200738388024772995938528996473b-1473*%i,
+               2^-106);
+true$
+
+(fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
+done$
