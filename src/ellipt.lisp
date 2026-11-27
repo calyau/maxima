@@ -6571,6 +6571,12 @@ first kind:
 ;; compared to the first term.
 
 ;; 2*q^(1/4)*sum((-1)^n*q^(n*(n+1))*sin((2*n+1)*z), n, 0, inf)
+;;
+;; With y = Im(z), |sin((2*n+1)*z)| <= cosh((2*n+1)*y), so
+;; |sin((2*n+1)*z)| is at most about exp(2*n*|y|) times |sin(z)|.  The
+;; sum stops when (2*n+1)*|q|^(n*(n+1))*exp(2*n*|y|) <= eps.  The
+;; factor 2*n+1 covers small z, where sin((2*n+1)*z)/sin(z) is about
+;; 2*n+1.  ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
 (defun bf-jacobi-theta1-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
@@ -6592,6 +6598,12 @@ first kind:
     (* 2 (exp (/ (log q) 4)) sum)))
 
 ;; 2*q^(1/4)*sum(q^(n*(n+1))*cos((2*n+1)*z), n, 0, inf)
+;;
+;; With y = Im(z), |cos((2*n+1)*z)| <= cosh((2*n+1)*y), so
+;; |cos((2*n+1)*z)| is at most about exp(2*n*|y|) times |cos(z)|.  The
+;; sum stops when (2*n+1)*|q|^(n*(n+1))*exp(2*n*|y|) <= eps.  The
+;; factor 2*n+1 covers z near %pi/2, where |cos((2*n+1)*z)/cos(z)| is
+;; about 2*n+1.  ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
 (defun bf-jacobi-theta2-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
@@ -6611,6 +6623,10 @@ first kind:
     (* 2 (exp (/ (log q) 4)) sum)))
 
 ;; 1 + 2*sum(q^(n^2)*cos(2*n*z), n, 1, inf)
+;;
+;; With y = Im(z), |cos(2*n*z)| <= cosh(2*n*y) <= exp(2*n*|y|).  The
+;; first term is 1, so the sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps.
+;; ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
 (defun bf-jacobi-theta3-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
@@ -6630,6 +6646,10 @@ first kind:
     (+ 1 (* 2 sum))))
 
 ;; 1 + 2*sum((-1)^n*q^(n^2)*cos(2*n*z), n, 1, inf)
+;;
+;; With y = Im(z), |cos(2*n*z)| <= cosh(2*n*y) <= exp(2*n*|y|).  The
+;; first term is 1, so the sum stops when |q|^(n^2)*exp(2*n*|y|) <= eps.
+;; ey2 = exp(2*|y|) and ey = exp(2*n*|y|).
 (defun bf-jacobi-theta4-series (z q)
   (let ((eps (epsilon (abs q)))
 	(q2 (* q q))
