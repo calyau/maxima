@@ -6603,23 +6603,6 @@ first kind:
 ;; from the transformations are accumulated as a power of
 ;; exp(%i*%pi/4), kept exactly, and the log of the remaining factor.
 
-;; exp(%i*%pi*k/4), with the precision of the real float X.
-(defun bf-jacobi-theta-root-of-unity (k x)
-  (let ((r (sqrt (/ (float 1 x) 2))))
-    (ecase (mod k 8)
-      (0 1)
-      (1 (complex r r))
-      (2 (complex 0 1))
-      (3 (complex (- r) r))
-      (4 -1)
-      (5 (complex (- r) (- r)))
-      (6 (complex 0 -1))
-      (7 (complex r (- r))))))
-
-;; %i*w
-(defun bf-jacobi-theta-mul-i (w)
-  (complex (- (imagpart w)) (realpart w)))
-
 ;; The terms of each series are summed until they are negligible
 ;; compared to the first term for theta1 and theta2, and to the n = 1
 ;; term for theta3 and theta4.
@@ -6730,18 +6713,111 @@ first kind:
 	     (setf sum (+ sum (* s qn (cos (* 2 n z))))))
     (+ 1 (* 2 sum))))
 
+;; exp(%i*%pi*k/4), with the precision of the real float X.
+(defun bf-jacobi-theta-root-of-unity (k x)
+  (let ((r (sqrt (/ (float 1 x) 2))))
+    (ecase (mod k 8)
+      (0 1)
+      (1 (complex r r))
+      (2 (complex 0 1))
+      (3 (complex (- r) r))
+      (4 -1)
+      (5 (complex (- r) (- r)))
+      (6 (complex 0 -1))
+      (7 (complex r (- r))))))
+
+;; %i*w
+(defun bf-jacobi-theta-mul-i (w)
+  (complex (- (imagpart w)) (realpart w)))
+
 ;; theta_j(z,q) for j = 1, 2, 3, 4 and 0 < |q| < 1, computed with the
 ;; current precision.
+;;
+;; When |q| is near 1, reduce it using the modular transformation,
+;; where q = exp(%i*%pi*tau):
+;;
+;;   tau -> tau + 1 (DLMF 20.7.26-20.7.29):
+;;     theta1(z|tau+1) = exp(%i*%pi/4)*theta1(z|tau)
+;;     theta2(z|tau+1) = exp(%i*%pi/4)*theta2(z|tau)
+;;     theta3(z|tau+1) = theta4(z|tau)
+;;     theta4(z|tau+1) = theta3(z|tau)
+;;
+;;   tau -> tau' = -1/tau (DLMF 20.7.30-20.7.33):
+;;     theta1(z|tau) = -%i*A*theta1(z*tau'|tau')
+;;     theta2(z|tau) = A*theta4(z*tau'|tau')
+;;     theta3(z|tau) = A*theta3(z*tau'|tau')
+;;     theta4(z|tau) = A*theta2(z*tau'|tau')
+;;   where A = (-%i*tau)^(-1/2)*exp(%i*tau'*z^2/%pi)
+;;
+;; Also use the quasi-periodicity of the theta functions:
+;;
+;;   theta1(z+(m+n*tau)*%pi|tau) = (-1)^(m+n)*q^(-n^2)*exp(-2*%i*n*z)
+;;                                   * theta1(z|tau)
+;;   theta2(z+(m+n*tau)*%pi|tau) = (-1)^m*q^(-n^2)*exp(-2*%i*n*z)
+;;                                   * theta2(z|tau)
+;;   theta3(z+(m+n*tau)*%pi|tau) = q^(-n^2)*exp(-2*%i*n*z)
+;;                                   * theta3(z|tau)
+;;   theta1(z+(m+n*tau)*%pi|tau) = (-1)^n*q^(-n^2)*exp(-2*%i*n*z)
+;;                                   * theta4(z|tau)
+;;
+;; With tau = -%i*log(q)/%pi, so that q = exp(%i*%pi*tau), each pass
+;; of the loop:
+;;
+;;   1. shifts tau by an integer k, tau -> tau - k, so that
+;;      |Re(tau)| <= 1/2 (DLMF 20.7.26-20.7.29);
+;;   2. reduces z by a multiple of %pi*tau, so that
+;;      |Im(z)| <= %pi*Im(tau)/2, using the quasi-periodicity in
+;;      %pi*tau (DLMF 20.2.8-20.2.9); When tau is complex the real
+;;      part of z can change.
+;;   3. reduces z by a multiple of %pi, so that |Re(z)| <= %pi/2, using
+;;      the periodicity in %pi (DLMF 20.2.6-20.2.7);
+;;   4. stops if |tau| >= 1, and otherwise applies tau -> -1/tau,
+;;      z -> -z/tau (Jacobi's imaginary transformation, DLMF
+;;      20.7.30-20.7.33).
+;;
+;; The reduction of z is important because:
+;;
+;;   1. The series terms are about |a|^(n^2)*exp(2*n*|Im z|). By
+;;      reducing Im z, the terms stay smaller.  Without this, the
+;;      terms in the series grows before converging to 0.  This makes
+;;      the terms bounded by about |a|^(n^2-n).
+;;   2. Without reduction, the result is the sum has terms far larger
+;;      than the final result. This causes unwanted extra round-off.
+;;   3. The inversion of tau -> -1/tau maps z to z/tau.  This can make
+;;      the new z have a large imaginary part.  Thus, reduce to bring
+;;      it back.
+;;
+;; When it stops, tau is in the fundamental domain, so Im(tau) >=
+;; sqrt(3)/2 and |q| <= exp(-%pi*sqrt(3)/2) < 0.066, and the series at
+;; the reduced z and q converges quickly.  Steps 1 and 4 can change
+;; which theta function is computed, and each step multiplies the
+;; result by a known factor, which is kept in EIGHTHS and LOGFAC (see
+;; below).
 (defun bf-jacobi-theta-reduced (j z q)
   (let* ((one (float 1 (realpart (+ z q))))
 	 (bfpi (%pi one))
-	 (lq (log q))
-	 (tau (complex (/ (imagpart lq) bfpi)
-		       (- (/ (realpart lq) bfpi))))
+	 (log-q (log q))
+         ;; tau = -%i/%pi*log(q)
+	 (tau (complex (/ (imagpart log-q) bfpi)
+		       (- (/ (realpart log-q) bfpi))))
 	 (eighths 0)
 	 (logfac 0))
+    ;; Throughout the loop, the original theta_j(z|tau) equals
+    ;;
+    ;;   exp(%i*%pi*eighths/4)*exp(logfac)*theta_j(z|tau)
+    ;;
+    ;; with the current j, z, and tau.  EIGHTHS collects the factors
+    ;; that are powers of exp(%i*%pi/4), so they can be applied exactly,
+    ;; and LOGFAC the log of the rest.  Each pass shifts tau, reduces z,
+    ;; and inverts tau if |tau| < 1.  The inversion increases Im(tau)
+    ;; by the factor 1/|tau|^2 > 1, so the loop ends with tau in the
+    ;; fundamental domain, |Re(tau)| <= 1/2 and |tau| >= 1.
     (loop
-      ;; Make |Re(tau)| <= 1/2.
+      ;; Make |Re(tau)| <= 1/2, using tau -> tau + k:
+      ;;
+      ;;   theta_j(z|tau+k) = exp(%i*%pi*k/4)*theta_j(z|tau), j = 1, 2
+      ;;
+      ;; and theta3 and theta4 are swapped (j -> 7 - j) when k is odd.
       (let ((k (round (realpart tau))))
 	(unless (zerop k)
 	  (setf tau (- tau k))
@@ -6749,7 +6825,13 @@ first kind:
 	      (incf eighths k)
 	      (when (oddp k)
 		(setf j (- 7 j))))))
-      ;; Make |Im(z)| <= %pi*Im(tau)/2.
+      ;; Make |Im(z)| <= %pi*Im(tau)/2, using z -> z - n*%pi*tau:
+      ;;
+      ;;   theta_j(z + n*%pi*tau|tau) = s^n*q^(-n^2)*exp(-2*%i*n*z)*theta_j(z|tau)
+      ;;
+      ;; with s = -1 for theta1 and theta4 and s = 1 otherwise.  s^n
+      ;; goes into EIGHTHS, and the log of the rest,
+      ;; -%i*n*(n*%pi*tau + 2*z) with the new z, into LOGFAC.
       (let ((n (round (imagpart z)
                       (* bfpi (imagpart tau)))))
 	(unless (zerop n)
@@ -6764,7 +6846,9 @@ first kind:
 		   (* n (bf-jacobi-theta-mul-i
 			 (+ (* n bfpi tau)
                             (* 2 z))))))))
-      ;; Make |Re(z)| <= %pi/2.
+      ;; Make |Re(z)| <= %pi/2, using z -> z - n*%pi.  theta1 and
+      ;; theta2 change sign when n is odd; theta3 and theta4 are
+      ;; unchanged.
       (let ((n (round (realpart z) bfpi)))
 	(unless (zerop n)
 	  (setf z (- z (* n bfpi)))
@@ -6773,7 +6857,13 @@ first kind:
 	    (incf eighths 4))))
       (when (>= (abs tau) 1)
 	(return))
-      ;; Apply tau -> -1/tau.
+      ;; Apply tau -> tau1 = -1/tau:
+      ;;
+      ;;   theta_j(z|tau) = c_j*A*theta_j'(z*tau1|tau1)
+      ;;   A = (-%i*tau)^(-1/2)*exp(%i*tau1*z^2/%pi)
+      ;;
+      ;; with j' = 1, 4, 3, 2 for j = 1, 2, 3, 4, and c_1 = -%i =
+      ;; exp(-2*%i*%pi/4), c_j = 1 otherwise.  log(A) goes into LOGFAC.
       (let ((tau1 (/ -1 tau)))
 	(setf logfac
 	      (+ logfac
