@@ -1084,6 +1084,24 @@
 				 (t
 				  (float y2 x)))))))))))
 
+;; Return k = round(phi/%pi) for real phi, such that |phi - k*%pi| <=
+;; %pi/2.  When phi is next to an odd multiple of %pi/2, the rounded
+;; quotient can be a half-integer, and ROUND is then off by one.  The
+;; reduced angle must have a nonnegative cosine, and cos(phi - k*%pi) =
+;; (-1)^k*cos(phi), so correct k from the signs of cos(phi) and
+;; sin(phi).  This is needed only when the remainder is near %pi/2.
+(defun bf-elliptic-period (phi)
+  (multiple-value-bind (k r)
+      (round phi (%pi phi))
+    (let ((sign (if (evenp k) 1 -1)))
+      (cond ((or (< (abs r) 3/2)
+		 (>= (* sign (cos phi)) 0))
+	     k)
+	    ((plusp (* sign (sin phi)))
+	     (1+ k))
+	    (t
+	     (1- k))))))
+
 ;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
 ;;
 ;; This holds for |Re(phi)| <= %pi/2.  Elsewhere, use the
@@ -1104,7 +1122,7 @@
 	 ;; form isn't any more accurate than Carlson's Rf so just use
 	 ;; Rf.	 log(tan(z/2+%pi/4)) loses accuracy for small z and
 	 ;; near %pi/2.	 For |Re(z)| > %pi/2, K(1) is undefined.
-	 (let* ((period (round (realpart phi) (%pi phi)))
+	 (let* ((period (bf-elliptic-period (realpart phi)))
 		(s (if (evenp period)
 		       (sin phi)
 		       (- (sin phi))))
@@ -1212,7 +1230,7 @@
 ;; and c from the unreduced phi, since sin(phi - k*%pi) =
 ;; (-1)^k*sin(phi).
 (defun bf-elliptic-e-m>1 (phi m)
-  (let* ((k (round phi (%pi phi)))
+  (let* ((k (bf-elliptic-period phi))
 	 (s (if (evenp k)
 		(sin phi)
 		(- (sin phi))))
@@ -1284,7 +1302,7 @@
 ;; from BF-ELLIPTIC-EC-TERMS.
 (defun bf-elliptic-e-terms (phi m)
   (let* ((bfpi (%pi phi))
-	 (k (round (realpart phi) bfpi))
+	 (k (bf-elliptic-period (realpart phi)))
 	 (s (sin (- phi (* bfpi k))))
 	 (c (cos (- phi (* bfpi k))))
 	 (c2 (* c c))
@@ -1402,7 +1420,7 @@
     ;;
     ;;   E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
     (let* ((bfpi (%pi phi))
-	   (period (round (realpart phi) bfpi)))
+	   (period (bf-elliptic-period (realpart phi))))
       (+ (base (- phi (* bfpi period))
 	       m)
 	 (* 2 period (bf-elliptic-ec m))))))
@@ -1791,7 +1809,7 @@
 			    (* n sin-phi (abs cos-phi)
 			       (bf-rc k2sin (* p r))))
 			 (- 1 n))))))))
-    (let* ((cycles (round (realpart phi) (%pi (realpart phi))))
+    (let* ((cycles (bf-elliptic-period (realpart phi)))
 	   (sign (if (evenp cycles) 1 -1)))
       (cond ((zerop cycles)
 	     (base n phi m sign))
@@ -1856,7 +1874,7 @@
 (defun bf-elliptic-pi-residue (n phi m)
   (if (and (realp n) (realp phi) (realp m) (> n 1))
       (let* ((bf-pi (%pi phi))
-	     (cycles (round phi bf-pi))
+	     (cycles (bf-elliptic-period phi))
 	     (rem (- phi (* cycles bf-pi)))
 	     (crossings (+ (if (<= m 1)
 			       (* 2 cycles)

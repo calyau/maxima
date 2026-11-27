@@ -113,7 +113,10 @@
         "rtest_lambert_w"
         ((mlist simp) "rtest_elliptic"
 	 #+allegro ((mlist simp) 92)
-	 #+clisp ((mlist simp) 448 455 456 477 546 547 548 549 555 556))
+	 #+clisp ((mlist simp) 448 455 456 477 546 547 548 549 555 556)
+         ;; Gcl 2.7.1 returns the wrong second value for ROUND with a
+         ;; float divisor.
+         #+gcl ((mlist simp) 653 654 655 656 657 658))
         "rtest_integrate"
         "rtest_integrate_special"
         ((mlist simp) "rtest_sqrt"

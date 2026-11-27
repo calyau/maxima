@@ -1359,7 +1359,7 @@ block([fpprec : 32],
 
 /* Complete integral, 0 < m < 1. */
 [closeto(elliptic_pi(1.5, float(%pi/2), 0.5) - (-4.5672031345290990e-1 - 2.7206990463513268*%i), 4.9651e-16),
- closeto(elliptic_pi(1.5b0, bfloat(%pi/2), 0.5b0) - (-4.567203134529098970084643370829239b-1 - 2.720699046351326775891117386463234b0*%i), 7.2677b-33)];
+ closeto(elliptic_pi(1.5b0, bfloat(%pi/2), 0.5b0) - (-4.567203134529098970084643370829239b-1 - 2.720699046351326775891117386463234b0*%i), 8.7158b-33)];
 [true, true];
 
 /* Pole at asin(1/sqrt(n)) crossed. */
@@ -3573,6 +3573,80 @@ block([w : elliptic_pi(6b0, 0.4375b0, 5b0)],
    closeto_relerr(imagpart(w), -1.720721162863642932550994042176359b0,
                   1.0*2^-109)]);
 [true, true];
+
+/*
+ * Bug #5908: elliptic_f, elliptic_e and elliptic_pi with phi next to
+ * an odd multiple of %pi/2, where round(phi/%pi) is off by one.
+ * Reference values from mpmath.
+ */
+
+closeto_relerr(elliptic_f(3*float(%pi/2), float(1-2^-30)),
+               35.350506216083381,
+               3.6209*2^-53);
+true;
+
+block([w : elliptic_e(3*float(%pi/2), float(1+2^-20))],
+  [closeto_relerr(realpart(w), 2.9999888165994938,
+                  1.3334*2^-53),
+   closeto_relerr(imagpart(w), 2.2470413661497549e-6,
+                  1.6977*2^-53)]);
+[true, true];
+
+closeto_relerr(elliptic_pi(float(1/2), 3*float(%pi/2), float(1-2^-30)),
+               66.961661019368576,
+               3.8231*2^-53);
+true;
+
+closeto_relerr(elliptic_f(-7*float(%pi/2), float(1-2^-30)),
+               -82.484514504194555,
+               1.5519*2^-53);
+true;
+
+block([w : elliptic_e(-7*float(%pi/2), float(1+2^-20))],
+  [closeto_relerr(realpart(w), -6.9999739053988188,
+                  1.1429*2^-53),
+   closeto_relerr(imagpart(w), -5.2430965210160948e-6,
+                  1.4552*2^-53)]);
+[true, true];
+
+closeto_relerr(elliptic_pi(float(1/2), -7*float(%pi/2), float(1-2^-30)),
+               -156.24387571186001,
+               1.6385*2^-53);
+true;
+
+closeto_relerr(elliptic_f(bfloat(%pi/2), bfloat(1-2^-30)),
+               1.178350207202979998907687094257419b+1,
+               1.3579*2^-109);
+true;
+
+block([w : elliptic_e(bfloat(%pi/2), bfloat(1+2^-20))],
+  [closeto_relerr(realpart(w), 9.999962721998312539740358841295312b-1,
+                  2.0001*2^-109),
+   closeto_relerr(imagpart(w), 7.490137887166447714733947892522786b-7,
+                  2.5465*2^-109)]);
+[true, true];
+
+closeto_relerr(elliptic_pi(bfloat(1/2), bfloat(%pi/2), bfloat(1-2^-30)),
+               2.232055367312687169543433902256180b+1,
+               1.0*2^-109);
+true;
+
+closeto_relerr(elliptic_f(-11*bfloat(%pi/2), bfloat(1-2^-30)),
+               -1.296185227923277998798455803679122b+2,
+               1.0*2^-109);
+true;
+
+block([w : elliptic_e(-11*bfloat(%pi/2), bfloat(1+2^-20))],
+  [closeto_relerr(realpart(w), -1.099995899419814379371439472542484b+1,
+                  1.4546*2^-109),
+   closeto_relerr(imagpart(w), -8.239151675883092486207342681763028b-6,
+                  1.0*2^-109)]);
+[true, true];
+
+closeto_relerr(elliptic_pi(bfloat(1/2), -11*bfloat(%pi/2), bfloat(1-2^-30)),
+               -2.455260904043955886497777292473720b+2,
+               1.0427*2^-109);
+true;
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
