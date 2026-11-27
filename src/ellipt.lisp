@@ -6880,10 +6880,8 @@ first kind:
            result)
        (cond
          ((not (member j '(1 2 3 4)))
-          (if (mnump j)
-	      (merror (intl:gettext "jacobi_theta: index must be 1, 2, 3, or 4; found ~M")
-		      n)
-	      (give-up)))
+	  (merror (intl:gettext "jacobi_theta: index must be 1, 2, 3, or 4; found ~M")
+		  n))
          ((setf result (jacobi-theta-numerical-eval j z q))
           result)
          ((zerop1 q)
