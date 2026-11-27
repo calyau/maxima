@@ -6757,7 +6757,7 @@ first kind:
 ;;                                   * theta2(z|tau)
 ;;   theta3(z+(m+n*tau)*%pi|tau) = q^(-n^2)*exp(-2*%i*n*z)
 ;;                                   * theta3(z|tau)
-;;   theta1(z+(m+n*tau)*%pi|tau) = (-1)^n*q^(-n^2)*exp(-2*%i*n*z)
+;;   theta4(z+(m+n*tau)*%pi|tau) = (-1)^n*q^(-n^2)*exp(-2*%i*n*z)
 ;;                                   * theta4(z|tau)
 ;;
 ;; With tau = -%i*log(q)/%pi, so that q = exp(%i*%pi*tau), each pass
@@ -6767,8 +6767,8 @@ first kind:
 ;;      |Re(tau)| <= 1/2 (DLMF 20.7.26-20.7.29);
 ;;   2. reduces z by a multiple of %pi*tau, so that
 ;;      |Im(z)| <= %pi*Im(tau)/2, using the quasi-periodicity in
-;;      %pi*tau (DLMF 20.2.8-20.2.9); When tau is complex the real
-;;      part of z can change.
+;;      %pi*tau (DLMF 20.2.8-20.2.9); When Re(tau) is not 0, this also
+;;      %changes Re(z)
 ;;   3. reduces z by a multiple of %pi, so that |Re(z)| <= %pi/2, using
 ;;      the periodicity in %pi (DLMF 20.2.6-20.2.7);
 ;;   4. stops if |tau| >= 1, and otherwise applies tau -> -1/tau,
@@ -6777,13 +6777,13 @@ first kind:
 ;;
 ;; The reduction of z is important because:
 ;;
-;;   1. The series terms are about |a|^(n^2)*exp(2*n*|Im z|). By
+;;   1. The series terms are about |a|^(n^2)*exp(2*n*|Im z|).  By
 ;;      reducing Im z, the terms stay smaller.  Without this, the
 ;;      terms in the series grows before converging to 0.  This makes
-;;      the terms bounded by about |a|^(n^2-n).
-;;   2. Without reduction, the result is the sum has terms far larger
-;;      than the final result. This causes unwanted extra round-off.
-;;   3. The inversion of tau -> -1/tau maps z to z/tau.  This can make
+;;      the terms bounded by about |q|^(n^2-n).
+;;   2. Without reduction, the sum has terms far larger than than the
+;;      final result. This causes unwanted extra round-off.
+;;   3. The inversion of tau -> -1/tau maps z to -z/tau.  This can make
 ;;      the new z have a large imaginary part.  Thus, reduce to bring
 ;;      it back.
 ;;
