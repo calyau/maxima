@@ -42,14 +42,17 @@ This document records the work on bug
 @url{https://sourceforge.net/p/maxima/bugs/5904/, #5904}, accuracy
 problems in @code{elliptic_pi} and @code{carlson_rj} for arguments where
 an intermediate quantity cancels, and the changes to
-@code{src/ellipt.lisp} that fix them. It explains what was wrong, the
-algorithms now used, and the measurements behind them.
+@code{src/ellipt.lisp} that fix them. It also covers bug
+@url{https://sourceforge.net/p/maxima/bugs/5908/, #5908}, which affects
+@code{elliptic_f} and @code{elliptic_e} as well. It explains what was
+wrong, the algorithms now used, and the measurements behind them.
 
 The changes are in @code{src/ellipt.lisp} and
 @code{tests/rtest_elliptic.mac}. Measurements are from SBCL 2.2.9
 against @url{https://mpmath.org/, mpmath} references at the exact double
-or bigfloat inputs. The tests also pass on CMUCL, CCL, ECL and GCL. On
-CLISP, six of the new tests are expected failures (@pxref{Tests}).
+or bigfloat inputs. The tests also pass on CMUCL, CCL and ECL. On CLISP
+and on GCL 2.7, six of the new tests are expected failures
+(@pxref{Tests}).
 
 Errors are given in ulps of the exact value, with 53 bits for double
 floats and 109 bits for bigfloats at @code{fpprec : 32}. The real and
@@ -112,7 +115,7 @@ instead of reducing
 m4_math(<<<\phi>>>, <<<φ>>>)
 by a multiple of
 m4_math(<<<\pi>>>, <<<π>>>)
-first (@pxref{Using the Unreduced Angle}).
+first (@pxref{Reducing the Angle}).
 @item
 @code{bf-elliptic-pi} evaluates the complete integral only when it is
 needed. For
@@ -143,6 +146,15 @@ m4_math(<<<\phi>>>, <<<φ>>>)
 past the branch point, the real part, which is constant there, is
 computed from a complete integral, and the imaginary part from real
 integrals (@pxref{Separate Real and Imaginary Parts for m > 1}).
+@item
+A new function, @code{bf-elliptic-period}, corrects
+m4_math(<<<k = \mathrm{round}(\phi/\pi)>>>, <<<k = round(φ/π)>>>)
+when
+m4_math(<<<\phi>>>, <<<φ>>>)
+is next to an odd multiple of
+m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
+@code{elliptic_f} and @code{elliptic_e} use it too
+(@pxref{s4-4-2,,Section 4.4.2}).
 @item
 New regression tests (@pxref{Tests}).
 @end itemize
@@ -188,7 +200,7 @@ ulps, and are now 5 to 14 ulps for
 m4_math(<<<\lvert\phi\rvert < 10^{8}>>>, <<<|φ| < 10^8>>>)
 near
 m4_math(<<<\pi/2>>>, <<<π/2>>>)
-(@pxref{Using the Unreduced Angle}). For
+(@pxref{Reducing the Angle}). For
 m4_math(<<<n > 1>>>, <<<n > 1>>>)
 past the pole and for
 m4_mathcomma(<<<n \ll 0>>>, <<<n << 0>>>)
@@ -251,9 +263,13 @@ m4_displaymath(
 <<<\Pi(n;\phi\thinspace |\thinspace m) = \Pi(n;\phi - k\pi\thinspace |\thinspace m) + 2k\thinspace \Pi(n\thinspace |\thinspace m), \qquad k = \mathrm{round}(\phi/\pi) .>>>,
 <<<Π(n;φ | m) = Π(n;φ - kπ | m) + 2k Π(n | m), k = round(φ/π) .>>>)
 
-@ref{Using the Unreduced Angle} describes how the first term is computed
+@ref{s4-4-1,,Section 4.4.1} describes how the first term is computed
 without forming
-m4_mathdot(<<<\phi - k\pi>>>, <<<φ - kπ>>>)
+m4_mathcomma(<<<\phi - k\pi>>>, <<<φ - kπ>>>)
+and @ref{s4-4-2,,Section 4.4.2} how
+m4_math(<<<k>>>, <<<k>>>)
+is corrected next to an odd multiple of
+m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
 
 For real
 m4_math(<<<n > 1>>>, <<<n > 1>>>)
@@ -290,8 +306,8 @@ m4_mathdot(<<<y = 0>>>, <<<y = 0>>>)
 
 @code{elliptic_pi} had seven problems. In the first three, a quantity
 inside the formula is computed as a difference of nearly equal numbers.
-The fourth is a loss in the reduction of the angle, the fifth is a
-failure for
+The fourth is the reduction of the angle, which lost accuracy and could
+use the wrong period count, the fifth is a failure for
 m4_math(<<<m = 1>>>, <<<m = 1>>>)
 or
 m4_mathcomma(<<<n = 1>>>, <<<n = 1>>>)
@@ -540,6 +556,19 @@ was computed as exactly 0.
 @node The Reduction of the Angle
 @section The Reduction of the Angle
 
+The reduction of
+m4_math(<<<\phi>>>, <<<φ>>>)
+to
+m4_math(<<<r = \phi - k\pi>>>, <<<r = φ - kπ>>>)
+had two problems: the reduced angle
+m4_math(<<<r>>>, <<<r>>>)
+was inaccurate, and the integer
+m4_math(<<<k>>>, <<<k>>>)
+could be off by one.
+
+@anchor{s3-4-1}
+@subsection The Rounding Error of the Reduced Angle
+
 @code{bf-elliptic-pi} computed the reduced angle
 m4_math(<<<r = \phi - k\pi>>>, <<<r = φ - kπ>>>)
 and then took its sine and cosine. The product
@@ -598,7 +627,7 @@ for @code{elliptic_pi}:
 @strong{Table 3.1.} Worst errors in ulps, double float / bigfloat, for
 generic arguments and large
 m4_mathcomma(<<<\lvert\phi\rvert>>>, <<<|φ|>>>)
-before the change of Section 4.4, with SBCL.
+before the change of Section 4.4.1, with SBCL.
 
 @code{elliptic_pi} was worse than the other two where the integrand is
 large. With
@@ -617,6 +646,55 @@ and @code{elliptic_pi} had 270 to 1030 ulps. @code{elliptic_f} takes the
 sine and cosine of the unreduced angle, and the integrand of
 @code{elliptic_e} is small near
 m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
+
+@anchor{s3-4-2}
+@subsection A Period Count That Is Off by One
+
+The code computed
+m4_math(<<<k = \mathrm{round}(\phi/\pi)>>>, <<<k = round(φ/π)>>>)
+in working precision. When
+m4_math(<<<\phi>>>, <<<φ>>>)
+is the floating-point number nearest an odd multiple of
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+the quotient
+m4_math(<<<\phi/\pi>>>, <<<φ/π>>>)
+can round to exactly a half-integer, and @code{round} then returns the
+even neighbour, which can be off by one. Of 600 such numbers tested,
+m4_math(<<<k>>>, <<<k>>>)
+was wrong for about a quarter of the double floats and about half of the
+bigfloats.
+
+The formula of @ref{The Formula} uses only
+m4_math(<<<\sin\phi>>>, <<<sin φ>>>)
+and
+m4_mathcomma(<<<\cos^2\phi>>>, <<<cos^2 φ>>>)
+so with the wrong
+m4_math(<<<k>>>, <<<k>>>)
+it cannot tell a reduced angle of
+m4_math(<<<\pi/2 + \delta>>>, <<<π/2 + δ>>>)
+from one of
+m4_mathdot(<<<\pi/2 - \delta>>>, <<<π/2 - δ>>>)
+The result is off by about
+m4_math(<<<2\delta>>>, <<<2δ>>>)
+times the integrand at
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+which is large when
+m4_math(<<<n>>>, <<<n>>>)
+or
+m4_math(<<<m>>>, <<<m>>>)
+is near 1. For example, @code{elliptic_pi(0.5, 3*float(%pi/2),
+float(1-2^-30))} was off by 3236 ulps. Bigfloats have the same problem
+at their own precision: @code{bfloat(%pi/2)} at @code{fpprec : 32} is
+above
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+so its
+m4_math(<<<k>>>, <<<k>>>)
+is 1, and 0 was used.
+
+@code{elliptic_f}, and the imaginary part of @code{elliptic_e} for
+m4_math(<<<m>>>, <<<m>>>)
+just above 1, were wrong in the same way. This is bug
+@url{https://sourceforge.net/p/maxima/bugs/5908/, #5908}.
 
 @node The Complete Integral for m or n Equal to 1
 @section The Complete Integral for @math{m} or @math{n} Equal to 1
@@ -768,7 +846,7 @@ They are described here in the same order.
 * Computing y and p Accurately::
 * The Duplication Step of R_J::
 * Which Side of the Pole::
-* Using the Unreduced Angle::
+* Reducing the Angle::
 * Skipping the Complete Integral::
 * The Changes of Parameter::
 * Separate Real and Imaginary Parts for m > 1::
@@ -902,8 +980,7 @@ only through
 m4_math(<<<\sin^2\phi>>>, <<<sin^2 φ>>>)
 and
 m4_mathcomma(<<<\cos^2\phi>>>, <<<cos^2 φ>>>)
-which are the same for the reduced angle (@pxref{Using the Unreduced
-Angle}).
+which are the same for the reduced angle (@pxref{Reducing the Angle}).
 
 @node The Duplication Step of R_J
 @section The Duplication Step of @math{R_J}
@@ -1059,8 +1136,11 @@ m4_mathcomma(<<<\pi/6>>>, <<<π/6>>>)
 after all the changes, with the errors of the real and imaginary parts,
 with SBCL.
 
-@node Using the Unreduced Angle
-@section Using the Unreduced Angle
+@node Reducing the Angle
+@section Reducing the Angle
+
+@anchor{s4-4-1}
+@subsection Using the Unreduced Angle
 
 As in @code{bf-elliptic-f}, @code{bf-elliptic-pi} now uses
 
@@ -1082,8 +1162,10 @@ The sine and cosine of
 m4_math(<<<\phi>>>, <<<φ>>>)
 itself are accurate, so the small cosine near an odd multiple of
 m4_math(<<<\pi/2>>>, <<<π/2>>>)
-keeps its relative accuracy. The reduced angle is no longer formed.
-@code{bf-elliptic-pi-residue} computes its two tests from the unreduced
+keeps its relative accuracy. This relies on the Lisp reducing the
+argument of its @code{sin} and @code{cos} accurately. The reduced angle
+is no longer formed. @code{bf-elliptic-pi-residue} computes its two
+tests from the unreduced
 m4_math(<<<\phi>>>, <<<φ>>>)
 as well, so that it still agrees with @code{bf-elliptic-pi}
 (@pxref{Which Side of the Pole}).
@@ -1110,11 +1192,11 @@ and after this change, on the same 40 points for each range:
 @noindent
 @strong{Table 4.3.} Worst errors in ulps of the real part of
 @code{elliptic_pi}, double float / bigfloat, where the reduction
-matters, before and after the change of this subsection, with SBCL.
+matters, before and after the change of Section 4.4.1, with SBCL.
 
 Near
 m4_math(<<<\pi/2>>>, <<<π/2>>>)
-the perturbations are those of @ref{The Reduction of the Angle}, with
+the perturbations are those of @ref{s3-4-1,,Section 3.4.1}, with
 m4_math(<<<1 - n>>>, <<<1 - n>>>)
 in the same range as
 m4_mathdot(<<<1 - m>>>, <<<1 - m>>>)
@@ -1126,6 +1208,101 @@ m4_math(<<<2k\thinspace \Pi(n\thinspace |\thinspace m)>>>, <<<2k Π(n | m)>>>)
 for
 m4_mathcomma(<<<n > 1>>>, <<<n > 1>>>)
 which the change of @ref{The Changes of Parameter} removes.
+
+@anchor{s4-4-2}
+@subsection Correcting @math{k}
+
+The correct
+m4_math(<<<k>>>, <<<k>>>)
+is the one for which the reduced angle
+m4_math(<<<r = \phi - k\pi>>>, <<<r = φ - kπ>>>)
+is within
+m4_math(<<<\pi/2>>>, <<<π/2>>>)
+of 0, which means that its cosine is not negative. Since
+
+m4_displaymath(
+<<<\cos r = (-1)^k\cos\phi, \qquad \sin r = (-1)^k\sin\phi ,>>>,
+<<<cos r = (-1)^k cos φ, sin r = (-1)^k sin φ ,>>>)
+
+both signs come from the unreduced
+m4_math(<<<\phi>>>, <<<φ>>>)
+without cancellation. The new function @code{bf-elliptic-period}
+computes
+m4_math(<<<k = \mathrm{round}(\phi/\pi)>>>, <<<k = round(φ/π)>>>)
+as before. If
+m4_math(<<<(-1)^k\cos\phi>>>, <<<(-1)^k cos φ>>>)
+is negative,
+m4_math(<<<k>>>, <<<k>>>)
+is off by one, and the function adds 1 to it when
+m4_math(<<<(-1)^k\sin\phi>>>, <<<(-1)^k sin φ>>>)
+is positive and subtracts 1 otherwise. A floating-point number is never
+exactly an odd multiple of
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+so the test always decides.
+
+@code{round} also returns the remainder, and the signs are examined only
+when its absolute value is above
+m4_mathcomma(<<<3/2>>>, <<<3/2>>>)
+that is, when the reduced angle is near
+m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
+So there is no measurable cost for other
+m4_mathdot(<<<\phi>>>, <<<φ>>>)
+
+@code{bf-elliptic-pi} and @code{bf-elliptic-pi-residue} call
+@code{bf-elliptic-period}, and so do the functions for @code{elliptic_f}
+and @code{elliptic_e}. For complex
+m4_math(<<<\phi>>>, <<<φ>>>)
+it is called with the real part.
+
+Worst errors in ulps, double float / bigfloat, at the 600 floating-point
+numbers nearest
+m4_mathcomma(<<<(2j + 1)\pi/2>>>, <<<(2j + 1)π/2>>>)
+for
+m4_math(<<<j>>>, <<<j>>>)
+from
+m4_math(<<<-40>>>, <<<-40>>>)
+to 400 and near
+m4_mathcomma(<<<10^{4}>>>, <<<10^4>>>)
+m4_mathcomma(<<<10^{6}>>>, <<<10^6>>>)
+m4_math(<<<10^{9}>>>, <<<10^9>>>)
+and
+m4_mathpunc(<<<:>>>, <<<10^{12}>>>, <<<10^12>>>)
+
+@anchor{t4-4}
+@need 2337
+@multitable @columnfractions 0.5 0.27 0.23
+@headitem Function @tab Before @tab After
+@item @code{elliptic_f}, @math{m = 1 - 2^{-30}} @tab 3910 / 7980 @tab 2.8 / 2.0
+@item @code{elliptic_e}, @math{m = 1 + 2^{-20}}, imaginary part @tab 1980 / 2050 @tab 2.8 / 1.7
+@item @code{elliptic_e}, @math{m = 1/2} @tab 1.5 / 3.3 @tab 1.6 / 3.3
+@item @code{elliptic_pi}, @math{n = 1/2}, @math{m = 1 - 2^{-30}} @tab 3910 / 8080 @tab 2.8 / 1.3
+@item @code{elliptic_pi}, @math{n = 1 - 2^{-20}}, @math{m = 1/2} @tab 1300 / 1440 @tab 2.4 / 2.0
+@end multitable
+
+@noindent
+@strong{Table 4.4.} Worst errors in ulps, double float / bigfloat, next
+to odd multiples of
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+before and after the correction of
+m4_mathcomma(<<<k>>>, <<<k>>>)
+with SBCL.
+
+For
+m4_math(<<<m < 1>>>, <<<m < 1>>>)
+away from 1 the integrand is of order 1 at
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+and the wrong
+m4_math(<<<k>>>, <<<k>>>)
+made no visible difference.
+
+Since @code{bfloat(%pi/2)} is above
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+@code{elliptic_f(bfloat(%pi/2), 1b0)} and @code{elliptic_pi} with
+m4_math(<<<m = 1>>>, <<<m = 1>>>)
+or
+m4_math(<<<n = 1>>>, <<<n = 1>>>)
+at that angle now signal the error of @ref{Skipping the Complete
+Integral}, where they returned a large finite value before.
 
 @node Skipping the Complete Integral
 @section Skipping the Complete Integral
@@ -1357,7 +1534,7 @@ set with
 m4_mathcomma(<<<\lvert\phi\rvert \le \pi/2>>>, <<<|φ| <= π/2>>>)
 are:
 
-@anchor{t4-4}
+@anchor{t4-5}
 @need 2107
 @multitable @columnfractions 0.5 0.25 0.25
 @headitem Inputs @tab Section 2 @tab DLMF 19.7.8
@@ -1368,7 +1545,7 @@ are:
 @end multitable
 
 @noindent
-@strong{Table 4.4.} Worst errors in ulps, double float / bigfloat, of
+@strong{Table 4.5.} Worst errors in ulps, double float / bigfloat, of
 the formula of Section 2 and of the first change of parameter, in
 regions where the formula of Section 2 is kept, with SBCL.
 
@@ -1441,7 +1618,7 @@ m4_math(<<<\phi>>>, <<<φ>>>)
 is uniform between the pole and
 m4_mathpunc(<<<:>>>, <<<\pi/2>>>, <<<π/2>>>)
 
-@anchor{t4-5}
+@anchor{t4-6}
 @need 5363
 @multitable @columnfractions 0.5 0.27 0.23
 @headitem Inputs @tab Before @tab After
@@ -1461,7 +1638,7 @@ m4_mathpunc(<<<:>>>, <<<\pi/2>>>, <<<π/2>>>)
 @end multitable
 
 @noindent
-@strong{Table 4.5.} Worst errors in ulps of the real part of
+@strong{Table 4.6.} Worst errors in ulps of the real part of
 @code{elliptic_pi}, double float / bigfloat, before and after the
 changes of parameter, with SBCL.
 
@@ -1517,7 +1694,7 @@ microseconds, as the best of three runs, each the best of 7 repeats over
 300 random points, with the formula of @ref{The Formula} alone and with
 the changes of parameter:
 
-@anchor{t4-6}
+@anchor{t4-7}
 @need 3076
 @multitable @columnfractions 0.5 0.25 0.25
 @headitem Inputs @tab Before @tab After
@@ -1530,7 +1707,7 @@ the changes of parameter:
 @end multitable
 
 @noindent
-@strong{Table 4.6.} Time per call in microseconds of double-float
+@strong{Table 4.7.} Time per call in microseconds of double-float
 @code{elliptic_pi} on SBCL, before and after the changes of parameter.
 
 @node Separate Real and Imaginary Parts for m > 1
@@ -1805,7 +1982,7 @@ m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
 The references are from numerical integration along a path indented
 around the pole and the branch point:
 
-@anchor{t4-7}
+@anchor{t4-8}
 @need 3994
 @multitable @columnfractions 0.5 0.27 0.23
 @headitem Inputs @tab Before @tab After
@@ -1822,12 +1999,12 @@ around the pole and the branch point:
 @end multitable
 
 @noindent
-@strong{Table 4.7.} Worst errors in ulps of the real part of
+@strong{Table 4.8.} Worst errors in ulps of the real part of
 @code{elliptic_pi} for
 m4_math(<<<m > 1>>>, <<<m > 1>>>)
 past the branch point, double float / bigfloat, with SBCL.
 
-@anchor{t4-8}
+@anchor{t4-9}
 @need 3654
 @multitable @columnfractions 0.5 0.27 0.23
 @headitem Inputs @tab Before @tab After
@@ -1844,7 +2021,7 @@ past the branch point, double float / bigfloat, with SBCL.
 @end multitable
 
 @noindent
-@strong{Table 4.8.} Worst errors in ulps of the imaginary part of
+@strong{Table 4.9.} Worst errors in ulps of the imaginary part of
 @code{elliptic_pi} for
 m4_math(<<<m > 1>>>, <<<m > 1>>>)
 past the branch point, double float / bigfloat, with SBCL.
@@ -1887,7 +2064,7 @@ and
 m4_mathcomma(<<<p>>>, <<<p>>>)
 and takes the sine and cosine of the unreduced
 m4_math(<<<\phi>>>, <<<φ>>>)
-(@pxref{Using the Unreduced Angle}). It evaluates
+(@pxref{Reducing the Angle}). It evaluates
 @code{bf-elliptic-pi-complete} only when
 m4_math(<<<k \ne 0>>>, <<<k ≠ 0>>>)
 (@pxref{Skipping the Complete Integral}).
@@ -1900,6 +2077,13 @@ m4_mathdot(<<<\phi>>>, <<<φ>>>)
 more branches for the changes of parameter (@pxref{The Changes of
 Parameter}). They use @code{bf-rf}, @code{bf-rc}, @code{bf-rj} and
 @code{bf-1-m*sin^2}, which are unchanged.
+@item
+@code{bf-elliptic-period} is new. It returns the corrected
+m4_mathcomma(<<<k>>>, <<<k>>>)
+and replaces @code{round} in @code{bf-elliptic-f}, @code{bf-elliptic-e},
+@code{bf-elliptic-e-terms}, @code{bf-elliptic-e-m>1},
+@code{bf-elliptic-pi} and @code{bf-elliptic-pi-residue}
+(@pxref{s4-4-2,,Section 4.4.2}).
 @item
 @code{elliptic-pi-undefined} is new. It signals the error for
 m4_math(<<<m = 1>>>, <<<m = 1>>>)
@@ -2143,7 +2327,7 @@ where both were computed. The real and imaginary parts are checked
 separately, by relative error.
 
 With all the changes, the tests in @code{rtest_elliptic.mac} pass on
-SBCL, CMUCL, CCL, ECL and GCL.
+SBCL, CMUCL, CCL and ECL, and on GCL 2.6.14.
 
 @strong{CLISP.} Six of the new tests are expected failures on CLISP:
 
@@ -2181,6 +2365,20 @@ m4_math(<<<\sin\phi>>>, <<<sin φ>>>)
 and
 m4_mathcomma(<<<\cos\phi>>>, <<<cos φ>>>)
 the SBCL build gives CLISP's results exactly.
+
+@strong{GCL.} With GCL 2.7, the six double-float tests of the corrected
+m4_math(<<<k>>>, <<<k>>>)
+(@pxref{s4-4-2,,Section 4.4.2}), problems 653 to 658, are expected
+failures. Its @code{round} with a floating-point divisor returns the
+wrong remainder: @code{(round 7d0 2d0)} gives a remainder of
+m4_mathcomma(<<<-0.5>>>, <<<-0.5>>>)
+where it should be
+m4_mathdot(<<<-1>>>, <<<-1>>>)
+So @code{bf-elliptic-period} does not see that the reduced angle is near
+m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
+and
+m4_math(<<<k>>>, <<<k>>>)
+is not corrected. GCL 2.6.14 returns the right remainder.
 
 @node Known Limitations
 @chapter Known Limitations
@@ -2256,37 +2454,6 @@ Arb avoid the problem by integrating numerically until the arguments
 satisfy the condition. Nothing is done about it here, so complex results
 of @code{carlson_rj} and @code{elliptic_pi} should be checked
 independently.
-@item
-@strong{The wrong}
-m4_math(<<<k>>>, <<<k>>>)
-@strong{next to an odd multiple of}
-m4_mathdot(<<<\pi/2>>>, <<<π/2>>>)
-When
-m4_math(<<<\phi>>>, <<<φ>>>)
-is the double float nearest an odd multiple of
-m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
-m4_math(<<<\phi/\pi>>>, <<<φ/π>>>)
-computed in double float can be exactly a half-integer, and @code{round}
-then gives a
-m4_math(<<<k>>>, <<<k>>>)
-that is off by one. The formula cannot tell
-m4_math(<<<\pi/2 + \delta>>>, <<<π/2 + δ>>>)
-from
-m4_mathcomma(<<<\pi/2 - \delta>>>, <<<π/2 - δ>>>)
-so the result is off by about
-m4_math(<<<2\delta>>>, <<<2δ>>>)
-times the integrand at
-m4_mathcomma(<<<\pi/2>>>, <<<π/2>>>)
-which is large when
-m4_math(<<<n>>>, <<<n>>>)
-or
-m4_math(<<<m>>>, <<<m>>>)
-is near 1. For example, @code{elliptic_pi(0.5, float(3*%pi/2),
-float(1-2^-30))} is off by 1693 ulps. @code{elliptic_f} and the
-imaginary part of @code{elliptic_e} for
-m4_math(<<<m>>>, <<<m>>>)
-just above 1 are affected too. This is bug
-@url{https://sourceforge.net/p/maxima/bugs/5908/, #5908}.
 @end itemize
 
 @node References
