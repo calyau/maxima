@@ -866,6 +866,65 @@
 		 (* -3/44 ee2 ee3))))
       (/ s (sqrt an)))))
   
+;; Carefully compute 1 + en/dn^2, the second argument of rc in the
+;; duplication step of rj, where
+;;
+;;   en = (p-x)*(p-y)*(p-z)
+;;   dn = (sqrt(p)+sqrt(x))*(sqrt(p)+sqrt(y))*(sqrt(p)+sqrt(z))
+;;
+;; Since p-x = (sqrt(p)-sqrt(x))*(sqrt(p)+sqrt(x)),
+;;
+;;   en/dn^2 = tx*ty*tz,  tx = (sqrt(p)-sqrt(x))/(sqrt(p)+sqrt(x))
+;;
+;; and likewise for ty and tz.  When the product is near -1, the sum
+;; cancels.
+;;
+;; For real square roots, |tx| = 1 - wx, where wx is 2*sqrt(x) or
+;; 2*sqrt(p), whichever is smaller, divided by sqrt(p)+sqrt(x), and
+;; 0 <= wx <= 1.  If an even number of tx, ty and tz are negative,
+;; the result is 1 + |tx|*|ty|*|tz|.  Otherwise it is
+;;
+;;   1 - (1-wx)*(1-wy)*(1-wz) = wx + |tx|*(wy + |ty|*wz)
+;;
+;; In both cases all the terms are nonnegative.
+;;
+;; For complex square roots, with ax = 2*sqrt(p)/(sqrt(p)+sqrt(x)),
+;; and likewise for ay and az,
+;;
+;;   1 + en/dn^2 = ax+ay+az - (ax*ay+ax*az+ay*az) + ax*ay*az
+;;
+;; which does not cancel when ax, ay and az are small.
+(defun bf-rj-rc-arg (en dn pnroot xnroot ynroot znroot)
+  (cond ((and (realp pnroot)
+              (realp xnroot)
+              (realp ynroot)
+              (realp znroot))
+         (let ((negative 0)
+	       (prod 1)
+	       (sum 0))
+	   (dolist (root (list znroot ynroot xnroot))
+	     (let* ((d (- pnroot root))
+		    (s (+ pnroot root))
+		    (tn (/ (abs d) s)))
+	       (when (minusp d)
+	         (incf negative))
+	       (setf sum (+ (/ (* 2 (if (minusp d) pnroot root)) s)
+			    (* tn sum)))
+	       (setf prod (* prod tn))))
+	   (if (oddp negative)
+	       sum
+	       (+ 1 prod))))
+        (t
+         (let ((r (+ 1 (/ en (* dn dn)))))
+	   (if (< (abs r) 1/2)
+	       (let ((ax (/ (* 2 pnroot) (+ pnroot xnroot)))
+		     (ay (/ (* 2 pnroot) (+ pnroot ynroot)))
+		     (az (/ (* 2 pnroot) (+ pnroot znroot))))
+	         (+ (- (+ ax ay az)
+		       (+ (* ax ay) (* ax az) (* ay az)))
+		    (* ax ay az)))
+	       r)))))
+
 (defun bf-rj1 (x y z p)
   (let* ((xn x)
 	 (yn y)
@@ -899,7 +958,7 @@
 		   (+ pnroot znroot)))
        (setf sigma (+ sigma
 		      (/ (* power4
-			    (bf-rc 1 (+ 1 (/ en (* dn dn)))))
+			    (bf-rc 1 (bf-rj-rc-arg en dn pnroot xnroot ynroot znroot)))
 			 dn)))
        (setf power4 (* power4 1/4))
        (setf en (/ en 64))
@@ -1409,31 +1468,342 @@
 	 (values (bf-elliptic-ec-terms m)))))
 
 ;;; Elliptic PI
+;;;
+;;; Further details of the algorithms used here can be found in
+;;; doc/info/impl-notes/elliptic-pi-accuracy.texi.m4
+;;;
 
+;; Complete elliptic-pi.  That is phi = %pi/2.  Then
+;; elliptic_pi(n,m)
+;;   = Rf(0, 1-m,1) + Rj(0,1-m,1-n)*n/3;
+;;
+;; For real n > 1 and for real n < -1 the two terms cancel.  There,
+;; use a change of parameter instead.  For n > 1, with w = m/n (DLMF
+;; 19.7.8, where the Rc term is a Cauchy principal value, which is 0):
+;;
+;; elliptic_pi(n,m)
+;;   = -Rj(0,1-m,1,1-w)*w/3
+;;
+;; For n < -1, with v = (1-m)/(1-n) (DLMF 19.7.9):
+;;
+;; elliptic_pi(n,m)
+;;   = (Rf(0,1-m,1) - Rj(0,1-m,1,v)*n*v/3)/(1-n)
+;;
+;; For real m > 1 the real and imaginary parts are from
+;; bf-elliptic-pi-realpart-m>1 and bf-elliptic-pi-imagpart-m>1.
 (defun bf-elliptic-pi-complete (n m)
-  (+ (bf-rf 0 (- 1 m) 1)
-     (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))
+  (cond ((and (realp n)
+              (realp m)
+              (> m 1)
+              (/= n m))
+         ;; m > 1, n /= m
+	 (complex (bf-elliptic-pi-realpart-m>1 n m (> n 1))
+		  (bf-elliptic-pi-imagpart-m>1 n m 1 0 (- 1 m))))
+	((and (realp n)
+              (realp m)
+              (< m 1)
+              (> n 1))
+         ;; m < 1, n > 1
+         ;;
+         ;;   elliptic_pi(n,m) = -w/3*Rj(0,1-m,1,1-w)
+         ;;
+         ;; where w = m/n
+	 (let ((w (/ m n)))
+	   (* -1/3 w (bf-rj 0 (- 1 m) 1 (- 1 w)))))
+	((and (realp n)
+              (realp m)
+              (< m 1)
+              (< n -1))
+         ;; m < 1, n < -1
+         ;;
+         ;;   elliptic_pi(n,m)
+         ;;     = (Rf(0,1-m,1) - n*v/3*Rj(0,1-m,1,v))/(1-n)
+         ;;
+         ;; where v = (1-m)/(1-n)
+	 (let ((v (/ (- 1 m) (- 1 n))))
+	   (/ (- (bf-rf 0 (- 1 m) 1)
+		 (* 1/3 n v (bf-rj 0 (- 1 m) 1 v)))
+	      (- 1 n))))
+	(t
+         ;; Everything else:
+         ;;
+         ;;   elliptic_pi(n,m) = Rf(0, 1-m,1) + n/3*Rj(0,1-m,1-n)
+	 (+ (bf-rf 0 (- 1 m) 1)
+	    (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))))
 
+;; The real part of elliptic_pi(n,phi,m) for real n, phi and m > 1
+;; when the reduced angle r = phi - k*%pi is positive and past the
+;; branch point, m*sin(r)^2 > 1.  There the integrand is purely
+;; imaginary, so the real part is constant between the singularities.
+;; By the reciprocal-modulus transformation (DLMF 19.7.4), up to the
+;; pole, if there is one past the branch point, it is the complete
+;; integral
+;;
+;;   elliptic_pi(n/m, 1/m)/sqrt(m)
+;;
+;; PAST-POLE is true if r is past the pole, n*sin(r)^2 > 1.  Then
+;; the real part is, with DLMF 19.7.8 for the complete integral,
+;;
+;;   -Rj(0, 1-1/m, 1, 1-1/n)/(3*n*sqrt(m))
+;;
+;; whether the pole is before or past the branch point.
+(defun bf-elliptic-pi-realpart-m>1 (n m past-pole)
+  (if past-pole
+      (/ (bf-rj 0 (- 1 (/ m)) 1 (- 1 (/ n)))
+	 (* -3 n (sqrt m)))
+      (/ (bf-elliptic-pi-complete (/ n m) (/ m))
+	 (sqrt m))))
+
+;; The imaginary part of elliptic_pi(n,phi,m) in the same case.  S
+;; and C are the sine and cosine of r and Y is 1-m*sin(r)^2 < 0.
+;;
+;; Past the branch point b, where m*sin(b)^2 = 1, the integrand is
+;; -%i times a real function, so the imaginary part is -J, where J
+;; is the integral from b to r of
+;;
+;;   1/((1-n*sin(x)^2)*sqrt(m*sin(x)^2-1))
+;;
+;; and, for n > m, minus the residue term
+;;
+;;   sigma = %pi/2*sqrt(n/((n-1)*(n-m)))
+;;
+;; from the pole, which is then before the branch point.
+;;
+;; The substitution m*sin(x)^2 - 1 = (m-1)*sin(u)^2 maps x = b to
+;; u = 0 and x = r to u = chi, where
+;;
+;;   sin(chi)^2 = -Y/(m-1),  cos(chi)^2 = m*C^2/(m-1)
+;;
+;; Then, with nn = n*(m-1)/(m-n),
+;;
+;;   dx/sqrt(m*sin(x)^2-1) = du/sqrt(1-(1-m)*sin(u)^2)
+;;   1-n*sin(x)^2 = (m-n)/m*(1-nn*sin(u)^2)
+;;
+;; so that
+;;
+;;   J = m/(m-n)*elliptic_pi(nn, chi, 1-m)
+;;
+;; This is used for n < m.  For 1 < n < m, nn > 1 and the integral
+;; is a principal value.
+;;
+;; For n > m, J and sigma are both large when n is near m, and
+;; -J - sigma cancels.  Apply the change of parameter (DLMF 19.7.8)
+;; to elliptic_pi(nn, chi, 1-m).  The new parameter is
+;; w = (1-m)/nn = 1-m/n, and
+;;
+;;   elliptic_pi(nn, chi, 1-m) =
+;;     sin(chi)*Rc(cos(chi)^2*m*S^2, (1-nn*sin(chi)^2)*q)
+;;     - (w/3)*sin(chi)^3*Rj(cos(chi)^2, m*S^2, 1, q)
+;;
+;; where q = 1-w*sin(chi)^2 = cos(chi)^2 + m/n*sin(chi)^2.  The
+;; arguments of Rc differ by sin(chi)^2*m^2*(n-1)/(n*(n-m)), so
+;; with Rc(x,z) = (%pi/2 - atan(sqrt(x/(z-x))))/sqrt(z-x),
+;;
+;;   m/(m-n)*sin(chi)*Rc = -sigma + 2*sigma/%pi*atan(t)
+;;   t = S*C*sqrt(n*(n-m)/((n-1)*(-Y)))
+;;
+;; The term -sigma cancels the residue term exactly, and the
+;; imaginary part is
+;;
+;;   -m/(3*n)*sin(chi)^3*Rj(cos(chi)^2, m*S^2, 1, q)
+;;    - sqrt(n/((n-1)*(n-m)))*atan(t)
+;;
+;; where both terms have the same sign.
+(defun bf-elliptic-pi-imagpart-m>1 (n m s c y)
+  (cond ((> n m)
+         (let ((s2 (/ (- y)
+                      (- m 1)))
+	       (c2 (/ (* m c c)
+                      (- m 1))))
+	   (- (+ (* (/ m (* 3 n))
+                    (expt (sqrt s2) 3)
+		    (bf-rj c2
+                           (* m s s)
+                           1
+                           (+ c2 (* (/ m n)
+                                    s2))))
+	         (* (sqrt (/ n (* (- n 1)
+                                  (- n m))))
+		    (atan (* s c (sqrt (/ (* n (- n m))
+				          (* (- n 1)
+                                             (- y)))))))))))
+         (t
+          (let ((nn (/ (* n (- m 1))
+                       (- m n))))
+	    (* (/ m (- n m))
+	       (if (zerop c)
+	           (bf-elliptic-pi-complete nn (- 1 m))
+	           (bf-elliptic-pi nn
+			           (atan (sqrt (- y))
+                                         (* (sqrt m) c))
+			           (- 1 m))))))))
+
+;; To compute elliptic_pi for all z, we use the property
+;; (http://functions.wolfram.com/08.06.16.0002.01)
+;;
+;; elliptic_pi(n, z + %pi*k, m)
+;;   = 2*k*elliptic_pi(n, %pi/2, m) + elliptic_pi(n, z, m)
+;;
+;; So we are left with computing the integral for 0 <= z < %pi.  Using
+;; Carlson's formulation produces the wrong values for %pi/2 < z <
+;; %pi.  How to do that?
+;;
+;; Let
+;;
+;;   I(a,b) = integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, a, b)
+;;
+;; That is, I(a,b) is the integral for the elliptic_pi function but
+;; with a lower limit of a and an upper limit of b.
+;;
+;; Then, we want to compute I(0, z), with %pi <= z < %pi.  Let w = z +
+;; %pi/2, 0 <= w < %pi/2.  Then
+;;
+;;   I(0, w+%pi/2) = I(0, %pi/2) + I(%pi/2, w+%pi/2)
+;;
+;; To evaluate I(%pi/2, w+%pi/2), use a change of variables:
+;;
+;;   changevar('integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, %pi/2, w + %pi/2),
+;;      x-%pi+u,u,x)
+;;
+;;     = integrate(-1/(sqrt(1-m*sin(u)^2)*(1-n*sin(u)^2)),u,%pi/2-w,%pi/2)
+;;     = I(%pi/2-w,%pi/2)
+;;     = I(0,%pi/2) - I(0,%pi/2-w)
+;;
+;; Thus,
+;;
+;;   I(0,%pi/2+w) = 2*I(0,%pi/2) - I(0,%pi/2-w)
+;;
+;; This allows us to compute the general result with 0 <= z < %pi
+;;
+;;   I(0, k*%pi + z) = 2*k*I(0,%pi/2) + I(0,z);
+;;
+;; If 0 <= z < %pi/2, then the we are done.  If %pi/2 <= z < %pi, let
+;; z = w+%pi/2. Then
+;;
+;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi/2-w)
+;;
+;; Or, since w = z-%pi/2:
+;;
+;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi-z)
 (defun bf-elliptic-pi (n phi m)
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
-  (flet ((base (n phi m)
+  (flet ((base (n phi m sign)
+	   ;; elliptic_pi(n,phi,m) =
+	   ;;   sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
+	   ;;   - (-n / 3) * sin(phi)^3
+	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-n*sin(phi)^2)
+	   ;;
+	   ;; PHI is the unreduced angle and SIGN is (-1)^k, where
+	   ;; phi - k*%pi is the reduced angle.  The sine of the
+	   ;; reduced angle is SIGN*sin(phi) and the squares of its
+	   ;; sine and cosine are those of PHI, so the reduced angle,
+	   ;; which has round-off, is not needed.
+	   ;;
+	   ;; Past the pole for real n > 1, and for real n < -1, the
+	   ;; terms above cancel.  There, use a change of parameter
+	   ;; instead.  Past the pole, with w = m/n (DLMF 19.7.8):
+	   ;;
+	   ;; elliptic_pi(n,phi,m) =
+	   ;;   sin(phi)*Rc(cos(phi)^2*(1-m*sin(phi)^2),
+	   ;;               (1-n*sin(phi)^2)*(1-w*sin(phi)^2))
+	   ;;   - (w / 3) * sin(phi)^3
+	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-w*sin(phi)^2)
+	   ;;
+	   ;; For n < -1, with v = (1-m)/(1-n) and
+	   ;; r = cos(phi)^2 + v*sin(phi)^2 (DLMF 19.7.9):
+	   ;;
+	   ;; elliptic_pi(n,phi,m) =
+	   ;;   (sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
+	   ;;    - (n*v / 3) * sin(phi)^3
+	   ;;      * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, r)
+	   ;;    - n*sin(phi)*abs(cos(phi))
+	   ;;      * Rc(1-m*sin(phi)^2, (1-n*sin(phi)^2)*r))
+	   ;;   / (1-n)
+	   ;;
+	   ;; For real arguments with 1-m*sin(phi)^2 < 0, the real and
+	   ;; imaginary parts are from bf-elliptic-pi-realpart-m>1 and
+	   ;; bf-elliptic-pi-imagpart-m>1.
 	   (let* ((nn (- n))
-		  (sin-phi (sin phi))
+		  (sin-phi (* sign (sin phi)))
 		  (cos-phi (cos phi))
-		  (k2sin (- 1 (* m sin-phi sin-phi))))
-	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
-		(* (/ nn 3) (expt sin-phi 3)
-		   (bf-rj (expt cos-phi 2) k2sin 1.0
-			  (- 1 (* n (expt sin-phi 2)))))))))
-    ;; FIXME: Reducing the arg by pi has significant round-off.
-    ;; Consider doing something better.
-    (let* ((bf-pi (%pi (realpart phi)))
-	   (cycles (round (realpart phi) bf-pi))
-	   (rem (- phi (* cycles bf-pi))))
-	(let ((complete (bf-elliptic-pi-complete n m)))
-	  (+ (* 2 cycles complete)
-	     (base n rem m))))))
+		  (k2sin (bf-1-m*sin^2 phi m))
+		  (p (bf-1-m*sin^2 phi n))
+		  (real (and (realp n)
+                             (realp phi)
+                             (realp m))))
+	     (cond ((and real
+                         (minusp k2sin)
+                         (/= n m))
+		    (* (signum sin-phi)
+		       (complex (bf-elliptic-pi-realpart-m>1 n m (minusp p))
+				(bf-elliptic-pi-imagpart-m>1
+				 n
+                                 m
+                                 (abs sin-phi)
+                                 (abs cos-phi)
+                                 k2sin))))
+		   ((not (and real
+                              (>= k2sin 0)
+			      (or (minusp p)
+                                  (< n -1))))
+		    (- (* sin-phi
+                          (bf-rf (expt cos-phi 2)
+                                 k2sin
+                                 1.0))
+		       (* (/ nn 3)
+                          (expt sin-phi 3)
+			  (bf-rj (expt cos-phi 2)
+                                 k2sin
+                                 1.0
+                                 p))))
+		   ((minusp p)
+		    ;; This formula is more sensitive to errors in p
+		    ;; and, for m > 1, in 1-m*sin(phi)^2, so compute
+		    ;; them with extra precision up to 1/4.
+		    (let* ((p (if (< 1/16 (abs p) 1/4)
+				  (bf-1-m*sin^2 phi n 1/4)
+				  p))
+			   (k2sin (if (and (> m 1)
+                                           (< 1/16 k2sin 1/4))
+				      (bf-1-m*sin^2 phi m 1/4)
+				      k2sin))
+			   (w (/ m n))
+			   (q (bf-1-m*sin^2 phi w)))
+		      (- (* sin-phi
+			    (bf-rc (* (expt cos-phi 2)
+                                      k2sin)
+                                   (* p q)))
+			 (* (/ w 3)
+                            (expt sin-phi 3)
+			    (bf-rj (expt cos-phi 2)
+                                   k2sin 1.0 q)))))
+		   (t
+		    (let* ((v (/ (- 1 m)
+                                 (- 1 n)))
+			   (r (+ (expt cos-phi 2)
+                                 (* v (expt sin-phi 2)))))
+		      (/ (- (* sin-phi
+                               (bf-rf (expt cos-phi 2) k2sin 1.0))
+			    (* (/ (* n v) 3)
+                               (expt sin-phi 3)
+			       (bf-rj (expt cos-phi 2) k2sin 1.0 r))
+			    (* n sin-phi (abs cos-phi)
+			       (bf-rc k2sin (* p r))))
+			 (- 1 n))))))))
+    (let* ((cycles (round (realpart phi) (%pi (realpart phi))))
+	   (sign (if (evenp cycles) 1 -1)))
+      (cond ((zerop cycles)
+	     (base n phi m sign))
+	    ((or (= m 1) (= n 1))
+	     ;; The complete integral is infinite for m = 1 or n = 1.
+	     (maxima::elliptic-pi-undefined (maxima::to n)
+					    (maxima::to phi)
+					    (maxima::to m)))
+	    (t
+	     (+ (* 2 cycles
+                   (bf-elliptic-pi-complete n m))
+		(base n phi m sign)))))))
 
 ;; For real n > 1, the integrand of elliptic_pi has simple poles at
 ;; theta = +/- asin(1/sqrt(n)) + k*%pi.  When bf-rj is called with
@@ -1488,11 +1858,15 @@
       (let* ((bf-pi (%pi phi))
 	     (cycles (round phi bf-pi))
 	     (rem (- phi (* cycles bf-pi)))
-	     (s2 (expt (sin rem) 2))
 	     (crossings (+ (if (<= m 1)
 			       (* 2 cycles)
 			       0)
-			   (if (and (> (* n s2) 1) (<= (* m s2) 1))
+			   ;; Use the same values of 1-n*sin(phi)^2 and
+			   ;; 1-m*sin(phi)^2 as bf-elliptic-pi, so that
+			   ;; this agrees with the branch taken by bf-rj
+			   ;; when rem is next to the pole.
+			   (if (and (minusp (bf-1-m*sin^2 phi n))
+				    (>= (bf-1-m*sin^2 phi m) 0))
 			       (signum rem)
 			       0))))
 	(if (zerop crossings)
@@ -3504,19 +3878,30 @@ first kind:
 ;; As with E and F, we do not use the modular angle alpha but the
 ;; parameter m = sin(alpha)^2.
 ;;
+;; Signal the error for elliptic_pi when m = 1 or n = 1 and the
+;; complete integral, which is infinite, is needed.
+(defun elliptic-pi-undefined (n phi m)
+  (merror (intl:gettext "elliptic_pi: elliptic_pi(~:M, ~:M, ~:M) is undefined: ~%  ~ 
+  the integral diverges for abs(phi) >= %pi/2 when ~A = 1.")
+	  n phi m
+	  (if (onep1 m) "m" "n")))
+
 (def-simplifier elliptic_pi (n phi m)
   (let (args)
     (cond
       ((float-numerical-eval-p n phi m)
        ;; Numerically evaluate it
-       (add (elliptic-pi ($float n) ($float phi) ($float m))
-	    (to (bigfloat::bf-elliptic-pi-residue ($float n) ($float phi) ($float m)))))
+       (let ((n ($float n))
+	     (phi ($float phi))
+	     (m ($float m)))
+	 (to (bigfloat:+ (bigfloat::bf-elliptic-pi n phi m)
+			 (bigfloat::bf-elliptic-pi-residue n phi m)))))
       ((setf args (complex-float-numerical-eval-p n phi m))
        (destructuring-bind (n phi m)
 	   args
-         (elliptic-pi (bigfloat:to ($float n))
-		      (bigfloat:to ($float phi))
-		      (bigfloat:to ($float m)))))
+	 (to (bigfloat::bf-elliptic-pi (bigfloat:to ($float n))
+				       (bigfloat:to ($float phi))
+				       (bigfloat:to ($float m))))))
       ((bigfloat-numerical-eval-p n phi m)
        (to (bigfloat:+ (bigfloat::bf-elliptic-pi (bigfloat:to n)
 						 (bigfloat:to phi)
@@ -3530,6 +3915,13 @@ first kind:
 	 (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
 				       (bigfloat:to phi)
 				       (bigfloat:to m)))))
+      ((and (or (onep1 m)
+                (onep1 n))
+	    (or (alike1 (ftake 'mabs phi)
+                        (div '$%pi 2))
+		(elliptic-period-count phi)))
+       ;; The complete integral is infinite for m = 1 or n = 1.
+       (elliptic-pi-undefined n phi m))
       ((zerop1 n)
        (ftake '%elliptic_f phi m))
       ((zerop1 m)
@@ -3549,91 +3941,6 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (give-up)))))
-
-;; Complete elliptic-pi.  That is phi = %pi/2.  Then
-;; elliptic_pi(n,m)
-;;   = Rf(0, 1-m,1) + Rj(0,1-m,1-n)*n/3;
-(defun elliptic-pi-complete (n m)
-  (bigfloat:+ (bigfloat::bf-rf 0 (- 1 m) 1)
-	      (bigfloat:* 1/3 n (bigfloat::bf-rj 0 (- 1 m) 1 (- 1 n)))))
-
-;; To compute elliptic_pi for all z, we use the property
-;; (http://functions.wolfram.com/08.06.16.0002.01)
-;; 
-;; elliptic_pi(n, z + %pi*k, m)
-;;   = 2*k*elliptic_pi(n, %pi/2, m) + elliptic_pi(n, z, m)
-;;
-;; So we are left with computing the integral for 0 <= z < %pi.  Using
-;; Carlson's formulation produces the wrong values for %pi/2 < z <
-;; %pi.  How to do that?
-;;
-;; Let
-;;
-;;   I(a,b) = integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, a, b)
-;;
-;; That is, I(a,b) is the integral for the elliptic_pi function but
-;; with a lower limit of a and an upper limit of b.
-;;
-;; Then, we want to compute I(0, z), with %pi <= z < %pi.  Let w = z +
-;; %pi/2, 0 <= w < %pi/2.  Then
-;;
-;;   I(0, w+%pi/2) = I(0, %pi/2) + I(%pi/2, w+%pi/2)
-;;
-;; To evaluate I(%pi/2, w+%pi/2), use a change of variables:
-;;
-;;   changevar('integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, %pi/2, w + %pi/2),
-;;      x-%pi+u,u,x)
-;;
-;;     = integrate(-1/(sqrt(1-m*sin(u)^2)*(1-n*sin(u)^2)),u,%pi/2-w,%pi/2)
-;;     = I(%pi/2-w,%pi/2)
-;;     = I(0,%pi/2) - I(0,%pi/2-w)
-;; 
-;; Thus,
-;;
-;;   I(0,%pi/2+w) = 2*I(0,%pi/2) - I(0,%pi/2-w)
-;;
-;; This allows us to compute the general result with 0 <= z < %pi
-;;
-;;   I(0, k*%pi + z) = 2*k*I(0,%pi/2) + I(0,z);
-;;
-;; If 0 <= z < %pi/2, then the we are done.  If %pi/2 <= z < %pi, let
-;; z = w+%pi/2. Then
-;;
-;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi/2-w)
-;;
-;; Or, since w = z-%pi/2:
-;;
-;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi-z)
- 
-(defun elliptic-pi (n phi m)
-  ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
-  ;; is an odd function of phi.
-  (when (minusp (realpart phi))
-    (return-from elliptic-pi (neg (elliptic-pi n (- phi) m))))
-
-  ;; Note: Carlson's DRJ has n defined as the negative of the n given
-  ;; in A&S.
-  (flet ((base (n phi m)
-	   ;; elliptic_pi(n,phi,m) =
-	   ;;   sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
-	   ;;   - (-n / 3) * sin(phi)^3
-	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-n*sin(phi)^2)
-	   (let* ((nn (- n))
-		  (sin-phi (sin phi))
-		  (cos-phi (cos phi))
-		  (k2sin (- 1 (* m sin-phi sin-phi))))
-	     (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
-		    (* (/ nn 3) (expt sin-phi 3)
-		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
-					(- 1 (* n (expt sin-phi 2)))))))))
-    ;; FIXME: Reducing the arg by pi has significant round-off.
-    ;; Consider doing something better.
-    (let* ((float-pi (float pi 1d0))
-           (cycles (round (realpart phi) float-pi))
-	   (rem (- phi (* cycles float-pi))))
-      (let ((complete (elliptic-pi-complete n m)))
-	(to (+ (* 2 cycles complete)
-	       (base n rem m)))))))
 
 ;;; Deriviatives from functions.wolfram.com
 ;;; http://functions.wolfram.com/EllipticIntegrals/EllipticPi3/20/

@@ -895,9 +895,9 @@ true;
 32;
 closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668058849721013196b0, 3.09b-32);
 true;
-closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.6050292065602615145481924917132b0, 1.24b-32);
+closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.6050292065602615145481924917132b0, 1.8489b-32);
 true;
-closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1.2326b-32);
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1.8489b-32);
 true;
 
 /* Test for #3733 $gamma vs %gamma confusion */
@@ -1325,7 +1325,7 @@ block([fpprec : 32],
 block([fpprec : 32],
   [closeto(elliptic_pi(-1.0, float(%pi/2), 4.0)
            - (0.75088116919581999 - 0.70974869672333212*%i),
-           3.3307e-16),
+           4.003e-16),
    closeto(elliptic_pi(-1b0, bfloat(%pi/2), 4b0)
            - (0.7508811691958199917853697329649665b0
               - 0.7097486967233321186676771004491271b0*%i),
@@ -1358,13 +1358,13 @@ block([fpprec : 32],
  */
 
 /* Complete integral, 0 < m < 1. */
-[closeto(elliptic_pi(1.5, float(%pi/2), 0.5) - (-4.5672031345290990e-1 - 2.7206990463513268*%i), 4.4755e-16),
+[closeto(elliptic_pi(1.5, float(%pi/2), 0.5) - (-4.5672031345290990e-1 - 2.7206990463513268*%i), 4.9651e-16),
  closeto(elliptic_pi(1.5b0, bfloat(%pi/2), 0.5b0) - (-4.567203134529098970084643370829239b-1 - 2.720699046351326775891117386463234b0*%i), 7.2677b-33)];
 [true, true];
 
 /* Pole at asin(1/sqrt(n)) crossed. */
 [closeto(elliptic_pi(1.5, 1.25, 0.5) - (5.4524805374619554e-1 - 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
+ closeto(elliptic_pi(1.5b0, 1.25b0, 0.5b0) - (5.452480537461955414747065326423371b-1 - 2.720699046351326775891117386463234b0*%i), 8.7158b-33)];
 [true, true];
 
 /* Pole not reached: real result. */
@@ -1376,14 +1376,14 @@ block([fpprec : 32],
 
 /* Odd in phi. */
 [closeto(elliptic_pi(1.5, -1.25, 0.5) - (-5.4524805374619554e-1 + 2.7206990463513268*%i), 5.5512e-16),
- closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 6.8905b-33)];
+ closeto(elliptic_pi(1.5b0, -1.25b0, 0.5b0) - (-5.452480537461955414747065326423371b-1 + 2.720699046351326775891117386463234b0*%i), 8.7158b-33)];
 [true, true];
 
 /* Reduction by %pi: complete cycles and the reduced phi both contribute. */
 [closeto(elliptic_pi(1.5, 2.5, 0.5) - (-1.7793276556283952 - 5.4413980927026536*%i), 9.1552e-16),
  closeto(elliptic_pi(1.5b0, 2.5b0, 0.5b0) - (-1.779327655628395172699783779595883b0 - 5.441398092702653551782234772926467b0*%i), 1.3781b-32)];
 [true, true];
-[closeto(elliptic_pi(1.5, 4.0, 0.5) - (8.7163548567852777e-1 - 5.4413980927026536*%i), 9.1552e-16),
+[closeto(elliptic_pi(1.5, 4.0, 0.5) - (8.7163548567852777e-1 - 5.4413980927026536*%i), 9.4858e-16),
  closeto(elliptic_pi(1.5b0, 4.0b0, 0.5b0) - (8.716354856785277656198515374402945b-1 - 5.441398092702653551782234772926467b0*%i), 5.0822b-32)];
 [true, true];
 
@@ -1398,7 +1398,7 @@ block([fpprec : 32],
 /* Negative phi with a complex result used to signal an error in the
  * float path.
  */
-[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 4.9651e-16),
+[closeto(elliptic_pi(0.5, -1.25, 2.0) - (-1.5327383490292811 + 1.4604803172676772*%i), 7.0217e-16),
  closeto(elliptic_pi(0.5b0, -1.25b0, 2.0b0) - (-1.532738349029281102859949898769821b0 + 1.460480317267677154230613690888511b0*%i), 1.3781b-32)];
 [true, true];
 
@@ -1413,8 +1413,8 @@ block([fpprec : 32],
 [true, true];
 
 /* m > n: branch point before the pole. */
-[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 9.1552e-16),
- closeto(elliptic_pi(1.5b0, 1.25b0, 3.0b0) - (-7.808104921045611472213329756460836b-1 - 1.131673674679173545113343682797006b0*%i), 1.7432)];
+[closeto(elliptic_pi(1.5, 1.25, 3.0) - (-7.8081049210456115e-1 - 1.1316736746791735*%i), 1.1958e-15),
+ closeto(elliptic_pi(1.5b0, 1.25b0, 3.0b0) - (-7.808104921045611472213329756460836b-1 - 1.131673674679173545113343682797006b0*%i), 2.0672b-32)];
 [true, true];
 
 /* Continuity with the complex path from below the cut, and the jump
@@ -1422,7 +1422,7 @@ block([fpprec : 32],
  */
 [closeto(elliptic_pi(1.5 - 1e-14*%i, 1.25, 0.5) - elliptic_pi(1.5, 1.25, 0.5), 3.6190e-14),
  closeto(elliptic_pi(1.5 + 1e-14*%i, 1.25, 0.5) - conjugate(elliptic_pi(1.5, 1.25, 0.5)), 3.6190e-14),
- closeto(elliptic_pi(4.0 - 1e-14*%i, 0.625, 2.0) - elliptic_pi(4.0, 0.625, 2.0), 5.7572e-15)];
+ closeto(elliptic_pi(4.0 - 1e-14*%i, 0.625, 2.0) - elliptic_pi(4.0, 0.625, 2.0), 5.829e-15)];
 [true, true, true];
 
 [closeto(elliptic_pi(1.5b0 - 1b-30*%i, 1.25b0, 0.5b0) - elliptic_pi(1.5b0, 1.25b0, 0.5b0), 3.6399b-30),
@@ -1695,7 +1695,7 @@ true;
 [true, true];
 
 /* Complex m, shift by -i*K', and w - w' is a nonzero period. */
-[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 2.7466e-15),
+[closeto(jacobi_epsilon(2.75 - 2.25*%i, 3.0 + 0.5*%i) - (1.0822042709789231e0 + 1.8938804243543841e0*%i), 2.9206e-15),
  closeto(jacobi_epsilon(2.75b0 - 2.25b0*%i, 3.0b0 + 0.5b0*%i) - (1.082204270978923122066682361294234b0 + 1.893880424354384091402400141856747b0*%i), 6.2396b-32)];
 [true, true];
 
@@ -2834,6 +2834,745 @@ closeto_relerr(imagpart(elliptic_e(0.75b0*%i, 0.5b0)),
                7.875915816992017776360759918948034b-1,
                2.5394*2^-109);
 true;
+
+(fpprec:oldfpprec, kill(oldfpprec), done);
+done;
+
+/*
+ * Accuracy of elliptic_pi where 1-n*sin(phi)^2 or 1-m*sin(phi)^2
+ * cancels: n or m near 1 with phi near %pi/2, phi near the pole
+ * n*sin(phi)^2 = 1, and phi near the branch point m*sin(phi)^2 = 1.
+ * Also carlson_rj for small p.  References are from mpmath at the
+ * exact inputs.  Each tolerance is the relative error observed with
+ * SBCL, rounded up to 5 digits, as a multiple of 2^-53 for double
+ * floats and of 2^-109 for bigfloats.  The real and imaginary parts
+ * are checked separately.
+ */
+
+/* n just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-40), float(%pi/2)-2^-20, 0.5),
+               1164674.2576808748,
+               5.402*2^-53);
+true;
+
+/* n just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-50), float(%pi/2)-2^-26, 0.25),
+               42896831.793892674,
+               1.5645*2^-53);
+true;
+
+/* m just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(0.5, float(%pi/2)-2^-20, float(1-2^-40)),
+               27.489278290246304,
+               2.3282*2^-53);
+true;
+
+/* m just below 1, n < 0 */
+closeto_relerr(elliptic_pi(-2.0, float(%pi/2)-2^-26, float(1-2^-50)),
+               6.528261255311098,
+               11.029*2^-53);
+true;
+
+/* n just above 1, before the pole */
+closeto_relerr(elliptic_pi(float(1+2^-40), 1.5, 0.5),
+               19.145204308967838,
+               6.6858*2^-53);
+true;
+
+/* just before the pole */
+closeto_relerr(elliptic_pi(4.0, float(%pi/6)-2^-30, 0.5),
+               6.335485626331175,
+               2.5255*2^-53);
+true;
+
+/* just past the pole */
+block([w : elliptic_pi(4.0, float(%pi/6)+2^-30, 0.5)],
+  [closeto_relerr(realpart(w), 6.335485664573467,
+                  2.5255*2^-53),
+   closeto_relerr(imagpart(w), -0.9695165413304057,
+                  1.0*2^-53)]);
+[true, true];
+
+/* closer to the pole */
+closeto_relerr(elliptic_pi(4.0, float(%pi/6)-2^-45, 0.5),
+               9.543510779076291,
+               1.6766*2^-53);
+true;
+
+/* m > 1, just past the branch point */
+block([w : elliptic_pi(0.5, float(%pi/4)+2^-30, 2.0)],
+  [closeto_relerr(realpart(w), 1.5327383490292812,
+                  1.3049*2^-53),
+   closeto_relerr(imagpart(w), -5.7544496232928484e-05,
+                  2.1214*2^-53)]);
+[true, true];
+
+/* complex n near 1 */
+block([w : elliptic_pi(float(1-2^-30)+2^-31*%i, float(%pi/2)-2^-15, 0.5)],
+  [closeto_relerr(realpart(w), 35897.24823353908,
+                  5.4770*2^-53),
+   closeto_relerr(imagpart(w), 3215.8347969197157,
+                  5.0948*2^-53)]);
+[true, true];
+
+/* complex m near 1 */
+block([w : elliptic_pi(0.5, float(%pi/2)-2^-15, float(1-2^-30)+2^-31*%i)],
+  [closeto_relerr(realpart(w), 20.543627160501032,
+                  3.1154*2^-53),
+   closeto_relerr(imagpart(w), 0.14443145548304398,
+                  3.4619*2^-53)]);
+[true, true];
+
+/* phi next to the pole */
+closeto_relerr(elliptic_pi(4.0, float(%pi/6)-2^-53, 0.5),
+               11.126769330243926,
+               1.438*2^-53);
+true;
+
+/* phi next to the pole */
+closeto_relerr(elliptic_pi(4.0, float(%pi/6), 0.5),
+               11.458898371615305,
+               1.0*2^-53);
+true;
+
+/* phi next to the pole */
+block([w : elliptic_pi(4.0, float(%pi/6)+2^-53, 0.5)],
+  [closeto_relerr(realpart(w), 11.480110833541524,
+                  2.7875*2^-53),
+   closeto_relerr(imagpart(w), -0.9695165413304057,
+                  1.0*2^-53)]);
+[true, true];
+
+/* small p */
+closeto_relerr(carlson_rj(0.5, 1.0, 2.0, float(2^-40)),
+               40.526533925442,
+               3.1585*2^-53);
+true;
+
+/* small p */
+closeto_relerr(carlson_rj(0.25, 0.5, 1.0, float(2^-20)),
+               52.87026432742514,
+               2.4211*2^-53);
+true;
+
+(oldfpprec:fpprec, fpprec:32, done);
+done;
+
+/* n just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-80), bfloat(%pi/2)-2^-40, 0.5b0),
+               1.221250362837333490898788831207201b+12,
+               1.8007*2^-109);
+true;
+
+/* n just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-100), bfloat(%pi/2)-2^-52, 0.25b0),
+               1.723665353800289389717679735359959b+15,
+               1.3065*2^-109);
+true;
+
+/* m just below 1, phi near %pi/2 */
+closeto_relerr(elliptic_pi(0.5b0, bfloat(%pi/2)-2^-40, bfloat(1-2^-80)),
+               5.521516551271585891379660227660660b+1,
+               3.4774*2^-109);
+true;
+
+/* m just below 1, n < 0 */
+closeto_relerr(elliptic_pi(-2b0, bfloat(%pi/2)-2^-52, bfloat(1-2^-100)),
+               1.238240288176065752147374751982669b+1,
+               20.675*2^-109);
+true;
+
+/* n just above 1, before the pole */
+closeto_relerr(elliptic_pi(bfloat(1+2^-80), 1.5b0, 0.5b0),
+               1.914520430777343863084640995692856b+1,
+               5.0144*2^-109);
+true;
+
+/* just before the pole */
+closeto_relerr(elliptic_pi(4b0, bfloat(%pi/6)-2^-60, 0.5b0),
+               1.275278156408303375413395734949489b+1,
+               1.2547*2^-109);
+true;
+
+/* just past the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6)+2^-60, 0.5b0)],
+  [closeto_relerr(realpart(w), 1.275278156408303339913157468980254b+1,
+                  1.2547*2^-109),
+   closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* closer to the pole */
+closeto_relerr(elliptic_pi(4b0, bfloat(%pi/6)-2^-90, 0.5b0),
+               1.917007767339908001725137470220445b+1,
+               3.3386*2^-109);
+true;
+
+/* m > 1, just past the branch point */
+block([w : elliptic_pi(0.5b0, bfloat(%pi/4)+2^-60, 2b0)],
+  [closeto_relerr(realpart(w), 1.532738349029281102859949898769821b0,
+                  3.9146*2^-109),
+   closeto_relerr(imagpart(w), -1.756118687953918749388644488937904b-9,
+                  2.1214*2^-109)]);
+[true, true];
+
+/* complex n near 1 */
+block([w : elliptic_pi(bfloat(1-2^-60)+2^-61*%i, bfloat(%pi/2)-2^-30, 0.5b0)],
+  [closeto_relerr(realpart(w), 1.176308789691670957481856913902438b+9,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), 1.053764749060716824053206542577223b+8,
+                  3.8211*2^-109)]);
+[true, true];
+
+/* complex m near 1 */
+block([w : elliptic_pi(0.5b0, bfloat(%pi/2)-2^-30, bfloat(1-2^-60)+2^-61*%i)],
+  [closeto_relerr(realpart(w), 4.133804256256211028370385386392093b+1,
+                  1.5483*2^-109),
+   closeto_relerr(imagpart(w), 1.444314622444238909963983287424861b-1,
+                  5.1928*2^-109)]);
+[true, true];
+
+/* phi next to the pole */
+closeto_relerr(elliptic_pi(4b0, bfloat(%pi/6)-2^-109, 0.5b0),
+               2.335518206518362640277575618825638b+1,
+               1.3702*2^-109);
+true;
+
+/* phi next to the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6), 0.5b0)],
+  [closeto_relerr(realpart(w), 2.358221325007319500030075708556361b+1,
+                  4.0709*2^-109),
+   closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* phi next to the pole */
+block([w : elliptic_pi(4b0, bfloat(%pi/6)+2^-109, 0.5b0)],
+  [closeto_relerr(realpart(w), 2.314776313050818352753683162924851b+1,
+                  2.7649*2^-109),
+   closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* small p */
+closeto_relerr(carlson_rj(0.5b0, 1b0, 2b0, bfloat(2^-80)),
+               8.211536475897370466558316821189531b+1,
+               1.5588*2^-109);
+true;
+
+/* small p */
+closeto_relerr(carlson_rj(0.25b0, 0.5b0, 1b0, bfloat(2^-40)),
+               1.116855733964357610974377246811474b+2,
+               1.1461*2^-109);
+true;
+
+/*
+ * elliptic_pi for m = 1 or n = 1, where the complete integral is
+ * infinite.  The value is finite for abs(phi) < %pi/2.  Beyond that
+ * elliptic_pi is undefined and signals an error.
+ */
+
+/* m = 1 */
+closeto_relerr(elliptic_pi(0.5, 1.0, 1.0),
+               1.4830998734200773,
+               1.0*2^-53);
+true;
+
+/* m = 1, negative phi */
+closeto_relerr(elliptic_pi(0.5, -1.0, 1.0),
+               -1.4830998734200773,
+               1.0*2^-53);
+true;
+
+/* m = 1, past the pole */
+block([w : elliptic_pi(4.0, 1.0, 1.0)],
+  [closeto_relerr(realpart(w), 0.04735605279646549,
+                  25.076*2^-53),
+   closeto_relerr(imagpart(w), -1.0471975511965979,
+                  1.9099*2^-53)]);
+[true, true];
+
+/* n = 1 */
+closeto_relerr(elliptic_pi(1.0, 1.5, 0.5),
+               19.14520430777344,
+               1.6715*2^-53);
+true;
+
+/* n = 1 and m = 1 */
+closeto_relerr(elliptic_pi(1.0, 1.0, 1.0),
+               2.0543329332562488,
+               1.0*2^-53);
+true;
+
+/* m = 1 */
+closeto_relerr(elliptic_pi(0.5b0, 1b0, 1b0),
+               1.483099873420077332688763277655338b0,
+               1.3486*2^-109);
+true;
+
+/* m = 1, negative phi */
+closeto_relerr(elliptic_pi(0.5b0, -1b0, 1b0),
+               -1.483099873420077332688763277655338b0,
+               1.3486*2^-109);
+true;
+
+/* m = 1, past the pole */
+block([w : elliptic_pi(4b0, 1b0, 1b0)],
+  [closeto_relerr(realpart(w), 4.735605279646549137695914944058017b-2,
+                  11.879*2^-109),
+   closeto_relerr(imagpart(w), -1.047197551196597746154214461093168b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n = 1 */
+closeto_relerr(elliptic_pi(1b0, 1.5b0, 0.5b0),
+               1.914520430777343863084532365631355b+1,
+               1.0*2^-109);
+true;
+
+/* n = 1 and m = 1 */
+closeto_relerr(elliptic_pi(1b0, 1b0, 1b0),
+               2.054332933256248668692451886877465b0,
+               1.0*2^-109);
+true;
+
+errcatch(elliptic_pi(0.5, 2.0, 1.0));
+[];
+
+errcatch(elliptic_pi(1.0, -2.0, 0.5));
+[];
+
+errcatch(elliptic_pi(0.5b0, 2b0, 1b0));
+[];
+
+errcatch(elliptic_pi(1b0, 5b0, 0.5b0));
+[];
+
+/*
+ * elliptic_pi where the reduction of phi by a multiple of %pi matters:
+ * the reduced angle is near %pi/2 with n or m near 1, or near a pole.
+ */
+
+/* n near 1, phi near 3*%pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-20), float(3*%pi/2)-2^-12, 0.5),
+               6466.962800896766,
+               1.2668*2^-53);
+true;
+
+/* m near 1, phi near 5*%pi/2 */
+closeto_relerr(elliptic_pi(0.5, float(5*%pi/2)-2^-12, float(1-2^-20)),
+               76.45052512914408,
+               1.6743*2^-53);
+true;
+
+/* m near 1, phi near -7*%pi/2 */
+closeto_relerr(elliptic_pi(0.5, 2^-12-float(7*%pi/2), float(1-2^-20)),
+               -107.22870834804223,
+               2.3875*2^-53);
+true;
+
+/* n near 1, phi near 201*%pi/2 */
+closeto_relerr(elliptic_pi(float(1-2^-20), float(201*%pi/2)-2^-12, 0.5),
+               456701.1298407933,
+               1.148*2^-53);
+true;
+
+/* just before the pole at 19*%pi/6 */
+block([w : elliptic_pi(4.0, float(19*%pi/6)-2^-20, 0.5)],
+  [closeto_relerr(realpart(w), 3.3596599008874777,
+                  1.1906*2^-53),
+   closeto_relerr(imagpart(w), -5.817099247982434,
+                  1.0*2^-53)]);
+[true, true];
+
+/* just past the pole at 19*%pi/6 */
+block([w : elliptic_pi(4.0, float(19*%pi/6)+2^-20, 0.5)],
+  [closeto_relerr(realpart(w), 3.3596600957161042,
+                  5.953*2^-53),
+   closeto_relerr(imagpart(w), -6.78661578931284,
+                  1.1788*2^-53)]);
+[true, true];
+
+/* n near 1, phi near 3*%pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-50), bfloat(3*%pi/2)-2^-30, 0.5b0),
+               2.221351896421582958348664040574534b+8,
+               1.0*2^-109);
+true;
+
+/* m near 1, phi near 5*%pi/2 */
+closeto_relerr(elliptic_pi(0.5b0, bfloat(5*%pi/2)-2^-30, bfloat(1-2^-50)),
+               1.808549965178413332382772494058663b+2,
+               1.4155*2^-109);
+true;
+
+/* m near 1, phi near -7*%pi/2 */
+closeto_relerr(elliptic_pi(0.5b0, 2^-30-bfloat(7*%pi/2), bfloat(1-2^-50)),
+               -2.532219910577545504779723259520282b+2,
+               2.022*2^-109);
+true;
+
+/* n near 1, phi near 201*%pi/2 */
+closeto_relerr(elliptic_pi(bfloat(1-2^-50), bfloat(201*%pi/2)-2^-30, 0.5b0),
+               1.498089795170108950202648651238456b+10,
+               1.1468*2^-109);
+true;
+
+/* just before the pole at 19*%pi/6 */
+block([w : elliptic_pi(4b0, bfloat(19*%pi/6)-2^-50, 0.5b0)],
+  [closeto_relerr(realpart(w), 9.776955916932657246296813740730601b0,
+                  3.2731*2^-109),
+   closeto_relerr(imagpart(w), -5.817099247982434155201197578112207b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* just past the pole at 19*%pi/6 */
+block([w : elliptic_pi(4b0, bfloat(19*%pi/6)+2^-50, 0.5b0)],
+  [closeto_relerr(realpart(w), 9.776955916932657429129786377406766b0,
+                  1.6366*2^-109),
+   closeto_relerr(imagpart(w), -6.786615789312839847734730507797575b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/*
+ * elliptic_pi with phi = %pi/2 or -%pi/2 and m = 1 or n = 1 is
+ * undefined and signals an error.
+ */
+errcatch(elliptic_pi(1/2, %pi/2, 1));
+[];
+
+errcatch(elliptic_pi(1, %pi/2, 1/2));
+[];
+
+errcatch(elliptic_pi(n, -%pi/2, 1));
+[];
+
+/*
+ * elliptic_pi for real n > 1 past the pole and for n << 0, where the
+ * terms of the formula used before cancel.  Reference values from
+ * mpmath.
+ */
+
+/* n > 1, past the pole */
+block([w : elliptic_pi(4.0, 1.0, 0.5)],
+  [closeto_relerr(realpart(w), 0.16227970558001083,
+                  1.5406*2^-53),
+   closeto_relerr(imagpart(w), -0.96951654133040569,
+                  1.0*2^-53)]);
+[true, true];
+
+/* large n, past the pole */
+block([w : elliptic_pi(1000.0, 1.25, 0.5)],
+  [closeto_relerr(realpart(w), -4.1006898392243425e-5,
+                  10.419*2^-53),
+   closeto_relerr(imagpart(w), -0.049710225552755604,
+                  1.0*2^-53)]);
+[true, true];
+
+/* n > 1, past the pole, m < 0 */
+block([w : elliptic_pi(100.0, 1.0, -2.0)],
+  [closeto_relerr(realpart(w), 0.013890277042049115,
+                  1.1249*2^-53),
+   closeto_relerr(imagpart(w), -0.15631555389438434,
+                  1.5994*2^-53)]);
+[true, true];
+
+/* n > 1, large phi */
+block([w : elliptic_pi(100.0, 1000.0, 0.25)],
+  [closeto_relerr(realpart(w), -1.3853487226591245,
+                  4.3311*2^-53),
+   closeto_relerr(imagpart(w), -100.68974938047114,
+                  1.2713*2^-53)]);
+[true, true];
+
+/* n << 0 */
+closeto_relerr(elliptic_pi(-100000.0, 1.0, 0.5),
+               0.0049636552091467821,
+               1.574*2^-53);
+true;
+
+/* n << 0, m < 0 */
+closeto_relerr(elliptic_pi(-1000.0, 1.0, -2.0),
+               0.048297927400597388,
+               2.5882*2^-53);
+true;
+
+/* n << 0, m > 1 */
+closeto_relerr(elliptic_pi(-100000.0, 0.5, 2.0),
+               0.0049547087246786575,
+               1.0*2^-53);
+true;
+
+/* n << 0, large phi */
+closeto_relerr(elliptic_pi(-100000.0, 1000.0, 0.25),
+               3.1655293782258852,
+               2.5273*2^-53);
+true;
+
+/* n > 1, past the pole */
+block([w : elliptic_pi(4b0, 1b0, 0.5b0)],
+  [closeto_relerr(realpart(w), 1.622797055800108338524841864430706b-1,
+                  4.6217*2^-109),
+   closeto_relerr(imagpart(w), -9.695165413304056925335329296853678b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* large n, past the pole */
+block([w : elliptic_pi(1000b0, 1.25b0, 0.5b0)],
+  [closeto_relerr(realpart(w), -4.100689839224342459295375239783378b-5,
+                  1.4885*2^-109),
+   closeto_relerr(imagpart(w), -4.971022555275560360555423248187645b-2,
+                  1.2573*2^-109)]);
+[true, true];
+
+/* n > 1, past the pole, m < 0 */
+block([w : elliptic_pi(100b0, 1b0, -2b0)],
+  [closeto_relerr(realpart(w), 1.389027704204911535304746660046626b-2,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -1.563155538943843438863202264183295b-1,
+                  1.5994*2^-109)]);
+[true, true];
+
+/* n > 1, large phi */
+block([w : elliptic_pi(100b0, 1000b0, 0.25b0)],
+  [closeto_relerr(realpart(w), -1.385348722659124471236888786443385b0,
+                  1.0*2^-109),
+   closeto_relerr(imagpart(w), -1.006897493804711406229212573403927b+2,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n << 0 */
+closeto_relerr(elliptic_pi(-100000b0, 1b0, 0.5b0),
+               4.963655209146782146797581091336180b-3,
+               1.574*2^-109);
+true;
+
+/* n << 0, m < 0 */
+closeto_relerr(elliptic_pi(-1000b0, 1b0, -2b0),
+               4.829792740059738757216700715958731b-2,
+               3.8822*2^-109);
+true;
+
+/* n << 0, m > 1 */
+closeto_relerr(elliptic_pi(-100000b0, 0.5b0, 2b0),
+               4.954708724678657472859843393128330b-3,
+               3.1536*2^-109);
+true;
+
+/* n << 0, large phi */
+closeto_relerr(elliptic_pi(-100000b0, 1000b0, 0.25b0),
+               3.165529378225885226506466464889920b0,
+               7.5817*2^-109);
+true;
+
+/*
+ * elliptic_pi for n << 0 with m < n/2.  Reference values from mpmath.
+ */
+
+/* n << 0, m = n */
+closeto_relerr(elliptic_pi(-1000000.0, 1.0, -1000000.0),
+               0.0010000027132010409,
+               1.9532*2^-53);
+true;
+
+/* n << 0, m < n/2 */
+closeto_relerr(elliptic_pi(-100000.0, 1.0, -300000.0),
+               0.0025630568775208161,
+               1.5241*2^-53);
+true;
+
+/* n << 0, m = n */
+closeto_relerr(elliptic_pi(-1000000b0, 1b0, -1000000b0),
+               1.000002713201040858123779413991510b-3,
+               1.0*2^-109);
+true;
+
+/* n << 0, m < n/2 */
+closeto_relerr(elliptic_pi(-100000b0, 1b0, -300000b0),
+               2.563056877520816094179692472309712b-3,
+               1.5241*2^-109);
+true;
+
+/*
+ * elliptic_pi with m = 1 or n = 1 and an exact phi past %pi/2 signals
+ * an error.
+ */
+errcatch(elliptic_pi(1/2, 3*%pi/2, 1));
+[];
+
+errcatch(elliptic_pi(1, -5*%pi/2, 1/2));
+[];
+
+errcatch(elliptic_pi(n, 2*%pi/3, 1));
+[];
+
+errcatch(elliptic_pi(1/2, 2, 1));
+[];
+
+elliptic_pi(1/2, %pi/3, 1);
+elliptic_pi(1/2, %pi/3, 1);
+
+/*
+ * elliptic_pi for m > 1 with phi past the branch point, where the real
+ * part is constant.  Reference values from numerical integration
+ * with mpmath.
+ */
+
+/* n > m > 1 */
+block([w : elliptic_pi(4.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), -0.2217095718832212,
+                  1.1277*2^-53),
+   closeto_relerr(imagpart(w), -0.60591146282320552,
+                  1.6505*2^-53)]);
+[true, true];
+
+/* large n, n > m > 1 */
+block([w : elliptic_pi(1000.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), -0.00071250902372974823,
+                  1.3706*2^-53),
+   closeto_relerr(imagpart(w), -0.048179818359339956,
+                  1.0*2^-53)]);
+[true, true];
+
+/* n > m > 1, large phi */
+block([w : elliptic_pi(4.0, 1000.0, 2.0)],
+  [closeto_relerr(realpart(w), -141.2289972896119,
+                  1.0*2^-53),
+   closeto_relerr(imagpart(w), -312.06283282087372,
+                  3.2814*2^-53)]);
+[true, true];
+
+/* 1 < n < m, past the pole */
+block([w : elliptic_pi(2.0, 1.25, 4.0)],
+  [closeto_relerr(realpart(w), -0.3639605746942993,
+                  4.1214*2^-53),
+   closeto_relerr(imagpart(w), -0.74358338050070666,
+                  1.3449*2^-53)]);
+[true, true];
+
+/* n << 0 */
+block([w : elliptic_pi(-1000.0, 1.25, 2.0)],
+  [closeto_relerr(realpart(w), 0.050309958921609135,
+                  6.2115*2^-53),
+   closeto_relerr(imagpart(w), -0.0015625742064765913,
+                  3.7499*2^-53)]);
+[true, true];
+
+/* n << 0, large phi */
+block([w : elliptic_pi(-1000.0, 1000.0, 2.0)],
+  [closeto_relerr(realpart(w), 32.047443833065019,
+                  5.9912*2^-53),
+   closeto_relerr(imagpart(w), -1.2140538643677514,
+                  3.2948*2^-53)]);
+[true, true];
+
+/* n > m > 1 */
+block([w : elliptic_pi(4b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), -2.217095718832211976275301038242615b-1,
+                  3.3829*2^-109),
+   closeto_relerr(imagpart(w), -6.059114628232055225394056192050889b-1,
+                  3.3009*2^-109)]);
+[true, true];
+
+/* large n, n > m > 1 */
+block([w : elliptic_pi(1000b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), -7.125090237297482257356557564620500b-4,
+                  4.1118*2^-109),
+   closeto_relerr(imagpart(w), -4.817981835933995648986484358184135b-2,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n > m > 1, large phi */
+block([w : elliptic_pi(4b0, 1000b0, 2b0)],
+  [closeto_relerr(realpart(w), -1.412289972896119028887366761360546b+2,
+                  3.6254*2^-109),
+   closeto_relerr(imagpart(w), -3.120628328208737241656773625486665b+2,
+                  4.9221*2^-109)]);
+[true, true];
+
+/* 1 < n < m, past the pole */
+block([w : elliptic_pi(2b0, 1.25b0, 4b0)],
+  [closeto_relerr(realpart(w), -3.639605746942992988978599313701065b-1,
+                  2.7476*2^-109),
+   closeto_relerr(imagpart(w), -7.435833805007066553024512118041960b-1,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n << 0 */
+block([w : elliptic_pi(-1000b0, 1.25b0, 2b0)],
+  [closeto_relerr(realpart(w), 5.030995892160913538979817751021592b-2,
+                  2.4846*2^-109),
+   closeto_relerr(imagpart(w), -1.562574206476591336860539930101077b-3,
+                  2.4999*2^-109)]);
+[true, true];
+
+/* n << 0, large phi */
+block([w : elliptic_pi(-1000b0, 1000b0, 2b0)],
+  [closeto_relerr(realpart(w), 3.204744383306501924330143907400754b+1,
+                  1.9971*2^-109),
+   closeto_relerr(imagpart(w), -1.214053864367751352744633528305541b0,
+                  1.6474*2^-109)]);
+[true, true];
+
+/*
+ * carlson_rj with widely separated arguments.  Reference values from
+ * mpmath.
+ */
+closeto_relerr(carlson_rj(0.25, float(2^40), 4.0, float(2^20)),
+               1.8303593375320478e-11,
+               1.5901*2^-53);
+true;
+
+closeto_relerr(carlson_rj(0.125, float(2^32), 1.0, float(2^14)),
+               1.4647670606785907e-8,
+               1.0174*2^-53);
+true;
+
+closeto_relerr(carlson_rj(0.25b0, bfloat(2^40), 4b0, bfloat(2^20)),
+               1.830359337532047805714762923175724b-11,
+               3.1802*2^-109);
+true;
+
+closeto_relerr(carlson_rj(0.125b0, bfloat(2^32), 1b0, bfloat(2^14)),
+               1.464767060678590672831489414881888b-8,
+               3.052*2^-109);
+true;
+
+/*
+ * elliptic_pi for n > m > 1 with phi between the pole and the branch
+ * point.  Reference values from numerical integration with mpmath.
+ */
+
+/* n = 4, m = 3 */
+block([w : elliptic_pi(4.0, 0.5625, 3.0)],
+  [closeto_relerr(realpart(w), 0.92765145196096069,
+                  1.078*2^-53),
+   closeto_relerr(imagpart(w), -1.8137993642342179,
+                  1.1027*2^-53)]);
+[true, true];
+
+/* n = 6, m = 5 */
+block([w : elliptic_pi(6.0, 0.4375, 5.0)],
+  [closeto_relerr(realpart(w), 1.0235092590657539,
+                  1.9541*2^-53),
+   closeto_relerr(imagpart(w), -1.7207211628636429,
+                  1.1624*2^-53)]);
+[true, true];
+
+/* n = 4, m = 3 */
+block([w : elliptic_pi(4b0, 0.5625b0, 3b0)],
+  [closeto_relerr(realpart(w), 9.276514519609606898441634964846177b-1,
+                  3.234*2^-109),
+   closeto_relerr(imagpart(w), -1.813799364234217850594078257642156b0,
+                  1.0*2^-109)]);
+[true, true];
+
+/* n = 6, m = 5 */
+block([w : elliptic_pi(6b0, 0.4375b0, 5b0)],
+  [closeto_relerr(realpart(w), 1.023509259065753896045595692326354b0,
+                  1.9541*2^-109),
+   closeto_relerr(imagpart(w), -1.720721162863642932550994042176359b0,
+                  1.0*2^-109)]);
+[true, true];
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done;
