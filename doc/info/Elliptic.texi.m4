@@ -378,6 +378,83 @@ Compare this plot with the plot from @urldlmf{22.16.iv}:
 @closecatbox
 @end deffn
 
+@anchor{jacobi_theta}
+@deffn {Function} jacobi_theta (@var{j}, @var{z}, @var{q})
+The Jacobi theta function
+m4_math(<<<\theta_j(z,q)>>>, <<<theta_j(z,q)>>>)
+for @math{j = 1, 2, 3, 4}, with nome @math{q}, @math{|q| < 1}:
+
+m4_displaymath(
+<<<\eqalign{
+\theta_1(z,q) &= 2q^{1/4}\sum_{n=0}^\infty (-1)^n q^{n(n+1)} \sin((2n+1)z) \cr
+\theta_2(z,q) &= 2q^{1/4}\sum_{n=0}^\infty q^{n(n+1)} \cos((2n+1)z) \cr
+\theta_3(z,q) &= 1 + 2\sum_{n=1}^\infty q^{n^2} \cos(2nz) \cr
+\theta_4(z,q) &= 1 + 2\sum_{n=1}^\infty (-1)^n q^{n^2} \cos(2nz)
+}>>>
+,
+<<<@math{theta_1(z,q) = 2*q^(1/4)*sum((-1)^n*q^(n*(n+1))*sin((2*n+1)*z), n, 0, inf)}
+
+@math{theta_2(z,q) = 2*q^(1/4)*sum(q^(n*(n+1))*cos((2*n+1)*z), n, 0, inf)}
+
+@math{theta_3(z,q) = 1 + 2*sum(q^(n^2)*cos(2*n*z), n, 1, inf)}
+
+@math{theta_4(z,q) = 1 + 2*sum((-1)^n*q^(n^2)*cos(2*n*z), n, 1, inf)}>>>
+)
+
+where
+m4_math(<<<q^{1/4}>>>, <<<q^(1/4)>>>)
+is the principal value.  These are equivalent to the definitions in
+@urldlmf{20.2.i}, and are the same convention as
+@code{EllipticTheta[j, z, q]} in Mathematica and @code{jtheta(j, z, q)}
+in mpmath.  In terms of the lattice parameter
+m4_mathcomma(<<<\tau>>>, <<<tau>>>)
+m4_mathdot(<<<q = e^{i\pi\tau}>>>, <<<q = exp(%i*%pi*tau)>>>)
+
+The theta functions can also be written in terms of @math{u} and the
+parameter @math{m} of the Jacobi elliptic functions, using
+m4_math(<<<z = \pi u/(2K)>>>, <<<z = %pi*u/(2*K)>>>)
+and
+m4_mathcomma(<<<q = e^{-\pi K'/K}>>>, <<<q = exp(-%pi*K'/K)>>>)
+where
+m4_math(<<<K = K(m)>>>, <<<K = elliptic_kc(m)>>>)
+and
+m4_math(<<<K' = K(1-m)>>>, <<<K' = elliptic_kc(1-m)>>>)
+(@urldlmf{22.2}).
+
+Numerical values are computed for float and bigfloat, real and complex,
+@var{z} and @var{q} when @var{j} is 1, 2, 3, or 4.  It is an error if
+@math{|q| >= 1}, or if @var{j} is a number other than 1, 2, 3, or 4.
+
+@c ===beg===
+@c jacobi_theta(1, z, 0);
+@c jacobi_theta(1, -z, q);
+@c jacobi_theta(3, 0.5, 0.5);
+@c jacobi_theta(2, 0.5+%i, 0.3b0+0.4b0*%i);
+@c ===end===
+@example maxima
+@group
+(%i1) jacobi_theta(1, z, 0);
+(%o1)                           0
+@end group
+@group
+(%i2) jacobi_theta(1, -z, q);
+(%o2)                 - jacobi_theta(1, z, q)
+@end group
+@group
+(%i3) jacobi_theta(3, 0.5, 0.5);
+(%o3)                   1.4843968624251669
+@end group
+@group
+(%i4) jacobi_theta(2, 0.5+%i, 0.3b0+0.4b0*%i);
+(%o4)    1.865657933236907b0 %i + 4.012678139476983b0
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Elliptic functions}
+@closecatbox
+@end deffn
+
 @anchor{inverse_jacobi_dn}
 @deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function 

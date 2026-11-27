@@ -6559,3 +6559,145 @@ first kind:
  -m*jacobi_cn(z,m)*jacobi_sn(z,m))
  /(2*(m-1)*m)$
 )
+
+
+(in-package #:bigfloat)
+
+;; Jacobi theta functions with nome q, |q| < 1, equivalent to DLMF
+;; 20.2.1-20.2.4, with q^(1/4) factored out of theta1 and theta2.
+;; q^(1/4) is the principal value.
+
+;; The terms of each series are summed until they are negligible
+;; compared to the first term.
+
+;; 2*q^(1/4)*sum((-1)^n*q^(n*(n+1))*sin((2*n+1)*z), n, 0, inf)
+(defun bf-jacobi-theta1-series (z q)
+  (let ((eps (epsilon (abs q)))
+	(q2 (* q q))
+	(ey2 (exp (* 2 (abs (imagpart z)))))
+	(sum (sin z))
+	(qn 1)
+	(qn2 1)
+	(ey 1)
+	(s 1))
+    (loop for n from 1
+	  do
+	     (setf qn2 (* qn2 q2)
+		   qn (* qn qn2)
+		   ey (* ey ey2)
+		   s (- s))
+	     (when (<= (* (+ n n 1) (abs qn) ey) eps)
+	       (return))
+	     (setf sum (+ sum (* s qn (sin (* (+ n n 1) z))))))
+    (* 2 (exp (/ (log q) 4)) sum)))
+
+;; 2*q^(1/4)*sum(q^(n*(n+1))*cos((2*n+1)*z), n, 0, inf)
+(defun bf-jacobi-theta2-series (z q)
+  (let ((eps (epsilon (abs q)))
+	(q2 (* q q))
+	(ey2 (exp (* 2 (abs (imagpart z)))))
+	(sum (cos z))
+	(qn 1)
+	(qn2 1)
+	(ey 1))
+    (loop for n from 1
+	  do
+	     (setf qn2 (* qn2 q2)
+		   qn (* qn qn2)
+		   ey (* ey ey2))
+	     (when (<= (* (+ n n 1) (abs qn) ey) eps)
+	       (return))
+	     (setf sum (+ sum (* qn (cos (* (+ n n 1) z))))))
+    (* 2 (exp (/ (log q) 4)) sum)))
+
+;; 1 + 2*sum(q^(n^2)*cos(2*n*z), n, 1, inf)
+(defun bf-jacobi-theta3-series (z q)
+  (let ((eps (epsilon (abs q)))
+	(q2 (* q q))
+	(ey2 (exp (* 2 (abs (imagpart z)))))
+	(sum 0)
+	(qn 1)
+	(qn2 (/ q))
+	(ey 1))
+    (loop for n from 1
+	  do
+	     (setf qn2 (* qn2 q2)
+		   qn (* qn qn2)
+		   ey (* ey ey2))
+	     (when (<= (* (abs qn) ey) eps)
+	       (return))
+	     (setf sum (+ sum (* qn (cos (* 2 n z))))))
+    (+ 1 (* 2 sum))))
+
+;; 1 + 2*sum((-1)^n*q^(n^2)*cos(2*n*z), n, 1, inf)
+(defun bf-jacobi-theta4-series (z q)
+  (let ((eps (epsilon (abs q)))
+	(q2 (* q q))
+	(ey2 (exp (* 2 (abs (imagpart z)))))
+	(sum 0)
+	(qn 1)
+	(qn2 (/ q))
+	(ey 1)
+	(s 1))
+    (loop for n from 1
+	  do
+	     (setf qn2 (* qn2 q2)
+		   qn (* qn qn2)
+		   ey (* ey ey2)
+		   s (- s))
+	     (when (<= (* (abs qn) ey) eps)
+	       (return))
+	     (setf sum (+ sum (* s qn (cos (* 2 n z))))))
+    (+ 1 (* 2 sum))))
+
+;; theta_j(z,q) for j = 1, 2, 3, 4 and |q| < 1.
+(defun bf-jacobi-theta (j z q)
+  (if (zerop q)
+      (let ((one (float 1 (realpart (+ z q)))))
+	(if (<= j 2) (* 0 one) one))
+      (ecase j
+	(1 (bf-jacobi-theta1-series z q))
+	(2 (bf-jacobi-theta2-series z q))
+	(3 (bf-jacobi-theta3-series z q))
+	(4 (bf-jacobi-theta4-series z q)))))
+
+(in-package :maxima)
+
+;; If Z and Q are numbers (float, bigfloat, or complex), evaluate
+;; jacobi_theta(N, Z, Q) numerically.  Otherwise return NIL.
+(defun jacobi-theta-numerical-eval (n z q)
+  (let ((args (cond ((float-numerical-eval-p z q)
+		     (list ($float z) ($float q)))
+		    ((complex-float-numerical-eval-p z q)
+		     (list ($float z) ($float q)))
+		    ((or (bigfloat-numerical-eval-p z q)
+			 (complex-bigfloat-numerical-eval-p z q))
+		     (list ($bfloat z) ($bfloat q))))))
+    (when args
+      (destructuring-bind (z q)
+	  (mapcar #'bigfloat:to args)
+	(when (bigfloat:>= (bigfloat:abs q) 1)
+	  (merror (intl:gettext "jacobi_theta: |q| must be less than 1; found ~M")
+		  (to q)))
+	(to (bigfloat::bf-jacobi-theta n z q))))))
+
+(def-simplifier jacobi_theta (n z q)
+  (let (result)
+    (cond
+      ((not (member n '(1 2 3 4)))
+       (if (mnump n)
+	   (merror (intl:gettext "jacobi_theta: index must be 1, 2, 3, or 4; found ~M")
+		   n)
+	   (give-up)))
+      ((setf result (jacobi-theta-numerical-eval n z q))
+       result)
+      ((zerop1 q)
+       (if (<= n 2) 0 1))
+      ((and (= n 1) (zerop1 z))
+       0)
+      ((and $trigsign (mminusp* z))
+       (if (= n 1)
+	   (neg (ftake* '%jacobi_theta n (neg z) q))
+	   (ftake* '%jacobi_theta n (neg z) q)))
+      (t
+       (give-up)))))
