@@ -6750,20 +6750,26 @@ first kind:
 	      (when (oddp k)
 		(setf j (- 7 j))))))
       ;; Make |Im(z)| <= %pi*Im(tau)/2.
-      (let ((n (round (imagpart z) (* bfpi (imagpart tau)))))
+      (let ((n (round (imagpart z)
+                      (* bfpi (imagpart tau)))))
 	(unless (zerop n)
-	  (setf z (- z (* n bfpi tau)))
-	  (when (and (oddp n) (or (= j 1) (= j 4)))
+	  (setf z (- z
+                     (* n bfpi tau)))
+	  (when (and (oddp n)
+                     (or (= j 1)
+                         (= j 4)))
 	    (incf eighths 4))
 	  (setf logfac
 		(- logfac
 		   (* n (bf-jacobi-theta-mul-i
-			 (+ (* n bfpi tau) (* 2 z))))))))
+			 (+ (* n bfpi tau)
+                            (* 2 z))))))))
       ;; Make |Re(z)| <= %pi/2.
       (let ((n (round (realpart z) bfpi)))
 	(unless (zerop n)
 	  (setf z (- z (* n bfpi)))
-	  (when (and (oddp n) (<= j 2))
+	  (when (and (oddp n)
+                     (<= j 2))
 	    (incf eighths 4))))
       (when (>= (abs tau) 1)
 	(return))
@@ -6771,11 +6777,17 @@ first kind:
       (let ((tau1 (/ -1 tau)))
 	(setf logfac
 	      (+ logfac
-		 (* -1/2 (log (complex (imagpart tau) (- (realpart tau)))))
-		 (/ (bf-jacobi-theta-mul-i (* tau1 z z)) bfpi)))
+		 (* -1/2 (log (complex (imagpart tau)
+                                       (- (realpart tau)))))
+		 (/ (bf-jacobi-theta-mul-i (* tau1 z z))
+                    bfpi)))
 	(when (= j 1)
 	  (decf eighths 2))
-	(setf j (ecase j (1 1) (2 4) (3 3) (4 2)))
+	(setf j (ecase j
+                  (1 1)
+                  (2 4)
+                  (3 3)
+                  (4 2)))
 	(setf z (* z tau1)
 	      tau tau1)))
     ;; |Re(tau)| <= 1/2 here, so |arg(q)| <= %pi/2 and the principal
@@ -6802,24 +6814,34 @@ first kind:
   (let ((one (float 1 (realpart (+ z q)))))
     (cond
       ((zerop q)
-       (if (<= j 2) (* 0 one) one))
+       (if (<= j 2)
+           (* 0 one)
+           one))
       (t
        (let* ((absz (abs z))
-	      (imtau (/ (- (log (abs q))) (%pi one)))
+	      (imtau (/ (- (log (abs q)))
+                        (%pi one)))
 	      (extra (+ 16
 			(integer-length
-			 (ceiling (+ 1 absz (/ (* absz absz) imtau)
-				     imtau (/ imtau))))))
+			 (ceiling (+ 1 absz
+                                     (/ (* absz absz)
+                                               imtau)
+				     imtau
+                                     (/ imtau))))))
 	      (real-result-p (and (realp z) (realp q)
-				  (or (plusp q) (>= j 3))))
+				  (or (plusp q)
+                                      (>= j 3))))
 	      (result
 		(if (or (typep z '(or bigfloat complex-bigfloat))
 			(typep q '(or bigfloat complex-bigfloat)))
 		    (with-extra-precision (extra (z q))
 		      (bf-jacobi-theta-reduced j z q))
 		    (maxima::bind-fpprec
-			(ceiling (* (+ (float-digits one) extra) 30103) 100000)
-		      (let ((r (bf-jacobi-theta-reduced j (bigfloat z)
+			(ceiling (* (+ (float-digits one) extra)
+                                    30103)
+                                 100000)
+		      (let ((r (bf-jacobi-theta-reduced j
+                                                        (bigfloat z)
 							(bigfloat q))))
 			(if (complexp r)
 			    (cl:complex (float (realpart r) one)
@@ -6861,7 +6883,8 @@ first kind:
        result)
       ((zerop1 q)
        (if (<= n 2) 0 1))
-      ((and (= n 1) (zerop1 z))
+      ((and (= n 1)
+            (zerop1 z))
        0)
       ((and $trigsign (mminusp* z))
        (if (= n 1)
