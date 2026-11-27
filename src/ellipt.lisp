@@ -1468,6 +1468,10 @@
 	 (values (bf-elliptic-ec-terms m)))))
 
 ;;; Elliptic PI
+;;;
+;;; Further details of the algorithms used here can be found in
+;;; doc/info/impl-notes/elliptic-pi-accuracy.texi.m4
+;;;
 
 ;; Complete elliptic-pi.  That is phi = %pi/2.  Then
 ;; elliptic_pi(n,m)
