@@ -6872,23 +6872,31 @@ first kind:
 	(to (bigfloat::bf-jacobi-theta n z q))))))
 
 (def-simplifier jacobi_theta (n z q)
-  (let (result)
-    (cond
-      ((not (member n '(1 2 3 4)))
-       (if (mnump n)
-	   (merror (intl:gettext "jacobi_theta: index must be 1, 2, 3, or 4; found ~M")
-		   n)
-	   (give-up)))
-      ((setf result (jacobi-theta-numerical-eval n z q))
-       result)
-      ((zerop1 q)
-       (if (<= n 2) 0 1))
-      ((and (= n 1)
-            (zerop1 z))
-       0)
-      ((and $trigsign (mminusp* z))
-       (if (= n 1)
-	   (neg (ftake* '%jacobi_theta n (neg z) q))
-	   (ftake* '%jacobi_theta n (neg z) q)))
-      (t
-       (give-up)))))
+  (cond
+    ((not (mnump n))
+     (give-up))
+    (t
+     (let ((j ($rationalize n))
+           result)
+       (cond
+         ((not (member j '(1 2 3 4)))
+          (if (mnump j)
+	      (merror (intl:gettext "jacobi_theta: index must be 1, 2, 3, or 4; found ~M")
+		      n)
+	      (give-up)))
+         ((setf result (jacobi-theta-numerical-eval j z q))
+          result)
+         ((zerop1 q)
+          (if (<= j 2) 0 1))
+         ((and (= j 1)
+               (zerop1 z))
+          0)
+         ((and $trigsign (mminusp* z))
+          (if (= j 1)
+	      (neg (ftake* '%jacobi_theta j (neg z) q))
+	      (ftake* '%jacobi_theta j (neg z) q)))
+         (t
+          ;; If we get here, (integral) float values for n are
+          ;; converted to the integer value.  This parameter is an
+          ;; integer index representing which Jacobi theta we want.
+          (give-up :args (list j z q))))))))

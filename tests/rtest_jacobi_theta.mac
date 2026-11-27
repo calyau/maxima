@@ -60,7 +60,7 @@ errcatch(jacobi_theta(5, 0.5, 0.1));
 errcatch(jacobi_theta(7, z, q));
 []$
 
-errcatch(jacobi_theta(1.0, z, q));
+errcatch(jacobi_theta(1.5, z, q));
 []$
 
 /* |q| >= 1 is an error */
@@ -198,3 +198,16 @@ true$
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done$
+
+/* float and bfloat also convert the index */
+jacobi_theta(3.0, z, q);
+jacobi_theta(3, z, q)$
+
+jacobi_theta(2.0b0, z, q);
+jacobi_theta(2, z, q)$
+
+float(jacobi_theta(3, 1/2, 1/4)) - jacobi_theta(3, 0.5, 0.25);
+0.0$
+
+bfloat(jacobi_theta(2, 1, 1/2)) - jacobi_theta(2, 1b0, 0.5b0);
+0b0$
