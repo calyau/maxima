@@ -211,3 +211,72 @@ float(jacobi_theta(3, 1/2, 1/4)) - jacobi_theta(3, 0.5, 0.25);
 
 bfloat(jacobi_theta(2, 1, 1/2)) - jacobi_theta(2, 1b0, 0.5b0);
 0b0$
+
+/* Near the zeros: z is the double nearest a zero */
+(oldfpprec:fpprec, fpprec:32, done);
+done$
+
+closeto_relerr(u, v, tol) :=
+  block([e],
+    e : max(if imagpart(v) = 0 then 0
+                else abs(imagpart(u - v)/imagpart(v)),
+            if realpart(v) = 0 then 0
+                else abs(realpart(u - v)/realpart(v))),
+    if e <= tol then true else e);
+closeto_relerr(u, v, tol) :=
+  block([e],
+    e : max(if imagpart(v) = 0 then 0
+                else abs(imagpart(u - v)/imagpart(v)),
+            if realpart(v) = 0 then 0
+                else abs(realpart(u - v)/realpart(v))),
+    if e <= tol then true else e)$
+
+closeto_relerr(jacobi_theta(1, 9.42477796076938, -0.5457060454893123),
+               1.04419503054886140315354300711266419b-16
+               + 1.04419503054886140315354300711266419b-16*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(1, 6.283185307179586 - 0.2732011835270465*%i,
+                            0.8723185677830205),
+               -1.33445524427639464337128542855968889b-21
+               - 3.87808880999807961706546585642363315b-23*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(2, -4.71238898038469 + 0.012711134822742083*%i,
+                            0.9873693104405599),
+               7.2067479932875582123147239498778693b-97
+               + 2.32979324883107830069145266372576729b-99*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(3, 8.769022928529395 - 1.2639646992684885*%i,
+                            -0.020466168396777843 - 0.07715586951526188*%i),
+               1.63625181575357412586983727082179168b-16
+               + 2.04306424443507313073623623034413191b-16*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(4, 4.71238898038469 + 0.43654745630567254*%i,
+                            -0.4176569352063613),
+               -1.3517714021049822954130182554209087b-18
+               - 1.84810333184575933679571913153596032b-16*%i,
+               2^-53);
+true$
+
+closeto_relerr(jacobi_theta(4, 6.774214591554021 - 0.7851214020158763*%i,
+                            0.1155018827780398 - 0.17297716497724852*%i),
+               -9.78864854892074583242361692459258264b-17
+               + 4.09440034157593692222625489121967752b-17*%i,
+               2^-53);
+true$
+
+/* The bigfloat nearest %pi/2, a zero of theta2 */
+closeto_relerr(jacobi_theta(2, bfloat(%pi/2), 0.3b0),
+               -1.62602612897134024592508020892433126b-33,
+               2^-106);
+true$
+
+(fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
+done$

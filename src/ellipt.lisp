@@ -6891,6 +6891,63 @@ first kind:
 	   (3 (bf-jacobi-theta3-series z q))
 	   (4 (bf-jacobi-theta4-series z q)))))))
 
+;; Near a zero of theta_j, the result is much smaller than the terms
+;; that sum to it, so more bits are needed.  The zeros are known from
+;; the infinite products (DLMF 20.5.1-20.5.4): with z/%pi = x + y*tau,
+;; they are at integer x and y for theta1, with x shifted by 1/2 for
+;; theta2, x and y shifted by 1/2 for theta3, and y shifted by 1/2 for
+;; theta4.  DELTA, the larger of the distances of x and y from the
+;; nearest zero, measures how close z is.  Measuring it in x and y,
+;; rather than in z, makes it independent of Im(tau): the reduction
+;; maps (x, y) by an integer matrix, so a small DELTA stays small.
+;; About log2(1/DELTA) extra bits are needed.
+
+;; DELTA and |x| + |y|, computed with the precision of Z and Q.
+(defun bf-jacobi-theta-zero-delta (j z q)
+  (let* ((bfpi (%pi (realpart z)))
+	 (log-q (log q))
+	 (re-tau (/ (imagpart log-q) bfpi))
+	 (im-tau (- (/ (realpart log-q) bfpi)))
+	 (y (/ (imagpart z) (* bfpi im-tau)))
+	 (x (- (/ (realpart z) bfpi) (* y re-tau)))
+	 (dx (- x (if (member j '(2 3)) 1/2 0)))
+	 (dy (- y (if (member j '(3 4)) 1/2 0))))
+    (values (max (abs (- dx (round dx)))
+		 (abs (- dy (round dy))))
+	    (+ (abs x) (abs y)))))
+
+;; The number of extra bits needed near a zero.  DELTA is first
+;; computed in double float, and that is used if it cannot be wrong:
+;; DELTA > 2^-20, 1 - |q| > 2^-20, so that log(q) has no significant
+;; error, and |x| + |y| < 2^20.  Otherwise it is computed with PREC +
+;; EXTRA bits, and again with twice as many bits while it is not
+;; resolved, up to 4*PREC + EXTRA.
+(defun bf-jacobi-theta-zero-bits (j z q prec extra)
+  (flet ((bits (delta)
+	   (max 0 (- (integer-length (floor (/ delta))) 4))))
+    (let ((zd (cl:complex (float (realpart z) 1d0) (float (imagpart z) 1d0)))
+	  (qd (cl:complex (float (realpart q) 1d0) (float (imagpart q) 1d0)))
+	  (small (cl:scale-float 1d0 -20)))
+      (when (< (abs qd) (- 1 small))
+	(multiple-value-bind (delta size)
+	    (bf-jacobi-theta-zero-delta j zd qd)
+	  (when (and (> delta small) (< size (/ small)))
+	    (return-from bf-jacobi-theta-zero-bits (bits delta))))))
+    (let ((nbits (+ prec extra))
+	  (cap (+ (* 4 prec) extra)))
+      (loop
+	(maxima::bind-fpprec (ceiling (* nbits 30103) 100000)
+	  (let* ((zb (bigfloat z))
+		 (delta (bf-jacobi-theta-zero-delta j zb (bigfloat q))))
+	    (cond ((and (not (zerop delta))
+			(> delta (scale-float (float 1 (realpart zb))
+					      (- 12 nbits))))
+		   (return (bits delta)))
+		  ((>= nbits cap)
+		   (return (- cap prec extra)))
+		  (t
+		   (setf nbits (min cap (* 2 nbits)))))))))))
+
 ;; theta_j(z,q) for j = 1, 2, 3, 4 and |q| < 1.
 ;;
 ;; The reduction of z and the factors from the transformations lose
@@ -6918,6 +6975,14 @@ first kind:
                                                imtau)
 				     imtau
                                      (/ imtau))))))
+	      ;; Add the bits needed near a zero.
+	      (extra (+ extra
+			(bf-jacobi-theta-zero-bits
+			 j z q
+			 (if (typep one 'bigfloat)
+			     maxima::fpprec
+			     (float-digits one))
+			 extra)))
 	      (real-result-p (and (realp z) (realp q)
 				  (or (plusp q)
                                       (>= j 3))))
