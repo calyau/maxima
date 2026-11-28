@@ -6964,6 +6964,8 @@ first kind:
        (if (<= j 2)
            (* 0 one)
            one))
+      ((and (= j 1) (zerop z))
+       (* 0 one))
       (t
        (let* ((absz (abs z))
 	      (imtau (/ (- (log (abs q)))

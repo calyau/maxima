@@ -280,3 +280,10 @@ true$
 
 (fpprec:oldfpprec, kill(oldfpprec, closeto_relerr), done);
 done$
+
+/* theta1 at a float or bigfloat 0 */
+jacobi_theta(1, 0.0, 0.5);
+0.0$
+
+jacobi_theta(1, 0b0, 0.5b0);
+0b0$
