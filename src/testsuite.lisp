@@ -117,6 +117,7 @@
          ;; Gcl 2.7.1 returns the wrong second value for ROUND with a
          ;; float divisor.
          #+gcl ((mlist simp) 653 654 655 656 657 658))
+        "rtest_jacobi_theta"
         "rtest_integrate"
         "rtest_integrate_special"
         ((mlist simp) "rtest_sqrt"
